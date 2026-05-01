@@ -57,91 +57,91 @@ function FeatureSection({
 
 const sections: FeatureSectionProps[] = [
   {
-    title: "事業者・個人事業主の方へ",
+    title: "For mid-sized companies ready to operationalize AI",
     description:
-      "「AI を使って業務をもっと楽にしたい」「問い合わせ対応や事務作業を減らしたい」「サービスや商品の見せ方も整えたい」——そうした課題に対して、企画・整理・設計・制作まで一貫してサポートします。",
+      "Knot is an AI operations consultancy. We help teams embed working AI systems directly into day-to-day operations, where the work actually happens.",
     highlights: [
       {
-        title: "業務の整理から",
+        title: "AI Operations Assessment",
         description:
-          "いまの進め方を一緒に棚卸しし、優先したいことと後回しにできることを切り分けます。",
+          "We map repetitive and knowledge-heavy workflows, identify leverage, and deliver a prioritized roadmap.",
       },
       {
-        title: "制作までワンストップ",
+        title: "Skills Implementation",
         description:
-          "LP・Web・EC・画面設計・試作まで、必要な範囲をつなげてご提案します。",
+          "We design and build custom Claude Code Skills and AI agents your team can use every day.",
       },
       {
-        title: "無理のないペース",
+        title: "Monthly AI Advisory",
         description:
-          "人手や予算に合わせて段階的に進め、運用し続けられる形を重視します。",
+          "We continuously improve your systems as your business, tools, and operating model evolve.",
       },
     ],
   },
   {
-    title: "AI 業務自動化\n（いまの流れに合わせて）",
+    title: "We ship working systems",
     description:
-      "単に AI ツールを導入するだけではなく、今の業務の流れに合わせて、無理なく使える形に落とし込むことを大切にしています。",
+      "Our team is led by engineers who write production code, not consultants who write recommendations.",
     highlights: [
       {
-        title: "ツール選定と役割分担",
+        title: "Production-first implementation",
         description:
-          "ご利用中のサービスやチームの習慣を踏まえ、何を自動化し、人が残すべき判断は何かをはっきりさせます。",
+          "Each engagement is scoped around real workflows, real users, and systems that can run after launch.",
       },
       {
-        title: "問い合わせ・事務の削減",
+        title: "Claude Code Skills and agents",
         description:
-          "定型対応の下書き、振り分け、記録の自動化など、現場で負担の大きい部分から設計します。",
+          "We build specialized capabilities that live inside the tools and routines your team already uses.",
       },
       {
-        title: "運用しやすい設計",
+        title: "Operational handoff",
         description:
-          "導入して終わりではなく、日常で回せる手順と、トラブル時の見通しまで含めて整えます。",
+          "We document ownership, review points, and failure modes so systems can be trusted in practice.",
       },
     ],
     reverse: true,
   },
   {
-    title: "仕組みづくりと\n見せ方づくり",
+    title: "We redesign before we automate",
     description:
-      "業務自動化だけでなく、サービス紹介用の LP や Web サイト、EC サイト、画面設計、試作開発にも対応しています。「仕組み」と「見せ方」をまとめて相談できるのが特徴です。",
+      "Process design comes first. AI is the implementation layer, not the goal.",
     highlights: [
       {
-        title: "LP・Web・EC",
+        title: "Workflow clarity",
         description:
-          "集客や説明に使うページから、商品やサービスを載せる EC まで、目的に合わせて構成と制作を行います。",
+          "We separate high-value judgment from repeatable execution before deciding what to automate.",
       },
       {
-        title: "UI/UX・プロトタイプ",
+        title: "Team adoption",
         description:
-          "画面の情報設計やワイヤー、試作レベルの動くモックまで、検証しながら形にします。",
+          "The system must fit the way people already coordinate, approve, and measure the work.",
       },
       {
-        title: "ブランドに合わせた表現",
+        title: "Measured rollout",
         description:
-          "事業のトーンや顧客層に合わせて、文章・ビジュアル・導線のバランスを整えます。",
+          "We start with a narrow operating loop, prove value, and expand from there.",
       },
     ],
   },
   {
-    title: "まだ何を頼めばいいか\nはっきりしない方へ",
+    title: "We stay with you",
     description:
-      "「何を頼めるのかまだはっきりしていない」「AI に興味はあるけど、何から始めればいいか分からない」——そんな段階からでも相談しやすい形で、事業に合った進め方をご提案しています。",
+      "Our monthly model means your AI systems improve every month, not just at kickoff.",
     highlights: [
       {
-        title: "ヒアリングから一緒に",
+        title: "Continuous refinement",
         description:
-          "課題の言語化が難しいときも、質問と例を通じて、やりたいことの輪郭を一緒に作ります。",
+          "We tune prompts, workflows, integrations, and evaluation criteria as usage data comes in.",
       },
       {
-        title: "小さく試して広げる",
+        title: "New Skills as needs change",
         description:
-          "一度に全部を変えず、効果が見えやすいところから試し、うまくいった流れを横に展開します。",
+          "As your business evolves, we build new capabilities that extend the operating system.",
       },
       {
-        title: "継続的な相談も可",
+        title: "Embedded AI operations resource",
         description:
-          "単発の制作だけでなく、運用しながらの改善や追加の自動化も、都度ご相談いただけます。",
+          "Your team gets a partner who understands the systems, the process, and the business context.",
       },
     ],
     reverse: true,

@@ -12,7 +12,7 @@ interface FeatureCardProps {
   lottie?: boolean;
   /** FIG 0.2: Bento DNA Lottie */
   bento?: boolean;
-  /** FIG 0.3: フローチャート Lottie */
+  /** FIG 0.3: Flowchart Lottie */
   flowchart?: boolean;
 }
 
@@ -63,24 +63,24 @@ function FeatureCard({
 const features = [
   {
     figure: "FIG 0.1",
-    title: "AI 業務自動化を中心に",
+    title: "Pilot Build",
     description:
-      "問い合わせ対応や事務作業の整理、定型業務の自動化など、現場の流れに合わせて設計します。",
+      "One workflow, one working AI system, in a few weeks. Built inside the tools your team already uses, so the results speak for themselves.",
     illustration: "/images/features/fig02-built-for-purpose.png",
     lottie: true,
   },
   {
     figure: "FIG 0.2",
-    title: "Web・LP・EC・見せ方",
+    title: "AI Implementation",
     description:
-      "サービス紹介用の LP やサイト、EC の構築まで。商品やサービスの伝わり方も一緒に整えます。",
+      "Your team spends hours on work that doesn't need a human. We build AI into your workflows to handle it — quietly, inside the tools they already work in.",
     bento: true,
   },
   {
     figure: "FIG 0.3",
-    title: "UI/UX・プロトタイプ",
+    title: "An AI-Native Operation",
     description:
-      "画面設計や試作開発にも対応。仕組みづくりと見せ方づくりを、同じ相談窓口で進められます。",
+      "Your team stops doing repetitive work. Decisions get faster. New hires onboard in days. AI becomes how you operate — not a tool you happen to use.",
     flowchart: true,
   },
 ];

@@ -13,9 +13,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Evimeria — AI業務自動化・Web/LP/EC・UI/UX・試作（フリーランス）",
+  title: "Knot — AI Operations Consultancy",
   description:
-    "事業者・個人事業主向け。AIを使った業務の楽化、問い合わせ・事務の削減、サービスや商品の見せ方まで。企画・整理・設計・制作を一貫サポート。",
+    "Knot builds custom AI Skills and agents that run inside real business workflows, helping mid-sized companies move from AI experiments to working systems.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ja"
+      lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <body className="min-h-screen bg-bg-primary text-text-primary">

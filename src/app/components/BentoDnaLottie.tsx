@@ -3,7 +3,7 @@
 import Lottie from "@lottielab/lottie-player/react";
 
 const BENTO_DNA_LOTTIE = `/lottie-lab-json/${encodeURIComponent(
-  "Bento DNA _ Deep Blue.json",
+  "Integrations.json",
 )}`;
 
 export default function BentoDnaLottie() {

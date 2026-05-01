@@ -1,18 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
-const QUOTES = `「AI で業務を楽にしたい」
-「問い合わせや事務を減らしたい」
-「見せ方も整えたい」`;
+const QUOTES = `"We have AI tools."
+"We need operating leverage."
+"We need systems people will actually use."`;
 
-const TAGLINE_EN = "Beyond tools — workflow that fits.";
+const TAGLINE_EN = "Knot turns AI capability into operational practice.";
 
-const BODY = `そんな課題に対して、単にツールを入れるだけでなく、いまの業務の流れに合わせて無理なく使える形に落とし込むことを大切にしています。何から始めればいいかまだはっきりしない段階でも、事業に合った進め方をご提案します。`;
+const BODY = `We help mid-sized companies move beyond AI experimentation and embed working AI systems directly into day-to-day operations.`;
 
 const MS_PER_CHAR = 24;
 const PAUSE_AFTER_QUOTES_MS = 400;
 const PAUSE_AFTER_EN_MS = 450;
+
+function subscribeToReducedMotion(onStoreChange: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getServerReducedMotionSnapshot() {
+  return false;
+}
 
 function Cursor() {
   return (
@@ -23,7 +37,7 @@ function Cursor() {
   );
 }
 
-/** 最終テキストと同じ量の高さを最初から確保（下のセクションのジャンプを防ぐ） */
+/** Reserve the final text height so sections below do not jump while typing. */
 function LayoutSpacer() {
   return (
     <div
@@ -44,22 +58,14 @@ export default function StatementTyper() {
   const [enShown, setEnShown] = useState("");
   const [bodyShown, setBodyShown] = useState("");
   const [done, setDone] = useState(false);
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const onChange = () => setReduced(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const reduced = useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getServerReducedMotionSnapshot,
+  );
 
   useEffect(() => {
     if (reduced) {
-      setQuoteShown(QUOTES);
-      setEnShown(TAGLINE_EN);
-      setBodyShown(BODY);
-      setDone(true);
       return;
     }
 
@@ -114,12 +120,17 @@ export default function StatementTyper() {
     };
   }, [reduced]);
 
-  const typingQuote = !done && quoteShown.length < QUOTES.length;
+  const displayedQuote = reduced ? QUOTES : quoteShown;
+  const displayedEn = reduced ? TAGLINE_EN : enShown;
+  const displayedBody = reduced ? BODY : bodyShown;
+  const typingQuote = !reduced && !done && quoteShown.length < QUOTES.length;
   const typingEn =
+    !reduced &&
     !done &&
     quoteShown.length === QUOTES.length &&
     enShown.length < TAGLINE_EN.length;
   const typingBody =
+    !reduced &&
     !done &&
     enShown.length === TAGLINE_EN.length &&
     bodyShown.length < BODY.length;
@@ -131,17 +142,17 @@ export default function StatementTyper() {
       <LayoutSpacer />
       <div className="absolute left-0 top-0 right-0" aria-live="polite">
         <p className="whitespace-pre-line text-text-primary">
-          {quoteShown}
+          {displayedQuote}
           {typingQuote && <Cursor />}
         </p>
 
         <p className="mt-4 whitespace-pre-line text-text-secondary" lang="en">
-          {enShown}
+          {displayedEn}
           {typingEn && <Cursor />}
         </p>
 
         <p className="mt-4 text-text-secondary">
-          {bodyShown}
+          {displayedBody}
           {typingBody && <Cursor />}
         </p>
       </div>

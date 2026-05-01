@@ -3,7 +3,7 @@
 import Lottie from "@lottielab/lottie-player/react";
 
 const FLOWCHART_LOTTIE = `/lottie-lab-json/${encodeURIComponent(
-  "Sketches _ Flow chart.json",
+  "Data Reporting (1).json",
 )}`;
 
 export default function FlowchartLottie() {

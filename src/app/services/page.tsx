@@ -4,9 +4,9 @@ import SitePageLayout from "@/app/components/SitePageLayout";
 import CTA from "@/app/components/CTA";
 
 export const metadata: Metadata = {
-  title: "サービス | Evimeria",
+  title: "Services | Knot",
   description:
-    "AI 業務自動化、Web・LP・EC の制作、UI/UX・プロトタイプ設計。事業者・個人事業主向けに企画から制作・運用改善まで一貫して対応します。",
+    "AI Operations Assessment, Skills Implementation, and Monthly AI Advisory for mid-sized companies ready to embed AI into daily operations.",
 };
 
 /* ─── Hero ─────────────────────────────────────────────── */
@@ -19,29 +19,28 @@ function ServicesHero() {
         </span>
         <div className="mb-8">
           <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-semibold leading-[1.05] tracking-[-0.022em] text-text-primary">
-            仕組みと見せ方を、
+            AI systems for
             <br />
-            まとめてお任せください。
+            real business workflows.
           </h1>
         </div>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           <p className="min-w-0 flex-1 text-[15px] text-text-secondary tracking-[-0.01em] leading-relaxed max-w-2xl">
-            AI を使った業務の自動化・効率化から、LP・Web・EC の制作、
-            UI/UX・プロトタイプの設計まで。
-            「何から手をつければいいか分からない」という段階でもご相談いただけます。
+            We assess, design, build, and improve AI Skills and agents that
+            become part of how your team works every day.
           </p>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:max-w-[min(100%,22rem)] lg:justify-end lg:shrink-0">
             <div className="w-4 h-4 rounded-lg bg-accent/15 flex items-center justify-center shrink-0">
               <div className="w-1.5 h-1.5 rounded-[3px] bg-accent" />
             </div>
             <span className="text-[15px] font-semibold text-[#d0d6e0] tracking-[-0.01em]">
-              まとめて一つの窓口で
+              Built with engineering depth
             </span>
             <Link
               href="/contact"
               className="text-[15px] text-text-secondary tracking-[-0.01em] whitespace-nowrap hover:text-text-primary transition-colors"
             >
-              まずは相談する <span className="text-text-muted">&rarr;</span>
+              Book a free assessment <span className="text-text-muted">&rarr;</span>
             </Link>
           </div>
         </div>
@@ -54,18 +53,18 @@ function ServicesHero() {
 const serviceCards = [
   {
     index: "01",
-    title: "AI 業務自動化",
+    title: "AI Operations Assessment",
     description:
-      "問い合わせ対応・定型メール・フォーム処理・ナレッジ整理など、毎日繰り返す作業を自動化します。ツール選定から設計・実装・運用フローの整備まで。",
-    tags: ["問い合わせ自動化", "メール下書き生成", "フォーム連携", "チャットボット", "タスク振り分け"],
+      "A focused two-to-four week engagement. We map repetitive and knowledge-heavy workflows, identify automation opportunities, and deliver a prioritized roadmap.",
+    tags: ["Workflow mapping", "Opportunity scoring", "Roadmap", "Risk review", "Operating model"],
     visual: (
       <div className="w-full space-y-2 font-mono text-[11px]">
         {[
-          { label: "フォーム受信", status: "done", indent: 0 },
-          { label: "カテゴリ判定", status: "done", indent: 1 },
-          { label: "担当者へ通知", status: "done", indent: 1 },
-          { label: "返信下書き生成", status: "running", indent: 1 },
-          { label: "人による確認・送信", status: "pending", indent: 0 },
+          { label: "Intake received", status: "done", indent: 0 },
+          { label: "Workflow mapped", status: "done", indent: 1 },
+          { label: "Owner notified", status: "done", indent: 1 },
+          { label: "Skill draft generated", status: "running", indent: 1 },
+          { label: "Human review", status: "pending", indent: 0 },
         ].map((step) => (
           <div
             key={step.label}
@@ -91,7 +90,7 @@ const serviceCards = [
               {step.label}
             </span>
             {step.status === "running" && (
-              <span className="text-accent/60 text-[10px]">実行中</span>
+              <span className="text-accent/60 text-[10px]">Running</span>
             )}
           </div>
         ))}
@@ -100,10 +99,10 @@ const serviceCards = [
   },
   {
     index: "02",
-    title: "Web・LP・EC",
+    title: "Skills Implementation",
     description:
-      "サービス紹介の LP・コーポレートサイト・EC まで。構成案の整理からデザイン・コーディング・公開まで対応。商品やサービスの「伝わり方」も一緒に考えます。",
-    tags: ["LP 制作", "コーポレートサイト", "EC 構築", "リニューアル", "CMS 導入"],
+      "We design and build custom Claude Code Skills and AI agents tailored to your workflows. Typical engagements run one to three months.",
+    tags: ["Claude Code Skills", "AI agents", "Integrations", "Production rollout", "Enablement"],
     visual: (
       <div className="w-full space-y-1.5">
         <div className="h-6 rounded-md bg-white/[0.04] border border-border flex items-center px-2 gap-1.5">
@@ -131,14 +130,14 @@ const serviceCards = [
   },
   {
     index: "03",
-    title: "UI/UX・プロトタイプ",
+    title: "Monthly AI Advisory",
     description:
-      "画面の情報設計・ワイヤーフレーム・動くプロトタイプの制作。仮説を素早く形にして検証するサイクルを回せるよう、仕組みづくりと並行して対応します。",
-    tags: ["ワイヤーフレーム", "インタラクション設計", "Figma", "試作・検証", "デザインシステム"],
+      "An ongoing partnership. We refine AI systems, build new Skills as your business evolves, and serve as your embedded AI operations resource.",
+    tags: ["Monthly support", "System tuning", "New Skills", "Governance", "Adoption"],
     visual: (
       <div className="w-full space-y-1.5">
         <div className="grid grid-cols-4 gap-1 mb-2">
-          {["一覧", "詳細", "入力", "完了"].map((label, i) => (
+          {["Map", "Build", "Review", "Ship"].map((label, i) => (
             <div
               key={label}
               className={`h-5 rounded text-[9px] flex items-center justify-center font-mono ${
@@ -225,7 +224,7 @@ function ServiceOverview() {
   );
 }
 
-/* ─── AI 業務自動化 詳細 ────────────────────────────────── */
+/* AI Operations Assessment details */
 function AiSection() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-border">
@@ -237,37 +236,38 @@ function AiSection() {
               Service 01
             </span>
             <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-semibold leading-[1.15] tracking-[-0.022em] text-text-primary">
-              AI 業務自動化
+              AI Operations Assessment
               <br />
               <span className="text-text-secondary">
-                ——いまの流れに合わせて。
+                Map where AI can create leverage.
               </span>
             </h2>
             <p className="text-[15px] text-text-secondary leading-relaxed tracking-[-0.01em]">
-              AI ツールの「導入」が目的ではなく、現場で使い続けられる形にすることを重視しています。
-              今の業務フローを整理したうえで、何を自動化し、何は人が判断するかを切り分けて設計します。
+              We start with the work itself. In two to four weeks, we map your
+              team&apos;s repetitive and knowledge-heavy workflows, identify the
+              best automation opportunities, and sequence the implementation.
             </p>
             <div className="space-y-3">
               {[
                 {
-                  title: "問い合わせ・メール対応の自動化",
+                  title: "Workflow mapping",
                   detail:
-                    "受信内容のカテゴリ判定・優先度付け・担当者通知・返信下書き生成を一連で構築。",
+                    "Document how work moves across teams, tools, approvals, and exceptions.",
                 },
                 {
-                  title: "フォーム連携と記録の自動化",
+                  title: "Opportunity scoring",
                   detail:
-                    "フォームの送信データをスプレッドシートや Notion・Slack に自動で流す仕組み。",
+                    "Prioritize use cases by volume, risk, business value, and implementation effort.",
                 },
                 {
-                  title: "社内ナレッジの整理・検索",
+                  title: "Implementation roadmap",
                   detail:
-                    "散在する FAQ や過去対応履歴をまとめ、チャットで検索できる形にします。",
+                    "Define the first systems to build, the owners involved, and the metrics to track.",
                 },
                 {
-                  title: "定型タスクの自動実行",
+                  title: "Operating guardrails",
                   detail:
-                    "週次レポートの集計・出力、定期的なリマインダー送信など、繰り返し作業の代行。",
+                    "Clarify what AI can do independently and where human review remains required.",
                 },
               ].map((item) => (
                 <div
@@ -291,7 +291,7 @@ function AiSection() {
               {/* Window chrome */}
               <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
                 <span className="text-[12px] font-semibold text-[#d0d6e0]">
-                  自動化フロー
+                  Assessment flow
                 </span>
                 <span className="font-mono text-[10px] text-text-muted">
                   inquiry_router.yaml
@@ -302,7 +302,7 @@ function AiSection() {
                   { depth: 0, text: "on: form_submit", color: "text-accent/70" },
                   { depth: 1, text: "classify:", color: "text-text-secondary" },
                   { depth: 2, text: 'model: "gpt-4o-mini"', color: "text-text-muted" },
-                  { depth: 2, text: "labels: [新規, 見積, サポート]", color: "text-text-muted" },
+                  { depth: 2, text: "labels: [new, estimate, support]", color: "text-text-muted" },
                   { depth: 1, text: "notify:", color: "text-text-secondary" },
                   { depth: 2, text: "channel: slack #inquiries", color: "text-text-muted" },
                   { depth: 1, text: "draft_reply:", color: "text-text-secondary" },
@@ -322,9 +322,9 @@ function AiSection() {
 
             <div className="grid grid-cols-3 gap-2">
               {[
-                { label: "受信", count: "145", sub: "今月" },
-                { label: "自動処理", count: "92%", sub: "対応済み" },
-                { label: "手動確認", count: "8%", sub: "要確認" },
+                { label: "Intake", count: "145", sub: "This month" },
+                { label: "Automated", count: "92%", sub: "Resolved" },
+                { label: "Review", count: "8%", sub: "Needs review" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -343,12 +343,12 @@ function AiSection() {
 
             <div className="rounded-xl border border-border bg-bg-elevated p-4 space-y-3">
               <p className="text-[12px] font-semibold text-text-secondary uppercase font-mono tracking-wider">
-                よく使うツール連携
+                Common integrations
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {[
                   "Gmail", "Notion", "Slack", "Google Sheets",
-                  "LINE公式", "Chatwork", "Make (旧Integromat)", "Zapier",
+                  "LINE Official", "Chatwork", "Make", "Zapier",
                 ].map((tool) => (
                   <span
                     key={tool}
@@ -366,7 +366,7 @@ function AiSection() {
   );
 }
 
-/* ─── Web・LP・EC 詳細 ────────────────────────────────── */
+/* Skills Implementation details */
 function WebSection() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-border">
@@ -378,37 +378,38 @@ function WebSection() {
               Service 02
             </span>
             <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-semibold leading-[1.15] tracking-[-0.022em] text-text-primary">
-              Web・LP・EC
+              Skills Implementation
               <br />
               <span className="text-text-secondary">
-                ——伝わり方から一緒に。
+                Build systems your team uses.
               </span>
             </h2>
             <p className="text-[15px] text-text-secondary leading-relaxed tracking-[-0.01em]">
-              制作物の「作り方」だけでなく、「どう伝えるか」「誰に届けるか」という部分から一緒に整理します。
-              テキストや構成も込みで相談しながら進められます。
+              We design and build custom Claude Code Skills and AI agents
+              tailored to your workflows. Engagements typically run one to
+              three months and end with production-ready systems.
             </p>
             <div className="space-y-3">
               {[
                 {
-                  title: "LP・サービス紹介サイト",
+                  title: "Custom Claude Code Skills",
                   detail:
-                    "ターゲットと訴求ポイントを整理し、構成案・デザイン・コーディング・公開まで一貫して対応。",
+                    "Reusable Skills that encode your process, standards, and decision patterns.",
                 },
                 {
-                  title: "コーポレートサイト",
+                  title: "AI agents for operating loops",
                   detail:
-                    "会社紹介・採用・お問い合わせなど複数ページ構成に対応。CMS 導入でコンテンツ更新も自分でできる形に。",
+                    "Agents that route work, draft outputs, reconcile information, and trigger follow-up.",
                 },
                 {
-                  title: "EC サイト",
+                  title: "Workflow integrations",
                   detail:
-                    "Shopify / BASE などを活用した EC の新規構築・リニューアル。商品ページの構成や購入フローの改善も。",
+                    "Connections to the tools where work already lives: Slack, Notion, Sheets, CRMs, and internal systems.",
                 },
                 {
-                  title: "既存サイトのリニューアル",
+                  title: "Launch and enablement",
                   detail:
-                    "「古くなってきた」「スマホで崩れる」「問い合わせが来ない」——現状の課題を整理して改修方針を提案します。",
+                    "Rollout support, documentation, and review rituals so the system becomes part of daily work.",
                 },
               ].map((item) => (
                 <div
@@ -435,7 +436,7 @@ function WebSection() {
                 <div className="w-2 h-2 rounded-full bg-white/10" />
                 <div className="w-2 h-2 rounded-full bg-white/10" />
                 <div className="flex-1 mx-2 h-4 rounded bg-white/[0.04] border border-border text-[9px] flex items-center px-2 text-text-muted font-mono">
-                  evimeria.com/lp
+                  knot.ai/skills
                 </div>
               </div>
               <div className="p-3 space-y-2">
@@ -473,16 +474,16 @@ function WebSection() {
             {/* Tech stack */}
             <div className="rounded-xl border border-border bg-bg-elevated p-4 space-y-3">
               <p className="text-[12px] font-semibold text-text-secondary uppercase font-mono tracking-wider">
-                主な技術スタック
+                Typical stack
               </p>
               <div className="grid grid-cols-2 gap-1.5 text-[12px]">
                 {[
-                  ["Next.js / React", "モダン Web"],
-                  ["Shopify / BASE", "EC"],
-                  ["WordPress", "CMS"],
-                  ["Tailwind CSS", "スタイリング"],
-                  ["Vercel / Netlify", "ホスティング"],
-                  ["Figma", "デザイン"],
+                  ["Claude Code", "Skills"],
+                  ["OpenAI / Anthropic", "Models"],
+                  ["Slack / Notion", "Workflow"],
+                  ["Next.js / React", "Interfaces"],
+                  ["Vercel / Cloud", "Hosting"],
+                  ["Postgres", "Data"],
                 ].map(([name, cat]) => (
                   <div key={name} className="flex items-center gap-2 rounded-md border border-border p-2 bg-white/[0.01]">
                     <div className="w-1.5 h-1.5 rounded-full bg-accent/40 shrink-0" />
@@ -501,7 +502,7 @@ function WebSection() {
   );
 }
 
-/* ─── UI/UX・プロトタイプ 詳細 ──────────────────────────── */
+/* Monthly AI Advisory details */
 function UiSection() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 border-t border-border">
@@ -513,37 +514,38 @@ function UiSection() {
               Service 03
             </span>
             <h2 className="text-[clamp(1.75rem,3.5vw,2.75rem)] font-semibold leading-[1.15] tracking-[-0.022em] text-text-primary">
-              UI/UX・プロトタイプ
+              Monthly AI Advisory
               <br />
               <span className="text-text-secondary">
-                ——仮説を、動く形に。
+                Keep improving after launch.
               </span>
             </h2>
             <p className="text-[15px] text-text-secondary leading-relaxed tracking-[-0.01em]">
-              「なんとなくこういうものを作りたい」という段階から、画面の構成・情報の流れ・操作感を一緒に設計します。
-              早期に動くものを作って確認するプロセスで、手戻りを減らします。
+              AI systems need operating attention. We stay with your team to
+              tune existing systems, build new Skills, and keep the AI layer
+              aligned with how the business changes.
             </p>
             <div className="space-y-3">
               {[
                 {
-                  title: "情報設計・ワイヤーフレーム",
+                  title: "System refinement",
                   detail:
-                    "何をどこに置くか、どの順番で見せるかを整理。複雑な画面でも構造を可視化してから進みます。",
+                    "Improve prompts, workflows, integrations, and evaluation criteria as usage grows.",
                 },
                 {
-                  title: "インタラクション設計",
+                  title: "New Skills each month",
                   detail:
-                    "ボタンの遷移・フォームの動き・エラー表示など、操作の流れを細かく設計します。",
+                    "Add capabilities as teams discover new bottlenecks and higher-value operating loops.",
                 },
                 {
-                  title: "クリック可能なプロトタイプ",
+                  title: "Governance and adoption",
                   detail:
-                    "Figma を使って実際に動かせる試作を作成。ユーザーテストやクライアント確認に活用できます。",
+                    "Set review points, permissions, documentation, and adoption practices that keep AI useful.",
                 },
                 {
-                  title: "デザインシステムの整備",
+                  title: "Embedded AI operations partner",
                   detail:
-                    "ボタン・フォーム・カードなどの共通コンポーネントを整理し、今後の画面追加をスムーズにします。",
+                    "Give your team a dedicated resource who understands both the code and the process.",
                 },
               ].map((item) => (
                 <div
@@ -574,11 +576,11 @@ function UiSection() {
                     Figma
                   </span>
                   <span className="text-[11px] text-text-muted">
-                    / サービス LP プロトタイプ
+                    / advisory workspace
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  {["一覧", "詳細", "入力"].map((label, i) => (
+                  {["Plan", "Review", "Ship"].map((label, i) => (
                     <button
                       key={label}
                       className={`text-[10px] px-2 py-0.5 rounded ${
@@ -637,10 +639,10 @@ function UiSection() {
                   K
                 </div>
                 <p className="text-[11px] text-text-secondary">
-                  ヒーローのコピー、もう少し短くできますか？
+                  Can we shorten the review step and keep risk controls?
                 </p>
                 <span className="text-[10px] text-text-muted ml-auto whitespace-nowrap">
-                  2分前
+                  2 min ago
                 </span>
               </div>
             </div>
@@ -648,20 +650,20 @@ function UiSection() {
             {/* Deliverables list */}
             <div className="rounded-xl border border-border bg-bg-elevated p-4 space-y-3">
               <p className="text-[12px] font-semibold text-text-secondary uppercase font-mono tracking-wider">
-                成果物の例
+                Example outputs
               </p>
               <div className="space-y-1.5">
                 {[
-                  ["Figma ファイル", "全画面ワイヤー + コンポーネント集"],
-                  ["プロトタイプ URL", "クリック可能な動作確認用リンク"],
-                  ["画面仕様メモ", "各画面の状態・エラー・遷移の説明"],
-                  ["スタイルガイド", "色・タイポ・スペーシングの定義"],
+                  ["Monthly roadmap", "Prioritized Skills and workflow improvements"],
+                  ["Usage review", "Metrics, blockers, and adoption notes"],
+                  ["System updates", "Prompt, integration, and agent refinements"],
+                  ["Team enablement", "Documentation and review practices"],
                 ].map(([name, desc]) => (
                   <div key={name} className="flex gap-2 items-start text-[12px]">
                     <div className="mt-1.5 w-1 h-1 rounded-full bg-accent/40 shrink-0" />
                     <div>
                       <span className="text-[#d0d6e0] font-medium">{name}</span>
-                      <span className="text-text-muted"> — {desc}</span>
+                      <span className="text-text-muted"> - {desc}</span>
                     </div>
                   </div>
                 ))}
@@ -674,31 +676,31 @@ function UiSection() {
   );
 }
 
-/* ─── 進め方 ─────────────────────────────────────────── */
+/* How it works */
 const steps = [
   {
     num: "01",
-    title: "ヒアリング・課題の整理",
+    title: "Assess the work",
     description:
-      "現状の業務フローやお困りごとをざっくばらんに聞かせてください。何を頼めるかまだ分からない段階でも歓迎です。",
+      "We map current workflows, bottlenecks, tools, decision points, and risks.",
   },
   {
     num: "02",
-    title: "提案・範囲の確定",
+    title: "Prioritize leverage",
     description:
-      "ヒアリングをもとに、優先順位と対応範囲をご提案。予算・スケジュールに合わせて調整します。",
+      "We identify the AI systems most likely to reduce manual effort and improve throughput.",
   },
   {
     num: "03",
-    title: "設計・制作・実装",
+    title: "Build the system",
     description:
-      "定期的に確認しながら進めます。途中でやりたいことが変わっても、柔軟に対応します。",
+      "We implement Skills, agents, integrations, and operating documentation with your team.",
   },
   {
     num: "04",
-    title: "引き渡し・継続サポート",
+    title: "Improve monthly",
     description:
-      "引き渡し後も運用しながら改善できます。単発でも、継続的な相談パートナーとしても対応可能です。",
+      "We tune the systems, add new capabilities, and keep the AI layer aligned with the business.",
   },
 ];
 
@@ -711,7 +713,7 @@ function HowItWorks() {
             How it works
           </span>
           <h2 className="text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.022em] text-text-primary">
-            進め方
+            See how it works
           </h2>
         </div>
 

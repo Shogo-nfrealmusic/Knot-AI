@@ -5,32 +5,32 @@ import ContentSection from "@/app/components/ContentSection";
 import CTA from "@/app/components/CTA";
 
 export const metadata: Metadata = {
-  title: "対応領域 | Evimeria",
+  title: "Who We Serve | Knot",
   description:
-    "AI・Web・UI/UX の対応範囲とご相談の目安。業務改善から LP 制作、プロトタイプまで。",
+    "Knot serves mid-sized companies in finance, legal, operations, customer support, and back-office functions.",
 };
 
 const rows = [
   {
-    meta: "AI / 業務改善",
+    meta: "Finance / Operations",
     version: "v2026.04",
-    title: "AI 業務自動化のご相談",
+    title: "Finance and operations teams",
     text:
-      "問い合わせ対応の整理、定型メール、フォーム連携など、業務フローに合わせた自動化の設計・実装を承っています。",
+      "Teams with documented review, reporting, reconciliation, or approval workflows that still depend on manual coordination.",
   },
   {
-    meta: "Web / LP",
+    meta: "Legal / Compliance",
     version: "v2026.03",
-    title: "LP・Web・EC 制作",
+    title: "Legal and compliance functions",
     text:
-      "サービス紹介 LP、コーポレートサイト、EC の新規構築やリニューアル。構成・デザイン・公開まで対応可能です。",
+      "Groups that need consistent intake, drafting, review, and knowledge retrieval without losing human oversight.",
   },
   {
-    meta: "UI/UX / 試作",
+    meta: "Support / Back office",
     version: "v2026.02",
-    title: "UI/UX・プロトタイプ",
+    title: "Customer support and back-office teams",
     text:
-      "画面設計やワイヤー、試作用のプロトタイプ開発。仕組みづくりと見せ方まで、同じ窓口で伴走します。",
+      "Teams where repeated requests, handoffs, and internal knowledge searches slow down service quality.",
   },
 ];
 
@@ -38,8 +38,8 @@ export default function AreasPage() {
   return (
     <SitePageLayout>
       <InnerHero
-        title="対応領域・メニュー（例）"
-        description="ご相談内容に応じて、単独または組み合わせで進められます。まだ範囲が決まっていない段階でも構いません。"
+        title="Who we serve"
+        description="Mid-sized companies, typically 200 to 2,000 employees, where documented workflows are bottlenecked by manual effort."
       />
       <ContentSection>
         <div className="space-y-6">

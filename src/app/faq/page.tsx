@@ -5,23 +5,23 @@ import ContentSection from "@/app/components/ContentSection";
 import CTA from "@/app/components/CTA";
 
 export const metadata: Metadata = {
-  title: "よくある質問 | Evimeria",
+  title: "FAQ | Knot",
   description:
-    "ご相談・制作・運用に関するよくある質問。AI 業務自動化、Web・LP・EC、UI/UX について。",
+    "Answers to common questions about Knot's AI operations assessment, implementation, and advisory services.",
 };
 
 const faqs = [
   {
-    q: "まだ何を頼めばいいか決まっていません。相談できますか？",
-    a: "はい。ヒアリングから課題の言語化を一緒にし、小さく試せるところからご提案します。",
+    q: "Can we start if we are still early in our AI roadmap?",
+    a: "Yes. The assessment is designed to clarify where AI can create practical leverage before anything is built.",
   },
   {
-    q: "AI の導入だけでなく、サイトや LP の制作もまとめて依頼できますか？",
-    a: "可能です。仕組みづくりと見せ方づくりを、同じ窓口で進められます。",
+    q: "Do you only advise, or do you also build?",
+    a: "We build. Knot designs and implements production-ready Skills, agents, integrations, and operating documentation.",
   },
   {
-    q: "リモート・対応エリアは？",
-    a: "オンライン中心で全国対応です。必要に応じて打ち合わせ方法を調整します。",
+    q: "Which companies are a good fit?",
+    a: "Mid-sized companies, typically 200 to 2,000 employees, with documented workflows slowed down by manual effort.",
   },
 ];
 
@@ -29,8 +29,8 @@ export default function FaqPage() {
   return (
     <SitePageLayout>
       <InnerHero
-        title="よくある質問"
-        description="その他の疑問は、お問い合わせフォームやメールからお気軽にどうぞ。"
+        title="FAQ"
+        description="Questions about scope, timing, or fit? Book a free assessment and we will help you decide the right starting point."
       />
       <ContentSection>
         <div className="space-y-8 max-w-2xl">

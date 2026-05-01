@@ -3,7 +3,7 @@
 import Lottie from "@lottielab/lottie-player/react";
 
 const INTEGRATIONS_LOTTIE = `/lottie-lab-json/${encodeURIComponent(
-  "Integrations _ Staggered (1).json",
+  "Bento Blocks Conversion Card.json",
 )}`;
 
 export default function IntegrationLottie() {

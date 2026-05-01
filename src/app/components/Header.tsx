@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "サービス", href: "/services" },
-  { label: "実績", href: "/work" },
-  { label: "料金", href: "/pricing" },
-  { label: "よくある質問", href: "/faq" },
-  { label: "プロフィール", href: "/profile" },
+  { label: "Services", href: "/services" },
+  { label: "How it works", href: "/work" },
+  { label: "Engagements", href: "/pricing" },
+  { label: "FAQ", href: "/faq" },
+  { label: "About", href: "/profile" },
 ];
 
 export default function Header() {
@@ -18,44 +18,44 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border">
       <div className="mx-auto max-w-[1436px] px-6 lg:px-8">
-        <div className="flex h-14 min-w-0 items-center justify-between gap-2">
-          <Link href="/" className="flex min-w-0 items-center gap-2 shrink-0">
+        <div className="flex h-16 min-w-0 items-center justify-between gap-3">
+          <Link href="/" className="flex min-w-0 items-center gap-2.5 shrink-0">
             <Image
               src="/images/evimeria-logo.png"
-              alt="Evimeria"
-              width={20}
-              height={20}
-              className="h-5 w-5 invert"
+              alt="Knot"
+              width={24}
+              height={24}
+              className="h-6 w-6 invert"
             />
-            <span className="text-sm font-semibold text-text-primary tracking-tight">
-              Evimeria
+            <span className="text-base font-semibold text-text-primary tracking-tight">
+              Knot
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="px-2 py-1.5 text-[12px] xl:text-[13px] text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
+                className="px-2.5 py-2 text-[13px] text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
               >
                 {link.label}
               </Link>
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <Link
               href="/contact"
-              className="text-[13px] text-text-secondary hover:text-text-primary transition-colors"
+              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
             >
-              お問い合わせ
+              Contact
             </Link>
             <Link
               href="/contact"
-              className="text-[13px] font-medium text-bg-primary bg-text-primary px-3.5 py-1.5 rounded-full hover:bg-white/90 transition-colors"
+              className="text-sm font-medium text-bg-primary bg-text-primary px-4 py-2 rounded-full hover:bg-white/90 transition-colors"
             >
-              相談する
+              Book a free assessment
             </Link>
           </div>
 
@@ -100,14 +100,14 @@ export default function Header() {
                 className="text-sm text-text-secondary"
                 onClick={() => setMobileOpen(false)}
               >
-                お問い合わせ
+                Contact
               </Link>
               <Link
                 href="/contact"
                 className="text-sm font-medium text-bg-primary bg-text-primary px-4 py-1.5 rounded-full"
                 onClick={() => setMobileOpen(false)}
               >
-                相談する
+                Book a free assessment
               </Link>
             </div>
           </div>

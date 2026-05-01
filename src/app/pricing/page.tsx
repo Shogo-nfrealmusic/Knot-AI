@@ -5,39 +5,39 @@ import ContentSection from "@/app/components/ContentSection";
 import CTA from "@/app/components/CTA";
 
 export const metadata: Metadata = {
-  title: "料金 | Evimeria",
+  title: "Engagements | Knot",
   description:
-    "フリーランスとして、内容・規模に応じたお見積り。まずは無料で相談から。",
+    "Engagement models for AI Operations Assessment, Skills Implementation, and Monthly AI Advisory.",
 };
 
 export default function PricingPage() {
   return (
     <SitePageLayout>
       <InnerHero
-        title="料金の目安"
-        description="固定の料金表は用意しません。ヒアリングのうえ、範囲を決めてお見積りします。小さく試して広げる進め方も可能です。"
+        title="Engagements"
+        description="Start with a focused assessment, then build and improve the systems that create the most operating leverage."
       />
       <ContentSection>
         <ul className="space-y-4 text-[15px] text-text-secondary leading-relaxed max-w-2xl">
           <li className="flex gap-3">
-            <span className="text-accent shrink-0">・</span>
+            <span className="text-accent shrink-0">-</span>
             <span>
-              <strong className="text-text-primary font-medium">お見積り</strong>
-              ：内容整理後、範囲を明文化したうえで提示します。
+              <strong className="text-text-primary font-medium">Assessment</strong>
+              : a two-to-four week engagement to map workflows and prioritize implementation.
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="text-accent shrink-0">・</span>
+            <span className="text-accent shrink-0">-</span>
             <span>
-              <strong className="text-text-primary font-medium">お支払い</strong>
-              ：内容に応じて分割・マイルストーン請求などをご相談ください。
+              <strong className="text-text-primary font-medium">Implementation</strong>
+              : one to three months to build production-ready Skills and agents.
             </span>
           </li>
           <li className="flex gap-3">
-            <span className="text-accent shrink-0">・</span>
+            <span className="text-accent shrink-0">-</span>
             <span>
-              <strong className="text-text-primary font-medium">相談</strong>
-              ：まだ要件が固まっていない段階でも、お問い合わせから承ります。
+              <strong className="text-text-primary font-medium">Advisory</strong>
+              : a monthly partnership to refine systems and build new capabilities.
             </span>
           </li>
         </ul>

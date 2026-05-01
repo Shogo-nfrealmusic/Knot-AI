@@ -2,51 +2,51 @@ import Image from "next/image";
 
 const columns = [
   {
-    title: "サービス",
+    title: "Services",
     links: [
-      "AI 業務自動化",
-      "Web 制作",
-      "LP 制作",
-      "EC 制作",
-      "UI/UX 設計",
-      "プロトタイプ開発",
-      "ご相談の流れ",
+      "AI Operations Assessment",
+      "Skills Implementation",
+      "Monthly AI Advisory",
+      "Workflow Mapping",
+      "Agent Design",
+      "Implementation Roadmaps",
+      "Operating Model",
     ],
   },
   {
-    title: "情報",
+    title: "Company",
     links: [
-      "実績・事例",
-      "料金の目安",
-      "よくある質問",
-      "ブログ・記事",
-      "利用規約",
-      "プライバシー",
+      "How it works",
+      "Engagements",
+      "FAQ",
+      "Resources",
+      "Terms",
+      "Privacy",
     ],
   },
   {
-    title: "Evimeria",
+    title: "Knot",
     links: [
-      "プロフィール",
-      "事業内容",
-      "対応エリア",
-      "スケジュール",
+      "About",
+      "What we do",
+      "Who we serve",
+      "Availability",
     ],
   },
   {
-    title: "リソース",
+    title: "Resources",
     links: [
-      "お問い合わせフォーム",
-      "無料相談",
-      "資料請求",
-      "テンプレート（準備中）",
+      "Contact form",
+      "Free assessment",
+      "Request information",
+      "Templates (coming soon)",
     ],
   },
   {
-    title: "連絡先",
+    title: "Contact",
     links: [
-      "メール",
-      "X（旧 Twitter）",
+      "Email",
+      "X (formerly Twitter)",
       "note",
       "GitHub",
     ],
@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Image
               src="/images/evimeria-logo.png"
-              alt="Evimeria"
+              alt="Knot"
               width={20}
               height={20}
               className="h-5 w-5 invert opacity-80"
@@ -93,7 +93,7 @@ export default function Footer() {
 
         {/* Bottom row */}
         <div className="mt-20 flex flex-wrap gap-x-5 gap-y-2">
-          {["プライバシー", "利用規約", "DPA"].map((link) => (
+          {["Privacy", "Terms", "DPA"].map((link) => (
             <a
               key={link}
               href="#"

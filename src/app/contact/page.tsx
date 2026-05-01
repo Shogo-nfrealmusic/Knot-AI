@@ -5,31 +5,32 @@ import ContentSection from "@/app/components/ContentSection";
 import CTA from "@/app/components/CTA";
 
 export const metadata: Metadata = {
-  title: "お問い合わせ | Evimeria",
+  title: "Contact | Knot",
   description:
-    "ご相談・お見積り・お問い合わせ。まだ具体的でない段階のご相談も歓迎です。",
+    "Book a free AI operations assessment with Knot.",
 };
 
 export default function ContactPage() {
   return (
     <SitePageLayout>
       <InnerHero
-        title="お問い合わせ"
-        description="内容・規模に応じてお返事します。まだ要件が固まっていない段階でも、お気軽にご連絡ください。"
+        title="Contact"
+        description="Book a free assessment. Tell us where manual work is slowing your team down, and we will help identify the best place to start."
       />
       <ContentSection>
         <div className="max-w-xl space-y-6">
           <p className="text-[15px] text-text-secondary leading-relaxed">
-            フォーム連携は別途セットアップ予定です。現時点では、メールまたは SNS（プロフィールに記載）からご連絡ください。
+            The contact form integration is not connected yet. For now, email us
+            or reach out through the channels listed in the company profile.
           </p>
           <a
             href="mailto:hello@example.com"
             className="inline-flex items-center gap-2 text-[15px] font-medium text-text-primary border border-border-solid rounded-full px-5 py-2.5 hover:border-white/20 transition-colors"
           >
-            メールで送る（仮）
+            Send an email
           </a>
           <p className="text-[13px] text-text-muted">
-            ※ 実際のメールアドレスに差し替えてください。
+            Replace this placeholder with the live email address before launch.
           </p>
         </div>
       </ContentSection>
