@@ -13,7 +13,7 @@ const logos = [
 
 export default function LogoBar() {
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8">
+    <section className="hidden px-4 py-6 sm:block sm:py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1344px] w-full min-w-0">
         <div className="flex items-center justify-center sm:justify-between flex-wrap gap-x-6 gap-y-8 opacity-50 hover:opacity-70 transition-opacity duration-500" data-logo-bar>
           {logos.map((logo) => (
