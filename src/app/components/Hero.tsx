@@ -16,21 +16,21 @@ export default function Hero() {
         {/* Subtitle row */}
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           <p className="min-w-0 flex-1 text-[15px] text-text-secondary tracking-[-0.01em] leading-relaxed">
-            We build custom AI Skills and agents that run inside your real
-            business workflows — not chatbots, not slide decks, working systems.
+            We embed working AI directly into your operations — not chatbots,
+            not slide decks, systems your team actually uses.
           </p>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2 lg:max-w-[min(100%,22rem)] lg:justify-end lg:shrink-0">
             <div className="w-4 h-4 rounded-lg bg-accent/15 flex items-center justify-center shrink-0">
               <div className="w-1.5 h-1.5 rounded-[3px] bg-accent" />
             </div>
             <span className="text-[15px] font-semibold text-[#d0d6e0] tracking-[-0.01em]">
-              AI operations for real teams
+              AI that works where the work happens.
             </span>
             <Link
               href="/contact"
               className="text-[15px] text-text-secondary tracking-[-0.01em] whitespace-nowrap hover:text-text-primary transition-colors"
             >
-              Book a free assessment{" "}
+              Start with a Pilot{" "}
               <span className="text-text-muted">&rarr;</span>
             </Link>
           </div>
