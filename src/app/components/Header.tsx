@@ -5,9 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Services", href: "/services" },
   { label: "How it works", href: "/work" },
-  { label: "Engagements", href: "/pricing" },
   { label: "FAQ", href: "/faq" },
   { label: "About", href: "/profile" },
 ];
@@ -18,14 +16,14 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-bg-primary/80 backdrop-blur-xl border-b border-border">
       <div className="mx-auto max-w-[1436px] px-6 lg:px-8">
-        <div className="flex h-16 min-w-0 items-center justify-between gap-3">
+        <div className="flex h-20 min-w-0 items-center justify-between gap-3">
           <Link href="/" className="flex min-w-0 items-center gap-2.5 shrink-0">
             <Image
-              src="/images/evimeria-logo.png"
+              src="/logo.png"
               alt="Knot"
-              width={24}
-              height={24}
-              className="h-6 w-6 invert"
+              width={120}
+              height={120}
+              className="h-8 w-8 rounded-md object-cover"
             />
             <span className="text-base font-semibold text-text-primary tracking-tight">
               Knot
@@ -47,15 +45,9 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-3 shrink-0">
             <Link
               href="/contact"
-              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-            >
-              Contact
-            </Link>
-            <Link
-              href="/contact"
               className="text-sm font-medium text-bg-primary bg-text-primary px-4 py-2 rounded-full hover:bg-white/90 transition-colors"
             >
-              Book a free assessment
+              Start with a Pilot
             </Link>
           </div>
 
@@ -97,17 +89,10 @@ export default function Header() {
             <div className="flex gap-3 pt-4 px-2">
               <Link
                 href="/contact"
-                className="text-sm text-text-secondary"
-                onClick={() => setMobileOpen(false)}
-              >
-                Contact
-              </Link>
-              <Link
-                href="/contact"
                 className="text-sm font-medium text-bg-primary bg-text-primary px-4 py-1.5 rounded-full"
                 onClick={() => setMobileOpen(false)}
               >
-                Book a free assessment
+                Start with a Pilot
               </Link>
             </div>
           </div>

@@ -1,54 +1,38 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const columns = [
   {
-    title: "Services",
+    title: "Product",
     links: [
-      "AI Operations Assessment",
-      "Skills Implementation",
-      "Monthly AI Advisory",
-      "Workflow Mapping",
-      "Agent Design",
-      "Implementation Roadmaps",
-      "Operating Model",
+      { label: "How it works", href: "/how-it-works" },
+      { label: "FAQ", href: "/faq" },
     ],
   },
   {
     title: "Company",
     links: [
-      "How it works",
-      "Engagements",
-      "FAQ",
-      "Resources",
-      "Terms",
-      "Privacy",
+      { label: "About", href: "/about" },
+      { label: "Engagements", href: "/engagements" },
     ],
   },
   {
-    title: "Knot",
+    title: "Connect",
     links: [
-      "About",
-      "What we do",
-      "Who we serve",
-      "Availability",
+      { label: "Email", href: "/contact" },
+      {
+        label: "X / Twitter",
+        href: "https://x.com/imshogok",
+        external: true,
+      },
     ],
   },
   {
-    title: "Resources",
+    title: "Legal",
     links: [
-      "Contact form",
-      "Free assessment",
-      "Request information",
-      "Templates (coming soon)",
-    ],
-  },
-  {
-    title: "Contact",
-    links: [
-      "Email",
-      "X (formerly Twitter)",
-      "note",
-      "GitHub",
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+      { label: "DPA", href: "/dpa" },
     ],
   },
 ];
@@ -57,33 +41,45 @@ export default function Footer() {
   return (
     <footer className="border-t border-border-solid bg-bg-primary">
       <div className="mx-auto max-w-[1344px] px-4 sm:px-6 lg:px-14 py-14">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-8 lg:grid-cols-6">
-          {/* Logo */}
-          <div className="col-span-2 lg:col-span-1">
+        <div className="grid grid-cols-1 gap-y-10 text-center md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] md:gap-x-8 md:text-left">
+          <div className="flex flex-col items-center md:items-start">
             <Image
-              src="/images/evimeria-logo.png"
+              src="/logo.png"
               alt="Knot"
-              width={20}
-              height={20}
-              className="h-5 w-5 invert opacity-80"
+              width={120}
+              height={120}
+              className="h-8 w-8 rounded-md object-cover"
             />
+            <p className="mt-5 max-w-xs text-[13px] leading-relaxed tracking-[-0.008em] text-text-secondary">
+              Knot turns AI capability into operational practice.
+            </p>
           </div>
 
-          {/* Link columns */}
           {columns.map((col) => (
             <div key={col.title}>
-              <h3 className="text-[13px] font-semibold text-text-primary tracking-[-0.008em] mb-6">
+              <h3 className="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted">
                 {col.title}
               </h3>
-              <ul className="space-y-0.5">
+              <ul className="space-y-2">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="block py-1 text-[13px] text-text-secondary hover:text-text-primary transition-colors tracking-[-0.008em]"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[13px] text-text-secondary transition-colors duration-150 hover:text-text-primary tracking-[-0.008em]"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-[13px] text-text-secondary transition-colors duration-150 hover:text-text-primary tracking-[-0.008em]"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -91,17 +87,10 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Bottom row */}
-        <div className="mt-20 flex flex-wrap gap-x-5 gap-y-2">
-          {["Privacy", "Terms", "DPA"].map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="text-[13px] text-text-muted hover:text-text-secondary transition-colors tracking-[-0.008em]"
-            >
-              {link}
-            </a>
-          ))}
+        <div className="mt-14 border-t border-border-solid pt-6 text-center md:text-left">
+          <p className="text-[12px] text-text-muted tracking-[-0.008em]">
+            © 2026 Knot, Inc.
+          </p>
         </div>
       </div>
     </footer>
