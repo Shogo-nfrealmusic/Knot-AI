@@ -26,11 +26,11 @@ function FeatureCard({
   flowchart = false,
 }: FeatureCardProps) {
   return (
-    <div className="md:border-r md:border-border md:last:border-r-0 flex flex-col justify-end pb-0 md:pr-8">
-      <span className="font-mono text-[11.8px] text-text-secondary/40 uppercase mb-6">
+    <div className="flex min-h-[420px] flex-col justify-between rounded-lg border border-white/10 bg-[#0d0e10] p-5">
+      <span className="font-mono text-[11px] text-[#ff8a66] uppercase tracking-[0.12em]">
         {figure}
       </span>
-      <div className="flex-1 flex items-center justify-center overflow-hidden mb-8 min-h-[200px]">
+      <div className="flex flex-1 items-center justify-center overflow-hidden py-8">
         {flowchart ? (
           <FlowchartLottieSlot />
         ) : lottie ? (
@@ -48,11 +48,11 @@ function FeatureCard({
           />
         ) : null}
       </div>
-      <div className="space-y-2">
-        <h3 className="text-[15px] font-semibold text-[#d0d6e0] tracking-[-0.01em]">
+      <div className="border-t border-white/10 pt-5">
+        <h3 className="text-[18px] font-semibold text-text-primary tracking-[-0.02em]">
           {title}
         </h3>
-        <p className="text-[15px] text-text-secondary leading-relaxed tracking-[-0.01em]">
+        <p className="mt-3 text-[14px] text-text-secondary leading-relaxed tracking-[-0.01em]">
           {description}
         </p>
       </div>
@@ -87,9 +87,24 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <section id="areas" className="py-20 px-4 sm:px-6 lg:px-8">
+    <section id="areas" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
       <div className="mx-auto max-w-[1344px] w-full min-w-0">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 border-t border-border pt-12">
+        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff8a66]">
+              Operating model
+            </p>
+            <h2 className="mt-5 max-w-3xl text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
+              Start narrow. Connect deeper. Compound the system.
+            </h2>
+          </div>
+          <p className="max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+            We design the first useful system, then connect it to the tools and
+            workflows that make it valuable every day.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {features.map((feature) => (
             <FeatureCard key={feature.figure} {...feature} />
           ))}

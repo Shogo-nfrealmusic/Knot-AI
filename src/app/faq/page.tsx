@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import SitePageLayout from "@/app/components/SitePageLayout";
-import InnerHero from "@/app/components/InnerHero";
 import FaqContent from "./FaqContent";
 
 export const metadata: Metadata = {
@@ -12,10 +11,6 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <SitePageLayout>
-      <InnerHero
-        title="FAQ"
-        description="Real questions from real conversations."
-      />
       <FaqContent />
     </SitePageLayout>
   );

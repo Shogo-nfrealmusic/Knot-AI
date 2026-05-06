@@ -5,9 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "How it works", href: "/work" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "FAQ", href: "/faq" },
-  { label: "About", href: "/profile" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Header() {
@@ -23,6 +23,7 @@ export default function Header() {
               alt="Knot"
               width={120}
               height={120}
+              priority
               className="h-8 w-8 rounded-md object-cover"
             />
             <span className="text-base font-semibold text-text-primary tracking-tight">

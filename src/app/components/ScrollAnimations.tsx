@@ -12,7 +12,9 @@ export default function ScrollAnimations() {
     let cancelled = false;
     let revert: (() => void) | null = null;
 
-    void (async () => {
+    const startTimer = window.setTimeout(() => void loadAnimations(), 320);
+
+    async function loadAnimations() {
       const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
         import("gsap"),
         import("gsap/ScrollTrigger"),
@@ -77,10 +79,11 @@ export default function ScrollAnimations() {
 
       revert = () => ctx.revert();
       if (cancelled) revert();
-    })();
+    }
 
     return () => {
       cancelled = true;
+      window.clearTimeout(startTimer);
       revert?.();
     };
   }, []);

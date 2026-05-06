@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
@@ -101,37 +101,105 @@ const faqSections = [
   },
 ];
 
+function FaqHero() {
+  return (
+    <section className="border-b border-white/10 px-4 pb-16 pt-36 sm:px-6 lg:px-8 lg:pb-20">
+      <div className="mx-auto grid max-w-[1344px] gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+        <div>
+          <div className="mb-7 flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-text-secondary">
+              AI Ops FAQ
+            </span>
+            <span className="rounded-full border border-[#ff6b4a]/25 bg-[#ff6b4a]/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#ff9a7c]">
+              Updated for pilots
+            </span>
+          </div>
+          <h1 className="max-w-4xl text-[clamp(3rem,7vw,6.5rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-text-primary">
+            Answers before we get in the room.
+          </h1>
+          <p className="mt-7 max-w-2xl text-[17px] leading-relaxed tracking-[-0.014em] text-text-secondary">
+            Clear guidance on engagement shape, implementation, ROI, and security,
+            organized for teams deciding whether a Pilot Build is worth starting.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-[#0d0e10] p-5">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/35">
+              FAQ index
+            </p>
+            <span className="h-2 w-2 rounded-full bg-[#5dcaa5]" />
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-3">
+            <div>
+              <p className="font-mono text-[28px] leading-none tracking-[-0.05em] text-text-primary">
+                {faqSections.reduce((count, section) => count + section.items.length, 0)}
+              </p>
+              <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-white/35">
+                answers
+              </p>
+            </div>
+            <div>
+              <p className="font-mono text-[28px] leading-none tracking-[-0.05em] text-text-primary">
+                {faqSections.length}
+              </p>
+              <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-white/35">
+                categories
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.025] p-4">
+            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/35">
+              Typical path
+            </p>
+            <p className="mt-3 text-[14px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+              30-minute call, one workflow, then a scoped Pilot Build.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CategoryNav({
   activeCategory,
+  setActiveCategory,
 }: {
   activeCategory: string;
+  setActiveCategory: (id: string) => void;
 }) {
   return (
-    <div className="sticky top-20 z-30 -mx-4 border-y border-border bg-bg-primary/90 px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+    <div className="-mx-4 border-y border-white/10 bg-[#0a0a0a] px-4 py-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
       <nav
-        className="mx-auto flex max-w-[1344px] gap-2 overflow-x-auto"
+        className="mx-auto grid max-w-[1344px] gap-2 sm:grid-cols-2 lg:grid-cols-4"
         aria-label="FAQ categories"
       >
         {faqSections.map((section) => {
           const isActive = activeCategory === section.id;
 
           return (
-            <a
+            <button
               key={section.id}
-              href={`#${section.id}`}
-              className={`relative shrink-0 rounded-full border px-3 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors duration-150 ${
+              type="button"
+              onClick={() => setActiveCategory(section.id)}
+              className={`group relative min-h-12 overflow-hidden rounded-lg border px-4 py-3 text-left font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors duration-150 ${
                 isActive
-                  ? "border-[#ff6b4a]/35 bg-[#ff6b4a]/10 text-text-primary"
-                  : "border-border text-text-muted hover:border-white/15 hover:text-text-secondary"
+                  ? "border-[#ff6b4a]/45 bg-[#ff6b4a]/10 text-text-primary"
+                  : "border-white/10 bg-white/[0.02] text-text-muted hover:border-white/20 hover:text-text-secondary"
               }`}
+              aria-pressed={isActive}
             >
-              {section.label}
               <span
-                className={`absolute inset-x-3 -bottom-px h-px bg-[#ff6b4a] transition-opacity duration-150 ${
-                  isActive ? "opacity-100" : "opacity-0"
+                className={`absolute inset-y-2 left-0 w-px bg-[#ff6b4a] transition-opacity duration-150 ${
+                  isActive ? "opacity-100" : "opacity-0 group-hover:opacity-60"
                 }`}
               />
-            </a>
+              <span className="relative z-10 block">{section.label}</span>
+              <span className="relative z-10 mt-1 block text-[10px] font-normal tracking-[0.05em] text-white/35">
+                {section.items.length} answers
+              </span>
+            </button>
           );
         })}
       </nav>
@@ -150,10 +218,10 @@ function FaqItem({
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="border-b border-border">
+    <div className="border-b border-white/10 last:border-b-0">
       <button
         type="button"
-        className="group flex w-full items-start justify-between gap-6 px-0 py-6 text-left transition-colors duration-150 hover:bg-white/2 sm:px-4"
+        className="group flex w-full items-start justify-between gap-6 px-5 py-6 text-left transition-colors duration-150 hover:bg-white/[0.035] sm:px-6"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((current) => !current)}
       >
@@ -191,25 +259,33 @@ function FaqItem({
 
 function FaqSection({
   section,
-  setSectionRef,
 }: {
   section: (typeof faqSections)[number];
-  setSectionRef: (id: string, node: HTMLElement | null) => void;
 }) {
   return (
     <motion.section
       id={section.id}
-      ref={(node) => setSectionRef(section.id, node)}
-      className="scroll-mt-36"
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
+      key={section.id}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
     >
-      <h2 className="mb-5 font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-text-muted">
-        {section.label}
-      </h2>
-      <div className="rounded-2xl border border-border bg-bg-card-alt/35">
+      <div className="mb-6 flex flex-col justify-between gap-4 border-b border-white/10 pb-6 md:flex-row md:items-end">
+        <div>
+          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff6b4a]">
+            {section.label}
+          </p>
+          <h2 className="mt-3 max-w-3xl text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.035em] text-text-primary">
+            Direct answers before the first call.
+          </h2>
+        </div>
+        <p className="max-w-sm text-[14px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+          Built for teams comparing implementation partners, scope, ROI, and risk.
+        </p>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-white/10 bg-[#0d0e10] shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
         {section.items.map((item) => (
           <FaqItem
             key={item.question}
@@ -219,6 +295,52 @@ function FaqSection({
         ))}
       </div>
     </motion.section>
+  );
+}
+
+function FaqOverview({ activeCategory }: { activeCategory: string }) {
+  const activeSection = faqSections.find((section) => section.id === activeCategory);
+
+  return (
+    <div className="mx-auto grid max-w-[1344px] gap-4 py-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.55fr)]">
+      <div className="rounded-xl border border-white/10 bg-[#0d0e10] p-6">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-text-muted">
+          Current filter
+        </p>
+        <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-none tracking-[-0.05em] text-text-primary">
+              {activeSection?.label}
+            </h2>
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+              Switch categories without jumping around the page. The selected answers stay in one stable panel.
+            </p>
+          </div>
+          <span className="font-mono text-[12px] uppercase tracking-[0.12em] text-[#ff6b4a]">
+            {String(activeSection?.items.length ?? 0).padStart(2, "0")} answers
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="rounded-xl border border-white/10 bg-white/[0.025] p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/35">
+            Response time
+          </p>
+          <p className="mt-5 font-mono text-[28px] tracking-[-0.04em] text-text-primary">
+            24h
+          </p>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/[0.025] p-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/35">
+            First step
+          </p>
+          <p className="mt-5 font-mono text-[28px] tracking-[-0.04em] text-text-primary">
+            Pilot
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -254,47 +376,25 @@ function FinalCta() {
 
 export default function FaqContent() {
   const [activeCategory, setActiveCategory] = useState(faqSections[0].id);
-  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
-
-  const setSectionRef = (id: string, node: HTMLElement | null) => {
-    sectionRefs.current[id] = node;
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries.find((entry) => entry.isIntersecting);
-
-        if (visibleEntry) {
-          setActiveCategory(visibleEntry.target.id);
-        }
-      },
-      {
-        rootMargin: "-35% 0px -50% 0px",
-        threshold: 0,
-      },
-    );
-
-    Object.values(sectionRefs.current).forEach((section) => {
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const activeSection =
+    faqSections.find((section) => section.id === activeCategory) ?? faqSections[0];
 
   return (
     <>
-      <section className="px-4 sm:px-6 lg:px-8">
-        <CategoryNav activeCategory={activeCategory} />
+      <FaqHero />
 
-        <div className="mx-auto grid max-w-[1344px] gap-16 py-16 md:py-20">
-          {faqSections.map((section) => (
-            <FaqSection
-              key={section.id}
-              section={section}
-              setSectionRef={setSectionRef}
-            />
-          ))}
+      <section className="px-4 sm:px-6 lg:px-8">
+        <CategoryNav
+          activeCategory={activeCategory}
+          setActiveCategory={setActiveCategory}
+        />
+
+        <FaqOverview activeCategory={activeCategory} />
+
+        <div className="mx-auto max-w-[1344px] pb-20 pt-2">
+          <AnimatePresence mode="wait">
+            <FaqSection section={activeSection} />
+          </AnimatePresence>
         </div>
       </section>
 
