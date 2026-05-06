@@ -522,6 +522,7 @@ function ExecutionLog({
   startStreaming: boolean;
 }) {
   const [cursor, setCursor] = useState(6);
+  const previousCursorRef = useRef(cursor);
   const logEntries = activeSkill.logs;
   const visibleLogs = Array.from({ length: 6 }, (_, offset) => {
     const index = (cursor + offset) % logEntries.length;
@@ -533,21 +534,25 @@ function ExecutionLog({
 
     const interval = window.setInterval(() => {
       setCursor((current) => {
-        const nextCursor = (current + 1) % logEntries.length;
-        const newestLine = logEntries[(nextCursor + 5) % logEntries.length];
-
-        onLogEvent(newestLine);
-
-        if (/REQ-\d+ received/.test(newestLine)) {
-          onRequestReceived();
-        }
-
-        return nextCursor;
+        return (current + 1) % logEntries.length;
       });
     }, 1800);
 
     return () => window.clearInterval(interval);
-  }, [logEntries, onLogEvent, onRequestReceived, startStreaming]);
+  }, [logEntries.length, startStreaming]);
+
+  useEffect(() => {
+    if (!startStreaming || previousCursorRef.current === cursor) return;
+
+    previousCursorRef.current = cursor;
+    const newestLine = logEntries[(cursor + 5) % logEntries.length];
+
+    onLogEvent(newestLine);
+
+    if (/REQ-\d+ received/.test(newestLine)) {
+      onRequestReceived();
+    }
+  }, [cursor, logEntries, onLogEvent, onRequestReceived, startStreaming]);
 
   return (
     <div className="min-h-[220px] bg-black/60">

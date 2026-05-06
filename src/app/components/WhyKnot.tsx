@@ -214,9 +214,9 @@ function ClosingCta() {
           >
             <Link
               href="/contact"
-              className="inline-flex rounded-md bg-[#cc785c] px-6 py-3 text-sm font-medium text-white"
+              className="inline-flex rounded-full bg-text-primary px-6 py-3 text-sm font-medium text-bg-primary transition-colors hover:bg-white/90"
             >
-              Start with a Pilot
+              Start a project
             </Link>
           </motion.div>
 
@@ -228,8 +228,8 @@ function ClosingCta() {
             whileHover={{ scale: 1.02 }}
           >
             <Link
-              href="/contact"
-              className="inline-flex rounded-md border border-white/15 px-6 py-3 text-sm font-medium text-text-secondary transition-colors hover:border-white/30 hover:text-text-primary"
+              href="/how-it-works"
+              className="inline-flex rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-text-secondary transition-colors hover:border-white/30 hover:text-text-primary"
             >
               See how it works
             </Link>
