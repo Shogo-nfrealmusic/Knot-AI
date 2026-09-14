@@ -23,6 +23,9 @@
     "resend": "^6.10.0",
     "tailwind-merge": "^3.5.0"
   },
+  "overrides": {
+    "lottie-web": "5.12.2"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
