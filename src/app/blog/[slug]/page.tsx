@@ -116,7 +116,8 @@ export default async function BlogPostPage({
           </h1>
           <p className="mt-4 animate-slide-up-fade text-pretty text-neutral-500 [--offset:10px] [animation-delay:140ms] sm:text-lg">
             {post.description}
-            <span className="text-neutral-400"> · {readingMinutes(post)} min read</span>
+            {" "}
+            <span className="whitespace-nowrap text-neutral-400">· {readingMinutes(post)} min read</span>
           </p>
         </div>
       </GridSection>
@@ -140,7 +141,8 @@ export default async function BlogPostPage({
         </div>
       </GridSection>
 
-      <GridSection innerClassName="h-12 sm:h-20">{null}</GridSection>
+      {/* The CTA adds its own white band above the notch, so keep this spacer short on phones. */}
+      <GridSection innerClassName="h-4 sm:h-20">{null}</GridSection>
     </>
   );
 }

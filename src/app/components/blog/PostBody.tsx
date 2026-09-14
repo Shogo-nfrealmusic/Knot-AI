@@ -181,7 +181,8 @@ function Block({ block, category }: { block: BlogBlock; category: BlogCategory }
                 {block.filename}
               </span>
             </div>
-            <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-6 text-[#24292E]">
+            {/* Phones wrap long lines instead of clipping them behind a sideways scroll. */}
+            <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-6 text-[#24292E] max-sm:whitespace-pre-wrap max-sm:[overflow-wrap:anywhere] sm:p-5 sm:text-[13px]">
               <code>
                 {block.code.split("\n").map((line, index) => highlightLine(line, block.language, index))}
               </code>

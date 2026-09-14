@@ -27,6 +27,8 @@ const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 const events = [
   {
     label: "Deposit paid · 30%",
+    // Phones: the badge must end before the vertical wire.
+    short: "Deposit · 30%",
     integration: "stripe",
     dot: "#3b82f6",
     badge: "border-blue-200 bg-blue-100 text-blue-800",
@@ -293,12 +295,13 @@ export default function BookingEventFlow({ className }: { className?: string }) 
 
       {/* Event */}
       <div className="relative">
-        <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 -translate-y-full max-md:left-auto max-md:right-0 max-md:translate-x-0 max-[359px]:hidden">
+        {/* Phones: badge anchors to the card's left edge so it clears the vertical wire on the right. */}
+        <div className="absolute -top-3 left-1/2 z-20 -translate-x-1/2 -translate-y-full max-md:left-0 max-md:translate-x-0 min-[360px]:max-md:-left-16 max-[359px]:hidden">
           <AnimatePresence initial={false}>
             <motion.div
               key={activeEvent.label}
               className={cn(
-                "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg border px-2 py-1 font-mono text-[13px] leading-none max-md:left-auto max-md:right-0 max-md:translate-x-0",
+                "absolute bottom-0 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg border px-2 py-1 font-mono text-[11px] leading-none max-md:left-0 max-md:translate-x-0 md:text-[13px]",
                 activeEvent.badge,
               )}
               initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
@@ -310,7 +313,14 @@ export default function BookingEventFlow({ className }: { className?: string }) 
                 filter: { duration: 0.35, ease: EASE_OUT },
               }}
             >
-              {activeEvent.label}
+              {"short" in activeEvent ? (
+                <>
+                  <span className="md:hidden">{activeEvent.short}</span>
+                  <span className="hidden md:inline">{activeEvent.label}</span>
+                </>
+              ) : (
+                activeEvent.label
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -390,7 +400,9 @@ export default function BookingEventFlow({ className }: { className?: string }) 
       {/* Deposit currencies: a spring carousel, faded at both ends by a mask. */}
       <div className="relative">
         <div className="relative h-24 w-36 rounded-[20px] border border-neutral-200 bg-white" />
-        <div className="pointer-events-none absolute -inset-x-28 inset-y-0 [mask-image:linear-gradient(90deg,transparent,black_32%,black_68%,transparent)] md:-inset-y-28 md:inset-x-0 md:[mask-image:linear-gradient(transparent,black_36%,black_64%,transparent)]">
+        {/* Phones: neighbours slide in and out through a clipped, faded window around the card
+            instead of peeking in half-cut at the page edge. */}
+        <div className="pointer-events-none absolute -inset-x-8 inset-y-0 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_18%,black_82%,transparent)] md:-inset-y-28 md:inset-x-0 md:overflow-visible md:[mask-image:linear-gradient(transparent,black_36%,black_64%,transparent)]">
           {currencies.map((currency, index) => {
             let offset = index - currencyIndex;
             if (offset > currencies.length / 2) offset -= currencies.length;

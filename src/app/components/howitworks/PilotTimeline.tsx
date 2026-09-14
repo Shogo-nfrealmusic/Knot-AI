@@ -132,8 +132,10 @@ export default function PilotTimeline() {
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.05em]">
-        <span className="text-neutral-500">How I work · 4 steps</span>
+      <div className="flex items-center justify-between gap-3 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.05em] sm:gap-4 sm:text-[11px]">
+        <span className="text-neutral-500">
+          How I work<span className="max-[380px]:hidden"> · 4 steps</span>
+        </span>
         <span className="text-[rgba(224,85,47,0.95)]">{activeStep.day}</span>
       </div>
 

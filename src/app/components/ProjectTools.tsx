@@ -30,7 +30,10 @@ function requireProject(slug: string) {
 function ImageContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative rounded-[20px] bg-gradient-to-b from-neutral-200 to-neutral-300 p-px shadow-[0_12px_40px_-12px_rgba(0,0,0,0.12)]">
-      <Beam showBeam className="-top-px block" />
+      {/* Clip the meteor to the card's top edge; on phones its tail otherwise streaks past the rails. */}
+      <div className="pointer-events-none absolute inset-x-5 -top-px h-4 overflow-hidden">
+        <Beam showBeam className="top-0 block" />
+      </div>
       <div className="rounded-[19px] bg-white p-2 sm:p-3">{children}</div>
       <div className="absolute inset-x-0 bottom-0 h-px w-full bg-gradient-to-r from-transparent via-warm/60 to-transparent" />
       <div className="absolute inset-x-10 bottom-0 mx-auto h-px w-40 bg-gradient-to-r from-transparent via-blue-500/60 to-transparent" />
@@ -89,7 +92,7 @@ function SiteVisual({ project }: { project: Project }) {
       )}
     </BrowserFrame>
       {mobileImage ? (
-        <div className="absolute -bottom-6 -right-3 w-[22%] min-w-[88px] overflow-hidden rounded-[18px] border-[5px] border-neutral-900 bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] ring-1 ring-neutral-200">
+        <div className="absolute -bottom-3 -right-1 w-[20%] min-w-[64px] overflow-hidden rounded-[12px] border-[3px] border-neutral-900 sm:-bottom-6 sm:-right-3 sm:w-[22%] sm:min-w-[88px] sm:rounded-[18px] sm:border-[5px] bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] ring-1 ring-neutral-200">
           <BlurImage
             src={mobileImage.src}
             alt={mobileImage.alt}
@@ -112,7 +115,7 @@ function BookingFlowPanel() {
         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-500">
           After checkout
         </p>
-        <p className="font-mono text-[11px] text-neutral-400">
+        <p className="hidden font-mono text-[11px] text-neutral-400 sm:block">
           every booking, automatically
         </p>
       </div>

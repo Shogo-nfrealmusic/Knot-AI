@@ -87,7 +87,7 @@ function Chip({
       />
       <span
         className={cn(
-          "relative mx-0.5 inline-flex size-7 -translate-y-0.5 items-center justify-center rounded-lg border border-black/5 transition-[transform,filter] duration-300 group-focus-visible:ring-2 group-focus-visible:ring-neutral-900/20 group-data-[active=true]:-translate-y-1.5 group-data-[active=true]:drop-shadow-md",
+          "relative mx-0.5 inline-flex size-6 -translate-y-0.5 sm:size-7 items-center justify-center rounded-lg border border-black/5 transition-[transform,filter] duration-300 group-focus-visible:ring-2 group-focus-visible:ring-neutral-900/20 group-data-[active=true]:-translate-y-1.5 group-data-[active=true]:drop-shadow-md",
           chip,
           active && tilt,
         )}
@@ -444,7 +444,7 @@ export default function Manifesto() {
         className="relative isolate mx-auto max-w-[530px] bg-white"
         style={reduceMotion ? undefined : { maskImage: mask, WebkitMaskImage: mask, y: lift }}
       >
-        <div className="space-y-8 text-2xl leading-snug tracking-[-0.02em] text-neutral-800 sm:text-3xl">
+        <div className="space-y-8 text-[22px] leading-snug tracking-[-0.02em] text-neutral-800 sm:text-3xl">
           <p>
             Software isn&apos;t the finish line.
             <br />

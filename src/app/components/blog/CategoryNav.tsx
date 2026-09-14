@@ -69,12 +69,14 @@ export default function CategoryNav({ items }: { items: CategoryNavItem[] }) {
         </button>
         <AnimatePresence>
           {open ? (
+            // In flow, not absolute: the hero's overflow-clip hid an absolutely positioned panel
+            // behind the post grid. Expanding in place pushes the grid down instead.
             <motion.ul
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25, ease: EASE }}
-              className="absolute inset-x-0 top-12 z-20 overflow-hidden rounded-lg border border-neutral-200 bg-white p-1 shadow-lg"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: EASE }}
+              className="mt-2 overflow-hidden rounded-lg border border-neutral-200 bg-white px-1 shadow-sm"
             >
               {items.map((item) => (
                 <li key={item.href}>

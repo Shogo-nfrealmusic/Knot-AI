@@ -39,7 +39,7 @@ const linkClass =
 export default function Footer() {
   return (
     <footer className="bg-white px-4">
-      <div className="mx-auto w-full max-w-screen-lg py-16 lg:px-4 xl:px-0">
+      <div className="mx-auto w-full max-w-screen-lg py-12 sm:py-16 lg:px-4 xl:px-0">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="flex flex-col gap-6">
             <Link href="/" className="block max-w-fit" aria-label="Home">
@@ -71,7 +71,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-3 xl:col-span-2 xl:mt-0">
+          <div className="mt-10 grid grid-cols-2 gap-8 sm:mt-16 sm:grid-cols-3 xl:col-span-2 xl:mt-0">
             {columns.map((col) => (
               <div key={col.title}>
                 <h3 className="text-sm font-medium text-neutral-900">

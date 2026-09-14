@@ -51,7 +51,7 @@ export const MacbookScroll = ({
     <motion.div
       whileHover="hover"
       whileTap="hover"
-      className="flex group flex-col items-center py-0 md:py-20 justify-start flex-shrink-0 [perspective:800px] transform md:scale-100  scale-[0.45] sm:scale-[0.7] -mt-20 sm:-mt-10 md:-mt-0 max-w-2xl mx-auto"
+      className="flex group flex-col items-center py-0 md:py-20 justify-start flex-shrink-0 [perspective:800px] transform md:scale-100 scale-[0.52] max-[380px]:scale-[0.46] sm:scale-[0.7] -my-32 max-[380px]:-my-36 sm:-my-20 md:my-0 max-w-2xl mx-auto"
     >
       {/* Lid */}
       <Lid src={src} />

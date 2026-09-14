@@ -98,7 +98,8 @@ export default function FeatureGrid() {
                 last.
               </CardDescription>
             </div>
-            <CardSkeletonContainer showGradient={false}>
+            {/* Auto height below lg: the fixed 20rem box let the taller mock overflow up over the title. */}
+            <CardSkeletonContainer showGradient={false} className="mt-6 h-auto lg:mt-0 lg:h-[20rem]">
               <SkeletonWeb />
             </CardSkeletonContainer>
           </Card>

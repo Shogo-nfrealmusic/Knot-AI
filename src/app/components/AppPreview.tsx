@@ -212,7 +212,8 @@ function SkillLibrary({ start }: { start: boolean }) {
       initial={{ opacity: 0, x: -20 }}
       animate={start ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
       transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
-      className="order-2 border-t border-border bg-bg-card-alt p-3 lg:order-1 lg:border-r lg:border-t-0"
+      // Hidden below lg: stacked under the console it made the preview ~2000px tall on phones.
+      className="order-2 hidden border-t border-border bg-bg-card-alt p-3 lg:order-1 lg:block lg:border-r lg:border-t-0"
     >
       <div className="mb-5 flex items-center gap-2">
         <KnotMark />
@@ -427,7 +428,7 @@ function EditorPanel({
         </div>
         <button
           type="button"
-          className="rounded-md border border-neutral-200 px-2 py-1 font-mono text-[10px] text-text-secondary"
+          className="ml-2 shrink-0 whitespace-nowrap rounded-md border border-neutral-200 px-2 py-1 font-mono text-[10px] text-text-secondary"
           tabIndex={-1}
         >
           ⌘ Edit
@@ -834,7 +835,7 @@ function MetricsPanel({
       initial={{ opacity: 0, x: 20 }}
       animate={start ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
       transition={{ delay: 1, duration: 0.5, ease: "easeOut" }}
-      className="order-3 border-t border-border bg-bg-card-alt p-4 lg:border-l lg:border-t-0"
+      className="order-3 hidden border-t border-border bg-bg-card-alt p-4 lg:block lg:border-l lg:border-t-0"
     >
       <p className="mb-4 border-b border-neutral-200 pb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-800">
         Sample week

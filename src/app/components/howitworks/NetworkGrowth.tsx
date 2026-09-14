@@ -201,12 +201,12 @@ export default function NetworkGrowth() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden rounded-[12px] border border-neutral-200 bg-white p-7 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+      className="relative w-full overflow-hidden rounded-[12px] border border-neutral-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7"
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(0,0,0,0.5)_1px,transparent_1px)] [background-size:22px_22px]" />
-      <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.05em]">
-        <span className="text-neutral-500">Audience Growth</span>
-        <span className="rounded-md border border-orange-200 bg-orange-50 px-2 py-1 leading-none text-warm">
+      <div className="flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.05em]">
+        <span className="whitespace-nowrap text-neutral-500">Audience Growth</span>
+        <span className="whitespace-nowrap rounded-md border border-orange-200 bg-orange-50 px-2 py-1 text-[10px] leading-none text-warm sm:text-[11px]">
           {month.label}
         </span>
       </div>
@@ -322,7 +322,8 @@ export default function NetworkGrowth() {
                     x={node.x}
                     y={node.y - 18}
                     textAnchor="middle"
-                    className="font-mono max-sm:text-[18px]"
+                    // Phones scale the 600-wide viewBox to ~45%, so 24 SVG units ≈ 11px on screen.
+                    className="font-mono max-sm:text-[24px]"
                     fontSize="9"
                     fill="#404040"
                   >
@@ -361,7 +362,7 @@ export default function NetworkGrowth() {
         </svg>
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-3 font-mono text-[9px] uppercase tracking-[0.05em] sm:grid-cols-3">
+      <div className="mt-5 grid grid-cols-3 gap-2 font-mono text-[10px] uppercase tracking-[0.05em] sm:gap-3 sm:text-[9px]">
         <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
           <p className="text-neutral-400">Signals</p>
           <p className="mt-1 text-warm">{month.count}</p>
