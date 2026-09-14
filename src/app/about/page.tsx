@@ -2,79 +2,70 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SitePageLayout from "@/app/components/SitePageLayout";
+import Statement from "@/app/components/Statement";
+import ContentSection from "@/app/components/ContentSection";
+import AboutTimeline from "@/app/components/AboutTimeline";
+import PilotTimeline from "@/app/components/howitworks/PilotTimeline";
+import StackTabs from "@/app/components/illustrations/StackTabs";
+import CTA from "@/app/components/CTA";
+import { GridSection } from "@/app/components/ui/grid-section";
 
 export const metadata: Metadata = {
-  title: "About | Knot",
+  title: "About | Shogo Kikuchi",
   description:
-    "Knot builds AI tools, internal systems, automations, and AI-native workflows that connect companies with the technology they already use.",
+    "Shogo Kikuchi is a product manager, software engineer, and entrepreneur, and the co-founder and CTO of TPS Collective in Tokyo.",
 };
+
+const story = [
+  "He taught himself to code during university and landed his first startup internship within three months, going on to work as a full-stack and frontend engineer. He later moved to Seattle to study computer science for a year, where living abroad shaped how he thinks about building technology and business together.",
+  "Back in Japan, he worked on TikTok Shop operations at ByteDance Japan, and joined Mercari as a product manager, where he built and published an AI agent that automated core PM workflows using Claude Code and MCP. Alongside this, he has built an audience around fitness and self-growth, developing a working knowledge of content production and brand building.",
+  "In 2026, he co-founded the creative tech company TPS Collective with Tetty Endo. He leads product, technology, growth, and operations, and personally builds the systems the business runs on — the booking platform, the corporate site, and the AI automation behind studio operations.",
+  "Today he drives the growth of the company's inbound creative business from the technology side, with a focus on AI agents and LLM-based automation. From April 2027, he joins Mercari as a Product Manager while continuing to lead technology at TPS Collective.",
+];
 
 const capabilities = [
   {
-    label: "AI Tool Development",
+    label: "AI Automation",
     description:
-      "Custom AI products, workflow agents, copilots, and internal tools designed around real business operations.",
-  },
-  {
-    label: "AI Consulting",
-    description:
-      "Practical guidance on where AI should be used, what should stay human, and how to turn experiments into shipped systems.",
+      "Agents and pipelines built on Claude Code, MCP, and LLM APIs that take repeatable work off people's plates and run unattended.",
   },
   {
     label: "Full-Stack Development",
     description:
-      "Web applications, dashboards, APIs, e-commerce systems, and production software built from idea to launch.",
+      "Web products with Next.js, Go, and PostgreSQL on AWS, from the first screen to payments, deployment, and monitoring.",
   },
   {
-    label: "Automation",
+    label: "Integrations & Internal Tools",
     description:
-      "Integrations that connect everyday tools, remove repetitive work, and keep information moving across teams.",
+      "The tools a team already uses, connected into one flow, plus internal apps that replace DMs and spreadsheets.",
+  },
+  {
+    label: "Data & Growth",
+    description:
+      "Analytics, session data, and content performance turned into clear decisions about what to build or fix next.",
   },
 ];
 
-const principles = [
-  "Build inside the tools teams already use.",
-  "Connect AI to the workflow, not just the prompt box.",
-  "Ship small, prove value, then compound the system.",
-  "Make technology feel operational, not experimental.",
-];
-
-const members = [
+// Canonical stack naming for the whole site (PORTFOLIO.md §6).
+const stack = [
+  { label: "Languages", items: "Go, TypeScript, Python, JavaScript, SQL" },
+  { label: "Frontend", items: "Next.js, React, Tailwind CSS" },
+  { label: "Mobile", items: "React Native, Expo" },
+  { label: "Backend", items: "Go, Python, Django, REST APIs" },
+  { label: "Infra", items: "AWS, Cloudflare, Vercel" },
+  { label: "Database", items: "PostgreSQL" },
+  { label: "Payments", items: "Stripe, Stripe Connect" },
   {
-    name: "Byakko Kondo",
-    jpName: "Kondo Byakko",
-    role: "Full-Stack Engineer",
-    image: "/images/team/byakko-kondo.png",
-    summary:
-      "Byakko is a full-stack engineer who has worked as a freelance and contract engineer across multiple companies, shipping production software for a range of business needs.",
-    highlights: [
-      "Built and released multiple independent web services.",
-      "Developed e-commerce sites with multi-million-yen sales impact.",
-      "Experienced across client work, product development, and end-to-end web delivery.",
-    ],
+    label: "AI",
+    items: "Claude Code, MCP (Model Context Protocol), Anthropic API, OpenAI API",
   },
-  {
-    name: "Shogo Kikuchi",
-    jpName: "Kikuchi Shogo",
-    role: "Engineer / AI Builder",
-    image: "/images/team/shogo-kikuchi.png",
-    summary:
-      "Shogo is a 22-year-old fourth-year university student who studied Computer Science in the United States and works across engineering, product, and AI implementation.",
-    highlights: [
-      "CTO at tetty's photo studio, building the technical foundation for the business.",
-      "Internship experience at ByteDance and Mercari.",
-      "Experience across multiple companies, with a focus on software, AI tools, and operational systems.",
-    ],
-    link: {
-      label: "tetty's photo studio",
-      href: "https://www.instagram.com/tettyphotostudio/",
-    },
-  },
+  { label: "Analytics", items: "GA4, Microsoft Clarity" },
+  { label: "Other", items: "Git, GitHub, Adobe Premiere Pro" },
 ];
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff8a66]">
+    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-warm">
       {children}
     </p>
   );
@@ -83,209 +74,189 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default function AboutPage() {
   return (
     <SitePageLayout>
-      <section className="border-b border-white/10 px-4 pb-20 pt-36 sm:px-6 lg:px-8 lg:pb-28">
-        <div className="mx-auto grid max-w-[1344px] gap-12 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-end">
+      <GridSection
+        className="border-t-0"
+        innerClassName="px-4 pb-16 pt-28 sm:px-10 sm:pt-36 lg:pb-24"
+      >
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-16">
           <div>
-            <div className="mb-7 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-text-secondary">
-                AI Tools
-              </span>
-              <span className="rounded-full border border-[#5dcaa5]/25 bg-[#5dcaa5]/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#8ce0c4]">
-                Automation
-              </span>
-              <span className="rounded-full border border-[#ff8a66]/25 bg-[#ff8a66]/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#ffad91]">
-                Full-stack
-              </span>
-            </div>
-            <h1 className="max-w-5xl text-[clamp(3rem,7vw,6.75rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-text-primary">
-              We connect AI to the work that already runs your company.
+            <Eyebrow>About</Eyebrow>
+            <h1 className="mt-6 type-display text-text-primary">
+              Shogo Kikuchi
             </h1>
-            <p className="mt-7 max-w-2xl text-[17px] leading-relaxed tracking-[-0.014em] text-text-secondary">
-              Knot builds AI tools, internal systems, automations, and custom
-              software for teams that want AI to become part of daily operations,
-              not another disconnected experiment.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-[#0d0e10] p-5">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/35">
-                Company signal
-              </p>
-              <span className="h-2 w-2 rounded-full bg-[#5dcaa5]" />
-            </div>
-            <p className="mt-6 text-[32px] font-semibold leading-none tracking-[-0.04em] text-text-primary">
-              Knot
-            </p>
-            <p className="mt-4 text-[14px] leading-relaxed tracking-[-0.01em] text-text-secondary">
-              A knot is a point of connection. Our name reflects the work we do:
-              tying AI, internal tools, data, and people together so new
-              innovation can move through the business.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-white/10 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-[1344px]">
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            <div>
-              <Eyebrow>What We Do</Eyebrow>
-              <h2 className="mt-5 max-w-xl text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
-                From AI strategy to production software.
-              </h2>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {capabilities.map((capability) => (
-                <article
-                  key={capability.label}
-                  className="min-h-[210px] rounded-xl border border-white/10 bg-[#0d0e10] p-5"
-                >
-                  <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#ff8a66]">
-                    {capability.label}
-                  </p>
-                  <p className="mt-10 text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
-                    {capability.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-white/10 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto grid max-w-[1344px] gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-          <div>
-            <Eyebrow>Why Knot</Eyebrow>
-            <h2 className="mt-5 text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
-              The value is in the connection.
-            </h2>
-            <p className="mt-6 max-w-2xl text-[16px] leading-relaxed tracking-[-0.012em] text-text-secondary">
-              Most companies already have tools, data, processes, and people who
-              know the work deeply. The missing layer is often the connection:
-              the system that lets AI understand context, act safely, and move
-              work forward across existing tools.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-white/10 bg-[#0d0e10] p-6">
-            <div className="grid gap-4">
-              {principles.map((principle, index) => (
-                <div
-                  key={principle}
-                  className="flex gap-4 border-b border-white/10 pb-4 last:border-b-0 last:pb-0"
-                >
-                  <span className="font-mono text-[12px] text-[#ff8a66]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-[15px] leading-relaxed tracking-[-0.01em] text-[#d0d6e0]">
-                    {principle}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-white/10 px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-[1344px]">
-          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div>
-              <Eyebrow>Members</Eyebrow>
-              <h2 className="mt-5 text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
-                A small team that builds.
-              </h2>
-            </div>
-            <p className="max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
-              We combine product judgment, software engineering, and AI
-              implementation experience to ship systems that can be used in real
-              operations.
-            </p>
-          </div>
-
-          <div className="grid gap-5 lg:grid-cols-2">
-            {members.map((member) => (
-              <article
-                key={member.name}
-                className="overflow-hidden rounded-xl border border-white/10 bg-[#0d0e10]"
+            <p className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-text-secondary">
+              <span>Co-Founder &amp; CTO, TPS Collective</span>
+              <span className="h-3 w-px bg-neutral-300" />
+              <a
+                href="https://www.instagram.com/imshogo.k/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[13px] text-warm transition-colors hover:text-text-primary"
               >
-                <div className="grid md:grid-cols-[250px_minmax(0,1fr)]">
-                  <div className="relative aspect-[4/3] overflow-hidden border-b border-white/10 bg-white md:aspect-auto md:min-h-full md:border-b-0 md:border-r">
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 250px"
-                      className="object-cover object-top"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#ff8a66]">
-                      {member.role}
-                    </p>
-                    <h3 className="mt-4 text-[28px] font-semibold leading-none tracking-[-0.035em] text-text-primary">
-                      {member.name}
-                    </h3>
-                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-white/35">
-                      {member.jpName}
-                    </p>
-                    <p className="mt-6 text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
-                      {member.summary}
-                    </p>
-                    <ul className="mt-6 space-y-3">
-                      {member.highlights.map((highlight) => (
-                        <li key={highlight} className="flex gap-3 text-[14px] leading-relaxed text-text-secondary">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#5dcaa5]" />
-                          <span>{highlight}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    {member.link ? (
-                      <a
-                        href={member.link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-6 inline-flex text-[14px] font-medium text-[#ffad91] transition-colors hover:text-text-primary"
-                      >
-                        {member.link.label}
-                      </a>
-                    ) : null}
-                  </div>
-                </div>
+                @imshogo.k
+              </a>
+            </p>
+            <p className="mt-10 max-w-xl font-serif text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.3] text-neutral-500">
+              Born in Chiba, Japan, in 2004.{" "}
+              <span className="italic text-text-primary">
+                Product manager, software engineer, and entrepreneur.
+              </span>
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex h-10 items-center rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200"
+              >
+                Get in touch
+              </Link>
+              <Link
+                href="/work"
+                className="inline-flex h-10 items-center rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all hover:bg-neutral-50 hover:ring-4 hover:ring-black/5"
+              >
+                See my work
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+            <div className="absolute -inset-4 rounded-[28px] bg-[radial-gradient(closest-side,rgba(255,138,102,0.12),transparent)] blur-2xl" />
+            <div className="relative rounded-[20px] border border-neutral-200 bg-white p-2 shadow-sm">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[12px]">
+                <Image
+                  src="/images/profile/shogo-portrait.jpg"
+                  alt="Shogo Kikuchi"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 460px"
+                  className="object-cover object-[50%_45%]"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
+                <p className="absolute bottom-5 left-5 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70">
+                  Tokyo · Global
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </GridSection>
+
+      <Statement />
+
+      <GridSection innerClassName="px-4 py-20 sm:px-10 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <Eyebrow>Story</Eyebrow>
+            <h2 className="mt-5 max-w-md type-heading text-text-primary">
+              Building the systems{" "}
+              <span className="font-serif text-[1.08em] font-normal italic text-neutral-500">
+                creative work
+              </span>{" "}
+              runs on.
+            </h2>
+          </div>
+          <div>
+            <div className="space-y-6 text-[17px] leading-[1.8] tracking-[-0.011em] text-text-secondary">
+              {story.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+              ))}
+            </div>
+            <blockquote className="mt-12 border-l border-warm/60 pl-6 font-serif text-[clamp(1.5rem,2.4vw,2rem)] italic leading-[1.35] text-text-primary">
+              Guided by the belief that creative work should not depend on any
+              single person, he is building the systems that make creative
+              production scalable and repeatable — from Tokyo, for the global
+              market.
+            </blockquote>
+          </div>
+        </div>
+      </GridSection>
+
+      <ContentSection className="py-20 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div>
+            <Eyebrow>Path</Eyebrow>
+            <h2 className="mt-5 max-w-md type-heading text-text-primary">
+              From self-taught engineer to CTO.
+            </h2>
+          </div>
+          <AboutTimeline />
+        </div>
+      </ContentSection>
+
+      <ContentSection className="py-20 lg:py-28">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start lg:gap-16">
+          <div>
+            <Eyebrow>What I Do</Eyebrow>
+            <h2 className="mt-5 max-w-md type-heading text-text-primary">
+              From AI automation to production software.
+            </h2>
+          </div>
+
+          {/* dub-style cell grid: hairline gaps instead of separate cards. */}
+          <div className="grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 sm:grid-cols-2">
+            {capabilities.map((capability) => (
+              <article
+                key={capability.label}
+                className="min-h-[190px] bg-white p-6 transition-colors duration-150 hover:bg-neutral-50"
+              >
+                <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-warm">
+                  {capability.label}
+                </p>
+                <p className="mt-8 text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+                  {capability.description}
+                </p>
               </article>
             ))}
           </div>
         </div>
-      </section>
+      </ContentSection>
 
-      <section className="px-4 py-24 text-center sm:px-6 lg:px-8 lg:py-32">
-        <div className="mx-auto max-w-[1344px]">
-          <h2 className="mx-auto max-w-3xl text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
-            Have a workflow that should be smarter?
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed tracking-[-0.012em] text-text-secondary">
-            We can help design the AI layer, build the tool, connect it to your
-            existing systems, and make it reliable enough for daily use.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/contact"
-              className="rounded-full bg-text-primary px-5 py-2.5 text-sm font-medium text-bg-primary transition-colors hover:bg-white/90"
-            >
-              Start with a Pilot
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="rounded-full border border-border-solid px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-white/20 hover:text-text-primary"
-            >
-              See how it works
-            </Link>
+      <ContentSection className="py-20 lg:py-28">
+        <div className="grid gap-12 md:grid-cols-2 md:items-start lg:gap-16">
+          <div>
+            <Eyebrow>How I Work</Eyebrow>
+            <h2 className="mt-5 type-heading text-text-primary">
+              Assessment, build, ship, maintain.
+            </h2>
+            <p className="mt-6 max-w-xl text-[16px] leading-relaxed tracking-[-0.012em] text-text-secondary">
+              Every project starts with the numbers and ends with a system you
+              can keep running. You always know what is being built this week
+              and what it should change.
+            </p>
+          </div>
+          <PilotTimeline />
+        </div>
+      </ContentSection>
+
+      <ContentSection className="py-20 lg:py-28">
+        <div className="grid gap-12 md:grid-cols-2 md:items-start lg:gap-16">
+          <div className="min-w-0">
+            <Eyebrow>Stack</Eyebrow>
+            <h2 className="mt-5 type-heading text-text-primary">
+              What I ship with.
+            </h2>
+            <dl className="mt-10 divide-y divide-neutral-200 border-y border-neutral-200">
+              {stack.map((group) => (
+                <div
+                  key={group.label}
+                  className="grid gap-1 py-3 sm:grid-cols-[110px_minmax(0,1fr)] sm:gap-6"
+                >
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.12em] text-text-muted sm:pt-0.5">
+                    {group.label}
+                  </dt>
+                  <dd className="text-[14px] leading-relaxed tracking-[-0.01em] text-neutral-500">
+                    {group.items}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="min-w-0">
+            <StackTabs />
           </div>
         </div>
-      </section>
+      </ContentSection>
+
+      <CTA />
     </SitePageLayout>
   );
 }

@@ -4,8 +4,9 @@ import InnerHero from "@/app/components/InnerHero";
 import PrivacyArticle from "./PrivacyArticle";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Knot",
-  description: "How Knot handles your information.",
+  title: "Privacy Policy",
+  description:
+    "How Shogo Kikuchi handles personal information submitted through this site.",
 };
 
 export default function PrivacyPage() {
@@ -13,7 +14,7 @@ export default function PrivacyPage() {
     <SitePageLayout>
       <InnerHero
         title="Privacy Policy"
-        description="How we handle your information."
+        description="How I handle your information."
       />
       <PrivacyArticle />
     </SitePageLayout>

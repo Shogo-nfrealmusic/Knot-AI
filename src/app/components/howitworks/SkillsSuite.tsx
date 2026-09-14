@@ -5,75 +5,75 @@ import { AnimatePresence, motion } from "motion/react";
 
 const skills = [
   {
-    name: "inquiry-router",
-    version: "v2.1.4",
-    todayCount: 247,
-    avgTime: "2.3s",
+    name: "web-platform",
+    version: "Next.js · Go",
+    meta: "Stripe · PostgreSQL",
+    detail: "AWS · Cloudflare",
     initialPattern: [30, 50, 70, 90, 60, 80, 100, 70, 85, 65, 95, 75],
   },
   {
-    name: "finance-review",
-    version: "v1.8.0",
-    todayCount: 84,
-    avgTime: "4.1s",
+    name: "mobile-app",
+    version: "React Native",
+    meta: "Expo · Stripe",
+    detail: "Google Calendar API",
     initialPattern: [50, 30, 70, 60, 90, 50, 80, 70, 100, 65, 80, 75],
   },
   {
-    name: "contract-scan",
-    version: "v0.9.2",
-    todayCount: 31,
-    avgTime: "8.7s",
+    name: "ai-pipeline",
+    version: "Python",
+    meta: "LLM APIs",
+    detail: "AWS",
     initialPattern: [70, 50, 60, 90, 80, 100, 70, 60, 85, 90, 65, 95],
   },
 ];
 
 const events = [
   {
-    skill: "inquiry-router",
-    type: "classified",
-    detail: "billing → priority high",
+    skill: "web-platform",
+    type: "deposit",
+    detail: "Stripe · 30% captured",
     color: "coral",
   },
   {
-    skill: "finance-review",
-    type: "extracted",
-    detail: "14 line items · $48,290",
-    color: "coral",
-  },
-  {
-    skill: "inquiry-router → finance-review",
+    skill: "web-platform → mobile-app",
     type: "handoff",
-    detail: "context shared",
+    detail: "job published",
     color: "green",
   },
   {
-    skill: "contract-scan",
-    type: "flagged",
-    detail: "liability cap below standard",
+    skill: "mobile-app",
+    type: "claimed",
+    detail: "owner assigned",
     color: "coral",
   },
   {
-    skill: "finance-review",
-    type: "validated",
-    detail: "within policy",
+    skill: "mobile-app",
+    type: "synced",
+    detail: "Google Calendar",
     color: "green",
   },
   {
-    skill: "inquiry-router",
-    type: "routed",
-    detail: "support team · 2.1s",
+    skill: "ai-pipeline",
+    type: "rendered",
+    detail: "10 videos",
     color: "coral",
   },
   {
-    skill: "contract-scan → finance-review",
+    skill: "mobile-app → web-platform",
     type: "handoff",
-    detail: "terms verified",
+    detail: "balance collected",
     color: "green",
   },
   {
-    skill: "inquiry-router",
-    type: "drafted",
-    detail: "reply · 142 chars",
+    skill: "web-platform",
+    type: "tracked",
+    detail: "GA4 · Clarity funnel",
+    color: "coral",
+  },
+  {
+    skill: "ai-pipeline",
+    type: "captioned",
+    detail: "LLM API",
     color: "green",
   },
 ];
@@ -138,8 +138,6 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
   const [patterns, setPatterns] = useState(
     skills.map((skill) => skill.initialPattern),
   );
-  const [sharedContext, setSharedContext] = useState(1284);
-  const [crossSkillCalls, setCrossSkillCalls] = useState(42);
   const [eventIndex, setEventIndex] = useState(0);
   const [feed, setFeed] = useState<FeedEntry[]>(() =>
     events.slice(0, 4).map((event, index) => ({
@@ -187,10 +185,7 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
         ),
       );
 
-      setSharedContext((value) => value + Math.floor(Math.random() * 3));
-
       if (event.type === "handoff") {
-        setCrossSkillCalls((value) => value + 1);
         const nextPacket = packetFromEvent(event.skill, nextId);
         if (nextPacket) {
           setPacket(nextPacket);
@@ -259,7 +254,7 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
   return (
     <div
       ref={containerRef}
-      className="w-full rounded-xl border border-white/10 bg-[#0a0a0a] p-7"
+      className="w-full rounded-xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-12px_rgba(0,0,0,0.08)] p-7"
     >
       <style jsx>{`
         @keyframes livePulse {
@@ -276,16 +271,16 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
       `}</style>
 
       <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.05em]">
-        <span className="text-white/40">Skills Suite · Production</span>
+        <span className="text-neutral-500">Stack · In production</span>
         <span className="flex items-center gap-3">
-          <span className="flex items-center gap-2 text-[10px] text-[rgba(93,202,165,0.95)]">
+          <span className="flex items-center gap-2 text-[10px] text-emerald-600">
             <span
-              className="h-1.5 w-1.5 rounded-full bg-[rgba(93,202,165,0.95)]"
+              className="h-1.5 w-1.5 rounded-full bg-emerald-500"
               style={{ animation: "livePulse 2s ease-in-out infinite" }}
             />
-            3 Active
+            3 Live
           </span>
-          <span className="text-[10px] text-white/35">↑ 99.94%</span>
+          <span className="text-[10px] text-neutral-500">AWS</span>
         </span>
       </div>
 
@@ -295,7 +290,7 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
             {packet ? (
               <motion.span
                 key={packet.id}
-                className="absolute left-[-10px] z-10 h-2 w-2 rounded-full bg-[rgba(204,120,92,0.95)] shadow-[0_0_12px_rgba(204,120,92,0.65)]"
+                className="absolute left-[-10px] z-10 h-2 w-2 rounded-full bg-[rgba(224,85,47,0.95)] shadow-[0_0_12px_rgba(224,85,47,0.65)]"
                 initial={{
                   opacity: 0,
                   top: `${packet.from * 34 + 16}%`,
@@ -319,22 +314,22 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
                 key={skill.name}
                 className={`rounded-lg border px-3.5 py-3 transition-all duration-300 ${
                   isActive
-                    ? "border-[rgba(204,120,92,0.35)] bg-[rgba(204,120,92,0.05)]"
-                    : "border-white/10 bg-white/2"
+                    ? "border-[rgba(224,85,47,0.35)] bg-[rgba(224,85,47,0.05)]"
+                    : "border-neutral-200 bg-neutral-50"
                 } ${isProgressDimmed ? "opacity-40" : "opacity-100"}`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3">
-                    <span className="h-[7px] w-[7px] shrink-0 rounded-full bg-[rgba(204,120,92,0.95)]" />
-                    <span className="truncate font-mono text-[11.5px] font-medium text-white/95">
+                    <span className="h-[7px] w-[7px] shrink-0 rounded-full bg-[rgba(224,85,47,0.95)]" />
+                    <span className="truncate font-mono text-[11.5px] font-medium text-neutral-900">
                       {skill.name}
                     </span>
-                    <span className="shrink-0 font-mono text-[9px] text-white/35">
+                    <span className="shrink-0 font-mono text-[9px] text-neutral-500">
                       {skill.version}
                     </span>
                   </div>
-                  <span className="shrink-0 font-mono text-[10px] text-white/50">
-                    {skill.todayCount} today
+                  <span className="shrink-0 font-mono text-[10px] text-neutral-500">
+                    {skill.meta}
                   </span>
                 </div>
 
@@ -343,7 +338,7 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
                     {patterns[index].map((height, barIndex) => (
                       <span
                         key={`${skill.name}-${barIndex}`}
-                        className="w-[3px] rounded-full bg-[rgba(204,120,92,0.55)] transition-[height] duration-600 ease-out"
+                        className="w-[3px] rounded-full bg-[rgba(224,85,47,0.55)] transition-[height] duration-600 ease-out"
                         style={{
                           height: `${height}%`,
                           opacity: 0.55 + (height / 100) * 0.35,
@@ -352,8 +347,8 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
                       />
                     ))}
                   </div>
-                  <span className="shrink-0 font-mono text-[10px] text-[rgba(93,202,165,0.85)]">
-                    ↓ {skill.avgTime} avg
+                  <span className="shrink-0 font-mono text-[10px] text-emerald-600">
+                    {skill.detail}
                   </span>
                 </div>
               </div>
@@ -367,14 +362,14 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
           }`}
         >
           <MetricCard
-            label="Shared Context"
-            value={sharedContext.toLocaleString()}
-            subLabel="↑ 12 this hour"
+            label="Languages"
+            value="5"
+            subLabel="Go · TS · Python · JS · SQL"
           />
           <MetricCard
-            label="Cross-Skill Calls"
-            value={String(crossSkillCalls)}
-            subLabel="handoffs / hr"
+            label="Systems live"
+            value="3"
+            subLabel="web · mobile · ai"
             coral
           />
           <CoordinationCard travelerIndex={travelerIndex} />
@@ -382,13 +377,13 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
       </div>
 
       <div
-        className={`mt-3 h-[140px] overflow-hidden rounded-lg border border-white/10 bg-white/2 p-3 transition-opacity duration-300 ${
+        className={`mt-3 h-[140px] overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50 p-3 transition-opacity duration-300 ${
           shouldRenderLive ? "opacity-100" : "opacity-0"
         }`}
       >
         <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.05em]">
-          <span className="text-white/40">Live Activity</span>
-          <span className="text-[rgba(204,120,92,0.7)]">last 60s</span>
+          <span className="text-neutral-500">Live Activity</span>
+          <span className="text-[rgba(224,85,47,0.7)]">sample flow</span>
         </div>
         <div id="live-feed" className="h-24 space-y-2 overflow-hidden">
           <AnimatePresence initial={false}>
@@ -401,20 +396,20 @@ export default function SkillsSuite({ progress }: { progress?: number }) {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className="grid grid-cols-[50px_14px_minmax(0,1fr)] items-center gap-2 text-[10px]"
               >
-                <span className="font-mono text-white/30">{entry.timestamp}</span>
+                <span className="font-mono text-neutral-400">{entry.timestamp}</span>
                 <span
                   className={
                     entry.color === "green"
-                      ? "text-[rgba(93,202,165,0.95)]"
-                      : "text-[rgba(204,120,92,0.95)]"
+                      ? "text-emerald-600"
+                      : "text-[rgba(224,85,47,0.95)]"
                   }
                 >
                   {entry.color === "green" ? "✓" : "→"}
                 </span>
                 <span className="truncate">
-                  <span className="text-white/70">{entry.skill}</span>
-                  <span className="text-white/30"> · </span>
-                  <span className="text-white/50">
+                  <span className="text-neutral-700">{entry.skill}</span>
+                  <span className="text-neutral-400"> · </span>
+                  <span className="text-neutral-500">
                     {entry.type}: {entry.detail}
                   </span>
                 </span>
@@ -439,18 +434,18 @@ function MetricCard({
   coral?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/2 px-3 py-2.5">
-      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-white/40">
+    <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5">
+      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-neutral-500">
         {label}
       </p>
       <p
         className={`mt-2 font-mono text-[18px] font-medium ${
-          coral ? "text-[rgba(204,120,92,0.95)]" : "text-white/95"
+          coral ? "text-[rgba(224,85,47,0.95)]" : "text-neutral-900"
         }`}
       >
         {value}
       </p>
-      <p className="mt-1 font-mono text-[9px] text-[rgba(93,202,165,0.85)]">
+      <p className="mt-1 font-mono text-[9px] text-emerald-600">
         {subLabel}
       </p>
     </div>
@@ -467,8 +462,8 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
   const traveler = points[travelerIndex];
 
   return (
-    <div className="rounded-lg border border-white/10 bg-white/2 px-3 py-2.5">
-      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-white/40">
+    <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5">
+      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-neutral-500">
         Coordination
       </p>
       <svg viewBox="0 0 100 90" className="mt-2 h-[76px] w-full">
@@ -477,7 +472,7 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
           y1="18"
           x2="18"
           y2="76"
-          stroke="rgba(204,120,92,0.28)"
+          stroke="rgba(224,85,47,0.28)"
           strokeDasharray="2 3"
           strokeWidth="1"
         />
@@ -486,7 +481,7 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
           y1="76"
           x2="82"
           y2="76"
-          stroke="rgba(204,120,92,0.28)"
+          stroke="rgba(224,85,47,0.28)"
           strokeDasharray="2 3"
           strokeWidth="1"
         />
@@ -495,7 +490,7 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
           y1="76"
           x2="50"
           y2="18"
-          stroke="rgba(204,120,92,0.28)"
+          stroke="rgba(224,85,47,0.28)"
           strokeDasharray="2 3"
           strokeWidth="1"
         />
@@ -505,7 +500,7 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
             cx={point.x}
             cy={point.y}
             r="4"
-            fill="rgba(204,120,92,0.95)"
+            fill="rgba(224,85,47,0.95)"
           />
         ))}
         <motion.circle
@@ -514,7 +509,7 @@ function CoordinationCard({ travelerIndex }: { travelerIndex: number }) {
           animate={{ cx: traveler.x, cy: traveler.y }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
           r="2.5"
-          fill="rgba(93,202,165,0.95)"
+          fill="#10b981"
         />
       </svg>
     </div>

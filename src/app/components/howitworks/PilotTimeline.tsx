@@ -5,55 +5,55 @@ import { AnimatePresence, motion } from "motion/react";
 
 const steps = [
   {
-    day: "DAY 01 / 14",
-    shortDay: "DAY 01",
-    title: "Discovery",
-    metric: "12 signals mapped",
-    confidence: "42%",
+    day: "STEP 01 / 04",
+    shortDay: "STEP 01",
+    title: "Assessment",
+    metric: "Scoped plan",
+    confidence: "One call",
     activity: [24, 38, 52, 41, 66, 58, 74, 62, 81, 70, 88, 76],
     items: [
-      "Map the workflow with your team",
-      "Identify decision points and bottlenecks",
-      "Define success criteria and metrics",
+      "Map the workflow and where time or money leaks",
+      "Look at the data: analytics, logs, spreadsheets",
+      "Agree on one measurable outcome",
     ],
   },
   {
-    day: "DAY 03 / 14",
-    shortDay: "DAY 03",
-    title: "Design",
-    metric: "7 routes drafted",
-    confidence: "61%",
+    day: "STEP 02 / 04",
+    shortDay: "STEP 02",
+    title: "Build",
+    metric: "Working build",
+    confidence: "Weekly demo",
     activity: [34, 48, 60, 72, 54, 69, 83, 75, 91, 79, 86, 94],
     items: [
-      "Draft SKILL.md with classification rules",
-      "Specify integrations and data flow",
-      "Design human-in-the-loop checkpoints",
+      "Ship the smallest version that proves value",
+      "Connect it to the tools you already use",
+      "Demo on real data every week",
     ],
   },
   {
-    day: "DAY 07 / 14",
-    shortDay: "DAY 07",
-    title: "Build",
-    metric: "31 test runs",
-    confidence: "78%",
+    day: "STEP 03 / 04",
+    shortDay: "STEP 03",
+    title: "Ship",
+    metric: "Live system",
+    confidence: "Sign-off",
     activity: [42, 61, 56, 79, 88, 64, 91, 84, 96, 72, 89, 100],
     items: [
-      "Implement the Skill in your environment",
-      "Connect to your existing tools",
-      "Run end-to-end tests on real data",
+      "Deploy to production with monitoring",
+      "Instrument every step: GA4, Clarity, logs",
+      "Hand over docs, access, and ownership",
     ],
   },
   {
-    day: "DAY 14 / 14",
-    shortDay: "DAY 14",
-    title: "Live",
-    metric: "99.4% routed",
-    confidence: "94%",
+    day: "STEP 04 / 04",
+    shortDay: "STEP 04",
+    title: "Maintain",
+    metric: "Measured results",
+    confidence: "Monthly check-in",
     activity: [58, 67, 74, 82, 90, 77, 94, 86, 100, 92, 96, 88],
     items: [
-      "Deploy to production with your team",
-      "Hand off documentation and ownership",
-      "Review results, decide what comes next",
+      "Watch the numbers after launch",
+      "Fix what breaks, improve what matters",
+      "Pick the next workflow together",
     ],
   },
 ];
@@ -74,14 +74,14 @@ function MiniMetric({
     <div
       className={`rounded-lg border px-3 py-2 transition-colors duration-300 ${
         active
-          ? "border-[rgba(204,120,92,0.35)] bg-[rgba(204,120,92,0.08)]"
-          : "border-white/10 bg-white/2"
+          ? "border-[rgba(224,85,47,0.35)] bg-[rgba(224,85,47,0.08)]"
+          : "border-neutral-200 bg-neutral-50"
       }`}
     >
-      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-white/35">
+      <p className="font-mono text-[9px] uppercase tracking-[0.05em] text-neutral-500">
         {label}
       </p>
-      <p className="mt-1 font-mono text-[13px] text-white/85">{value}</p>
+      <p className="mt-1 font-mono text-[13px] text-neutral-800">{value}</p>
     </div>
   );
 }
@@ -119,11 +119,11 @@ export default function PilotTimeline() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a] p-7"
+      className="relative w-full overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-12px_rgba(0,0,0,0.08)] p-7"
     >
-      <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.7)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(0,0,0,0.35)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.35)_1px,transparent_1px)] [background-size:28px_28px]" />
       <motion.div
-        className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[rgba(204,120,92,0.14)] blur-3xl"
+        className="pointer-events-none absolute -left-20 top-10 h-40 w-40 rounded-full bg-[rgba(224,85,47,0.14)] blur-3xl"
         animate={
           isVisible
             ? { x: [0, 180, 320, 120, 0], opacity: [0.18, 0.28, 0.16, 0.24, 0.18] }
@@ -133,14 +133,14 @@ export default function PilotTimeline() {
       />
 
       <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.05em]">
-        <span className="text-white/40">Pilot Build · 14 Days</span>
-        <span className="text-[rgba(204,120,92,0.95)]">{activeStep.day}</span>
+        <span className="text-neutral-500">How I work · 4 steps</span>
+        <span className="text-[rgba(224,85,47,0.95)]">{activeStep.day}</span>
       </div>
 
       <div className="relative mt-12 px-2">
-        <div className="absolute left-[calc(12.5%+8px)] right-[calc(12.5%+8px)] top-2 h-px bg-white/10" />
+        <div className="absolute left-[calc(12.5%+8px)] right-[calc(12.5%+8px)] top-2 h-px bg-neutral-200" />
         <div
-          className="absolute left-[calc(12.5%+8px)] top-2 h-px bg-[rgba(204,120,92,0.95)] transition-[width] duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="absolute left-[calc(12.5%+8px)] top-2 h-px bg-[rgba(224,85,47,0.95)] transition-[width] duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{ width: progressWidths[currentStep] }}
         />
         <AnimatePresence mode="wait">
@@ -156,7 +156,7 @@ export default function PilotTimeline() {
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.span
-              className="block h-2 w-2 rounded-full bg-[rgba(255,187,153,0.95)] shadow-[0_0_14px_rgba(204,120,92,0.8)]"
+              className="block h-2 w-2 rounded-full bg-[rgba(224,85,47,0.95)] shadow-[0_0_14px_rgba(224,85,47,0.8)]"
               initial={{ scale: 0.7 }}
               animate={{ scale: [0.7, 1.15, 0.9] }}
               exit={{ scale: 0.7 }}
@@ -181,13 +181,13 @@ export default function PilotTimeline() {
                 <span
                   className={`relative z-0 h-4 w-4 rounded-full border transition-all duration-300 ${
                     isActive
-                      ? "border-[rgba(204,120,92,0.95)] bg-[rgba(204,120,92,0.95)] shadow-[0_0_0_2px_rgba(204,120,92,0.35)]"
+                      ? "border-[rgba(224,85,47,0.95)] bg-[rgba(224,85,47,0.95)] shadow-[0_0_0_2px_rgba(224,85,47,0.35)]"
                       : isComplete
-                        ? "border-[rgba(204,120,92,0.45)] bg-[rgba(204,120,92,0.25)]"
-                      : "border-white/15 bg-white/10 group-hover:border-white/30"
+                        ? "border-[rgba(224,85,47,0.45)] bg-[rgba(224,85,47,0.25)]"
+                      : "border-neutral-200 bg-neutral-200 group-hover:border-neutral-300"
                   }`}
                 />
-                <span className="mt-5 font-mono text-[10px] uppercase tracking-[0.05em] text-white/35">
+                <span className="mt-5 font-mono text-[10px] uppercase tracking-[0.05em] text-neutral-500">
                   {step.shortDay}
                 </span>
                 <span
@@ -205,12 +205,12 @@ export default function PilotTimeline() {
 
       <div className="mt-10 grid gap-3 sm:grid-cols-3">
         <MiniMetric label="Active phase" value={activeStep.title} active />
-        <MiniMetric label="Pilot signal" value={activeStep.metric} active />
-        <MiniMetric label="Confidence" value={activeStep.confidence} active />
+        <MiniMetric label="Output" value={activeStep.metric} active />
+        <MiniMetric label="Your time" value={activeStep.confidence} active />
       </div>
 
       <div className="mt-8 grid gap-5 md:grid-cols-[1fr_0.75fr]">
-        <div className="min-h-[230px] border-l border-[rgba(204,120,92,0.6)] bg-[rgba(204,120,92,0.08)]/40 p-5">
+        <div className="min-h-[230px] border-l border-[rgba(224,85,47,0.6)] bg-[rgba(224,85,47,0.08)]/40 p-5">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeStep.title}
@@ -231,7 +231,7 @@ export default function PilotTimeline() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 >
-                  <span className="text-[rgba(204,120,92,0.95)]">→</span>
+                  <span className="text-[rgba(224,85,47,0.95)]">→</span>
                   <span>{item}</span>
                 </motion.li>
               ))}
@@ -240,16 +240,16 @@ export default function PilotTimeline() {
         </AnimatePresence>
         </div>
 
-        <div className="rounded-lg border border-white/10 bg-white/2 p-4">
+        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
           <div className="mb-4 flex items-center justify-between gap-3 font-mono text-[9px] uppercase tracking-[0.05em]">
-            <span className="text-white/35">Workflow telemetry</span>
-            <span className="text-[rgba(93,202,165,0.85)]">live sample</span>
+            <span className="text-neutral-500">Effort by step</span>
+            <span className="text-emerald-600">typical</span>
           </div>
           <div className="flex h-28 items-end gap-1.5">
             {activeStep.activity.map((height, index) => (
               <motion.span
                 key={`${activeStep.title}-${index}`}
-                className="min-w-0 flex-1 rounded-t bg-[rgba(204,120,92,0.6)]"
+                className="min-w-0 flex-1 rounded-t bg-[rgba(224,85,47,0.6)]"
                 initial={{ height: "15%", opacity: 0.35 }}
                 animate={{
                   height: `${height}%`,
@@ -263,7 +263,7 @@ export default function PilotTimeline() {
               />
             ))}
           </div>
-          <div className="mt-5 grid grid-cols-3 gap-2 font-mono text-[9px] text-white/35">
+          <div className="mt-5 grid grid-cols-3 gap-2 font-mono text-[9px] text-neutral-500">
             <span>input</span>
             <span className="text-center">review</span>
             <span className="text-right">handoff</span>

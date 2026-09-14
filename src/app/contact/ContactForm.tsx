@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { GridSection } from "@/app/components/ui/grid-section";
 
 type FormValues = {
   name: string;
@@ -24,11 +25,11 @@ const initialValues: FormValues = {
 };
 
 const projectTypes = [
-  "AI tool development",
-  "Internal tool / dashboard",
+  "AI agent / AI automation",
   "Workflow automation",
-  "AI consulting",
-  "Full-stack development",
+  "Web app (full-stack)",
+  "Mobile app",
+  "Payments / booking integration",
   "Not sure yet",
 ];
 
@@ -41,24 +42,25 @@ const timelines = [
 
 const nextSteps = [
   {
-    title: "We read the workflow",
-    body: "Share the tools, manual steps, and what outcome would make the project worth doing.",
+    title: "I read your message",
+    body: "Share the tools, the manual steps, and what outcome would make the project worth doing.",
   },
   {
-    title: "We map the build path",
-    body: "We decide whether this is best solved with AI, automation, custom software, or a mix of all three.",
+    title: "I suggest a build path",
+    body: "Whether this is best solved with AI, automation, custom software, or a mix — and what I would build first.",
   },
   {
-    title: "We scope the first system",
-    body: "If there is a strong fit, we define a focused build that can prove value quickly.",
+    title: "We scope the first milestone",
+    body: "If there is a strong fit, we agree on a focused first deliverable that proves value quickly.",
   },
 ];
 
 const signals = [
-  "AI agents and custom tools",
-  "Slack, Notion, Sheets, CRM, and internal systems",
-  "Automation for repetitive operations",
-  "Web apps, APIs, dashboards, and e-commerce",
+  "AI agents with Claude Code, MCP, and LLM APIs",
+  "Workflow and content automation",
+  "Web apps with Next.js, Go, and PostgreSQL",
+  "Mobile apps with React Native and Expo",
+  "Stripe payments and booking flows",
 ];
 
 function validateEmail(email: string) {
@@ -78,7 +80,7 @@ function validate(values: FormValues) {
   if (!values.projectType) errors.projectType = "Select a project type.";
   if (!values.timeline) errors.timeline = "Select a timeline.";
   if (!values.context.trim()) {
-    errors.context = "Tell us what you want to build or automate.";
+    errors.context = "Tell me what you want to build or automate.";
   }
 
   return errors;
@@ -93,7 +95,7 @@ function FieldError({ message }: { message?: string }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -2 }}
           transition={{ duration: 0.15, ease: "easeOut" }}
-          className="mt-1 text-[12px] text-[#ff8a66]"
+          className="mt-1 text-[12px] text-warm"
         >
           {message}
         </motion.p>
@@ -102,11 +104,11 @@ function FieldError({ message }: { message?: string }) {
   );
 }
 
+// dub.co form controls: neutral hairline, dark border + soft ring on focus.
 const fieldClassName =
-  "w-full rounded-lg border border-white/10 bg-[#0b0c0d] px-4 py-3 text-[15px] text-text-primary outline-none transition-all duration-150 placeholder:text-white/30 focus:border-[#ff8a66] focus:shadow-[0_0_0_3px_rgba(255,138,102,0.14)]";
+  "w-full rounded-lg border border-neutral-200 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm outline-none transition-[border-color,box-shadow] duration-150 placeholder:text-neutral-400 hover:border-neutral-300 focus:border-neutral-500 focus:ring-4 focus:ring-black/10 aria-[invalid=true]:border-red-300";
 
-const labelClassName =
-  "mb-2 block font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-text-secondary";
+const labelClassName = "mb-2 block text-sm font-medium text-neutral-900";
 
 export default function ContactForm() {
   const [values, setValues] = useState<FormValues>(initialValues);
@@ -180,10 +182,10 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="border-b border-white/10 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-      <div className="mx-auto grid max-w-[1344px] gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] lg:gap-16">
+    <GridSection innerClassName="px-4 py-14 sm:px-10 lg:py-20">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] lg:gap-12">
         <aside>
-          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff8a66]">
+          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-warm">
             What happens next
           </p>
 
@@ -191,9 +193,9 @@ export default function ContactForm() {
             {nextSteps.map((step, index) => (
               <div
                 key={step.title}
-                className="rounded-xl border border-white/10 bg-[#0d0e10] p-5"
+                className="rounded-xl border border-neutral-200 bg-white shadow-sm p-5"
               >
-                <p className="font-mono text-[12px] text-[#ff8a66]">
+                <p className="font-mono text-[12px] text-warm">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h2 className="mt-5 text-[20px] font-semibold tracking-[-0.02em] text-text-primary">
@@ -206,14 +208,14 @@ export default function ContactForm() {
             ))}
           </div>
 
-          <div className="mt-5 rounded-xl border border-white/10 bg-white/[0.025] p-5">
-            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/35">
-              We can connect
+          <div className="mt-5 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500">
+              What I work on
             </p>
             <ul className="mt-5 space-y-3">
               {signals.map((signal) => (
                 <li key={signal} className="flex gap-3 text-[14px] text-text-secondary">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#5dcaa5]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                   <span>{signal}</span>
                 </li>
               ))}
@@ -221,7 +223,8 @@ export default function ContactForm() {
           </div>
         </aside>
 
-        <div className="rounded-xl border border-white/10 bg-[#0d0e10] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] sm:p-8">
+        {/* self-start + sticky: the form keeps its own height instead of stretching to the aside. */}
+        <div className="rounded-xl border border-neutral-200 bg-white shadow-sm p-5 sm:p-8 lg:sticky lg:top-20 lg:self-start">
           <AnimatePresence mode="wait">
             {isSubmitted ? (
               <motion.div
@@ -232,14 +235,14 @@ export default function ContactForm() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="flex min-h-[520px] flex-col items-center justify-center text-center"
               >
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-[#5dcaa5]/30 bg-[#5dcaa5]/10 text-[#8ce0c4]">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700">
                   ✓
                 </div>
                 <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] font-semibold tracking-[-0.022em] text-text-primary">
                   Message received
                 </h2>
                 <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-text-secondary">
-                  We will review the workflow and reply with the clearest next step.
+                  Thanks — I&apos;ll read it and reply with a clear next step.
                 </p>
               </motion.div>
             ) : (
@@ -401,7 +404,7 @@ export default function ContactForm() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-3 border-t border-neutral-200 pt-5 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="text-[12px] leading-relaxed text-text-muted">
                       No pitch deck needed. Clear context is enough.
@@ -411,9 +414,9 @@ export default function ContactForm() {
                   <button
                     type="submit"
                     disabled={!isFormValid || isSubmitting}
-                    className="inline-flex items-center justify-center rounded-full bg-text-primary px-5 py-2.5 text-sm font-medium text-bg-primary transition-all duration-150 hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-45"
+                    className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all duration-150 hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 disabled:cursor-not-allowed disabled:border-neutral-200 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:hover:ring-0"
                   >
-                    {isSubmitting ? "Sending..." : "Send project context"}
+                    {isSubmitting ? "Sending..." : "Send message"}
                   </button>
                 </div>
               </motion.form>
@@ -421,6 +424,6 @@ export default function ContactForm() {
           </AnimatePresence>
         </div>
       </div>
-    </section>
+    </GridSection>
   );
 }

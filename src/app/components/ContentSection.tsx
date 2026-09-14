@@ -1,3 +1,6 @@
+import { GridSection } from "@/app/components/ui/grid-section";
+
+// A padded section inside the shared 1080px rails. `className` pads the inner frame.
 export default function ContentSection({
   children,
   className = "",
@@ -6,10 +9,8 @@ export default function ContentSection({
   className?: string;
 }>) {
   return (
-    <section
-      className={`border-t border-border py-16 px-4 sm:px-6 lg:px-8 ${className}`}
-    >
-      <div className="mx-auto max-w-[1344px] w-full min-w-0">{children}</div>
-    </section>
+    <GridSection innerClassName={`px-4 py-16 sm:px-10 ${className}`}>
+      <div className="w-full min-w-0">{children}</div>
+    </GridSection>
   );
 }

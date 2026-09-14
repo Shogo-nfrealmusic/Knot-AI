@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import { AmbientColor } from "@/app/components/ui/ambient-color";
 
 const ScrollAnimations = dynamic(
   () => import("@/app/components/ScrollAnimations"),
@@ -15,7 +16,10 @@ export default function SitePageLayout({
     <>
       <ScrollAnimations />
       <Header />
-      <main className="min-h-screen">{children}</main>
+      <div className="relative">
+        <AmbientColor />
+        <main className="min-h-screen">{children}</main>
+      </div>
       <Footer />
     </>
   );

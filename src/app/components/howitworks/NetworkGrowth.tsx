@@ -17,137 +17,112 @@ type Month = {
   edges: string[][];
 };
 
+const account = { id: "account", x: 300, y: 140, label: "@imshogo.k" };
+const hooks = { id: "hooks", x: 180, y: 90, label: "hooks" };
+const captions = { id: "captions", x: 420, y: 90, label: "captions" };
+const watch = { id: "watch", x: 130, y: 200, label: "watch time" };
+const shares = { id: "shares", x: 470, y: 200, label: "share count" };
+const views = { id: "views", x: 60, y: 130, label: "1M+ views" };
+const reach = { id: "reach", x: 540, y: 130, label: "reach" };
+const saves = { id: "saves", x: 300, y: 50, label: "saves" };
+const insights = { id: "insights", x: 300, y: 230, label: "13-mo data" };
+const followerSignal = { id: "followerSignal", x: 200, y: 245, label: "follower count" };
+const shareReach = { id: "shareReach", x: 400, y: 245, label: "shares → reach" };
+const fitness = { id: "fitness", x: 100, y: 50, label: "fitness" };
+const motivation = { id: "motivation", x: 500, y: 50, label: "motivation" };
+const selfGrowth = { id: "selfGrowth", x: 50, y: 250, label: "self-growth" };
+
 const months: Month[] = [
   {
-    label: "MONTH 1",
+    label: "START · 0 FOLLOWERS",
     count: 1,
-    nodes: [{ id: "inquiry", x: 300, y: 140, label: "inquiry-router" }],
+    nodes: [account],
     edges: [],
   },
   {
-    label: "MONTH 2",
+    label: "FIRST POSTS",
     count: 3,
-    nodes: [
-      { id: "inquiry", x: 300, y: 140, label: "inquiry-router" },
-      { id: "finance", x: 180, y: 90, label: "finance-review" },
-      { id: "support", x: 420, y: 90, label: "support-triage" },
-    ],
+    nodes: [account, hooks, captions],
     edges: [
-      ["inquiry", "finance"],
-      ["inquiry", "support"],
+      ["account", "hooks"],
+      ["account", "captions"],
     ],
   },
   {
-    label: "MONTH 3",
+    label: "TESTING FORMATS",
     count: 5,
-    nodes: [
-      { id: "inquiry", x: 300, y: 140, label: "inquiry-router" },
-      { id: "finance", x: 180, y: 90, label: "finance-review" },
-      { id: "support", x: 420, y: 90, label: "support-triage" },
-      { id: "contract", x: 130, y: 200, label: "contract-scan" },
-      { id: "expense", x: 470, y: 200, label: "expense-cat" },
-    ],
+    nodes: [account, hooks, captions, watch, shares],
     edges: [
-      ["inquiry", "finance"],
-      ["inquiry", "support"],
-      ["finance", "contract"],
-      ["support", "expense"],
+      ["account", "hooks"],
+      ["account", "captions"],
+      ["hooks", "watch"],
+      ["captions", "shares"],
     ],
   },
   {
-    label: "MONTH 4",
+    label: "1M+ VIEW VIDEOS",
     count: 8,
-    nodes: [
-      { id: "inquiry", x: 300, y: 140, label: "inquiry-router" },
-      { id: "finance", x: 180, y: 90, label: "finance-review" },
-      { id: "support", x: 420, y: 90, label: "support-triage" },
-      { id: "contract", x: 130, y: 200, label: "contract-scan" },
-      { id: "expense", x: 470, y: 200, label: "expense-cat" },
-      { id: "qa", x: 60, y: 130, label: "ops-qa" },
-      { id: "meeting", x: 540, y: 130, label: "meeting-notes" },
-      { id: "invent", x: 300, y: 50, label: "inventory-sync" },
-    ],
+    nodes: [account, hooks, captions, watch, shares, views, reach, saves],
     edges: [
-      ["inquiry", "finance"],
-      ["inquiry", "support"],
-      ["finance", "contract"],
-      ["support", "expense"],
-      ["contract", "qa"],
-      ["expense", "meeting"],
-      ["finance", "invent"],
-      ["support", "invent"],
+      ["account", "hooks"],
+      ["account", "captions"],
+      ["hooks", "watch"],
+      ["captions", "shares"],
+      ["watch", "views"],
+      ["shares", "reach"],
+      ["hooks", "saves"],
+      ["captions", "saves"],
     ],
   },
   {
-    label: "MONTH 5",
+    label: "13-MONTH ANALYSIS",
     count: 11,
     nodes: [
-      { id: "inquiry", x: 300, y: 140, label: "inquiry-router" },
-      { id: "finance", x: 180, y: 90, label: "finance-review" },
-      { id: "support", x: 420, y: 90, label: "support-triage" },
-      { id: "contract", x: 130, y: 200, label: "contract-scan" },
-      { id: "expense", x: 470, y: 200, label: "expense-cat" },
-      { id: "qa", x: 60, y: 130, label: "ops-qa" },
-      { id: "meeting", x: 540, y: 130, label: "meeting-notes" },
-      { id: "invent", x: 300, y: 50, label: "inventory-sync" },
-      { id: "kb", x: 300, y: 230, label: "kb-search" },
-      { id: "doc", x: 230, y: 230, label: "doc-extract" },
-      { id: "reply", x: 370, y: 230, label: "reply-draft" },
+      account, hooks, captions, watch, shares, views, reach, saves,
+      insights, followerSignal, shareReach,
     ],
     edges: [
-      ["inquiry", "finance"],
-      ["inquiry", "support"],
-      ["finance", "contract"],
-      ["support", "expense"],
-      ["contract", "qa"],
-      ["expense", "meeting"],
-      ["finance", "invent"],
-      ["support", "invent"],
-      ["inquiry", "kb"],
-      ["contract", "doc"],
-      ["inquiry", "reply"],
-      ["kb", "doc"],
-      ["kb", "reply"],
+      ["account", "hooks"],
+      ["account", "captions"],
+      ["hooks", "watch"],
+      ["captions", "shares"],
+      ["watch", "views"],
+      ["shares", "reach"],
+      ["hooks", "saves"],
+      ["captions", "saves"],
+      ["account", "insights"],
+      ["insights", "followerSignal"],
+      ["insights", "shareReach"],
+      ["shares", "shareReach"],
+      ["reach", "shareReach"],
     ],
   },
   {
-    label: "MONTH 6",
+    label: "29,000 FOLLOWERS",
     count: 14,
     nodes: [
-      { id: "inquiry", x: 300, y: 140, label: "inquiry-router" },
-      { id: "finance", x: 180, y: 90, label: "finance-review" },
-      { id: "support", x: 420, y: 90, label: "support-triage" },
-      { id: "contract", x: 130, y: 200, label: "contract-scan" },
-      { id: "expense", x: 470, y: 200, label: "expense-cat" },
-      { id: "qa", x: 60, y: 130, label: "ops-qa" },
-      { id: "meeting", x: 540, y: 130, label: "meeting-notes" },
-      { id: "invent", x: 300, y: 50, label: "inventory-sync" },
-      { id: "kb", x: 300, y: 230, label: "kb-search" },
-      { id: "doc", x: 230, y: 230, label: "doc-extract" },
-      { id: "reply", x: 370, y: 230, label: "reply-draft" },
-      { id: "analytics", x: 100, y: 50, label: "analytics" },
-      { id: "lead", x: 500, y: 50, label: "lead-score" },
-      { id: "onboard", x: 50, y: 250, label: "onboard" },
+      account, hooks, captions, watch, shares, views, reach, saves,
+      insights, followerSignal, shareReach, fitness, motivation, selfGrowth,
     ],
     edges: [
-      ["inquiry", "finance"],
-      ["inquiry", "support"],
-      ["finance", "contract"],
-      ["support", "expense"],
-      ["contract", "qa"],
-      ["expense", "meeting"],
-      ["finance", "invent"],
-      ["support", "invent"],
-      ["inquiry", "kb"],
-      ["contract", "doc"],
-      ["inquiry", "reply"],
-      ["kb", "doc"],
-      ["kb", "reply"],
-      ["finance", "analytics"],
-      ["support", "lead"],
-      ["qa", "onboard"],
-      ["analytics", "invent"],
-      ["lead", "inquiry"],
+      ["account", "hooks"],
+      ["account", "captions"],
+      ["hooks", "watch"],
+      ["captions", "shares"],
+      ["watch", "views"],
+      ["shares", "reach"],
+      ["hooks", "saves"],
+      ["captions", "saves"],
+      ["account", "insights"],
+      ["insights", "followerSignal"],
+      ["insights", "shareReach"],
+      ["shares", "shareReach"],
+      ["reach", "shareReach"],
+      ["hooks", "fitness"],
+      ["captions", "motivation"],
+      ["views", "selfGrowth"],
+      ["fitness", "saves"],
+      ["motivation", "account"],
     ],
   },
 ];
@@ -226,28 +201,29 @@ export default function NetworkGrowth() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-[#0a0a0a] p-7"
+      className="relative w-full overflow-hidden rounded-[12px] border border-neutral-200 bg-white p-7 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
     >
-      <div className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:radial-gradient(circle_at_center,rgba(255,255,255,0.75)_1px,transparent_1px)] [background-size:22px_22px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(0,0,0,0.5)_1px,transparent_1px)] [background-size:22px_22px]" />
       <div className="flex items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.05em]">
-        <span className="text-white/40">Network Growth</span>
-        <span className="text-[rgba(204,120,92,0.95)]">
-          {month.label} · {month.count} {month.count === 1 ? "Skill" : "Skills"}
+        <span className="text-neutral-500">Audience Growth</span>
+        <span className="rounded-md border border-orange-200 bg-orange-50 px-2 py-1 leading-none text-warm">
+          {month.label}
         </span>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-lg border border-white/5 bg-white/1">
+      <div className="mt-8 overflow-hidden rounded-[10px] border border-neutral-200 bg-neutral-50/70">
         <svg
           viewBox="0 0 600 280"
-          className="h-[280px] w-full"
+          // Phones: height follows the 600×280 aspect instead of letterboxing inside a fixed 280px box.
+          className="h-auto w-full sm:h-[280px]"
           role="img"
-          aria-label={`${month.label} network with ${month.count} skills`}
+          aria-label={`${month.label}: ${month.count} signals`}
         >
           <defs>
             <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="rgba(204,120,92,0.5)" />
-              <stop offset="70%" stopColor="rgba(204,120,92,0.08)" />
-              <stop offset="100%" stopColor="rgba(204,120,92,0)" />
+              <stop offset="0%" stopColor="rgba(224,85,47,0.35)" />
+              <stop offset="70%" stopColor="rgba(224,85,47,0.06)" />
+              <stop offset="100%" stopColor="rgba(224,85,47,0)" />
             </radialGradient>
           </defs>
 
@@ -265,7 +241,7 @@ export default function NetworkGrowth() {
                   y1={from.y}
                   x2={to.x}
                   y2={to.y}
-                  stroke="rgba(204,120,92,0.25)"
+                  stroke="#bbbbbb"
                   strokeWidth="0.8"
                   strokeDasharray="2 3"
                   initial={{ opacity: 0, pathLength: 0 }}
@@ -292,7 +268,7 @@ export default function NetworkGrowth() {
                 <motion.circle
                   key={`${edgeKey(edge)}-${signalCycle}`}
                   r="2.5"
-                  fill="rgba(93,202,165,0.95)"
+                  fill="#3EA45A"
                   initial={{ cx: from.x, cy: from.y, opacity: 0 }}
                   animate={{
                     cx: [from.x, (from.x + to.x) / 2, to.x],
@@ -341,14 +317,14 @@ export default function NetworkGrowth() {
                   }}
                   style={{ transformOrigin: `${node.x}px ${node.y}px` }}
                 />
-                {node.id === "inquiry" || newestNodeIds.has(node.id) ? (
+                {node.id === "account" || newestNodeIds.has(node.id) ? (
                   <text
                     x={node.x}
                     y={node.y - 18}
                     textAnchor="middle"
-                    className="font-mono"
+                    className="font-mono max-sm:text-[18px]"
                     fontSize="9"
-                    fill="rgba(255,255,255,0.7)"
+                    fill="#404040"
                   >
                     {node.label}
                   </text>
@@ -357,13 +333,13 @@ export default function NetworkGrowth() {
                   cx={node.x}
                   cy={node.y}
                   r="8"
-                  fill="rgba(204,120,92,0.12)"
+                  fill="rgba(224,85,47,0.12)"
                 />
                 <circle
                   cx={node.x}
                   cy={node.y}
                   r="3.5"
-                  fill="rgba(204,120,92,0.95)"
+                  fill="#e0552f"
                 />
                 {newestNodeIds.has(node.id) ? (
                   <motion.circle
@@ -371,7 +347,7 @@ export default function NetworkGrowth() {
                     cy={node.y}
                     r="11"
                     fill="none"
-                    stroke="rgba(93,202,165,0.7)"
+                    stroke="rgba(62,164,90,0.7)"
                     strokeWidth="0.8"
                     initial={{ opacity: 0, scale: 0.7 }}
                     animate={{ opacity: [0, 1, 0], scale: [0.7, 1.7, 2.2] }}
@@ -386,17 +362,17 @@ export default function NetworkGrowth() {
       </div>
 
       <div className="mt-5 grid grid-cols-3 gap-3 font-mono text-[9px] uppercase tracking-[0.05em] sm:grid-cols-3">
-        <div className="rounded-lg border border-white/10 bg-white/2 px-3 py-2">
-          <p className="text-white/35">Skills</p>
-          <p className="mt-1 text-[rgba(204,120,92,0.95)]">{month.count}</p>
+        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <p className="text-neutral-400">Signals</p>
+          <p className="mt-1 text-warm">{month.count}</p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-white/2 px-3 py-2">
-          <p className="text-white/35">Links</p>
-          <p className="mt-1 text-white/80">{month.edges.length}</p>
+        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <p className="text-neutral-400">Links</p>
+          <p className="mt-1 text-neutral-800">{month.edges.length}</p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-white/2 px-3 py-2">
-          <p className="text-white/35">Signals</p>
-          <p className="mt-1 text-[rgba(93,202,165,0.9)]">
+        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+          <p className="text-neutral-400">Signals</p>
+          <p className="mt-1 text-green-700">
             {Math.max(1, activeSignals.length)} live
           </p>
         </div>
@@ -414,20 +390,20 @@ export default function NetworkGrowth() {
               onClick={() => setCurrentMonth(index)}
               className={`group border-b py-3 text-center transition-colors duration-200 ${
                 isActive
-                  ? "border-[rgba(204,120,92,0.95)] text-[rgba(204,120,92,0.95)]"
+                  ? "border-warm text-warm"
                   : isPast
-                    ? "border-white/15 text-white/50"
-                    : "border-white/5 text-white/25"
+                    ? "border-neutral-300 text-neutral-500"
+                    : "border-neutral-200 text-neutral-300"
               }`}
             >
-              <span>M{index + 1}</span>
+              <span>S{index + 1}</span>
               <span
                 className={`mx-auto mt-2 block h-1 rounded-full transition-all duration-300 ${
                   isActive
-                    ? "w-8 bg-[rgba(204,120,92,0.95)]"
+                    ? "w-8 bg-warm"
                     : isPast
-                      ? "w-5 bg-white/25"
-                      : "w-2 bg-white/10 group-hover:w-4"
+                      ? "w-5 bg-neutral-300"
+                      : "w-2 bg-neutral-200 group-hover:w-4"
                 }`}
               />
             </button>

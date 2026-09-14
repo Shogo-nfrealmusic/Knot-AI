@@ -1,94 +1,125 @@
-import Image from "next/image";
 import Link from "next/link";
+import type { IconType } from "react-icons";
+import { FaLinkedin } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
+import { SiGithub, SiInstagram, SiUpwork } from "react-icons/si";
+import { socialLinks } from "@/lib/site";
+
+const socialIcons: Record<string, IconType> = {
+  GitHub: SiGithub,
+  LinkedIn: FaLinkedin,
+  Upwork: SiUpwork,
+  Instagram: SiInstagram,
+  Email: HiOutlineMail,
+};
 
 const columns = [
   {
-    title: "Product",
+    title: "Site",
     links: [
-      { label: "How it works", href: "/how-it-works" },
-      { label: "FAQ", href: "/faq" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
+      { label: "Work", href: "/work" },
       { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
     title: "Connect",
-    links: [
-      { label: "Email", href: "/contact" },
-      {
-        label: "X / Twitter",
-        href: "https://x.com/imshogok",
-        external: true,
-      },
-    ],
+    links: socialLinks,
   },
   {
     title: "Legal",
-    links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-      { label: "DPA", href: "/dpa" },
-    ],
+    links: [{ label: "Privacy", href: "/privacy" }],
   },
 ];
 
+const linkClass =
+  "text-sm text-neutral-500 transition-colors duration-75 hover:text-neutral-700";
+
 export default function Footer() {
   return (
-    <footer className="border-t border-border-solid bg-bg-primary">
-      <div className="mx-auto max-w-[1344px] px-4 sm:px-6 lg:px-14 py-14">
-        <div className="grid grid-cols-1 gap-y-10 text-center md:grid-cols-[minmax(0,1.4fr)_repeat(4,minmax(0,1fr))] md:gap-x-8 md:text-left">
-          <div className="flex flex-col items-center md:items-start">
-            <Image
-              src="/logo.png"
-              alt="Knot"
-              width={120}
-              height={120}
-              className="h-8 w-8 rounded-md object-cover"
-            />
-            <p className="mt-5 max-w-xs text-[13px] leading-relaxed tracking-[-0.008em] text-text-secondary">
-              Knot turns AI capability into operational practice.
+    <footer className="bg-white px-4">
+      <div className="mx-auto w-full max-w-screen-lg py-16 lg:px-4 xl:px-0">
+        <div className="xl:grid xl:grid-cols-3 xl:gap-8">
+          <div className="flex flex-col gap-6">
+            <Link href="/" className="block max-w-fit" aria-label="Home">
+              <span className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-900 font-mono text-[11px] font-semibold tracking-[-0.02em] text-white">
+                SK
+              </span>
+            </Link>
+            <p className="max-w-xs text-sm leading-relaxed text-neutral-500">
+              Shogo Kikuchi builds software and runs it in a real business.
             </p>
+            <ul className="flex items-center gap-3">
+              {socialLinks.map((link) => {
+                const Icon = socialIcons[link.label];
+                if (!Icon) return null;
+                return (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                      rel="noopener noreferrer"
+                      className="group block rounded-full p-1"
+                    >
+                      <span className="sr-only">{link.label}</span>
+                      <Icon className="size-4 text-neutral-900 transition-colors duration-75 group-hover:text-neutral-600" />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h3 className="mb-5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-text-muted">
-                {col.title}
-              </h3>
-              <ul className="space-y-2">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    {link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[13px] text-text-secondary transition-colors duration-150 hover:text-text-primary tracking-[-0.008em]"
-                      >
-                        {link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        href={link.href}
-                        className="text-[13px] text-text-secondary transition-colors duration-150 hover:text-text-primary tracking-[-0.008em]"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="mt-16 grid grid-cols-2 gap-8 sm:grid-cols-3 xl:col-span-2 xl:mt-0">
+            {columns.map((col) => (
+              <div key={col.title}>
+                <h3 className="text-sm font-medium text-neutral-900">
+                  {col.title}
+                </h3>
+                <ul role="list" className="mt-2.5 flex flex-col gap-3.5">
+                  {col.links.map((link) => (
+                    <li key={link.label}>
+                      {link.href.startsWith("/") ? (
+                        <Link href={link.href} className={linkClass}>
+                          {link.label}
+                        </Link>
+                      ) : (
+                        <a
+                          href={link.href}
+                          target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+                          rel="noopener noreferrer"
+                          className={linkClass}
+                        >
+                          {link.label}
+                        </a>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-14 border-t border-border-solid pt-6 text-center md:text-left">
-          <p className="text-[12px] text-text-muted tracking-[-0.008em]">
-            © 2026 Knot, Inc.
+        <div className="mt-12 grid grid-cols-1 items-center gap-8 sm:grid-cols-3">
+          <Link
+            href="/contact"
+            className="group flex max-w-fit items-center gap-2 rounded-lg border border-neutral-200 bg-white py-2 pl-2 pr-2.5 transition-colors hover:bg-neutral-50 active:bg-neutral-100"
+          >
+            <span className="relative size-2">
+              <span className="absolute inset-0 m-auto size-2 animate-ping rounded-full bg-green-500 group-hover:animate-none" />
+              <span className="absolute inset-0 z-10 m-auto size-2 rounded-full bg-green-500" />
+            </span>
+            <span className="text-xs font-medium leading-none text-neutral-600">
+              Taking new projects
+            </span>
+          </Link>
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-400 sm:text-center">
+            Tokyo · Remote
+          </p>
+          <p className="text-xs text-neutral-500 sm:text-right">
+            © 2026 Shogo Kikuchi
           </p>
         </div>
       </div>

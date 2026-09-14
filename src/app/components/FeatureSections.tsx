@@ -38,9 +38,9 @@ function FeatureSection({
             {highlights.map((highlight) => (
               <div
                 key={highlight.title}
-                className="border border-border rounded-lg p-6 bg-white/[0.01] hover:bg-white/[0.02] transition-colors"
+                className="border border-border rounded-lg p-6 bg-neutral-50 hover:bg-neutral-100 transition-colors"
               >
-                <h3 className="text-[15px] font-semibold text-[#d0d6e0] tracking-[-0.01em] mb-2">
+                <h3 className="text-[15px] font-semibold text-neutral-500 tracking-[-0.01em] mb-2">
                   {highlight.title}
                 </h3>
                 <p className="text-[13px] text-text-secondary leading-relaxed tracking-[-0.008em]">

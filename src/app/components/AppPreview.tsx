@@ -17,131 +17,129 @@ import {
 } from "motion/react";
 
 const activeSkills = [
-  { name: "inquiry-router", sparkline: "▁▂▃▅▆▇█▇▅" },
-  { name: "finance-review", sparkline: "▂▃▅▇▆▅▃▂▁" },
-  { name: "support-triage", sparkline: "▁▁▂▃▄▅▆▇▇" },
-  { name: "contract-scan", sparkline: "▃▅▇█▇▅▃▂▁" },
+  { name: "lead-intake", sparkline: "▁▂▃▅▆▇█▇▅" },
+  { name: "payment-sync", sparkline: "▂▃▅▇▆▅▃▂▁" },
+  { name: "weekly-report", sparkline: "▁▁▂▃▄▅▆▇▇" },
+  { name: "support-triage", sparkline: "▃▅▇█▇▅▃▂▁" },
 ];
 
 const idleSkills = [
-  "ops-qa-checklist",
-  "inventory-sync",
-  "meeting-notes",
-  "expense-categorizer",
+  "invoice-reminders",
+  "calendar-sync",
+  "content-pipeline",
+  "data-export",
 ];
 
 const workspaces = [
-  "Customer support",
-  "Finance ops",
-  "Legal review",
-  "Internal IT",
+  "Sales",
+  "Finance",
+  "Operations",
+  "Marketing",
 ];
 
 type CodeLineItem = { line: string; type: "body" | "yaml" | "heading" };
 
 const skillTabs = [
   {
-    id: "inquiry-router",
-    file: "inquiry-router/SKILL.md",
-    command: "$ knot run inquiry-router --watch",
+    id: "lead-intake",
+    file: "lead-intake/flow.yaml",
+    command: "$ run lead-intake --watch",
     codeLines: [
       { line: "---", type: "body" },
-      { line: "name: inquiry-router", type: "yaml" },
-      { line: "triggers: [email, form, slack]", type: "yaml" },
-      { line: "owners: [billing-ops, support]", type: "yaml" },
+      { line: "name: lead-intake", type: "yaml" },
+      { line: "triggers: [web_form, email, slack]", type: "yaml" },
+      { line: "tools: [llm, crm, slack]", type: "yaml" },
       { line: "---", type: "body" },
       { line: "", type: "body" },
-      { line: "# Inquiry Routing", type: "heading" },
+      { line: "# Lead Intake", type: "heading" },
       { line: "", type: "body" },
-      { line: "When a new inquiry arrives:", type: "body" },
-      { line: "  1. Classify intent and category", type: "body" },
-      { line: "  2. Score priority (P0-P3)", type: "body" },
-      { line: "  3. Route to the right owner", type: "body" },
-      { line: "  4. Draft a contextual reply", type: "body" },
+      { line: "When a new lead arrives:", type: "body" },
+      { line: "  1. Enrich the company and contact", type: "body" },
+      { line: "  2. Score the fit with an LLM", type: "body" },
+      { line: "  3. Create the record in the CRM", type: "body" },
+      { line: "  4. Draft a reply for review", type: "body" },
     ] satisfies CodeLineItem[],
     logs: [
-      "14:32:08.421  REQ-1842 received  via slack",
-      "14:32:08.502  → classify_intent()",
-      "14:32:09.118  ✓ category: billing",
-      "14:32:09.119  ✓ priority: high",
-      "14:32:09.203  → route(team: billing-ops)",
-      "14:32:09.487  ✓ draft ready · 142 chars",
-      "14:32:11.802  REQ-1843 received  via email",
-      "14:32:11.901  → classify_intent()",
-      "14:32:12.288  ▸ thinking",
-      "14:32:13.044  ✓ category: refund",
-      "14:32:13.812  ✓ priority: medium",
-      "14:32:14.022  → route(team: support)",
-      "14:32:14.661  ✓ draft ready · 98 chars",
-      "14:32:18.117  REQ-1844 received  via form",
+      "10:02:11.204  LEAD-2041 received  via web_form",
+      "10:02:11.390  → enrich_contact()",
+      "10:02:12.018  ✓ company matched",
+      "10:02:12.402  → score_fit(model: llm)",
+      "10:02:13.105  ✓ fit: high",
+      "10:02:13.380  → crm.create_record()",
+      "10:02:13.902  ✓ reply drafted · ready for review",
+      "10:02:18.117  LEAD-2042 received  via email",
+      "10:02:18.301  → enrich_contact()",
+      "10:02:18.940  ✓ company matched",
+      "10:02:19.322  → score_fit(model: llm)",
+      "10:02:19.980  ✓ fit: medium",
     ],
   },
   {
-    id: "finance-review",
-    file: "finance-review/SKILL.md",
-    command: "$ knot run finance-review --watch",
+    id: "payment-sync",
+    file: "payment-sync/sync.yaml",
+    command: "$ run payment-sync --watch",
     codeLines: [
       { line: "---", type: "body" },
-      { line: "name: finance-review", type: "yaml" },
-      { line: "triggers: [invoice_uploaded, expense_submitted]", type: "yaml" },
-      { line: "owners: [finance-ops]", type: "yaml" },
+      { line: "name: payment-sync", type: "yaml" },
+      { line: "triggers: [stripe_webhook]", type: "yaml" },
+      { line: "tools: [stripe, sheets, slack]", type: "yaml" },
       { line: "---", type: "body" },
       { line: "", type: "body" },
-      { line: "# Finance Review", type: "heading" },
+      { line: "# Payment Sync", type: "heading" },
       { line: "", type: "body" },
-      { line: "For each new financial document:", type: "body" },
-      { line: "  1. Extract line items and totals", type: "body" },
-      { line: "  2. Validate against policy rules", type: "body" },
-      { line: "  3. Flag exceptions for human review", type: "body" },
-      { line: "  4. Post approved entries to ledger", type: "body" },
+      { line: "For every payment event:", type: "body" },
+      { line: "  1. Match it to the customer and order", type: "body" },
+      { line: "  2. Update the ledger sheet", type: "body" },
+      { line: "  3. Schedule the follow-up invoice", type: "body" },
+      { line: "  4. Post a summary to Slack", type: "body" },
     ] satisfies CodeLineItem[],
     logs: [
-      "15:04:02.112  INV-3318 received  via email",
-      "15:04:02.304  → extract_line_items()",
-      "15:04:03.018  ✓ items: 14 · total: $48,290",
-      "15:04:03.612  → validate_policy()",
-      "15:04:04.021  ✓ within limits",
-      "15:04:04.500  ✓ posted to ledger",
-      "15:04:08.117  INV-3319 received  via upload",
-      "15:04:08.302  → extract_line_items()",
-      "15:04:08.884  ▸ thinking",
-      "15:04:09.224  ✓ items: 7 · total: $12,480",
-      "15:04:09.701  → validate_policy()",
-      "15:04:10.014  ✓ within limits",
+      "14:20:04.118  PAY-8812 received  via stripe",
+      "14:20:04.301  → match_order()",
+      "14:20:04.920  ✓ order matched",
+      "14:20:05.212  → ledger.update()",
+      "14:20:05.604  ✓ ledger updated",
+      "14:20:05.910  → schedule_invoice()",
+      "14:20:06.302  ✓ slack summary posted",
+      "14:20:09.842  PAY-8813 received  via stripe",
+      "14:20:10.001  → match_order()",
+      "14:20:10.644  ✓ order matched",
+      "14:20:11.215  → ledger.update()",
+      "14:20:11.870  ✓ ledger updated",
     ],
   },
   {
-    id: "contract-scan",
-    file: "contract-scan/SKILL.md",
-    command: "$ knot run contract-scan --watch",
+    id: "weekly-report",
+    file: "weekly-report/schedule.yaml",
+    command: "$ run weekly-report --watch",
     codeLines: [
       { line: "---", type: "body" },
-      { line: "name: contract-scan", type: "yaml" },
-      { line: "triggers: [pdf_uploaded, link_received]", type: "yaml" },
-      { line: "owners: [legal, procurement]", type: "yaml" },
+      { line: "name: weekly-report", type: "yaml" },
+      { line: "schedule: [monday_09_00]", type: "yaml" },
+      { line: "sources: [ga4, clarity, stripe]", type: "yaml" },
       { line: "---", type: "body" },
       { line: "", type: "body" },
-      { line: "# Contract Scan", type: "heading" },
+      { line: "# Weekly Report", type: "heading" },
       { line: "", type: "body" },
-      { line: "For each incoming contract:", type: "body" },
-      { line: "  1. Extract parties, terms, and dates", type: "body" },
-      { line: "  2. Compare against standard clauses", type: "body" },
-      { line: "  3. Surface deviations and risks", type: "body" },
-      { line: "  4. Draft a redline summary", type: "body" },
+      { line: "Every Monday morning:", type: "body" },
+      { line: "  1. Pull traffic, funnel, and revenue data", type: "body" },
+      { line: "  2. Flag drop-offs and anomalies", type: "body" },
+      { line: "  3. Summarize the findings with an LLM", type: "body" },
+      { line: "  4. Send the report to the team", type: "body" },
     ] satisfies CodeLineItem[],
     logs: [
-      "16:18:20.144  DOC-882 received  via pdf",
-      "16:18:20.318  → extract_terms()",
-      "16:18:21.006  ✓ parties: 2 · pages: 14",
-      "16:18:21.504  → check_clauses()",
-      "16:18:22.209  ⚠ deviation: termination notice",
-      "16:18:22.880  ✓ redline ready · 6 changes",
-      "16:18:28.117  DOC-883 received  via link",
-      "16:18:28.302  → extract_terms()",
-      "16:18:28.882  ▸ thinking",
-      "16:18:29.406  ✓ parties: 3 · pages: 22",
-      "16:18:30.104  → check_clauses()",
-      "16:18:30.774  ✓ redline ready · 4 changes",
+      "09:00:00.004  RUN-0312 started  via schedule",
+      "09:00:00.318  → pull_sources()",
+      "09:00:04.006  ✓ 3 sources loaded",
+      "09:00:04.504  → flag_anomalies()",
+      "09:00:05.209  ✓ drop-off flagged: checkout",
+      "09:00:05.880  → summarize(model: llm)",
+      "09:00:08.117  ✓ report sent to #team",
+      "09:00:00.011  RUN-0313 started  via schedule",
+      "09:00:00.296  → pull_sources()",
+      "09:00:03.774  ✓ 3 sources loaded",
+      "09:00:04.180  → flag_anomalies()",
+      "09:00:04.902  ✓ no anomalies",
     ],
   },
 ] as const;
@@ -154,47 +152,42 @@ function randomBetween(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
-function formatResolution(totalSeconds: number) {
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-  return `${minutes}m ${seconds}s`;
-}
-
 function getHighlightLine(line: string) {
   const normalized = line.toLowerCase();
 
   if (
-    normalized.includes("classify_intent") ||
-    normalized.includes("category") ||
-    normalized.includes("extract_line_items") ||
-    normalized.includes("extract_terms") ||
-    normalized.includes("items:") ||
-    normalized.includes("parties:")
+    normalized.includes("enrich") ||
+    normalized.includes("company matched") ||
+    normalized.includes("match_order") ||
+    normalized.includes("order matched") ||
+    normalized.includes("pull_sources") ||
+    normalized.includes("sources loaded")
   ) {
     return 9;
   }
 
   if (
-    normalized.includes("priority") ||
-    normalized.includes("validate_policy") ||
-    normalized.includes("within limits") ||
-    normalized.includes("check_clauses")
+    normalized.includes("score_fit") ||
+    normalized.includes("fit:") ||
+    normalized.includes("ledger") ||
+    normalized.includes("anomal") ||
+    normalized.includes("drop-off")
   ) {
     return 10;
   }
 
   if (
-    normalized.includes("route") ||
-    normalized.includes("exception") ||
-    normalized.includes("deviation")
+    normalized.includes("crm") ||
+    normalized.includes("invoice") ||
+    normalized.includes("summarize")
   ) {
     return 11;
   }
 
   if (
-    normalized.includes("draft ready") ||
-    normalized.includes("posted to ledger") ||
-    normalized.includes("redline ready")
+    normalized.includes("reply drafted") ||
+    normalized.includes("slack summary") ||
+    normalized.includes("report sent")
   ) {
     return 12;
   }
@@ -204,11 +197,11 @@ function getHighlightLine(line: string) {
 
 function KnotMark() {
   return (
-    <div className="grid h-4 w-4 shrink-0 grid-cols-2 gap-0.5 rounded-[5px] border border-white/10 bg-white/[0.03] p-0.5">
-      <span className="rounded-[2px] bg-[#F0997B]/80" />
-      <span className="rounded-[2px] bg-white/20" />
-      <span className="rounded-[2px] bg-white/20" />
-      <span className="rounded-[2px] bg-[#5DCAA5]/80" />
+    <div className="grid h-4 w-4 shrink-0 grid-cols-2 gap-0.5 rounded-[5px] border border-neutral-200 bg-neutral-50 p-0.5">
+      <span className="rounded-[2px] bg-warm/80" />
+      <span className="rounded-[2px] bg-neutral-300" />
+      <span className="rounded-[2px] bg-neutral-300" />
+      <span className="rounded-[2px] bg-emerald-500/80" />
     </div>
   );
 }
@@ -223,14 +216,14 @@ function SkillLibrary({ start }: { start: boolean }) {
     >
       <div className="mb-5 flex items-center gap-2">
         <KnotMark />
-        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-[#d0d6e0]">
-          KNOT CONSOLE
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-neutral-800">
+          AUTOMATION CONSOLE
         </span>
       </div>
 
-      <div className="mb-3 flex items-center justify-between border-b border-white/5 pb-3">
-        <span className="text-[13px] font-semibold text-[#d0d6e0]">Skills</span>
-        <span className="font-mono text-[11px] text-text-muted">12</span>
+      <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-3">
+        <span className="text-[13px] font-semibold text-neutral-800">Workflows</span>
+        <span className="font-mono text-[11px] text-text-muted">8</span>
       </div>
 
       <div className="space-y-1">
@@ -251,7 +244,7 @@ function SkillLibrary({ start }: { start: boolean }) {
                 hover: { width: 2, opacity: 1 },
               }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute left-0 top-1 bottom-1 rounded-full bg-[#cc785c]"
+              className="absolute left-0 top-1 bottom-1 rounded-full bg-warm"
             />
             <motion.span
               variants={{
@@ -259,10 +252,10 @@ function SkillLibrary({ start }: { start: boolean }) {
                 hover: { opacity: 1 },
               }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute inset-0 bg-white/[0.04]"
+              className="absolute inset-0 bg-neutral-100"
             />
-            <span className="relative z-10 h-1 w-1 rounded-full bg-[#5DCAA5]" />
-            <span className="relative z-10 min-w-0 flex-1 truncate font-mono text-[12px] text-[#d0d6e0]">
+            <span className="relative z-10 h-1 w-1 rounded-full bg-emerald-500" />
+            <span className="relative z-10 min-w-0 flex-1 truncate font-mono text-[12px] text-neutral-800">
               {skill.name}
             </span>
             <motion.span
@@ -271,7 +264,7 @@ function SkillLibrary({ start }: { start: boolean }) {
                 hover: { opacity: 0.85 },
               }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="relative z-10 font-mono text-[11px] text-[#cc785c]"
+              className="relative z-10 font-mono text-[11px] text-warm"
             >
               {skill.sparkline}
             </motion.span>
@@ -281,7 +274,7 @@ function SkillLibrary({ start }: { start: boolean }) {
 
       <div className="mt-5 space-y-1">
         <p className="px-1 pb-1 font-mono text-[11px] text-text-muted">
-          ▸ Idle (8)
+          ▸ Scheduled (4)
         </p>
         {idleSkills.map((skill) => (
           <motion.div
@@ -297,7 +290,7 @@ function SkillLibrary({ start }: { start: boolean }) {
                 hover: { width: 2, opacity: 1 },
               }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute left-0 top-1 bottom-1 rounded-full bg-[#cc785c]"
+              className="absolute left-0 top-1 bottom-1 rounded-full bg-warm"
             />
             <motion.span
               variants={{
@@ -305,18 +298,15 @@ function SkillLibrary({ start }: { start: boolean }) {
                 hover: { opacity: 1 },
               }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute inset-0 bg-white/[0.04]"
+              className="absolute inset-0 bg-neutral-100"
             />
-            <span className="relative z-10 h-1.5 w-1.5 rounded-full border border-white/20" />
-            <span className="relative z-10 font-mono text-[12px] text-white/40">{skill}</span>
+            <span className="relative z-10 h-1.5 w-1.5 rounded-full border border-neutral-300" />
+            <span className="relative z-10 font-mono text-[12px] text-neutral-400">{skill}</span>
           </motion.div>
         ))}
-        <p className="px-1 pt-1 font-mono text-[11px] text-text-muted">
-          + 4 more
-        </p>
       </div>
 
-      <div className="mt-5 border-t border-white/5 pt-4">
+      <div className="mt-5 border-t border-neutral-200 pt-4">
         <p className="mb-2 px-1 font-mono text-[11px] uppercase tracking-[0.08em] text-text-muted">
           Workspaces
         </p>
@@ -324,7 +314,7 @@ function SkillLibrary({ start }: { start: boolean }) {
           {workspaces.map((workspace) => (
             <div
               key={workspace}
-              className="flex h-7 items-center rounded-md px-1.5 text-[12px] font-medium text-text-secondary transition-colors hover:bg-white/[0.03] hover:text-[#d0d6e0]"
+              className="flex h-7 items-center rounded-md px-1.5 text-[12px] font-medium text-text-secondary transition-colors hover:bg-neutral-100 hover:text-neutral-900"
             >
               {workspace}
             </div>
@@ -349,10 +339,10 @@ function CodeLine({
   const keyMatch = line.match(/^([a-z]+:)(.*)$/);
   const textClass =
     type === "heading"
-      ? "text-[#d0d6e0]"
+      ? "text-neutral-800"
       : type === "yaml"
-        ? "text-white/70"
-        : "text-white/70";
+        ? "text-neutral-700"
+        : "text-neutral-700";
 
   return (
     <motion.div
@@ -362,8 +352,8 @@ function CodeLine({
       }}
       animate={{
         backgroundColor: active
-          ? "rgba(204,120,92,0.08)"
-          : "rgba(204,120,92,0)",
+          ? "rgba(224,85,47,0.07)"
+          : "rgba(224,85,47,0)",
       }}
       transition={{ duration: active ? 0.15 : 0.4, ease: "easeOut" }}
       className="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-3 rounded-sm"
@@ -371,22 +361,22 @@ function CodeLine({
       <motion.span
         animate={{ opacity: active ? 1 : 0, scaleY: active ? 1 : 0.4 }}
         transition={{ duration: active ? 0.15 : 0.4, ease: "easeOut" }}
-        className="absolute left-0 top-0.5 bottom-0.5 w-[2px] rounded-full bg-[#cc785c]"
+        className="absolute left-0 top-0.5 bottom-0.5 w-[2px] rounded-full bg-warm"
       />
-      <span className="select-none text-right font-mono text-[11px] leading-5 text-white/25">
+      <span className="select-none text-right font-mono text-[11px] leading-5 text-neutral-300">
         {index + 1}
       </span>
       <code className={`min-w-0 whitespace-pre font-mono text-[11.5px] leading-5 ${textClass}`}>
         {keyMatch ? (
           <>
-            <span className="text-[#9FE1CB]">{keyMatch[1]}</span>
-            <span className="text-[#F0997B]">{keyMatch[2]}</span>
+            <span className="text-emerald-700">{keyMatch[1]}</span>
+            <span className="text-orange-700">{keyMatch[2]}</span>
           </>
         ) : (
           line
         )}
         {index === 12 ? (
-          <span className="ml-1 inline-block h-4 w-px animate-pulse bg-[#F0997B] align-[-0.2em]" />
+          <span className="ml-1 inline-block h-4 w-px animate-pulse bg-warm align-[-0.2em]" />
         ) : null}
       </code>
     </motion.div>
@@ -409,7 +399,7 @@ function EditorPanel({
       transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
       className="min-h-0 border-b border-border"
     >
-      <div className="flex min-h-10 items-center justify-between border-b border-white/5 bg-bg-elevated px-3">
+      <div className="flex min-h-10 items-center justify-between border-b border-neutral-200 bg-bg-elevated px-3">
         <div className="flex min-w-0 items-end gap-1 overflow-x-auto">
           {skillTabs.map((skill) => {
             const active = skill.id === activeSkill.id;
@@ -419,14 +409,14 @@ function EditorPanel({
                 key={skill.id}
                 className={`flex shrink-0 items-center gap-2 rounded-t-md border-x border-t px-3 py-2 ${
                   active
-                    ? "border-white/5 bg-[#0a0a0a]"
+                    ? "border-neutral-200 bg-white"
                     : "border-transparent bg-transparent"
                 }`}
               >
-                <span className="h-3 w-2.5 rounded-[2px] border border-white/20" />
+                <span className="h-3 w-2.5 rounded-[2px] border border-neutral-300" />
                 <span
                   className={`font-mono text-[11.5px] ${
-                    active ? "text-[#d0d6e0]" : "text-white/40"
+                    active ? "text-neutral-800" : "text-neutral-400"
                   }`}
                 >
                   {skill.file}
@@ -437,14 +427,14 @@ function EditorPanel({
         </div>
         <button
           type="button"
-          className="rounded-md border border-white/10 px-2 py-1 font-mono text-[10px] text-text-secondary"
+          className="rounded-md border border-neutral-200 px-2 py-1 font-mono text-[10px] text-text-secondary"
           tabIndex={-1}
         >
           ⌘ Edit
         </button>
       </div>
       <motion.div
-        className="overflow-x-auto bg-[#0a0a0a] px-3 py-4"
+        className="overflow-x-auto bg-white px-3 py-4"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -494,12 +484,12 @@ function LogLine({ line }: { line: string }) {
       transition={{ duration: 0.2, ease: "easeOut" }}
       className="grid grid-cols-[5.8rem_minmax(0,1fr)] gap-2 font-mono text-[11.5px] leading-5"
     >
-      <span className="text-white/35">{timestamp}</span>
-      <span className="min-w-0 text-white/75">
-        {isArrow ? <span className="text-[#cc785c]/70">→ </span> : null}
-        {isCheck ? <span className="text-[#5DCAA5]">✓ </span> : null}
+      <span className="text-neutral-400">{timestamp}</span>
+      <span className="min-w-0 text-neutral-700">
+        {isArrow ? <span className="text-warm/70">→ </span> : null}
+        {isCheck ? <span className="text-emerald-600">✓ </span> : null}
         {isThinking ? (
-          <span className="animate-pulse text-white/50">▸ thinking</span>
+          <span className="animate-pulse text-neutral-500">▸ thinking</span>
         ) : (
           event.replace("→ ", "").replace("✓ ", "")
         )}
@@ -555,18 +545,18 @@ function ExecutionLog({
   }, [cursor, logEntries, onLogEvent, onRequestReceived, startStreaming]);
 
   return (
-    <div className="min-h-[220px] bg-black/60">
+    <div className="min-h-[220px] bg-neutral-50">
       <motion.div
         initial={{ opacity: 0 }}
         animate={start ? { opacity: 1 } : { opacity: 0 }}
         transition={{ delay: 0.9, duration: 0.35, ease: "easeOut" }}
-        className="flex min-h-10 items-center justify-between border-b border-white/5 px-3"
+        className="flex min-h-10 items-center justify-between border-b border-neutral-200 px-3"
       >
         <span className="font-mono text-[11.5px] text-text-muted">
           {activeSkill.command}
         </span>
-        <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-[#5DCAA5]">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#5DCAA5]" />
+        <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.08em] text-emerald-600">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
           live
         </span>
       </motion.div>
@@ -667,12 +657,12 @@ function CountUp({
     <motion.span
       ref={ref}
       animate={{
-        color: value > 847 ? ["#d0d6e0", "#ffffff", "#d0d6e0"] : "#d0d6e0",
+        color: value > 847 ? ["#262626", "#059669", "#262626"] : "#262626",
         textShadow:
           value > 847
             ? [
                 "0 0 0 rgba(93,202,165,0)",
-                "0 0 14px rgba(93,202,165,0.35)",
+                "0 0 14px rgba(16,185,129,0.25)",
                 "0 0 0 rgba(93,202,165,0)",
               ]
             : "0 0 0 rgba(93,202,165,0)",
@@ -739,7 +729,7 @@ function DonutChart({
           cy="40"
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.09)"
+          stroke="#f0f0f0"
           strokeWidth="8"
         />
         <motion.circle
@@ -747,7 +737,7 @@ function DonutChart({
           cy="40"
           r={radius}
           fill="none"
-          stroke="#cc785c"
+          stroke="#e0552f"
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -761,7 +751,7 @@ function DonutChart({
           cy="40"
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.28)"
+          stroke="rgba(23,23,23,0.18)"
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={`10 ${circumference - 10}`}
@@ -775,7 +765,7 @@ function DonutChart({
           }}
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-[16px] font-semibold text-[#d0d6e0]">
+      <span className="absolute inset-0 flex items-center justify-center text-[16px] font-semibold text-neutral-800">
         <AnimatedPercent value={percent} />
       </span>
     </div>
@@ -792,14 +782,14 @@ function ServiceIcon({
   return (
     <motion.span
       title={label}
-      className="flex h-7 w-7 items-center justify-center rounded-md border border-white/10 bg-white/[0.02] font-mono text-[10px] font-semibold text-white/30"
+      className="flex h-7 w-7 items-center justify-center rounded-md border border-neutral-200 bg-white font-mono text-[10px] font-semibold text-neutral-400"
       animate={{
-        borderColor: active ? "rgba(204,120,92,0.55)" : "rgba(255,255,255,0.1)",
-        backgroundColor: active ? "rgba(204,120,92,0.14)" : "rgba(255,255,255,0.02)",
-        color: active ? "rgba(240,153,123,1)" : "rgba(255,255,255,0.3)",
+        borderColor: active ? "rgba(224,85,47,0.45)" : "rgba(229,229,229,1)",
+        backgroundColor: active ? "rgba(224,85,47,0.08)" : "rgba(255,255,255,1)",
+        color: active ? "rgba(194,65,12,1)" : "rgba(115,115,115,1)",
         boxShadow: active
-          ? "0 0 18px rgba(204,120,92,0.28)"
-          : "0 0 0 rgba(204,120,92,0)",
+          ? "0 0 0 3px rgba(224,85,47,0.12)"
+          : "0 0 0 0px rgba(224,85,47,0)",
       }}
       transition={{ duration: active ? 0.2 : 0.4 }}
     >
@@ -817,42 +807,8 @@ function MetricsPanel({
   start: boolean;
   startMetrics: boolean;
 }) {
-  const [resolutionSeconds, setResolutionSeconds] = useState(222);
-  const [autoResolved, setAutoResolved] = useState(72);
   const [activeServiceIndex, setActiveServiceIndex] = useState<number | null>(null);
-  const services = ["Slack", "Gmail", "Sheets", "Notion", "Calendar"];
-
-  useEffect(() => {
-    let timeoutId = 0;
-
-    const schedule = () => {
-      timeoutId = window.setTimeout(() => {
-        const next = Math.round(220 + randomBetween(-5, 5));
-        setResolutionSeconds(Math.max(210, Math.min(235, next)));
-        schedule();
-      }, randomBetween(5000, 10000));
-    };
-
-    schedule();
-    return () => window.clearTimeout(timeoutId);
-  }, []);
-
-  useEffect(() => {
-    let timeoutId = 0;
-
-    const schedule = () => {
-      timeoutId = window.setTimeout(() => {
-        setAutoResolved((current) => {
-          const drift = Math.random() > 0.5 ? 1 : -1;
-          return Math.max(70, Math.min(74, current + drift));
-        });
-        schedule();
-      }, randomBetween(8000, 12000));
-    };
-
-    schedule();
-    return () => window.clearTimeout(timeoutId);
-  }, []);
+  const services = ["Stripe", "Slack", "Sheets", "LLM", "GA4"];
 
   useEffect(() => {
     let timeoutId = 0;
@@ -880,44 +836,38 @@ function MetricsPanel({
       transition={{ delay: 1, duration: 0.5, ease: "easeOut" }}
       className="order-3 border-t border-border bg-bg-card-alt p-4 lg:border-l lg:border-t-0"
     >
-      <p className="mb-4 border-b border-white/5 pb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d0d6e0]">
-        Today
+      <p className="mb-4 border-b border-neutral-200 pb-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-800">
+        Sample week
       </p>
 
       <div className="space-y-4">
-        <div className="border-b border-white/5 pb-4">
-          <p className="mb-1 text-[12px] text-text-muted">Inquiries handled</p>
-          <p className="text-2xl font-semibold tracking-tight text-[#d0d6e0]">
+        <div className="border-b border-neutral-200 pb-4">
+          <p className="mb-1 text-[12px] text-text-muted">Tasks automated</p>
+          <p className="text-2xl font-semibold tracking-tight text-neutral-800">
             <CountUp start={startMetrics} value={inquiryCount} />
           </p>
-          <p className="mt-1 text-[12px] text-[#5DCAA5]">↑ 12%</p>
+          <p className="mt-1 text-[12px] text-emerald-600">↑ 18% vs last week</p>
         </div>
 
-        <div className="border-b border-white/5 pb-4">
-          <p className="mb-1 text-[12px] text-text-muted">Avg resolution</p>
-          <motion.p
-            key={resolutionSeconds}
-            initial={{ opacity: 0.55, y: 2 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-[18px] font-semibold tracking-tight text-[#d0d6e0]"
-          >
-            {formatResolution(resolutionSeconds)}
-          </motion.p>
-          <p className="mt-1 text-[12px] text-[#5DCAA5]">↓ 28%</p>
+        <div className="border-b border-neutral-200 pb-4">
+          <p className="mb-1 text-[12px] text-text-muted">Hours saved</p>
+          <p className="text-[18px] font-semibold tracking-tight text-neutral-800">
+            36h
+          </p>
+          <p className="mt-1 text-[12px] text-emerald-600">across 4 workflows</p>
         </div>
 
-        <div className="flex items-center justify-between border-b border-white/5 pb-4">
+        <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
           <div>
             <p className="mb-1 text-[12px] text-text-muted">Auto-resolved</p>
-            <p className="font-mono text-[11px] text-text-muted">human review 28%</p>
+            <p className="font-mono text-[11px] text-text-muted">human review 22%</p>
           </div>
-          <DonutChart percent={autoResolved} start={startMetrics} />
+          <DonutChart percent={78} start={startMetrics} />
         </div>
 
-        <div className="border-b border-white/5 pb-4">
+        <div className="border-b border-neutral-200 pb-4">
           <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.08em] text-text-muted">
-            Activity · 24H
+            Activity
           </p>
           <motion.div
             variants={{
@@ -928,7 +878,7 @@ function MetricsPanel({
             }}
             initial="hidden"
             animate={startMetrics ? "show" : "hidden"}
-            className="flex h-8 items-end gap-0.5 overflow-hidden font-mono text-[18px] leading-none text-[#cc785c]/60"
+            className="flex h-8 items-end gap-0.5 overflow-hidden font-mono text-[18px] leading-none text-warm/60"
           >
             {activityBars.map((bar, index) => {
               const isLatest = index === activityBars.length - 1;
@@ -989,7 +939,7 @@ export default function AppPreview() {
   const previewRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const previewInView = useInView(previewRef, { once: true, amount: 0.25 });
-  const [inquiryCount, setInquiryCount] = useState(847);
+  const inquiryCount = 1284;
   const [activeLine, setActiveLine] = useState<number | null>(null);
   const [activeSkillIndex, setActiveSkillIndex] = useState(0);
   const [startMetrics, setStartMetrics] = useState(false);
@@ -1001,9 +951,8 @@ export default function AppPreview() {
   const springRotateX = useSpring(rotateX, { stiffness: 140, damping: 22 });
   const springRotateY = useSpring(rotateY, { stiffness: 140, damping: 22 });
 
-  const handleRequestReceived = useCallback(() => {
-    setInquiryCount((current) => current + 1);
-  }, []);
+  // Sample figures: the counter stays fixed so the demo never reads as live data.
+  const handleRequestReceived = useCallback(() => {}, []);
   const handleLogEvent = useCallback((line: string) => {
     const nextLine = getHighlightLine(line);
 
@@ -1064,7 +1013,7 @@ export default function AppPreview() {
   }, [rotateX, rotateY]);
 
   return (
-    <section className="relative w-full min-w-0 px-0 pb-8 sm:pb-24">
+    <section className="relative w-full min-w-0 px-4 py-10 sm:px-10 sm:py-14">
       {/* Background gradient effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-bg-primary to-transparent" />
@@ -1072,7 +1021,7 @@ export default function AppPreview() {
 
       <motion.div
         ref={previewRef}
-        className="relative mx-auto w-[min(100%,94vw)] min-w-0 max-w-full sm:w-[90%] md:w-[85%]"
+        className="relative mx-auto w-full min-w-0"
         data-app-preview
         initial={{ opacity: 0 }}
         animate={startSequence ? { opacity: 1 } : { opacity: 0 }}
@@ -1083,7 +1032,7 @@ export default function AppPreview() {
       >
         {/* App window */}
         <motion.div
-          className="bg-bg-card-alt border border-border rounded-xl overflow-hidden shadow-2xl shadow-black/50 max-w-full min-w-0"
+          className="bg-bg-card-alt border border-border rounded-xl overflow-hidden shadow-[0_24px_60px_-20px_rgba(0,0,0,0.15)] ring-4 ring-neutral-900/[0.04] max-w-full min-w-0"
           style={{
             rotateX: springRotateX,
             rotateY: springRotateY,

@@ -1,19 +1,67 @@
 @import "tailwindcss";
 
+/* Light, dub.co-like palette: white ground, neutral-200 hairlines, near-black text. */
 :root {
-  --bg-primary: #08090a;
-  --bg-card: #121314;
-  --bg-card-alt: #101112;
-  --bg-elevated: #161718;
-  --text-primary: #f7f8f8;
-  --text-secondary: #8a8f98;
-  --text-muted: #62666d;
+  --bg-primary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-alt: #fafafa;
+  --bg-elevated: #ffffff;
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-muted: #737373;
   --accent: #5e6ad2;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-solid: #23252a;
+  /* Warm highlight for eyebrows, indices, and small emphasis. Dark enough to read on white. */
+  --warm: #e0552f;
+  --border: #e5e5e5;
+  --border-solid: #e5e5e5;
+
+  /* Colors referenced by components ported from the Proactiv template. */
+  --charcoal: #fafafa;
+  /* sticky-scroll / ProjectTools cycle these as section backgrounds, so on the
+     light theme they are near-white neutrals despite the names. */
+  --black: #ffffff;
+  --neutral-800: #262626;
+  --neutral-900: #fafafa;
+  --gray-900: #f9fafb;
+  --slate-900: #f8fafc;
+  --blue-500: #3b82f6;
+  --blue-900: #1e3a8a;
+  --cyan-500: #06b6d4;
+  --emerald-500: #10b981;
+  --indigo-500: #6366f1;
+  --pink-500: #ec4899;
+  --orange-500: #f97316;
+  --yellow-500: #eab308;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(-200px);
+  }
+
+  100% {
+    transform: translateX(200px);
+  }
+}
+
+/* dub.co entrance: rendered hidden from the first paint (no flash), then eases up.
+   Set --offset per element; stagger with animation-delay. */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(var(--offset, 10px));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @theme inline {
+  --color-charcoal: var(--charcoal);
+  --animate-move: move 5s linear infinite;
+  --animate-slide-up-fade: slide-up-fade 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   --color-bg-primary: var(--bg-primary);
   --color-bg-card: var(--bg-card);
   --color-bg-card-alt: var(--bg-card-alt);
@@ -22,10 +70,27 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent: var(--accent);
+  --color-warm: var(--warm);
   --color-border: var(--border);
   --color-border-solid: var(--border-solid);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-instrument-serif), Georgia, serif;
+}
+
+/* Type scale: one display size for page heroes, one for section headings. */
+@utility type-display {
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+@utility type-heading {
+  font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 * {
@@ -39,6 +104,7 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01";
   overflow-x: clip;
 }
 

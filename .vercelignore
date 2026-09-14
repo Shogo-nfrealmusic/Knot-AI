@@ -1,0 +1,5 @@
+# Never upload local secrets or private notes when deploying with the Vercel CLI.
+.env*
+PORTFOLIO.md
+.next
+node_modules

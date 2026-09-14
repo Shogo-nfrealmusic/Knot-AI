@@ -7,18 +7,18 @@ import { motion, useInView, useReducedMotion } from "motion/react";
 const cards = [
   {
     number: "01",
-    title: "We ship, we don't slide-deck.",
-    body: "Engineers, not consultants. Production code, not recommendations. We build systems your team will actually use after we leave — and we sweat the operational details that make that possible.",
+    title: "I ship, I don't slide-deck.",
+    body: "Sole developer on a booking platform doing ~$33k a month. I design, build, deploy, and operate it — so I sweat the details that only show up after launch.",
   },
   {
     number: "02",
-    title: "We redesign before we automate.",
-    body: "Process design comes first. AI is the implementation layer, not the goal. We separate human judgment from repeatable execution, then automate only the parts that should be.",
+    title: "I measure before I automate.",
+    body: "I found a 39% drop-off in a booking funnel from session replay data before touching the code. Automation comes after you know where the time and money actually go.",
   },
   {
     number: "03",
-    title: "We stay on as you scale.",
-    body: "Each month, your AI gets sharper. New capabilities build on the last. We're embedded in your operations as a partner — not a vendor who handed off and walked away.",
+    title: "I operate what I build.",
+    body: "The booking platform, the staff app, and the content pipeline all run a business I co-founded, every day. I don't hand off and walk away — I live with the result.",
   },
 ];
 
@@ -29,7 +29,7 @@ function Divider() {
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1075px]">
         <motion.div
-          className="h-px origin-center bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"
+          className="h-px origin-center bg-gradient-to-r from-transparent via-neutral-200 to-transparent"
           initial={{ scaleX: 0, opacity: 0 }}
           whileInView={{ scaleX: 1, opacity: 1 }}
           viewport={{ once: true, margin: "-10%" }}
@@ -63,53 +63,24 @@ function TickerNumber({ value }: { value: string }) {
   }, [inView, reduceMotion, value]);
 
   return (
-    <span ref={ref} className="font-mono text-5xl leading-none text-[#cc785c]/50">
+    <span ref={ref} className="font-mono text-5xl leading-none text-warm/80">
       {display}
     </span>
-  );
-}
-
-function IntroStatement() {
-  return (
-    <section className="px-4 py-24 text-center sm:px-6 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-[920px]">
-        <motion.h2
-          className="text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.022em] text-text-primary"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          For teams that need AI to work, not just exist.
-        </motion.h2>
-        <motion.p
-          className="mx-auto mt-6 max-w-2xl text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-        >
-          Knot embeds working AI into the operations where the work actually
-          happens. Not chatbots. Not slide decks. Systems your team will use
-          every day.
-        </motion.p>
-      </div>
-    </section>
   );
 }
 
 function WhyCard({ card, index }: { card: (typeof cards)[number]; index: number }) {
   return (
     <motion.article
-      className="group relative rounded-lg border border-white/10 bg-white/[0.015] p-8"
+      className="group relative rounded-lg border border-neutral-200 bg-white p-8 shadow-[0_1px_2px_0_rgba(0,0,0,0.04)]"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ delay: index * 0.15, duration: 0.7, ease: "easeOut" }}
       whileHover={{
-        backgroundColor: "rgba(255,255,255,0.03)",
-        borderColor: "rgba(255,255,255,0.15)",
-        boxShadow: "0 0 20px rgba(204,120,92,0.1)",
+        backgroundColor: "rgba(255,255,255,1)",
+        borderColor: "rgba(212,212,212,1)",
+        boxShadow: "0 16px 32px -16px rgba(0,0,0,0.14)",
       }}
     >
       <motion.div
@@ -122,8 +93,8 @@ function WhyCard({ card, index }: { card: (typeof cards)[number]; index: number 
       >
         <TickerNumber value={card.number} />
       </motion.div>
-      <div className="mb-6 h-px w-full bg-white/10" />
-      <h3 className="mb-3 text-xl font-semibold tracking-[-0.012em] text-[#d0d6e0]">
+      <div className="mb-6 h-px w-full bg-neutral-200" />
+      <h3 className="mb-3 text-xl font-semibold tracking-[-0.012em] text-neutral-900">
         {card.title}
       </h3>
       <p className="text-[14px] leading-relaxed tracking-[-0.008em] text-text-secondary">
@@ -135,19 +106,19 @@ function WhyCard({ card, index }: { card: (typeof cards)[number]; index: number 
 
 function WhyKnotSection() {
   return (
-    <section className="px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-      <div className="mx-auto max-w-[1344px]">
+    <section className="px-4 py-24 sm:px-10 sm:py-32">
+      <div className="mx-auto">
         <motion.p
-          className="mb-4 font-mono text-[11.8px] uppercase tracking-[0.12em] text-text-secondary/40"
+          className="mb-4 font-mono text-[11.8px] uppercase tracking-[0.12em] text-warm"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          WHY KNOT
+          WHY ME
         </motion.p>
         <motion.h2
-          className="mb-12 text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.022em] text-text-primary"
+          className="mb-12 type-heading text-text-primary"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
@@ -158,7 +129,7 @@ function WhyKnotSection() {
 
         <div className="relative">
           <motion.div
-            className="pointer-events-none absolute left-[16.66%] right-[16.66%] top-1/2 hidden origin-left border-t border-dashed border-white/[0.05] md:block"
+            className="pointer-events-none absolute left-[16.66%] right-[16.66%] top-1/2 hidden origin-left border-t border-dashed border-neutral-300 md:block"
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true, margin: "-10%" }}
@@ -180,13 +151,13 @@ function ClosingCta() {
     <section className="px-4 py-24 text-center sm:px-6 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-[920px]">
         <motion.h2
-          className="text-[clamp(2rem,4vw,3.5rem)] font-semibold leading-[1.08] tracking-[-0.022em] text-text-primary"
+          className="type-heading text-text-primary"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          Put AI to work inside your operations.
+          Have a workflow that should run itself?
         </motion.h2>
         <motion.p
           className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary"
@@ -195,8 +166,8 @@ function ClosingCta() {
           viewport={{ once: true, margin: "-10%" }}
           transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
         >
-          One workflow. One working system. See what AI can actually do for your
-          team.
+          One workflow. One working system. Built by someone who runs one every
+          day.
         </motion.p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
@@ -214,9 +185,9 @@ function ClosingCta() {
           >
             <Link
               href="/contact"
-              className="inline-flex rounded-full bg-text-primary px-6 py-3 text-sm font-medium text-bg-primary transition-colors hover:bg-white/90"
+              className="inline-flex rounded-full bg-text-primary px-6 py-3 text-sm font-medium text-bg-primary shadow-sm transition-colors hover:bg-neutral-800"
             >
-              Start a project
+              Get in touch
             </Link>
           </motion.div>
 
@@ -228,10 +199,10 @@ function ClosingCta() {
             whileHover={{ scale: 1.02 }}
           >
             <Link
-              href="/how-it-works"
-              className="inline-flex rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-text-secondary transition-colors hover:border-white/30 hover:text-text-primary"
+              href="/work"
+              className="inline-flex rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-text-secondary shadow-sm transition-colors hover:border-neutral-300 hover:text-text-primary"
             >
-              See how it works
+              See my work
             </Link>
           </motion.div>
         </div>
@@ -240,14 +211,17 @@ function ClosingCta() {
   );
 }
 
-export default function WhyKnot() {
+// Pages that end with the shared dark <CTA /> pass closingCta={false} to avoid two CTAs.
+export default function WhyKnot({ closingCta = true }: { closingCta?: boolean }) {
   return (
     <>
-      <IntroStatement />
-      <Divider />
       <WhyKnotSection />
-      <Divider />
-      <ClosingCta />
+      {closingCta ? (
+        <>
+          <Divider />
+          <ClosingCta />
+        </>
+      ) : null}
     </>
   );
 }

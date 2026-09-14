@@ -1,64 +1,151 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
+import HeroStats from "@/app/components/HeroStats";
+import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
+import { GridSection } from "@/app/components/ui/grid-section";
+import { cn } from "@/lib/utils";
+
+// dub.co-style entrance: slide up and fade in, staggered. Reduced motion only fades.
+const entrance =
+  "animate-[hero-slide-up-fade_1s_both] motion-reduce:animate-[hero-fade_1s_both]";
+
+function stagger(delayMs: number, offsetPx: number): CSSProperties {
+  return {
+    animationDelay: `${delayMs}ms`,
+    "--offset": `${offsetPx}px`,
+  } as CSSProperties;
+}
+
+const tags = ["AI Automation", "Full-Stack", "EN · JP"];
+
+function Tags({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        "items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-500",
+        className,
+      )}
+    >
+      {tags.map((tag, index) => (
+        <span key={tag} className="flex items-center gap-1.5">
+          {index > 0 ? <span className="text-neutral-300">/</span> : null}
+          {tag}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function Hero() {
   return (
-    <section className="relative px-4 pb-14 pt-36 sm:px-6 sm:pt-44 lg:px-8 lg:pb-18">
-      <div className="mx-auto max-w-[1344px] w-full min-w-0">
-        <div className="mb-7 flex flex-wrap items-center gap-2">
-          <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-text-secondary">
-            AI tools
-          </span>
-          <span className="rounded-full border border-[#5dcaa5]/25 bg-[#5dcaa5]/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#8ce0c4]">
-            Automation
-          </span>
-          <span className="rounded-full border border-[#ff8a66]/25 bg-[#ff8a66]/10 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[#ffad91]">
-            Full-stack
-          </span>
-        </div>
+    <GridSection className="border-t-0" innerClassName="pt-32 sm:pt-40">
+      <style>{`
+@keyframes hero-slide-up-fade { from { opacity: 0; transform: translateY(var(--offset, 10px)); } to { opacity: 1; transform: none; } }
+@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+`}</style>
 
-        <div className="mb-8">
-          <h1 className="max-w-5xl text-[clamp(3rem,8vw,6.7rem)] font-semibold leading-[0.94] tracking-[-0.06em] text-text-primary">
-            Turn AI into systems your team can use.
-          </h1>
+      {/* Grid backdrop: beside the rails on both sides, fading up and outward. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-1/2 w-[1800px] -translate-x-1/2 [mask-image:linear-gradient(transparent,black)]"
+      >
+        <div className="absolute inset-x-[360px] inset-y-0">
+          <GridPattern
+            cellSize={60}
+            strokeWidth={2}
+            patternOffset={[1, 1]}
+            className="inset-[unset] bottom-0 right-full h-[600px] w-[360px] text-neutral-200 [mask-image:linear-gradient(90deg,transparent,black)]"
+          />
+          <GridPattern
+            cellSize={60}
+            strokeWidth={2}
+            patternOffset={[0, 1]}
+            className="inset-[unset] bottom-0 left-full h-[600px] w-[360px] text-neutral-200 [mask-image:linear-gradient(270deg,transparent,black)]"
+          />
         </div>
+      </div>
+      {/* Inside the rails: grid at the bottom corners, clear behind the content. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-px inset-y-0 overflow-hidden [mask-composite:intersect] [mask-image:linear-gradient(transparent,black),radial-gradient(130%_50%_at_50%_100%,transparent,black)]"
+      >
+        <GridPattern
+          cellSize={60}
+          strokeWidth={2}
+          patternOffset={[0, 1]}
+          className="inset-[unset] bottom-0 left-1/2 h-[600px] w-[1080px] -translate-x-1/2 text-neutral-200"
+        />
+      </div>
 
-        <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
-          <p className="max-w-2xl min-w-0 flex-1 text-[17px] leading-relaxed tracking-[-0.014em] text-text-secondary">
-            Knot builds AI tools, internal systems, automations, and custom
-            software that connect directly to the workflows already running your
-            company.
+      <div className="relative px-4 sm:px-10">
+        <div
+          className={cn(
+            entrance,
+            "flex w-fit items-center divide-neutral-300 rounded-full border border-neutral-300 bg-white text-xs font-medium drop-shadow-sm sm:divide-x",
+          )}
+          style={stagger(0, 10)}
+        >
+          <span className="flex items-center gap-2 py-1.5 pl-3 pr-3 text-neutral-800 sm:pr-2.5">
+            <span className="relative flex size-1.5">
+              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" />
+              <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
+            </span>
+            Taking new projects
+          </span>
+          <Tags className="hidden py-1.5 pl-2.5 pr-4 sm:flex" />
+        </div>
+        <Tags className="mt-3 flex sm:hidden" />
+
+        <h1
+          className={cn(entrance, "mt-6 max-w-4xl text-balance type-display text-text-primary")}
+          style={stagger(100, 20)}
+        >
+          I build software,{" "}
+          <span className="font-serif text-[1.08em] font-normal italic tracking-[-0.01em] text-neutral-500">
+            run it in a real business,
+          </span>{" "}
+          and grow the audience around it.
+        </h1>
+
+        <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+          <p
+            className={cn(
+              entrance,
+              "max-w-xl text-pretty text-[16px] leading-[1.75] tracking-[-0.011em] text-neutral-600",
+            )}
+            style={stagger(200, 10)}
+          >
+            I&apos;m the co-founder and CTO of a Tokyo company serving inbound
+            travelers. I built the booking platform, the internal tools, and
+            the AI automation behind it, and I run the business that depends
+            on them every day.
           </p>
-          <div className="flex flex-wrap items-center gap-3 lg:justify-end">
+          <div
+            className={cn(entrance, "flex flex-wrap items-center gap-3")}
+            style={stagger(300, 5)}
+          >
             <Link
-              href="/contact"
-              className="rounded-full bg-text-primary px-5 py-2.5 text-sm font-medium text-bg-primary transition-colors hover:bg-white/90"
+              href="/work"
+              className="group inline-flex h-10 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200"
             >
-              Start a project
+              See my work
+              <span className="transition-transform duration-300 group-hover:translate-x-0.5">
+                →
+              </span>
             </Link>
             <Link
-              href="/how-it-works"
-              className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-white/30 hover:text-text-primary"
+              href="/contact"
+              className="inline-flex h-10 items-center rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all hover:bg-neutral-50 hover:ring-4 hover:ring-black/5"
             >
-              See how it works
+              Get in touch
             </Link>
           </div>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-3">
-          {[
-            ["01", "AI products and internal copilots"],
-            ["02", "Workflow automation across existing tools"],
-            ["03", "Full-stack development from idea to launch"],
-          ].map(([number, label]) => (
-            <div key={number} className="bg-[#0d0e10] p-4">
-              <p className="font-mono text-[11px] text-[#ff8a66]">{number}</p>
-              <p className="mt-3 text-[14px] leading-relaxed tracking-[-0.01em] text-[#d0d6e0]">
-                {label}
-              </p>
-            </div>
-          ))}
+        <div className={entrance} style={stagger(400, 10)}>
+          <HeroStats />
         </div>
       </div>
-    </section>
+    </GridSection>
   );
 }

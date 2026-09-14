@@ -9,7 +9,7 @@ const FlowchartLottie = dynamic(
     ssr: false,
     loading: () => (
       <div
-        className="w-full min-h-[200px] aspect-square rounded-xl border border-border-solid bg-bg-card"
+        className="w-full min-h-[200px] aspect-square rounded-xl border border-neutral-800 bg-neutral-900"
         aria-hidden
       />
     ),
@@ -18,12 +18,12 @@ const FlowchartLottie = dynamic(
 
 const placeholder = (
   <div
-    className="w-full min-h-[200px] aspect-square rounded-xl border border-border-solid bg-bg-card"
+    className="w-full min-h-[200px] aspect-square rounded-xl border border-neutral-800 bg-neutral-900"
     aria-hidden
   />
 );
 
-export default function FlowchartLottieSlot() {
+export default function FlowchartLottieSlot({ src }: { src?: string }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [nearView, setNearView] = useState(false);
 
@@ -47,7 +47,7 @@ export default function FlowchartLottieSlot() {
 
   return (
     <div ref={rootRef} className="w-full">
-      {nearView ? <FlowchartLottie /> : placeholder}
+      {nearView ? <FlowchartLottie src={src} /> : placeholder}
     </div>
   );
 }

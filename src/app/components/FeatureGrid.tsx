@@ -1,113 +1,107 @@
-import Image from "next/image";
-import FeatureLottieSlot from "@/app/components/FeatureLottieSlot";
-import BentoDnaLottieSlot from "@/app/components/BentoDnaLottieSlot";
-import FlowchartLottieSlot from "@/app/components/FlowchartLottieSlot";
-
-interface FeatureCardProps {
-  figure: string;
-  title: string;
-  description: string;
-  illustration?: string;
-  /** FIG 0.1: Integrations Lottie */
-  lottie?: boolean;
-  /** FIG 0.2: Bento DNA Lottie */
-  bento?: boolean;
-  /** FIG 0.3: Flowchart Lottie */
-  flowchart?: boolean;
-}
-
-function FeatureCard({
-  figure,
-  title,
-  description,
-  illustration,
-  lottie = false,
-  bento = false,
-  flowchart = false,
-}: FeatureCardProps) {
-  return (
-    <div className="flex min-h-[420px] flex-col justify-between rounded-lg border border-white/10 bg-[#0d0e10] p-5">
-      <span className="font-mono text-[11px] text-[#ff8a66] uppercase tracking-[0.12em]">
-        {figure}
-      </span>
-      <div className="flex flex-1 items-center justify-center overflow-hidden py-8">
-        {flowchart ? (
-          <FlowchartLottieSlot />
-        ) : lottie ? (
-          <FeatureLottieSlot />
-        ) : bento ? (
-          <BentoDnaLottieSlot />
-        ) : illustration ? (
-          <Image
-            src={illustration}
-            alt={title}
-            width={265}
-            height={262}
-            sizes="(max-width: 768px) 100vw, 265px"
-            className="h-auto max-h-[262px] w-full max-w-[265px] object-contain opacity-60 invert"
-          />
-        ) : null}
-      </div>
-      <div className="border-t border-white/10 pt-5">
-        <h3 className="text-[18px] font-semibold text-text-primary tracking-[-0.02em]">
-          {title}
-        </h3>
-        <p className="mt-3 text-[14px] text-text-secondary leading-relaxed tracking-[-0.01em]">
-          {description}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-const features = [
-  {
-    figure: "FIG 0.1",
-    title: "Pilot Build",
-    description:
-      "One workflow, one working AI system, in a few weeks. Built inside the tools your team already uses, so the results speak for themselves.",
-    illustration: "/images/features/fig02-built-for-purpose.png",
-    lottie: true,
-  },
-  {
-    figure: "FIG 0.2",
-    title: "AI Implementation",
-    description:
-      "Your team spends hours on work that doesn't need a human. We build AI into your workflows to handle it — quietly, inside the tools they already work in.",
-    bento: true,
-  },
-  {
-    figure: "FIG 0.3",
-    title: "An AI-Native Operation",
-    description:
-      "Your team stops doing repetitive work. Decisions get faster. New hires onboard in days. AI becomes how you operate — not a tool you happen to use.",
-    flowchart: true,
-  },
-];
+import {
+  Card,
+  CardDescription,
+  CardSkeletonContainer,
+  CardTitle,
+} from "@/app/components/ui/card";
+import { SkeletonOne } from "@/app/components/features/skeletons/first";
+import { SkeletonTwo } from "@/app/components/features/skeletons/second";
+import { SkeletonThree } from "@/app/components/features/skeletons/third";
+import { SkeletonFour } from "@/app/components/features/skeletons/fourth";
+import { SkeletonFive } from "@/app/components/features/skeletons/fifth";
+import { SkeletonWeb } from "@/app/components/features/skeletons/sixth";
 
 export default function FeatureGrid() {
   return (
-    <section id="areas" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-      <div className="mx-auto max-w-[1344px] w-full min-w-0">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <section id="areas" className="px-4 py-20 sm:px-10 lg:py-28">
+      <div className="mx-auto w-full min-w-0">
+        <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-[#ff8a66]">
-              Operating model
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-warm">
+              What I build
             </p>
-            <h2 className="mt-5 max-w-3xl text-[clamp(2rem,4vw,3.75rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-text-primary">
-              Start narrow. Connect deeper. Compound the system.
+            <h2 className="mt-5 max-w-3xl type-heading text-text-primary">
+              Software that connects your tools,{" "}
+              <span className="font-serif text-[1.08em] font-normal italic text-neutral-500">
+                automates the busywork,
+              </span>{" "}
+              and shows you the numbers.
             </h2>
           </div>
-          <p className="max-w-md text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
-            We design the first useful system, then connect it to the tools and
-            workflows that make it valuable every day.
+          <p className="max-w-sm text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
+            AI agents, automations, data pipelines, and full-stack products,
+            built to keep running long after launch.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {features.map((feature) => (
-            <FeatureCard key={feature.figure} {...feature} />
-          ))}
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+          <Card>
+            <CardSkeletonContainer>
+              <SkeletonThree />
+            </CardSkeletonContainer>
+            <CardTitle>AI agents that do the work</CardTitle>
+            <CardDescription>
+              Agents built on Claude Code, MCP, and LLM APIs that take a task
+              from input to finished output: research, drafting, triage,
+              reporting.
+            </CardDescription>
+          </Card>
+          <Card className="lg:col-span-2">
+            <CardTitle>Connect the tools you already use</CardTitle>
+            <CardDescription>
+              Stripe, Google Workspace, Slack, Notion, and your own database
+              wired into one flow, so nobody copies data between apps by hand.
+            </CardDescription>
+            <CardSkeletonContainer>
+              <SkeletonOne />
+            </CardSkeletonContainer>
+          </Card>
+          <Card>
+            <CardSkeletonContainer className="max-w-[16rem] mx-auto">
+              <SkeletonTwo />
+            </CardSkeletonContainer>
+            <CardTitle>Payments that run themselves</CardTitle>
+            <CardDescription>
+              Stripe checkout, deposits, and automated follow-up billing that
+              work for customers in any country.
+            </CardDescription>
+          </Card>
+          <Card>
+            <CardSkeletonContainer
+              showGradient={false}
+              className="max-w-[16rem] mx-auto"
+            >
+              <SkeletonFour />
+            </CardSkeletonContainer>
+            <CardTitle>Replace manual operations</CardTitle>
+            <CardDescription>
+              Internal apps and workflows that turn DM threads and spreadsheets
+              into a process your team actually follows.
+            </CardDescription>
+          </Card>
+          <Card>
+            <CardSkeletonContainer>
+              <SkeletonFive />
+            </CardSkeletonContainer>
+            <CardTitle>Collect data, find the signal</CardTitle>
+            <CardDescription>
+              Analytics, session replays, and account data turned into a clear
+              decision about what to fix or build next.
+            </CardDescription>
+          </Card>
+          <Card className="lg:col-span-3 lg:grid lg:grid-cols-[0.75fr_1.25fr] lg:items-center lg:gap-10">
+            <div>
+              <CardTitle>Web products, end to end</CardTitle>
+              <CardDescription>
+                From the first screen to payments, deployment, and monitoring.
+                Next.js, Go, and PostgreSQL on AWS, shipped fast and built to
+                last.
+              </CardDescription>
+            </div>
+            <CardSkeletonContainer showGradient={false}>
+              <SkeletonWeb />
+            </CardSkeletonContainer>
+          </Card>
         </div>
       </div>
     </section>

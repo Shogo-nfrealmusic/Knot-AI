@@ -2,13 +2,13 @@
 
 import { TextGenerateEffect } from "@/app/components/ui/text-generate-effect";
 
-const QUOTES = `"We have AI tools."
-"We need operating leverage."
-"We need systems people will actually use."`;
+const QUOTES = `"I built it."
+"I run it."
+"I measure what it does."`;
 
-const TAGLINE_EN = "Knot turns AI capability into operational practice.";
+const TAGLINE_EN = "Software that works in production, not just in a demo.";
 
-const BODY = `We help mid-sized companies move beyond AI experimentation and embed working AI systems directly into day-to-day operations.`;
+const BODY = `AI agents, automations, and full-stack products — all in production, all measured.`;
 
 /** Reserve the final text height so sections below do not jump while typing. */
 function LayoutSpacer() {
@@ -29,24 +29,24 @@ function LayoutSpacer() {
 export default function StatementTyper() {
   return (
     <div
-      className="relative text-[clamp(1.75rem,3.5vw,3rem)] font-semibold leading-[1.1] tracking-[-0.022em]"
+      className="relative text-[clamp(1.5rem,2.6vw,2.25rem)] font-medium leading-[1.22] tracking-[-0.02em]"
     >
       <LayoutSpacer />
       <div className="absolute left-0 top-0 right-0" aria-live="polite">
         <TextGenerateEffect
           words={QUOTES}
-          className="whitespace-pre-line text-text-primary"
+          className="whitespace-pre-line font-medium text-text-primary"
         />
 
         <TextGenerateEffect
           words={TAGLINE_EN}
-          className="mt-4 whitespace-pre-line text-text-secondary"
+          className="mt-4 whitespace-pre-line font-serif text-[1.1em] font-normal italic text-text-secondary"
           initialDelay={0.8}
         />
 
         <TextGenerateEffect
           words={BODY}
-          className="mt-4 text-text-secondary"
+          className="mt-4 font-medium text-text-secondary"
           initialDelay={1.4}
         />
       </div>

@@ -2,6 +2,9 @@
 
 import { useEffect } from "react";
 
+// Only the scrubbed AppPreview parallax lives here. The old global `h1` / `section`
+// entrance tweens started 320ms after paint, hid already-visible content and then
+// replayed it, and doubled up with each component's own motion — they were removed.
 export default function ScrollAnimations() {
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -9,10 +12,11 @@ export default function ScrollAnimations() {
     ).matches;
     if (prefersReduced) return;
 
+    const appPreview = document.querySelector("[data-app-preview]");
+    if (!appPreview) return;
+
     let cancelled = false;
     let revert: (() => void) | null = null;
-
-    const startTimer = window.setTimeout(() => void loadAnimations(), 320);
 
     async function loadAnimations() {
       const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
@@ -24,66 +28,26 @@ export default function ScrollAnimations() {
       gsap.registerPlugin(ScrollTrigger);
 
       const ctx = gsap.context(() => {
-        gsap.from("h1", {
-          y: 40,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
+        gsap.to(appPreview, {
+          scrollTrigger: {
+            trigger: appPreview,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+          y: -40,
+          ease: "none",
         });
-
-        gsap.utils.toArray("section").forEach((section) => {
-          const el = section as HTMLElement;
-          gsap.from(el.children, {
-            scrollTrigger: {
-              trigger: el,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-            y: 60,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.08,
-            ease: "power2.out",
-          });
-        });
-
-        const appPreview = document.querySelector("[data-app-preview]");
-        if (appPreview) {
-          gsap.to(appPreview, {
-            scrollTrigger: {
-              trigger: appPreview,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-            y: -40,
-            ease: "none",
-          });
-        }
-
-        const logoBar = document.querySelector("[data-logo-bar]");
-        if (logoBar) {
-          gsap.from(logoBar.children, {
-            scrollTrigger: {
-              trigger: logoBar,
-              start: "top 90%",
-            },
-            opacity: 0,
-            y: 20,
-            stagger: 0.05,
-            duration: 0.6,
-            ease: "power2.out",
-          });
-        }
       });
 
       revert = () => ctx.revert();
       if (cancelled) revert();
     }
 
+    void loadAnimations();
+
     return () => {
       cancelled = true;
-      window.clearTimeout(startTimer);
       revert?.();
     };
   }, []);
