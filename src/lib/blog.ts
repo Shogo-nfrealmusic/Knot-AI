@@ -397,7 +397,6 @@ def morning_run():
   },
   {
     slug: "a-free-tool-every-monday",
-    // TODO(shogo): confirm — PORTFOLIO.md says "6 tools in 6 weeks"; projects.ts now says "a free tool every Monday". Title follows projects.ts.
     title: "A free tool every Monday",
     description:
       "Iron & Code: small, free calculators for lifters, shipped on a weekly cadence with a short video for each.",

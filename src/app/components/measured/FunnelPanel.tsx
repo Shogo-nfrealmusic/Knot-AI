@@ -1,210 +1,291 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ApertureMark, EASE_OUT, type PanelProps } from "./marks";
+import { cn } from "@/lib/utils";
+import { EASE_OUT, type PanelProps } from "./marks";
 
-const W = 502;
-const H = 269;
-const HEAD = 56;
-const CY = 166;
-const COL = W / 4;
+// Real GA4 funnel exploration for book.tettyphotostudio.com. Swap in the date range once confirmed.
+export const FUNNEL_PERIOD = "GA4 funnel exploration";
 
-// Band heights are an illustrative shape, not counts. The one measured figure is the
-// date → time drop: 118 → 72 is −39%. The dashed ghost is the shape after the fix.
+// Users at each step, as reported by GA4. Rates are computed from these counts.
 const steps = [
-  { name: "Plan", color: "#155DFC", from: 150, to: 118 },
-  { name: "Date", color: "#9810FA", from: 118, to: 72 },
-  { name: "Time", color: "#0891B2", from: 72, to: 60 },
-  { name: "Deposit", color: "#059669", from: 60, to: 60 },
-];
-const ghost = [
-  { from: 118, to: 98 },
-  { from: 98, to: 88 },
-  { from: 88, to: 88 },
-];
+  { name: "Visited site", users: 5332 },
+  { name: "Viewed plans", users: 4418 },
+  { name: "Viewed locations", users: 1305, leak: true },
+  { name: "Opened booking", users: 1176 },
+  { name: "Picked a date", users: 699 },
+  { name: "Reached payment", users: 87, leak: true },
+  { name: "Booked", users: 55 },
+].map((step, i, all) => ({
+  ...step,
+  leak: step.leak ?? false,
+  // Share of the previous step that made it here; null for the first step.
+  rate: i === 0 ? null : (step.users / all[i - 1].users) * 100,
+  share: (step.users / all[0].users) * 100,
+}));
 
-type Segment = { x0: number; x1: number; from: number; to: number };
+const overall = ((steps[steps.length - 1].users / steps[0].users) * 100).toFixed(2);
+const fmt = (n: number) => n.toLocaleString("en-US");
 
-// Flat, then an S-curve between the two heights, then flat — dub's funnel band.
-function knots(x0: number, x1: number) {
-  const w = x1 - x0;
-  return [x0 + w * 0.28, x0 + w * 0.5, x0 + w * 0.55, x0 + w * 0.78];
+const W = 700;
+const H = 210;
+const CY = H / 2;
+const BAND = 176; // band height at 5,332 users; every other step is to scale
+const COL = W / steps.length;
+const heights = steps.map((step) => (step.users / steps[0].users) * BAND);
+
+// One continuous band: flat within a step, an S-curve at the start of each column down to its count.
+function bandPath() {
+  let top = `M0 ${CY - heights[0] / 2}`;
+  let bottom = "";
+  heights.forEach((to, i) => {
+    const from = i === 0 ? to : heights[i - 1];
+    const x0 = i * COL;
+    const x1 = x0 + COL;
+    const [a, b, c] = [x0 + COL * 0.18, x0 + COL * 0.26, x0 + COL * 0.46];
+    top += from === to ? `H${x1}` : `C${a} ${CY - from / 2} ${b} ${CY - to / 2} ${c} ${CY - to / 2}H${x1}`;
+    const back = from === to ? `H${x0}` : `H${c}C${b} ${CY + to / 2} ${a} ${CY + from / 2} ${x0} ${CY + from / 2}`;
+    bottom = back + bottom;
+  });
+  return `${top}V${CY + heights[heights.length - 1] / 2}${bottom}Z`;
 }
 
-function outline(segments: Segment[]) {
-  const top = segments
-    .map(({ x0, x1, from, to }) => {
-      const [a, b, c, d] = knots(x0, x1);
-      return `H${a}C${b} ${CY - from / 2} ${c} ${CY - to / 2} ${d} ${CY - to / 2}H${x1}`;
-    })
-    .join("");
-  const bottom = [...segments]
-    .reverse()
-    .map(({ x0, x1, from, to }) => {
-      const [a, b, c, d] = knots(x0, x1);
-      return `H${d}C${c} ${CY + to / 2} ${b} ${CY + from / 2} ${a} ${CY + from / 2}H${x0}`;
-    })
-    .join("");
-  const first = segments[0];
-  const last = segments[segments.length - 1];
-  return `M${first.x0} ${CY - first.from / 2}${top}V${CY + last.to / 2}${bottom}Z`;
-}
+const band = bandPath();
+const AUTO_MS = 1800;
 
-function Pill({ x, y, width, text, color }: { x: number; y: number; width: number; text: string; color: string }) {
+function RateChip({
+  rate,
+  leak,
+  className,
+  style,
+}: {
+  rate: number;
+  leak: boolean;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   return (
-    <g>
-      <rect x={x - width / 2} y={y - 9} width={width} height={18} rx={9} fill="white" />
-      <text
-        x={x}
-        y={y + 3.6}
-        textAnchor="middle"
-        fontSize={10}
-        fontWeight={500}
-        fill={color}
-        fontFamily="Inter, system-ui, sans-serif"
-      >
-        {text}
-      </text>
-    </g>
+    <span
+      style={style}
+      className={cn(
+        "whitespace-nowrap rounded-full border px-1.5 py-0.5 font-mono text-[10px] font-medium leading-none tabular-nums",
+        leak ? "border-orange-200 bg-orange-50 text-warm" : "border-neutral-200 bg-white text-neutral-500",
+        className,
+      )}
+    >
+      {rate.toFixed(1)}%
+    </span>
   );
 }
 
-function BookingWidget() {
-  return (
-    // Sits fully inside the panel: a deeper negative margin cropped its top edge and read as a bug.
-    <div className="mt-5 hidden flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-2 shadow-sm sm:flex">
-      <div className="flex flex-col rounded-lg border border-neutral-200 px-4 pb-3 pt-4">
-        <div className="flex h-[84px] w-[184px] flex-col justify-between overflow-hidden rounded-md bg-gradient-to-br from-neutral-700 to-neutral-950 p-3 text-white">
-          <ApertureMark className="size-5 text-white/80" />
-          <div>
-            <p className="text-[11px] text-white/60">Choose a plan</p>
-            <p className="text-sm font-medium">Tokyo photo shoot</p>
-          </div>
-        </div>
-        <div className="mt-2 flex items-center justify-center gap-1">
-          <div className="h-1.5 w-3 rounded-full bg-neutral-500" />
-          <div className="size-1.5 rounded-full bg-neutral-300" />
-          <div className="size-1.5 rounded-full bg-neutral-300" />
-        </div>
-      </div>
-      <div className="flex h-8 items-center justify-center rounded-lg bg-neutral-900 px-3 text-sm font-medium text-white">
-        Book now
-      </div>
-    </div>
-  );
-}
-
-export default function FunnelPanel({ active }: PanelProps) {
+export default function FunnelPanel({ active, animate }: PanelProps) {
   const uid = useId().replace(/:/g, "");
   const reduceMotion = useReducedMotion();
+  // Resting on the steepest leak is the most useful still frame.
+  const [current, setCurrent] = useState(5);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const shown = hovered ?? current;
+  const step = steps[shown];
 
-  // Reveal on entry; reset only after the panel has faded out, so nothing collapses in view.
+  useEffect(() => {
+    if (!animate || hovered !== null) return;
+    const timer = setInterval(() => setCurrent((i) => (i + 1) % steps.length), AUTO_MS);
+    return () => clearInterval(timer);
+  }, [animate, hovered]);
+
   const reveal = (delay: number) =>
-    active
-      ? { opacity: 1, scaleY: 1, transition: reduceMotion ? { duration: 0 } : { duration: 0.9, ease: EASE_OUT, delay } }
-      : { opacity: 0, scaleY: 0, transition: { duration: 0, delay: 0.75 } };
-  const fade = (delay: number) =>
     active
       ? { opacity: 1, transition: reduceMotion ? { duration: 0 } : { duration: 0.6, ease: EASE_OUT, delay } }
       : { opacity: 0, transition: { duration: 0, delay: 0.75 } };
 
+  // The tooltip only ever floats over the thin part of the band (from step 3 on), so it never
+  // covers the tall first columns or the rate chips: right of the column early, left of it late.
+  const tooltipStyle =
+    shown >= 4
+      ? { right: `calc(${((steps.length - shown) / steps.length) * 100}% + 6px)` }
+      : { left: `calc(${(Math.max(shown + 1, 3) / steps.length) * 100}% + 6px)` };
+
   return (
-    <div className="relative size-full [mask-image:linear-gradient(black_85%,transparent)]">
-      <div className="flex size-full flex-col items-center justify-center sm:justify-start">
-        <BookingWidget />
-        <div className="hidden h-5 w-px shrink-0 bg-neutral-200 sm:block" />
-        <div className="relative w-full max-w-[420px] sm:max-w-[500px]">
-          <svg
-            viewBox={`0 0 ${W} ${H}`}
-            fill="none"
-            className="h-auto w-full overflow-hidden rounded-xl border border-neutral-200 bg-white"
-            aria-hidden
-          >
-            <defs>
-              {steps.map((step, i) => (
-                <clipPath key={step.name} id={`${uid}-col${i}`}>
-                  <rect x={i * COL} y={HEAD} width={COL} height={H - HEAD} />
-                </clipPath>
-              ))}
-            </defs>
-
-            <rect x={COL} y={HEAD} width={COL} height={H - HEAD} fill="#9810FA" fillOpacity={0.04} />
-            <path d={`M0 ${HEAD - 0.5}H${W}`} stroke="#E5E5E5" />
-
-            {steps.map((step, i) => {
-              const x0 = i * COL;
-              return (
-                <g key={step.name} fontFamily="Inter, system-ui, sans-serif">
-                  {i > 0 ? (
-                    <>
-                      <path d={`M${x0} 0V${HEAD}`} stroke="#E5E5E5" />
-                      <path d={`M${x0} ${HEAD}V${H}`} stroke="#171717" strokeOpacity={0.08} />
-                    </>
-                  ) : null}
-                  <rect x={x0 + 17} y={15.3} width={3.7} height={3.7} rx={0.8} fill={step.color} opacity={0.6} />
-                  <text x={x0 + 26.5} y={19.8} fontSize={7.4} fill="#525252">
-                    Step {i + 1}
-                  </text>
-                  <text x={x0 + 17} y={40.2} fontSize={15.9} fontWeight={600} fill="#171717">
-                    {step.name}
-                  </text>
-                </g>
-              );
-            })}
-            <rect x={COL} y={HEAD - 1.6} width={COL} height={1.1} fill="#171717" />
-            {steps.slice(1).map((step, i) => {
-              const x = (i + 1) * COL;
-              return (
-                <g key={step.name}>
-                  <rect x={x - 6.6} y={21.3} width={13.2} height={13.2} rx={6.6} fill="white" stroke="#E5E5E5" strokeWidth={0.53} />
-                  <path d={`M${x - 0.7} 26.5l1.47 1.47-1.47 1.47`} stroke="#737373" strokeWidth={0.8} strokeLinecap="round" strokeLinejoin="round" />
-                </g>
-              );
-            })}
-
-            {steps.map((step, i) => {
-              const d = outline([{ x0: i * COL - 10, x1: (i + 1) * COL + 10, from: step.from, to: step.to }]);
-              return (
-                <g key={step.name} clipPath={`url(#${uid}-col${i})`}>
-                  <motion.g
-                    style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                    initial={{ opacity: 0, scaleY: 0 }}
-                    animate={reveal(i * 0.09)}
-                  >
-                    <path d={d} stroke={step.color} strokeOpacity={0.1} strokeWidth={12.7} />
-                    <path d={d} stroke={step.color} strokeOpacity={0.3} strokeWidth={6.35} />
-                    <path d={d} fill={step.color} />
-                  </motion.g>
-                </g>
-              );
-            })}
-
-            <motion.path
-              d={outline(ghost.map((g, i) => ({ x0: (i + 1) * COL, x1: (i + 2) * COL, ...g })))}
-              stroke="#7C3AED"
-              strokeOpacity={0.55}
-              strokeWidth={1.2}
-              strokeDasharray="4 3"
-              initial={{ opacity: 0 }}
-              animate={fade(0.45)}
-            />
-
-            {/* Too small to read once the SVG shrinks on phones; an HTML chip takes over there. */}
-            <motion.g className="max-sm:hidden" initial={{ opacity: 0 }} animate={fade(0.55)}>
-              <Pill x={COL * 1.5} y={CY} width={106} text="−39% · date → time" color="#59168B" />
-              <Pill x={COL * 3.5} y={CY - 44 - 14} width={56} text="after fix" color="#525252" />
-            </motion.g>
-          </svg>
-          <span className="absolute right-2 top-[24%] rounded-full border border-neutral-200 bg-white/90 px-2 py-0.5 text-[10px] font-medium text-neutral-500">
-            Shape illustrative
-          </span>
-          <span className="mx-auto mt-3 flex w-fit items-center gap-2 rounded-full border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-violet-900 sm:hidden">
-            −39% · date → time
-            <span className="h-3 w-px bg-neutral-200" />
-            <span className="text-neutral-500">dashed: after fix</span>
-          </span>
+    <div className="flex size-full items-center justify-center py-2 sm:py-8">
+      <div
+        className="w-full max-w-[760px] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+        onMouseLeave={() => setHovered(null)}
+      >
+        <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-4 py-2.5">
+          <div className="flex min-w-0 items-center gap-2">
+            <p className="truncate text-[13px] font-medium text-neutral-900">Booking funnel</p>
+            <span className="hidden rounded-md border border-neutral-200 bg-neutral-50 px-1.5 py-0.5 font-mono text-[10px] leading-none text-neutral-500 sm:inline">
+              7 steps
+            </span>
+          </div>
+          <p className="flex shrink-0 items-baseline gap-1.5 text-[11px] text-neutral-500">
+            <span className="font-mono text-[15px] tracking-[-0.03em] text-neutral-900 tabular-nums">{overall}%</span>
+            visit → booked
+          </p>
         </div>
+
+        {/* Desktop: dub-style funnel band, every height to scale. */}
+        <div className="hidden sm:block">
+          <div className="grid grid-cols-7 border-b border-neutral-200">
+            {steps.map((s, i) => (
+              <button
+                key={s.name}
+                type="button"
+                tabIndex={active ? 0 : -1}
+                onMouseEnter={() => setHovered(i)}
+                onFocus={() => setHovered(i)}
+                onBlur={() => setHovered(null)}
+                className={cn(
+                  "relative flex min-w-0 flex-col items-start px-2 py-2.5 text-left outline-none transition-colors duration-300 lg:px-2.5",
+                  i > 0 && "border-l border-neutral-200",
+                  i === shown ? "bg-neutral-50" : "bg-white",
+                )}
+              >
+                <span className="flex items-center gap-1 text-[10px] text-neutral-500">
+                  <span className={cn("size-1 rounded-[1px]", s.leak ? "bg-warm" : "bg-blue-500/60")} />
+                  Step {i + 1}
+                </span>
+                <span className="mt-1 min-h-[2lh] text-[11px] font-medium leading-tight text-neutral-900 lg:text-[12px]">
+                  {s.name}
+                </span>
+                <span className="mt-1 font-mono text-[13px] leading-none tracking-[-0.03em] text-neutral-700 tabular-nums lg:text-[15px]">
+                  {fmt(s.users)}
+                </span>
+                {i === shown ? (
+                  <motion.span
+                    layoutId={`${uid}-rail`}
+                    className="absolute inset-x-0 -bottom-px h-px bg-neutral-900"
+                    transition={{ type: "spring", bounce: 0.1, duration: 0.5 }}
+                  />
+                ) : null}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative">
+            <div
+              aria-hidden
+              className="absolute inset-y-0 bg-neutral-900/[0.025] transition-[left] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{ left: `${(shown / steps.length) * 100}%`, width: `${100 / steps.length}%` }}
+            />
+            <svg viewBox={`0 0 ${W} ${H}`} fill="none" className="relative h-auto w-full" aria-hidden>
+              <defs>
+                <linearGradient id={`${uid}-fill`} x1="0" x2={W} y1="0" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#3B82F6" />
+                  <stop offset="1" stopColor="#6366F1" />
+                </linearGradient>
+                <clipPath id={`${uid}-reveal`}>
+                  <motion.rect
+                    x={0}
+                    y={0}
+                    height={H}
+                    initial={{ width: 0 }}
+                    animate={
+                      active
+                        ? { width: W, transition: reduceMotion ? { duration: 0 } : { duration: 1.2, ease: EASE_OUT } }
+                        : { width: 0, transition: { duration: 0, delay: 0.75 } }
+                    }
+                  />
+                </clipPath>
+              </defs>
+              {steps.map((s, i) =>
+                i > 0 ? <path key={s.name} d={`M${i * COL} 0V${H}`} stroke="#171717" strokeOpacity={0.06} /> : null,
+              )}
+              {steps.map((s, i) =>
+                s.leak ? <rect key={s.name} x={i * COL} y={0} width={COL} height={H} fill="#e0552f" fillOpacity={0.05} /> : null,
+              )}
+              <g clipPath={`url(#${uid}-reveal)`}>
+                <path d={band} stroke="#3B82F6" strokeOpacity={0.1} strokeWidth={12} strokeLinejoin="round" />
+                <path d={band} stroke="#3B82F6" strokeOpacity={0.28} strokeWidth={5} strokeLinejoin="round" />
+                <path d={band} fill={`url(#${uid}-fill)`} />
+              </g>
+            </svg>
+
+            {/* Step-to-step rates, centred on the settled band past each column's S-curve. */}
+            <motion.div className="pointer-events-none absolute inset-0" initial={{ opacity: 0 }} animate={reveal(0.5)}>
+              {steps.map((s, i) =>
+                s.rate === null ? null : (
+                  <RateChip
+                    key={s.name}
+                    rate={s.rate}
+                    leak={s.leak}
+                    style={{ left: `${((i + 0.73) / steps.length) * 100}%` }}
+                    className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+                  />
+                ),
+              )}
+            </motion.div>
+
+            {/* Hover targets per column. */}
+            <div className="absolute inset-0 grid grid-cols-7">
+              {steps.map((s, i) => (
+                <div key={s.name} onMouseEnter={() => setHovered(i)} />
+              ))}
+            </div>
+
+            <motion.div
+              className="pointer-events-none absolute top-2 w-[216px] rounded-lg border border-neutral-200 bg-white/95 text-[11px] shadow-[0_4px_16px_-4px_rgba(0,0,0,0.12)] backdrop-blur-sm transition-[left,right] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={tooltipStyle}
+              initial={{ opacity: 0 }}
+              animate={reveal(0.7)}
+            >
+              <div className="flex items-center justify-between gap-2 border-b border-neutral-100 px-2.5 py-1">
+                <span className="truncate font-medium text-neutral-900">{step.name}</span>
+                <span className="font-mono text-[10px] text-neutral-400">{shown + 1}/7</span>
+              </div>
+              <dl className="grid grid-cols-3 gap-2 px-2.5 py-1.5">
+                {[
+                  { label: "Users", value: fmt(step.users), warm: false },
+                  { label: "Of visitors", value: `${step.share.toFixed(1)}%`, warm: false },
+                  {
+                    label: "From prev.",
+                    value: step.rate === null ? "—" : `${step.rate.toFixed(1)}%`,
+                    warm: step.leak,
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="min-w-0">
+                    <dt className="truncate text-[10px] text-neutral-500">{item.label}</dt>
+                    <dd className={cn("font-mono text-[12px] tabular-nums", item.warm ? "text-warm" : "text-neutral-900")}>
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Phones: the same counts as a bar list, bars to scale. */}
+        <ol className="flex flex-col gap-0.5 p-2 sm:hidden">
+          {steps.map((s, i) => (
+            <li key={s.name} className="relative flex h-7 items-center gap-2 overflow-hidden rounded-md px-2.5">
+              <motion.span
+                aria-hidden
+                className={cn("absolute inset-y-0 left-0 min-w-1 rounded-md", s.leak ? "bg-orange-100" : "bg-blue-100/80")}
+                initial={{ width: "0%" }}
+                animate={
+                  active
+                    ? {
+                        width: `${s.share}%`,
+                        transition: reduceMotion ? { duration: 0 } : { duration: 0.9, ease: EASE_OUT, delay: i * 0.05 },
+                      }
+                    : { width: "0%", transition: { duration: 0, delay: 0.75 } }
+                }
+              />
+              <span className="relative w-3 font-mono text-[10px] text-neutral-400">{i + 1}</span>
+              <span className="relative min-w-0 flex-1 truncate text-[12px] text-neutral-800">{s.name}</span>
+              {s.rate !== null ? <RateChip rate={s.rate} leak={s.leak} className="relative" /> : null}
+              <span className="relative w-11 text-right font-mono text-[12px] text-neutral-900 tabular-nums">
+                {fmt(s.users)}
+              </span>
+            </li>
+          ))}
+        </ol>
+
+        <p className="truncate border-t border-neutral-200 px-4 py-2 font-mono text-[10px] text-neutral-400">
+          GA4 · book.tettyphotostudio.com · {FUNNEL_PERIOD}
+        </p>
       </div>
     </div>
   );

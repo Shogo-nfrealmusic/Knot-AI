@@ -309,7 +309,7 @@ export default function ContactForm() {
                     id="company"
                     name="company"
                     type="text"
-                    placeholder="Company, studio, or product name"
+                    placeholder="Company or product name"
                     aria-required="true"
                     aria-invalid={Boolean(errors.company)}
                     aria-describedby={errors.company ? "company-error" : undefined}

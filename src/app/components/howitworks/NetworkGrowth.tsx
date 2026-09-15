@@ -387,23 +387,6 @@ export default function NetworkGrowth({
         </svg>
       </div>
 
-      <div className="mt-5 grid grid-cols-3 gap-2 font-mono text-[10px] uppercase tracking-[0.05em] sm:gap-3 sm:text-[9px]">
-        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-          <p className="text-neutral-400">Signals</p>
-          <p className="mt-1 text-warm">{month.count}</p>
-        </div>
-        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-          <p className="text-neutral-400">Links</p>
-          <p className="mt-1 text-neutral-800">{month.edges.length}</p>
-        </div>
-        <div className="rounded-[10px] border border-neutral-200 bg-white px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-          <p className="text-neutral-400">Signals</p>
-          <p className="mt-1 text-green-700">
-            {Math.max(1, activeSignals.length)} live
-          </p>
-        </div>
-      </div>
-
       <div className="mt-5 grid grid-cols-6 gap-0 font-mono text-[10px] uppercase tracking-[0.05em]">
         {months.map((item, index) => {
           const isActive = index === currentMonth;

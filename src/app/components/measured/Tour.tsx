@@ -51,7 +51,7 @@ type Tab = {
 const tabs: Tab[] = [
   {
     title: "Booking funnel",
-    body: "Every step from plan to deposit is tracked in GA4 — which is where the stall between date and time showed up.",
+    body: "Seven steps tracked in GA4, from the first visit to a completed booking — the biggest leaks stand out on their own.",
     link: { label: "Try the flow", href: "https://book.tettyphotostudio.com/", external: true },
     Icon: IconFilter,
     Panel: FunnelPanel,

@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@lottielab/lottie-player": "^1.1.3",
     "@tabler/icons-react": "^3.46.0",
     "clsx": "^2.1.1",
     "cobe": "^2.0.1",
@@ -22,9 +21,6 @@
     "react-icons": "^5.7.0",
     "resend": "^6.10.0",
     "tailwind-merge": "^3.5.0"
-  },
-  "overrides": {
-    "lottie-web": "5.12.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

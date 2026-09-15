@@ -706,23 +706,36 @@ function StripeRevenueCard({ show }: { show: boolean }) {
     { label: "Best month", jpy: bestMonthJpy, dot: "bg-teal-500", align: "items-end text-right" },
   ];
 
+  const goal = `Year one ~$${(usd(yearOneGoalJpy) / 1_000_000).toFixed(1)}M (¥${yearOneGoalJpy / 1_000_000}M)`;
+  const goalChip = (className: string) => (
+    <p className={`items-center gap-2 rounded-md border border-dashed border-neutral-300 px-2 py-1.5 text-[12px] text-neutral-700 ${className}`}>
+      <span className="font-mono text-[11px] uppercase tracking-[0.04em] text-neutral-400">Goal</span>
+      {goal}
+    </p>
+  );
+
+  // On lg the card spans both columns in a compact layout, so all of it sits above the dashboard's bottom fade.
   return (
-    <div className="relative h-[292px] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_1.55px_5.37px_rgba(0,0,0,0.035),0_7.35px_20.99px_rgba(0,0,0,0.055)]">
+    <div className="relative h-[292px] overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-[0_1.55px_5.37px_rgba(0,0,0,0.035),0_7.35px_20.99px_rgba(0,0,0,0.055)] lg:col-span-2 lg:h-auto">
       <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-4">
-        <p className="relative py-3.5 text-[13px] font-medium text-neutral-900">
+        <p className="relative py-3.5 text-[13px] font-medium text-neutral-900 lg:py-3">
           Monthly revenue
           <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-t-full bg-neutral-900" />
         </p>
-        <p className="truncate font-mono text-[11px] uppercase tracking-[0.04em] text-neutral-500">Stripe</p>
+        <p className="truncate font-mono text-[11px] uppercase tracking-[0.04em] text-neutral-500 lg:hidden">Stripe</p>
+        <p className="hidden truncate font-mono text-[11px] text-neutral-500 lg:block">{`Stripe · JPY converted at ¥${jpyPerUsd} = $1`}</p>
       </div>
 
-      <div className="px-4 py-3.5">
-        <p className="flex items-baseline gap-1.5 tabular-nums tracking-[-0.02em] text-neutral-900">
-          <span className="text-[20px] font-medium">{usdK(lowestMonthJpy)}</span>
-          <span className="text-neutral-300">–</span>
-          <span className="text-[20px] font-medium">{usdK(bestMonthJpy)}</span>
-          <span className="text-[12px] tracking-normal text-neutral-400">/ month</span>
-        </p>
+      <div className="px-4 py-3.5 lg:py-3">
+        <div className="flex items-center justify-between gap-3">
+          <p className="flex items-baseline gap-1.5 tabular-nums tracking-[-0.02em] text-neutral-900">
+            <span className="text-[20px] font-medium">{usdK(lowestMonthJpy)}</span>
+            <span className="text-neutral-300">–</span>
+            <span className="text-[20px] font-medium">{usdK(bestMonthJpy)}</span>
+            <span className="text-[12px] tracking-normal text-neutral-400">/ month</span>
+          </p>
+          {goalChip("hidden lg:flex lg:py-1")}
+        </div>
 
         <div className="mt-3 grid grid-cols-[auto_1fr_auto] items-center gap-2 font-mono text-[11px] text-neutral-400">
           <span>$0</span>
@@ -748,24 +761,21 @@ function StripeRevenueCard({ show }: { show: boolean }) {
           <span>{`$${scale / 1000}k`}</span>
         </div>
 
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="mt-3 grid grid-cols-2 gap-3 lg:mt-2.5">
           {months.map((month) => (
-            <div key={month.label} className={`flex flex-col ${month.align}`}>
+            <div key={month.label} className={`flex flex-col ${month.align} lg:flex-row lg:items-baseline lg:gap-2`}>
               <span className="flex items-center gap-1.5 text-[11px] text-neutral-500">
                 <span className={`size-2 rounded-full ${month.dot}`} />
                 {month.label}
               </span>
-              <span className="mt-0.5 text-[13px] font-medium tabular-nums text-neutral-900">{usdK(month.jpy)}</span>
+              <span className="mt-0.5 text-[13px] font-medium tabular-nums text-neutral-900 lg:mt-0">{usdK(month.jpy)}</span>
               <span className="font-mono text-[11px] tabular-nums text-neutral-400">{yen(month.jpy)}</span>
             </div>
           ))}
         </div>
 
-        <p className="mt-3 flex items-center gap-2 rounded-md border border-dashed border-neutral-300 px-2 py-1.5 text-[12px] text-neutral-700">
-          <span className="font-mono text-[11px] uppercase tracking-[0.04em] text-neutral-400">Goal</span>
-          {`Year one ~$${(usd(yearOneGoalJpy) / 1_000_000).toFixed(1)}M (¥${yearOneGoalJpy / 1_000_000}M)`}
-        </p>
-        <p className="mt-2.5 font-mono text-[11px] text-neutral-400">{`Stripe · JPY converted at ¥${jpyPerUsd} = $1`}</p>
+        {goalChip("mt-3 flex lg:hidden")}
+        <p className="mt-2.5 font-mono text-[11px] text-neutral-400 lg:hidden">{`Stripe · JPY converted at ¥${jpyPerUsd} = $1`}</p>
       </div>
     </div>
   );
@@ -799,7 +809,12 @@ export function WebDashboard() {
   return (
     <div
       ref={ref}
-      className="relative h-full [mask-image:linear-gradient(black_82%,transparent)] lg:overflow-hidden lg:[mask-image:linear-gradient(black_76%,transparent)]"
+      // Sales ends on the Stripe card, which must stay fully legible, so it fades only the list peeking below it on lg.
+      className={`relative h-full lg:overflow-hidden ${
+        view === "Traffic"
+          ? "[mask-image:linear-gradient(black_82%,transparent)] lg:[mask-image:linear-gradient(black_76%,transparent)]"
+          : "lg:[mask-image:linear-gradient(black_94%,transparent)]"
+      }`}
     >
       <div className="flex items-center gap-3 rounded-t-xl border-x border-t border-neutral-200 bg-neutral-50 pb-4 pl-3 pr-2 pt-2 sm:pl-4">
         <ServiceMarquee paused={!show} />
