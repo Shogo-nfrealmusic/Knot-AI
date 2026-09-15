@@ -89,7 +89,7 @@ const posts: BlogPost[] = [
     category: "growth",
     date: "2026-09-15",
     author: shogo,
-    status: "draft",
+    status: "published",
     cover: { icon: "analytics", label: "Funnel · −39%" },
     body: [
       {
@@ -170,7 +170,7 @@ const posts: BlogPost[] = [
     category: "engineering",
     date: "2026-09-15",
     author: shogo,
-    status: "draft",
+    status: "published",
     cover: { icon: "stripe", label: "30% deposit" },
     body: [
       {
@@ -255,7 +255,7 @@ func depositAmount(total int64) int64 {
     category: "growth",
     date: "2026-09-15",
     author: shogo,
-    status: "draft",
+    status: "published",
     cover: { icon: "instagram", label: "13 months of data" },
     body: [
       {
@@ -325,7 +325,7 @@ func depositAmount(total int64) int64 {
     category: "ai",
     date: "2026-09-15",
     author: shogo,
-    status: "draft",
+    status: "published",
     cover: { icon: "video", label: "10 videos / morning" },
     body: [
       {
@@ -403,7 +403,7 @@ def morning_run():
     category: "building",
     date: "2026-09-15",
     author: shogo,
-    status: "draft",
+    status: "published",
     cover: { icon: "barbell", label: "ironandcode.dev" },
     body: [
       {
