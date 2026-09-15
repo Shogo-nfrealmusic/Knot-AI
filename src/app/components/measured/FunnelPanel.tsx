@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { EASE_OUT, type PanelProps } from "./marks";
 
-// Real GA4 funnel exploration for book.tettyphotostudio.com. Swap in the date range once confirmed.
-export const FUNNEL_PERIOD = "GA4 funnel exploration";
+// Real GA4 funnel exploration for book.tettyphotostudio.com, covering all of August 2026.
+export const FUNNEL_PERIOD = "Aug 1 – Aug 31, 2026";
 
 // Users at each step, as reported by GA4. Rates are computed from these counts.
 const steps = [
