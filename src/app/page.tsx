@@ -5,6 +5,7 @@ import AppPreviewSlot from "@/app/components/AppPreviewSlot";
 import Manifesto from "@/app/components/Manifesto";
 import FeatureGrid from "@/app/components/FeatureGrid";
 import ByTheNumbers from "@/app/components/ByTheNumbers";
+import ProductionTour from "@/app/components/ProductionTour";
 import WhyKnot from "@/app/components/WhyKnot";
 import CTA from "@/app/components/CTA";
 import { GradientContainer } from "@/app/components/ui/gradient-container";
@@ -27,6 +28,7 @@ export default function Home() {
         </GradientContainer>
       </GridSection>
       <ByTheNumbers />
+      <ProductionTour />
       <GridSection>
         <WhyKnot closingCta={false} />
       </GridSection>

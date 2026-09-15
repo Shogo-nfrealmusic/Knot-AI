@@ -3,7 +3,7 @@ import SitePageLayout from "@/app/components/SitePageLayout";
 import InnerHero from "@/app/components/InnerHero";
 import ProjectTools from "@/app/components/ProjectTools";
 import Measured from "@/app/components/Measured";
-import NetworkGrowth from "@/app/components/howitworks/NetworkGrowth";
+import AudienceDashboard from "@/app/components/audience/AudienceDashboard";
 import CTA from "@/app/components/CTA";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { getProject } from "@/lib/projects";
@@ -33,8 +33,9 @@ export default function WorkPage() {
 
       {brand ? (
         <GridSection className="bg-neutral-50">
-          <section className="grid items-center gap-12 px-4 py-20 sm:px-10 md:grid-cols-2 lg:gap-16 lg:py-28">
-            <div>
+          {/* Two columns only from lg: at md the dashboard's column would be ~330px inside the rails. */}
+          <section className="grid items-center gap-12 px-4 py-20 sm:px-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 lg:py-28">
+            <div className="min-w-0">
               <p className="font-mono text-[13px] text-warm">
                 AUDIENCE
               </p>
@@ -77,7 +78,7 @@ export default function WorkPage() {
               ) : null}
             </div>
 
-            <NetworkGrowth />
+            <AudienceDashboard />
           </section>
         </GridSection>
       ) : null}

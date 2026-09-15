@@ -131,10 +131,29 @@ function edgeKey(edge: string[]) {
   return [...edge].sort().join("-");
 }
 
-export default function NetworkGrowth() {
+export const stageCount = months.length;
+
+type NetworkGrowthProps = {
+  /** Controlled stage index; omit to let the component run its own loop. */
+  stage?: number;
+  onStageChange?: (stage: number) => void;
+  /** Drop the card chrome when embedded in another frame (the audience dashboard). */
+  bare?: boolean;
+};
+
+export default function NetworkGrowth({
+  stage,
+  onStageChange,
+  bare = false,
+}: NetworkGrowthProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(0);
+  const [internalStage, setInternalStage] = useState(0);
+  const currentMonth = stage ?? internalStage;
+  const setCurrentMonth = (next: number) => {
+    if (stage === undefined) setInternalStage(next);
+    onStageChange?.(next);
+  };
   const [signalCycle, setSignalCycle] = useState(0);
   const month = months[currentMonth];
 
@@ -182,10 +201,12 @@ export default function NetworkGrowth() {
 
     const delay = currentMonth === months.length - 1 ? 3500 : 2000;
     const timeout = window.setTimeout(() => {
-      setCurrentMonth((index) => (index + 1) % months.length);
+      setCurrentMonth((currentMonth + 1) % months.length);
     }, delay);
 
     return () => window.clearTimeout(timeout);
+    // setCurrentMonth is recreated each render; the loop only needs to restart when the stage changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentMonth, isVisible]);
 
   useEffect(() => {
@@ -201,7 +222,11 @@ export default function NetworkGrowth() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden rounded-[12px] border border-neutral-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7"
+      className={
+        bare
+          ? "relative w-full overflow-hidden bg-white p-4 sm:p-5"
+          : "relative w-full overflow-hidden rounded-[12px] border border-neutral-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7"
+      }
     >
       <div className="pointer-events-none absolute inset-0 opacity-[0.12] [background-image:radial-gradient(circle_at_center,rgba(0,0,0,0.5)_1px,transparent_1px)] [background-size:22px_22px]" />
       <div className="flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.05em]">
@@ -211,7 +236,7 @@ export default function NetworkGrowth() {
         </span>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-[10px] border border-neutral-200 bg-neutral-50/70">
+      <div className={`${bare ? "mt-4" : "mt-8"} overflow-hidden rounded-[10px] border border-neutral-200 bg-neutral-50/70`}>
         <svg
           viewBox="0 0 600 280"
           // Phones: height follows the 600×280 aspect instead of letterboxing inside a fixed 280px box.

@@ -58,9 +58,21 @@
   }
 }
 
+/* dub.co chip rows: each row renders its items twice, so -50% lands on an identical frame. */
+@keyframes infinite-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(var(--scroll, -100%));
+  }
+}
+
 @theme inline {
   --color-charcoal: var(--charcoal);
   --animate-move: move 5s linear infinite;
+  --animate-infinite-scroll: infinite-scroll 60s linear infinite;
   --animate-slide-up-fade: slide-up-fade 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   --color-bg-primary: var(--bg-primary);
   --color-bg-card: var(--bg-card);
