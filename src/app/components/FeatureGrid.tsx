@@ -9,7 +9,8 @@ import { SkeletonTwo } from "@/app/components/features/skeletons/second";
 import { SkeletonThree } from "@/app/components/features/skeletons/third";
 import { SkeletonFour } from "@/app/components/features/skeletons/fourth";
 import { SkeletonFive } from "@/app/components/features/skeletons/fifth";
-import { SkeletonWeb } from "@/app/components/features/skeletons/sixth";
+import { SiGoogleanalytics } from "react-icons/si";
+import { WebDashboard } from "@/app/components/features/skeletons/web-dashboard";
 
 export default function FeatureGrid() {
   return (
@@ -89,18 +90,22 @@ export default function FeatureGrid() {
               decision about what to fix or build next.
             </CardDescription>
           </Card>
-          <Card className="lg:col-span-3 lg:grid lg:grid-cols-[0.75fr_1.25fr] lg:items-center lg:gap-10">
-            <div>
+          <Card className="max-sm:p-4 lg:col-span-3 lg:grid lg:grid-cols-[0.75fr_1.25fr] lg:items-center lg:gap-10">
+            <div className="max-sm:px-2 max-sm:pt-2">
               <CardTitle>Web products, end to end</CardTitle>
               <CardDescription>
                 From the first screen to payments, deployment, and monitoring.
                 Next.js, Go, and PostgreSQL on AWS, shipped fast and built to
                 last.
               </CardDescription>
+              <p className="mt-5 flex max-w-sm items-start gap-2 font-mono text-[11px] leading-relaxed text-neutral-500">
+                <SiGoogleanalytics className="mt-[3px] size-3 shrink-0 text-[#E37400]" />
+                <span>GA4 · book.tettyphotostudio.com · Aug 18 – Sep 14, 2026. Real numbers from a booking platform I run.</span>
+              </p>
             </div>
-            {/* Auto height below lg: the fixed 20rem box let the taller mock overflow up over the title. */}
-            <CardSkeletonContainer showGradient={false} className="mt-6 h-auto lg:mt-0 lg:h-[20rem]">
-              <SkeletonWeb />
+            {/* Auto height below lg: the dashboard sets its own height and fades out at the bottom. */}
+            <CardSkeletonContainer showGradient={false} className="mt-6 h-auto min-w-0 lg:mt-0 lg:h-[34rem]">
+              <WebDashboard />
             </CardSkeletonContainer>
           </Card>
         </div>

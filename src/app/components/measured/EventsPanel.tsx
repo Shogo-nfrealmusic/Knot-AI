@@ -19,7 +19,7 @@ const ROWS = 36;
 
 // Headline totals are real; the sparklines are decorative.
 const stats = [
-  { label: "Revenue / mo", value: "~$33k", d: "M4 34C10 32 14 26 20 25S30 28 36 24 46 14 52 16 62 12 68 8 74 4 76 3" },
+  { label: "Best month", value: "$19.9k", d: "M4 34C10 32 14 26 20 25S30 28 36 24 46 14 52 16 62 12 68 8 74 4 76 3" },
   { label: "Transactions", value: "754", d: "M4 30C12 29 16 22 22 23S32 30 38 26 48 18 54 20 62 10 68 11 74 6 76 5" },
   { label: "Countries", value: "20+", d: "M4 36C10 33 16 30 22 28S32 24 38 25 48 17 54 18 64 12 70 9 74 7 76 5" },
 ];

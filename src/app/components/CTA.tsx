@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { IconBrandInstagram, IconCreditCard, IconNews } from "@tabler/icons-react";
+import { IconBrandInstagram, IconNews, IconUsers } from "@tabler/icons-react";
 
 // Short, verifiable proof points in place of dub's review-star row.
 const proof = [
-  { icon: IconCreditCard, label: "~$33k/mo platform" },
+  { icon: IconUsers, label: "1,200+ clients handled" },
   { icon: IconNews, label: "Published at Mercari" },
   { icon: IconBrandInstagram, label: "29K followers" },
 ];

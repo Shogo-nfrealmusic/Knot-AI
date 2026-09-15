@@ -180,7 +180,7 @@ const posts: BlogPost[] = [
       {
         type: "stats",
         items: [
-          { value: "~$33k", label: "monthly revenue" },
+          { value: "$19.9k", label: "best month in revenue" },
           { value: "754", label: "transactions, Jan 1 – Sep 13, 2026" },
           { value: "20+", label: "countries customers book from" },
         ],
@@ -243,7 +243,7 @@ func depositAmount(total int64) int64 {
       { type: "heading", text: "What it has done" },
       {
         type: "paragraph",
-        text: "The platform brings in roughly $33,000 a month and processed 754 transactions between January 1 and September 13, 2026. Instrumenting it step by step is also how I found a 39% drop-off between picking a date and picking a time.",
+        text: "Its best month so far brought in about $19,900 (¥3,057,147 in Stripe), the business has handled 1,200+ clients, and the platform processed 754 transactions between January 1 and September 13, 2026. Instrumenting it step by step is also how I found a 39% drop-off between picking a date and picking a time.",
       },
     ],
   },

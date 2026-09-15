@@ -8,7 +8,7 @@ const cards = [
   {
     number: "01",
     title: "I ship, I don't slide-deck.",
-    body: "Sole developer on a booking platform doing ~$33k a month. I design, build, deploy, and operate it — so I sweat the details that only show up after launch.",
+    body: "Sole developer on a booking platform behind 1,200+ clients and a best month of ~$19.9k. I design, build, deploy, and operate it — so I sweat the details that only show up after launch.",
   },
   {
     number: "02",

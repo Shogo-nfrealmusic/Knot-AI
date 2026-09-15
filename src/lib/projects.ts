@@ -52,7 +52,7 @@ export const projects: Project[] = [
       { label: "Company site", href: "https://www.tps-collective.com/" },
     ],
     metrics: [
-      { value: "~$33k", label: "monthly revenue" },
+      { value: "$19.9k", label: "best month in revenue" },
       { value: "754", label: "transactions in 8.5 months" },
       { value: "39%", label: "funnel drop-off identified" },
     ],
@@ -76,7 +76,8 @@ export const projects: Project[] = [
       {
         heading: "Results",
         items: [
-          "~$33,000 in monthly revenue",
+          "Monthly revenue between ~$4,000 and ~$19,900 in Stripe (converted from JPY at ¥154 = $1)",
+          "TPS has handled 1,200+ clients to date, and is working toward ~$1.3M (¥200M) in first-year revenue",
           "754 transactions processed in 8.5 months (Jan 1 – Sep 13, 2026)",
           "Identified a 39% drop-off between date selection and time selection using session-level replay data, and shipped fixes",
         ],

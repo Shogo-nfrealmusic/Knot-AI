@@ -188,7 +188,7 @@ const paymentsLeft = (
           <span className="truncate font-medium text-neutral-900">book.tettyphotostudio.com</span>
         </div>
         <span className="flex items-center gap-2 rounded-md border border-neutral-200 bg-white p-1 text-[0.5rem]">
-          <Stat icon={<IconCurrencyDollar stroke={2} />} value="33k/mo" color="text-blue-500" />
+          <Stat icon={<IconCurrencyDollar stroke={2} />} value="19.9k peak" color="text-blue-500" />
           <Stat icon={<IconReceipt stroke={2} />} value="754" color="text-purple-500" />
         </span>
       </div>
