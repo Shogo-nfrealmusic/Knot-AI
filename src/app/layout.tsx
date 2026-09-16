@@ -19,10 +19,28 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+const title = "Shogo Kikuchi — AI Automation & Full-Stack Developer";
+const description =
+  "I build software, run it in a real business, and grow the audience around it. Booking platforms, internal apps, AI agents, and automation pipelines in production.";
+
+// metadataBase turns the opengraph-image / twitter-image file conventions into absolute URLs.
 export const metadata: Metadata = {
-  title: "Shogo Kikuchi — AI Automation & Full-Stack Developer",
-  description:
-    "I build software, run it in a real business, and grow the audience around it. Booking platforms, internal apps, AI agents, and automation pipelines in production.",
+  metadataBase: new URL("https://shogo-kikuchi.vercel.app"),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    siteName: "Shogo Kikuchi",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 export default function RootLayout({
