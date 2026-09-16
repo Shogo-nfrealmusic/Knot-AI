@@ -5,7 +5,7 @@ import { IconBrandInstagram, IconNews, IconUsers } from "@tabler/icons-react";
 const proof = [
   { icon: IconUsers, label: "1,200+ clients handled" },
   { icon: IconNews, label: "Published at Mercari" },
-  { icon: IconBrandInstagram, label: "29K followers" },
+  { icon: IconBrandInstagram, label: "30K followers" },
 ];
 
 // One side of the notch the white page cuts into the dark block (mirrored for the other side).

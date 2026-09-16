@@ -336,8 +336,8 @@ const contentLeft = (
           </div>
         </div>
         <div className="flex items-center justify-between gap-2 border-t border-neutral-200 px-3 py-2.5 text-[0.6875rem] leading-none">
-          <span className="text-neutral-500">Monthly views</span>
-          <span className="font-medium text-neutral-900">66k+</span>
+          <span className="text-neutral-500">Views · 30 days</span>
+          <span className="font-medium text-neutral-900">1.14M</span>
         </div>
       </div>
     </div>
@@ -370,7 +370,7 @@ const contentRight = (
         <div className="flex flex-col gap-2.5 border-t border-neutral-200 px-3 pb-2.5 pt-3 text-xs leading-none">
           <div className="flex items-center justify-between gap-2">
             <span className="font-medium text-neutral-400">Followers</span>
-            <span className="text-neutral-600">29,000</span>
+            <span className="text-neutral-600">30,000</span>
           </div>
           <div className="flex items-center justify-between gap-2">
             <span className="font-medium text-neutral-400">Videos past 1M</span>

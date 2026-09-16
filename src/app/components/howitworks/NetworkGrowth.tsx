@@ -98,7 +98,7 @@ const months: Month[] = [
     ],
   },
   {
-    label: "29,000 FOLLOWERS",
+    label: "30,000 FOLLOWERS",
     count: 14,
     nodes: [
       account, hooks, captions, watch, shares, views, reach, saves,

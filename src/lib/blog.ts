@@ -260,12 +260,12 @@ func depositAmount(total int64) int64 {
     body: [
       {
         type: "paragraph",
-        text: "Alongside building software, I grew a personal brand on Instagram, @imshogo.k, from zero to 29,000 followers in the motivation, fitness, and self-growth space. Multiple videos passed 1 million views.",
+        text: "Alongside building software, I grew a personal brand on Instagram, @imshogo.k, from zero to 30,000 followers in the motivation, fitness, and self-growth space. Multiple videos passed 1 million views.",
       },
       {
         type: "stats",
         items: [
-          { value: "29,000", label: "followers, built from zero" },
+          { value: "30,000", label: "followers, built from zero" },
           { value: "1M+", label: "views on multiple videos" },
           { value: "13 mo", label: "of account data analyzed" },
         ],
@@ -273,7 +273,7 @@ func depositAmount(total int64) int64 {
       { type: "heading", text: "The question" },
       {
         type: "paragraph",
-        text: "Follower count is the number everyone looks at, and for a long time that included me. A bigger account should, in theory, mean more reach for every post. But videos that passed a million views travelled far beyond a 29,000-follower base, so follower count alone clearly wasn't explaining reach.",
+        text: "Follower count is the number everyone looks at, and for a long time that included me. A bigger account should, in theory, mean more reach for every post. But videos that passed a million views travelled far beyond a 30,000-follower base, so follower count alone clearly wasn't explaining reach.",
       },
       { type: "heading", text: "What I did" },
       {
@@ -336,7 +336,7 @@ func depositAmount(total int64) int64 {
         type: "stats",
         items: [
           { value: "10", label: "videos generated every morning" },
-          { value: "66k+", label: "monthly views on the resulting account" },
+          { value: "1.14M", label: "views on the resulting account in 30 days" },
           { value: "Solo", label: "designed and built alone" },
         ],
       },

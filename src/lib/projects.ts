@@ -205,7 +205,7 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "10", label: "videos generated every morning" },
-      { value: "66k+", label: "monthly views on the account" },
+      { value: "1.14M", label: "views on the account in 30 days" },
     ],
     sections: [
       {
@@ -272,7 +272,7 @@ export const projects: Project[] = [
   {
     slug: "instagram-personal-brand",
     name: "Instagram @imshogo.k",
-    title: "Personal Brand — 0 to 29,000 Followers",
+    title: "Personal Brand — 0 to 30,000 Followers",
     summary:
       "A personal brand built from zero, and a 13-month analysis of what actually drives reach.",
     role: "Founder, creator, analyst.",
@@ -281,7 +281,7 @@ export const projects: Project[] = [
       { label: "Instagram", href: "https://www.instagram.com/imshogo.k/" },
     ],
     metrics: [
-      { value: "29k", label: "followers, built from zero" },
+      { value: "30k", label: "followers, built from zero" },
       { value: "1M+", label: "views on multiple videos" },
       { value: "13 mo", label: "of account data analyzed" },
     ],

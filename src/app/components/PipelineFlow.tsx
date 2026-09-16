@@ -14,6 +14,24 @@ type SourceKey = "footage" | "captions";
 
 type Chip = { x: number; y: number; w: number; h: number; textSize: number; connector?: string };
 
+// The card showing what the account this pipeline feeds did over the last 30 days.
+type Results = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  iconSize: number;
+  iconY: number;
+  headerBaseline: number;
+  dividerY: number;
+  rowY: number;
+  rowStep: number;
+  headerSize: number;
+  labelSize: number;
+  valueSize: number;
+  connector?: string;
+};
+
 type Layout = {
   key: "wide" | "narrow";
   className: string;
@@ -26,7 +44,8 @@ type Layout = {
   // Footage and generated captions ride their paths into the pipeline, then down into the render window.
   sources: { key: SourceKey; label: string; x: number; y: number; path: string }[];
   card: { x: number; y: number; w: number; h: number; iconX: number; iconY: number; textX: number; titleY: number; subY: number; titleSize: number; subSize: number };
-  chips: [Chip, Chip];
+  chip: Chip;
+  results: Results;
   window: { x: number; y: number; w: number; dotR: number; dotY: number; statusY: number; statusSize: number; innerY: number };
   thumbs: { x0: number; y0: number; w: number; h: number; step: number; rowStep: number };
 };
@@ -53,10 +72,24 @@ const layouts: Layout[] = [
       { key: "captions", label: "LLM captions", x: 606, y: 60, path: "M650 148V189C650 202.255 639.255 213 626 213H400V340" },
     ],
     card: { x: 268, y: 180, w: 264, h: 66, iconX: 284, iconY: 196, textX: 332, titleY: 210, subY: 228, titleSize: 15, subSize: 10.5 },
-    chips: [
-      { x: 24, y: 400, w: 172, h: 44, textSize: 12.5, connector: "M196 422H200" },
-      { x: 604, y: 400, w: 172, h: 44, textSize: 12.5, connector: "M600 422H604" },
-    ],
+    chip: { x: 24, y: 362, w: 172, h: 44, textSize: 12.5, connector: "M196 384H200" },
+    results: {
+      // Held 14px off the render window so the dashed connector between them reads.
+      x: 614,
+      y: 316,
+      w: 162,
+      h: 136,
+      iconSize: 14,
+      iconY: 330,
+      headerBaseline: 341,
+      dividerY: 352,
+      rowY: 352,
+      rowStep: 32,
+      headerSize: 9.5,
+      labelSize: 11,
+      valueSize: 16,
+      connector: "M600 384H614",
+    },
     window: { x: 200, y: 290, w: 400, dotR: 3.5, dotY: 307, statusY: 311, statusSize: 10.5, innerY: 326 },
     thumbs: { x0: 230, y0: 342, w: 62, h: 78, step: 70, rowStep: 86 },
   },
@@ -64,7 +97,7 @@ const layouts: Layout[] = [
     key: "narrow",
     className: "sm:hidden",
     width: 360,
-    height: 540,
+    height: 632,
     maskStop: "92%",
     tile: 72,
     labelSize: 15,
@@ -74,12 +107,24 @@ const layouts: Layout[] = [
       { key: "captions", label: "LLM captions", x: 234, y: 36, path: "M270 108V116C270 122.627 264.627 128 258 128H180V340" },
     ],
     card: { x: 20, y: 150, w: 320, h: 64, iconX: 36, iconY: 165, textX: 84, titleY: 180, subY: 199, titleSize: 17, subSize: 13 },
-    chips: [
-      { x: 20, y: 230, w: 320, h: 42, textSize: 15 },
-      { x: 20, y: 280, w: 320, h: 42, textSize: 15 },
-    ],
-    window: { x: 20, y: 336, w: 320, dotR: 4, dotY: 355, statusY: 360, statusSize: 14, innerY: 376 },
-    thumbs: { x0: 44, y0: 390, w: 48, h: 60, step: 56, rowStep: 70 },
+    chip: { x: 20, y: 230, w: 320, h: 42, textSize: 15 },
+    results: {
+      x: 20,
+      y: 284,
+      w: 320,
+      h: 132,
+      iconSize: 16,
+      iconY: 298,
+      headerBaseline: 311,
+      dividerY: 324,
+      rowY: 324,
+      rowStep: 30,
+      headerSize: 13,
+      labelSize: 14,
+      valueSize: 17,
+    },
+    window: { x: 20, y: 428, w: 320, dotR: 4, dotY: 447, statusY: 452, statusSize: 14, innerY: 468 },
+    thumbs: { x0: 44, y0: 482, w: 48, h: 60, step: 56, rowStep: 70 },
   },
 ];
 
@@ -100,6 +145,51 @@ function StatChip({ chip, children }: { chip: Chip; children: (iconX: number, ic
         {children(iconX, iconY, textX, textY)}
       </g>
       {chip.connector ? <path d={chip.connector} stroke="#BBB" strokeWidth="1.5" strokeDasharray="3 3" /> : null}
+    </>
+  );
+}
+
+// Instagram Insights for the studio account the pipeline posts to, last 30 days (Sep 2026).
+const resultRows = [
+  { label: "Views", value: "1.14M" },
+  { label: "New followers", value: "+1,598" },
+  { label: "Interactions", value: "61.4K" },
+];
+
+function ResultsCard({ results }: { results: Results }) {
+  const { x, y, w, h } = results;
+  return (
+    <>
+      {results.connector ? (
+        <path d={results.connector} stroke="#BBB" strokeWidth="1.5" strokeDasharray="3 3" />
+      ) : null}
+      <g className="drop-shadow-sm">
+        <rect x={x + 0.75} y={y + 0.75} width={w - 1.5} height={h - 1.5} rx="14" fill="white" stroke="#E5E5E5" strokeWidth="1.5" />
+        <SiInstagram x={x + 14} y={results.iconY} width={results.iconSize} height={results.iconSize} color="#E4405F" />
+        <text
+          x={x + 20 + results.iconSize}
+          y={results.headerBaseline}
+          fontSize={results.headerSize}
+          fill="#737373"
+          className="font-mono"
+        >
+          @tettyphotostudio
+        </text>
+        <line x1={x + 1} x2={x + w - 1} y1={results.dividerY} y2={results.dividerY} stroke="#EFEFEF" strokeWidth="1" />
+        {resultRows.map((row, index) => {
+          const baseline = results.rowY + index * results.rowStep + results.rowStep / 2 + results.valueSize * 0.36;
+          return (
+            <g key={row.label}>
+              <text x={x + 14} y={baseline} fontSize={results.labelSize} fontWeight="500" fill="#525252">
+                {row.label}
+              </text>
+              <text x={x + w - 14} y={baseline} textAnchor="end" fontSize={results.valueSize} fontWeight="600" fill="#171717">
+                {row.value}
+              </text>
+            </g>
+          );
+        })}
+      </g>
     </>
   );
 }
@@ -126,7 +216,7 @@ function FlowSvg({
       className={`mt-2 h-auto w-full ${layout.className}`}
       style={{ maskImage: `linear-gradient(black ${layout.maskStop}, transparent)` }}
       role="img"
-      aria-label="Source footage and LLM-written captions flow into an automated pipeline that renders ten short-form videos every morning"
+      aria-label="Source footage and LLM-written captions flow into an automated pipeline that renders ten short-form videos every morning, feeding the studio's Instagram account: 1.14 million views, 1,598 new followers and 61,400 interactions in the last 30 days"
     >
       <defs>
         {layout.sources.map((source) => (
@@ -200,27 +290,18 @@ function FlowSvg({
         </text>
       </g>
 
-      {/* Stats */}
-      <StatChip chip={layout.chips[0]}>
+      {/* Cadence in, account results out */}
+      <StatChip chip={layout.chip}>
         {(iconX, iconY, textX, textY) => (
           <>
             <IconCalendarRepeat x={iconX} y={iconY} width={18} height={18} stroke={1.75} color="#525252" />
-            <text x={textX} y={textY} fontSize={layout.chips[0].textSize} fontWeight="600" fill="#262626">
+            <text x={textX} y={textY} fontSize={layout.chip.textSize} fontWeight="600" fill="#262626">
               10 videos / morning
             </text>
           </>
         )}
       </StatChip>
-      <StatChip chip={layout.chips[1]}>
-        {(iconX, iconY, textX, textY) => (
-          <>
-            <SiInstagram x={iconX} y={iconY} width={18} height={18} color="#E4405F" />
-            <text x={textX} y={textY} fontSize={layout.chips[1].textSize} fontWeight="600" fill="#262626">
-              66k+ monthly views
-            </text>
-          </>
-        )}
-      </StatChip>
+      <ResultsCard results={layout.results} />
 
       {/* Render window: drawn past the bottom edge so only the rounded top shows. */}
       <rect x={win.x + 0.75} y={win.y + 0.75} width={win.w - 1.5} height={layout.height - win.y + 40} rx="24" fill="#171717" stroke="black" strokeWidth="1.5" />
@@ -321,6 +402,12 @@ export default function PipelineFlow() {
           }}
         />
       ))}
+
+      <p className="text-[11px] leading-relaxed text-neutral-500">
+        <span className="font-mono">Instagram Insights · last 30 days</span> — @tettyphotostudio, the
+        studio account this pipeline posts to: 17K profile visits, 2.5K link-in-bio taps, Reels 77%
+        of views.
+      </p>
     </div>
   );
 }

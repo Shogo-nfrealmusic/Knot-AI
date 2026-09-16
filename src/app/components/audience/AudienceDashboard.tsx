@@ -11,22 +11,56 @@ const marqueeItems = [
   "Motivation",
   "Fitness",
   "Self-growth",
-  "0 → 29,000 followers",
+  "0 → 30,000 followers",
   "Multiple videos past 1M views",
   "13 months of account data",
   "Shares → reach",
+  "2.03M views · last 30 days",
 ];
 
 // Each metric tab jumps the growth map to the stage that tells its story.
 const metrics = [
-  { label: "Followers", value: "29,000", note: "built from zero", stage: 5 },
+  { label: "Followers", value: "30,000", note: "built from zero", stage: 5 },
   { label: "Top videos", value: "1M+", note: "views, multiple videos", stage: 3 },
   { label: "Analysis", value: "13 mo", note: "of my own account data", stage: 4 },
 ];
 
-// The last-30-days Instagram Insights belong to the studio account, not @imshogo.k,
-// so they live with the content pipeline work instead of this personal-brand card.
-const views = ["Growth", "Signals"] as const;
+// Instagram Insights for @imshogo.k — the personal account, not the studio one —
+// last 30 days as of Sep 16, 2026 (user-provided). Only these three numbers were given.
+const DAYS = 30;
+const insights = {
+  views: 2_028_132,
+  newFollowers: 1_264,
+  interactions: 233_963,
+};
+
+const round = (value: number) => Math.round(value).toLocaleString("en-US");
+
+const insightTabs = [
+  { label: "Views", value: "2.03M", note: `${insights.views.toLocaleString("en-US")} total` },
+  {
+    label: "New followers",
+    short: "Followers",
+    value: `+${insights.newFollowers.toLocaleString("en-US")}`,
+    note: "in 30 days",
+  },
+  {
+    label: "Interactions",
+    value: "234K",
+    note: `${((insights.interactions / insights.views) * 100).toFixed(1)}% of views`,
+  },
+];
+
+// Divided from the 30-day totals above, so the card says "calculated" rather than "measured".
+const perDay = [
+  { label: "Views", value: `≈ ${round(insights.views / DAYS)}` },
+  { label: "New followers", value: `≈ ${round(insights.newFollowers / DAYS)}` },
+  { label: "Interactions", value: `≈ ${round(insights.interactions / DAYS)}` },
+];
+
+const perThousandViews = round((insights.interactions / insights.views) * 1000);
+
+const views = ["30 days", "Growth", "Signals"] as const;
 type View = (typeof views)[number];
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -142,7 +176,7 @@ const reachSignals: SignalRow[] = [
 ];
 
 const accountRows = [
-  { label: "Followers", value: "0 → 29,000" },
+  { label: "Followers", value: "0 → 30,000" },
   { label: "Videos past 1M views", value: "Multiple" },
   { label: "Account data analyzed", value: "13 months" },
   { label: "Niche", value: "Motivation · Fitness · Self-growth" },
@@ -175,6 +209,68 @@ function ListCard({
         </p>
       </div>
       <div className="p-2">{children}</div>
+    </div>
+  );
+}
+
+function InsightsView() {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="grid grid-cols-3 border-b border-neutral-200">
+        {insightTabs.map((tab, index) => (
+          <div
+            key={tab.label}
+            className={`relative min-w-0 px-3 py-3 sm:px-5 sm:py-4 ${index > 0 ? "border-l border-neutral-200" : ""} ${
+              index === 0 ? "bg-white" : "bg-neutral-50/60"
+            }`}
+          >
+            <p className="truncate text-[12px] font-medium text-neutral-500">
+              {"short" in tab ? (
+                <>
+                  <span className="sm:hidden">{tab.short}</span>
+                  <span className="max-sm:hidden">{tab.label}</span>
+                </>
+              ) : (
+                tab.label
+              )}
+            </p>
+            <p
+              className={`mt-1 font-mono text-[20px] leading-none tracking-[-0.04em] sm:text-[24px] ${
+                index === 0 ? "text-neutral-900" : "text-neutral-700"
+              }`}
+            >
+              {tab.value}
+            </p>
+            <p className="mt-1.5 hidden truncate text-[11px] text-neutral-400 sm:block">{tab.note}</p>
+            {index === 0 ? <span className="absolute inset-x-0 -bottom-px h-0.5 bg-warm" /> : null}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-1 flex-col gap-3 p-3 sm:p-5">
+        <ListCard title="Daily average" column="Per day" chip="Calculated">
+          <ul className="divide-y divide-neutral-100">
+            {perDay.map((row) => (
+              <li key={row.label} className="flex min-h-10 items-center justify-between gap-4 px-3 py-2">
+                <span className="text-[13px] text-neutral-500">{row.label}</span>
+                <span className="font-mono text-[14px] tabular-nums text-neutral-900">{row.value}</span>
+              </li>
+            ))}
+          </ul>
+        </ListCard>
+
+        <div className="flex items-center gap-3 rounded-xl border border-orange-200 bg-orange-50/60 px-4 py-3">
+          <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.08em] text-warm">Rate</span>
+          <p className="text-[13px] text-neutral-800">
+            ≈ {perThousandViews} interactions per 1,000 views.
+          </p>
+        </div>
+
+        <p className="mt-auto px-1 font-mono text-[10px] leading-relaxed text-neutral-500 sm:text-[11px]">
+          Instagram Insights · @imshogo.k · last 30 days ·{" "}
+          <span className="whitespace-nowrap">Sep 2026</span>
+        </p>
+      </div>
     </div>
   );
 }
@@ -238,7 +334,7 @@ function SignalsView({ active }: { active: boolean }) {
 }
 
 export default function AudienceDashboard() {
-  const [view, setView] = useState<View>("Growth");
+  const [view, setView] = useState<View>("30 days");
   const [stage, setStage] = useState(0);
 
   return (
@@ -257,8 +353,8 @@ export default function AudienceDashboard() {
 
       <Marquee />
 
-      {/* On lg both views share one grid cell, so switching never changes the card's height.
-          Stacked on phones, the taller Signals view left a gap under Growth, so the idle view drops out there. */}
+      {/* The views share one grid cell, but only the active one is laid out: with three views of
+          different heights, holding the tallest left dead space under the shorter ones. */}
       <div className="grid">
         {views.map((item) => {
           const active = item === view;
@@ -269,7 +365,7 @@ export default function AudienceDashboard() {
               aria-label={item}
               aria-hidden={!active}
               inert={!active}
-              className={`col-start-1 row-start-1 min-w-0 ${active ? "" : "pointer-events-none max-lg:hidden"}`}
+              className={`col-start-1 row-start-1 min-w-0 ${active ? "" : "pointer-events-none hidden"}`}
               initial={false}
               animate={{
                 opacity: active ? 1 : 0,
@@ -278,7 +374,9 @@ export default function AudienceDashboard() {
               }}
               transition={{ duration: 0.45, ease }}
             >
-              {item === "Growth" ? (
+              {item === "30 days" ? (
+                <InsightsView />
+              ) : item === "Growth" ? (
                 <GrowthView stage={stage} onStageChange={setStage} />
               ) : (
                 <SignalsView active={active} />

@@ -27,7 +27,7 @@ export const SkeletonFive = () => {
         <div className="flex items-center gap-2 text-xs mt-4 text-neutral-500">
           <p>Followers</p>
           <div className="h-1 w-1 rounded-full bg-neutral-400" />
-          <p>29,000</p>
+          <p>30,000</p>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
