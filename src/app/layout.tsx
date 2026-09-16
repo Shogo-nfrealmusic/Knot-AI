@@ -25,7 +25,7 @@ const description =
 
 // metadataBase turns the opengraph-image / twitter-image file conventions into absolute URLs.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shogo-kikuchi.vercel.app"),
+  metadataBase: new URL("https://shogo.build"),
   title,
   description,
   openGraph: {
