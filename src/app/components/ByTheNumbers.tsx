@@ -7,10 +7,10 @@ const integer = (n: number) => Math.round(n).toLocaleString("en-US");
 
 const stats = [
   {
-    label: "Monthly revenue",
-    note: "Booking platform I built and operate",
-    to: 33,
-    format: (n: number) => `$${Math.round(n)}k`,
+    label: "Best month in revenue",
+    note: "Booking platform I built and operate · Stripe",
+    to: 19.9,
+    format: (n: number) => `$${n.toFixed(1)}k`,
   },
   {
     label: "Bookings processed",
@@ -27,7 +27,7 @@ const stats = [
   {
     label: "Followers",
     note: "Grown from zero, then measured",
-    to: 29000,
+    to: 30000,
     format: integer,
   },
 ];

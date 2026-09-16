@@ -1,40 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { animate, useInView } from "motion/react";
 import Beam from "@/app/components/ui/beam";
-
-function CountUp({
-  to,
-  format,
-}: {
-  to: number;
-  format: (value: number) => string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-
-    const controls = animate(0, to, {
-      duration: 1.6,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: setValue,
-    });
-    return () => controls.stop();
-  }, [inView, to]);
-
-  return <span ref={ref}>{format(value)}</span>;
-}
+import CountUp from "@/app/components/numbers/CountUp";
 
 const stats = [
   {
     index: "01",
     label: "Platform",
-    value: <CountUp to={33} format={(n) => `$${Math.round(n)}k`} />,
-    unit: "/ month",
+    value: <CountUp to={19.9} duration={1.6} format={(n) => `$${n.toFixed(1)}k`} />,
+    unit: "best month",
     caption: "Booking and payments platform I built and operate",
   },
   {
@@ -49,7 +23,8 @@ const stats = [
     label: "Audience",
     value: (
       <CountUp
-        to={29000}
+        to={30000}
+        duration={1.6}
         format={(n) => Math.round(n).toLocaleString("en-US")}
       />
     ),
