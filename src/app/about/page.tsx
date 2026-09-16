@@ -10,10 +10,15 @@ import StackTabs from "@/app/components/illustrations/StackTabs";
 import CTA from "@/app/components/CTA";
 import { GridSection } from "@/app/components/ui/grid-section";
 
+const title = "About — Engineer, PM, and co-founder | Shogo Kikuchi";
+const description =
+  "Shogo Kikuchi is a product manager, software engineer, and entrepreneur, and the co-founder and CTO of TPS Collective in Tokyo.";
+
 export const metadata: Metadata = {
-  title: "About | Shogo Kikuchi",
-  description:
-    "Shogo Kikuchi is a product manager, software engineer, and entrepreneur, and the co-founder and CTO of TPS Collective in Tokyo.",
+  title,
+  description,
+  alternates: { canonical: "/about" },
+  openGraph: { title, description, url: "/about", type: "website" },
 };
 
 const story = [

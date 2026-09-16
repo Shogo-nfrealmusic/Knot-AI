@@ -4,10 +4,15 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { site, socialLinks } from "@/lib/site";
 import ContactForm from "./ContactForm";
 
+const title = "Contact | Shogo Kikuchi";
+const description =
+  "Get in touch with Shogo Kikuchi about AI automation and full-stack development work.";
+
 export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Get in touch with Shogo Kikuchi about AI automation and full-stack development work.",
+  title,
+  description,
+  alternates: { canonical: "/contact" },
+  openGraph: { title, description, url: "/contact", type: "website" },
 };
 
 const upwork = socialLinks.find((link) => link.label === "Upwork");

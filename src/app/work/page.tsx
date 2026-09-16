@@ -8,10 +8,15 @@ import CTA from "@/app/components/CTA";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { getProject } from "@/lib/projects";
 
+const title = "Work — Systems I built and run | Shogo Kikuchi";
+const description =
+  "Production systems built and operated by Shogo Kikuchi: a booking platform, a staff operations app, an AI agent, an automated content pipeline, and more.";
+
 export const metadata: Metadata = {
-  title: "Work | Shogo Kikuchi",
-  description:
-    "Production systems built and operated by Shogo Kikuchi: a booking platform, a staff operations app, an AI agent, an automated content pipeline, and more.",
+  title,
+  description,
+  alternates: { canonical: "/work" },
+  openGraph: { title, description, url: "/work", type: "website" },
 };
 
 export default function WorkPage() {

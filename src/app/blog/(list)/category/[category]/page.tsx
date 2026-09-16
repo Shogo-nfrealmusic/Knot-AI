@@ -23,9 +23,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category } = await params;
   if (!isBlogCategory(category)) return {};
+
+  const title = `${categoryLabels[category]} | Blog | Shogo Kikuchi`;
+  const description = `Posts about ${categoryLabels[category].toLowerCase()} from Shogo Kikuchi.`;
+  const path = `/blog/category/${category}`;
+
   return {
-    title: `${categoryLabels[category]} | Blog | Shogo Kikuchi`,
-    description: `Posts about ${categoryLabels[category].toLowerCase()} from Shogo Kikuchi.`,
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: { title, description, url: path, type: "website" },
   };
 }
 

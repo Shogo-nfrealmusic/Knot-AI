@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import JsonLd, { OG_IMAGE_URL, SITE_URL } from "@/app/components/JsonLd";
 import BlogCover from "@/app/components/blog/BlogCover";
 import GridBackdrop from "@/app/components/blog/GridBackdrop";
 import PostBody from "@/app/components/blog/PostBody";
@@ -34,13 +35,25 @@ export async function generateMetadata({
   const post = getPost(slug);
   if (!post) return {};
 
+  // Drafts stay out of the index and get no canonical or OG url, which would imply publication.
+  if (post.status === "draft") {
+    return {
+      title: `${post.title} | Shogo Kikuchi`,
+      description: post.description,
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const path = `/blog/${post.slug}`;
+
   return {
     title: `${post.title} | Shogo Kikuchi`,
     description: post.description,
-    robots: post.status === "draft" ? { index: false, follow: false } : undefined,
+    alternates: { canonical: path },
     openGraph: {
       title: post.title,
       description: post.description,
+      url: path,
       type: "article",
       publishedTime: post.date,
       authors: [post.author.name],
@@ -71,20 +84,22 @@ export default async function BlogPostPage({
           description: post.description,
           datePublished: post.date,
           dateModified: post.date,
-          author: { "@type": "Person", name: post.author.name, url: "/about" },
+          image: OG_IMAGE_URL,
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `${SITE_URL}/blog/${post.slug}`,
+          },
+          author: {
+            "@type": "Person",
+            name: post.author.name,
+            url: `${SITE_URL}/about`,
+          },
         }
       : null;
 
   return (
     <>
-      {jsonLd ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
-          }}
-        />
-      ) : null}
+      {jsonLd ? <JsonLd data={jsonLd} /> : null}
 
       <GridSection className="border-t-0" innerClassName="border-x-0 px-4 pb-10 pt-28 sm:pb-16 sm:pt-36">
         <GridBackdrop />
