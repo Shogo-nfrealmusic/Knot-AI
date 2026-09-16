@@ -1,6 +1,6 @@
 export const site = {
   name: "Shogo Kikuchi",
-  email: "shogo@tps-collective.com",
+  email: "hello@shogo.build",
 };
 
 export const socialLinks = [
