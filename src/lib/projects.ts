@@ -228,7 +228,7 @@ export const projects: Project[] = [
         heading: "Results",
         items: [
           "10 videos generated every morning, unattended",
-          "66,000+ monthly views on the resulting account",
+          "1.14M views, 1,598 new followers and 61.4K interactions on the studio's Instagram in the last 30 days (Sep 2026)",
         ],
       },
     ],

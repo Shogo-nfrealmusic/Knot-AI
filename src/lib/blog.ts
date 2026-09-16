@@ -387,7 +387,7 @@ def morning_run():
       { type: "heading", text: "Result" },
       {
         type: "paragraph",
-        text: "Ten videos come out every morning, unattended, and the account they feed gets over 66,000 views a month.",
+        text: "Ten videos come out every morning, unattended, and the studio account they feed drew 1.14M views in the last 30 days (Sep 2026).",
       },
       {
         type: "paragraph",
