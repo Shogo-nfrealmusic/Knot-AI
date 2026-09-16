@@ -17,9 +17,11 @@ const upworkHref = socialLinks.find((link) => link.label === "Upwork")?.href;
 
 function Monogram() {
   return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-900 font-mono text-[11px] font-semibold tracking-[-0.02em] text-white">
-      SK
-    </span>
+    <svg viewBox="0 0 1024 1024" aria-hidden className="h-8 w-8">
+      <rect width="1024" height="1024" rx="140" ry="140" className="fill-neutral-900" />
+      <polygon points="591,232 757,232 610,487 444,487" className="fill-white" />
+      <polygon points="415,537 581,537 434,792 268,792" className="fill-white" />
+    </svg>
   );
 }
 
