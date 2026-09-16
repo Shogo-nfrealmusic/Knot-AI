@@ -15,7 +15,6 @@ const marqueeItems = [
   "Multiple videos past 1M views",
   "13 months of account data",
   "Shares → reach",
-  "1.14M views · last 30 days",
 ];
 
 // Each metric tab jumps the growth map to the stage that tells its story.
@@ -25,37 +24,9 @@ const metrics = [
   { label: "Analysis", value: "13 mo", note: "of my own account data", stage: 4 },
 ];
 
-// Instagram Insights for @imshogo.k, last 30 days as of Sep 16, 2026 (user-provided).
-const insights = {
-  views: 1_142_924,
-  newFollowers: 1_598,
-  interactions: 61_400,
-  profileVisits: 17_000,
-  linkTaps: 2_500,
-};
-
-const percent = (part: number, whole: number) => `${((part / whole) * 100).toFixed(1)}%`;
-
-const insightTabs = [
-  { label: "Views", value: "1.14M", note: `${insights.views.toLocaleString("en-US")} total` },
-  { label: "New followers", short: "Followers", value: `+${insights.newFollowers.toLocaleString("en-US")}`, note: "in 30 days" },
-  { label: "Interactions", value: "61.4K", note: `${percent(insights.interactions, insights.views)} of views` },
-];
-
-// Views split by format, same 30 days (user-provided). The rest comes from other surfaces.
-const viewsByFormat = [
-  { label: "Reels", value: "876K", views: 876_000 },
-  { label: "Posts", value: "137K", views: 137_000 },
-  { label: "Stories", value: "57K", views: 57_000 },
-];
-
-const journey = [
-  { label: "Views", value: "1,142,924", step: null },
-  { label: "Profile visits", value: "17K", step: `${percent(insights.profileVisits, insights.views)} of views` },
-  { label: "Link-in-bio taps", value: "2.5K", step: `${percent(insights.linkTaps, insights.profileVisits)} of profile visits` },
-];
-
-const views = ["30 days", "Growth", "Signals"] as const;
+// The last-30-days Instagram Insights belong to the studio account, not @imshogo.k,
+// so they live with the content pipeline work instead of this personal-brand card.
+const views = ["Growth", "Signals"] as const;
 type View = (typeof views)[number];
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -159,102 +130,6 @@ function GrowthView({ stage, onStageChange }: { stage: number; onStageChange: (s
         })}
       </div>
       <NetworkGrowth bare stage={stage} onStageChange={onStageChange} />
-    </div>
-  );
-}
-
-function InsightsView() {
-  return (
-    <div className="flex h-full flex-col">
-      <div className="grid grid-cols-3 border-b border-neutral-200">
-        {insightTabs.map((tab, index) => (
-          <div
-            key={tab.label}
-            className={`relative min-w-0 px-3 py-3 sm:px-5 sm:py-4 ${index > 0 ? "border-l border-neutral-200" : ""} ${
-              index === 0 ? "bg-white" : "bg-neutral-50/60"
-            }`}
-          >
-            <p className="truncate text-[12px] font-medium text-neutral-500">
-              {"short" in tab ? (
-                <>
-                  <span className="sm:hidden">{tab.short}</span>
-                  <span className="max-sm:hidden">{tab.label}</span>
-                </>
-              ) : (
-                tab.label
-              )}
-            </p>
-            <p
-              className={`mt-1 font-mono text-[20px] leading-none tracking-[-0.04em] sm:text-[24px] ${
-                index === 0 ? "text-neutral-900" : "text-neutral-700"
-              }`}
-            >
-              {tab.value}
-            </p>
-            <p className="mt-1.5 hidden truncate text-[11px] text-neutral-400 sm:block">{tab.note}</p>
-            {index === 0 ? <span className="absolute inset-x-0 -bottom-px h-0.5 bg-warm" /> : null}
-          </div>
-        ))}
-      </div>
-
-      <div className="flex flex-1 flex-col gap-3 p-3 sm:p-5">
-        <ListCard title="From views to link taps" column="Last 30 days">
-          <ol>
-            {journey.map((row, index) => (
-              <li key={row.label}>
-                {row.step ? (
-                  <div className="flex items-center gap-2 py-1.5 pl-[22px]">
-                    <span className="h-5 w-px bg-gradient-to-b from-orange-200 to-warm/60" />
-                    <span className="rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 font-mono text-[11px] leading-none text-warm">
-                      {row.step}
-                    </span>
-                  </div>
-                ) : null}
-                <div
-                  className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 ${
-                    index === 0 ? "bg-orange-50/70" : "bg-neutral-50"
-                  }`}
-                >
-                  <span className="flex min-w-0 items-center gap-2.5">
-                    <span className="flex size-5 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-white font-mono text-[10px] text-neutral-500">
-                      {index + 1}
-                    </span>
-                    <span className="truncate text-[14px] text-neutral-800">{row.label}</span>
-                  </span>
-                  <span className="shrink-0 font-mono text-[14px] tabular-nums text-neutral-900">{row.value}</span>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </ListCard>
-
-        <ListCard title="Views by format" column="Share of views">
-          <ul className="flex flex-col gap-1">
-            {viewsByFormat.map((row) => (
-              <li key={row.label} className="relative overflow-hidden rounded-lg px-3 py-2">
-                <motion.span
-                  className="absolute inset-y-0 left-0 rounded-lg bg-orange-100/80"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: percent(row.views, insights.views) }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease }}
-                />
-                <span className="relative flex items-center justify-between gap-3">
-                  <span className="truncate text-[14px] text-neutral-800">{row.label}</span>
-                  <span className="flex shrink-0 items-baseline gap-2 font-mono tabular-nums">
-                    <span className="text-[14px] text-neutral-900">{row.value}</span>
-                    <span className="text-[11px] text-neutral-500">{percent(row.views, insights.views)}</span>
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </ListCard>
-
-        <p className="mt-auto px-1 font-mono text-[10px] leading-relaxed text-neutral-500 sm:text-[11px]">
-          Instagram Insights · last 30 days · <span className="whitespace-nowrap">Sep 2026</span>
-        </p>
-      </div>
     </div>
   );
 }
@@ -363,7 +238,7 @@ function SignalsView({ active }: { active: boolean }) {
 }
 
 export default function AudienceDashboard() {
-  const [view, setView] = useState<View>("30 days");
+  const [view, setView] = useState<View>("Growth");
   const [stage, setStage] = useState(0);
 
   return (
@@ -403,9 +278,7 @@ export default function AudienceDashboard() {
               }}
               transition={{ duration: 0.45, ease }}
             >
-              {item === "30 days" ? (
-                <InsightsView />
-              ) : item === "Growth" ? (
+              {item === "Growth" ? (
                 <GrowthView stage={stage} onStageChange={setStage} />
               ) : (
                 <SignalsView active={active} />

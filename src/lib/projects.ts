@@ -289,7 +289,7 @@ export const projects: Project[] = [
       {
         heading: "What I did",
         paragraphs: [
-          "Built a personal brand in the motivation, fitness, and self-growth space from zero. Multiple videos passed 1M views. In the last 30 days (Sep 2026): 1.14M views and 1,598 new followers.",
+          "Built a personal brand in the motivation, fitness, and self-growth space from zero. Multiple videos passed 1M views.",
         ],
       },
       {
