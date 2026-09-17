@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const story = [
   "He taught himself to code during university and landed his first startup internship within three months, going on to work as a full-stack and frontend engineer. He later moved to Seattle to study computer science for a year, where living abroad shaped how he thinks about building technology and business together.",
   "Back in Japan, he worked on TikTok Shop operations at ByteDance Japan, and joined Mercari as a product manager, where he built and published an AI agent that automated core PM workflows using Claude Code and MCP. Alongside this, he has built an audience around fitness and self-growth, developing a working knowledge of content production and brand building.",
-  "In 2026, he co-founded the creative tech company TPS Collective with Tetty Endo. He leads product, technology, growth, and operations, and personally builds the systems the business runs on — the booking platform, the corporate site, and the AI automation behind studio operations.",
+  "In 2026, he co-founded the creative tech company TPS Collective with Tetsuta Endo. He leads product, technology, growth, and operations, and personally builds the systems the business runs on — the booking platform, the corporate site, and the AI automation behind studio operations.",
   "Today he drives the growth of the company's inbound creative business from the technology side, with a focus on AI agents and LLM-based automation. From April 2027, he joins Mercari as a Product Manager while continuing to lead technology at TPS Collective.",
 ];
 

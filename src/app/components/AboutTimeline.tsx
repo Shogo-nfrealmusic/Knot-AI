@@ -56,7 +56,7 @@ const entries: Entry[] = [
     when: "2026",
     title: "Co-founded TPS Collective",
     detail:
-      "With Tetty Endo. Leads product, technology, growth, and operations.",
+      "With Tetsuta Endo. Leads product, technology, growth, and operations.",
     icon: IconRocket,
     href: "https://www.tps-collective.com/",
   },
