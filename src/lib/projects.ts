@@ -144,6 +144,61 @@ export const projects: Project[] = [
     images: [],
   },
   {
+    slug: "tetty-preset-store",
+    name: "Tetty Preset Store",
+    title: "Preset Store with Stripe Checkout",
+    summary:
+      "A storefront where the studio sells its own cinematic photo presets, with Stripe checkout.",
+    role: "Sole developer. Design, build, deploy, and operate.",
+    stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "Vercel"],
+    links: [
+      { label: "Live site", href: "https://www.tettyphotostudiolut.com/" },
+    ],
+    metrics: [
+      { value: "Live", label: "storefront in production" },
+      { value: "Stripe", label: "checkout for a digital product" },
+      { value: "Solo", label: "designed, built, and shipped alone" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The studio had a second thing to sell besides shoots: the presets behind its own look. Selling a digital product needs its own storefront, checkout, and delivery — none of which the booking platform covers.",
+        ],
+      },
+      {
+        heading: "What I built",
+        items: [
+          "Storefront with preset collections and product pages",
+          "Cart and Stripe checkout",
+          "Supabase for the product and order data",
+          "Deployed on Vercel and operated after launch",
+        ],
+      },
+      {
+        heading: "Results",
+        items: [
+          "In production and selling presets at tettyphotostudiolut.com",
+          "A second revenue line for the studio, separate from bookings",
+        ],
+      },
+    ],
+    images: [
+      {
+        src: "/images/work/preset-store-desktop.png",
+        alt: "Tetty Preset Store, desktop home page",
+        width: 2880,
+        height: 1800,
+      },
+      {
+        src: "/images/work/preset-store-mobile.png",
+        alt: "Tetty Preset Store on a phone",
+        width: 1170,
+        height: 2532,
+      },
+    ],
+  },
+  {
     slug: "mercari-pm-ai-agent",
     name: "Mercari PM AI Agent",
     title: "AI Agent for Product Management Workflows",

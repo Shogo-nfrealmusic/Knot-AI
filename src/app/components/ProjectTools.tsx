@@ -7,6 +7,7 @@ import {
   IconCreditCard,
   IconDeviceMobile,
   IconRobot,
+  IconShoppingBag,
   IconTool,
   IconVideo,
 } from "@tabler/icons-react";
@@ -192,6 +193,12 @@ const items = [
     title: "Staff Operations App (iOS)",
     icon: IconDeviceMobile,
     visual: () => <OpsAppMock />,
+  },
+  {
+    project: requireProject("tetty-preset-store"),
+    title: "Preset Store with Stripe Checkout",
+    icon: IconShoppingBag,
+    visual: (project: Project) => <SiteVisual project={project} />,
   },
   {
     project: requireProject("mercari-pm-ai-agent"),
