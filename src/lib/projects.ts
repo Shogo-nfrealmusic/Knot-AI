@@ -204,7 +204,7 @@ export const projects: Project[] = [
     title: "3D Scroll Site for a Concept Drink Brand",
     summary:
       "A concept site for a matcha tonic brand: one real-time 3D can travels the whole page, and AI-generated video handles the liquid scenes.",
-    role: "Sole developer. Art direction, 3D, video generation, build.",
+    role: "Sole developer, directing Claude Code. Art direction, 3D, video generation.",
     context: {
       label: "Brand",
       value: "Concept by TPS Collective. Can and logo design by Tetsuta Endo.",
