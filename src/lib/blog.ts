@@ -134,6 +134,13 @@ const posts: BlogPost[] = [
         type: "paragraph",
         text: "I labelled every message by hand first — that is the answer key. The baseline is gpt-4o-mini, with a second run against claude-sonnet-4.5 to see whether the multiplier depends on who you compare against. Calls run serially, one warm-up call is discarded, retries are off, the order alternates between models, and cost comes from the gateway's actual billed amount rather than an estimate. Main run: 60 cases, 3 rounds, 180 calls per model, zero errors.",
       },
+      {
+        type: "video",
+        src: "/blog/jev-eval/demo.mp4",
+        poster: "/blog/jev-eval/demo-poster.jpg",
+        caption:
+          "A replay of the measured run: 12 of the 60 messages, played back at the latencies actually recorded. Nothing is called live — the gap is what the stopwatch saw.",
+      },
       { type: "heading", text: "Speed and cost, and why the multiplier is nearly meaningless" },
       {
         type: "stats",
