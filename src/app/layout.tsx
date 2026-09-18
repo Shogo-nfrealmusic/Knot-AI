@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -55,6 +56,8 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-bg-primary text-text-primary">
         {children}
+        {/* Cookieless. Only collects in production, and only while the project's Analytics toggle is on. */}
+        <Analytics />
       </body>
     </html>
   );
