@@ -107,7 +107,7 @@ const posts: BlogPost[] = [
         src: "/blog/toni/walkthrough.mp4",
         poster: "/blog/toni/walkthrough-poster.jpg",
         caption:
-          "A scroll through the live site, sped up. The can is a real-time 3D object; the powder, ice and day scenes are generated video.",
+          "A scroll through the finished site, sped up. The can is a real-time 3D object; the burst, the pour, the day scenes and the gallery photos are generated.",
       },
       {
         type: "paragraph",
@@ -186,7 +186,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "So the can stopped being video. It became a real 3D object: my co-founder's flat label artwork wrapped around a cylinder, with aluminium top and bottom. The label can't warp because nothing is being generated. The can turns while the headline slides behind it, falls between sections with real physics, and turns into a line-drawn blueprint before the label wraps back on. Video generation is kept for what it does better than 3D: powder, ice and splash. A pour-over-ice scene is next.",
+        text: "So the can stopped being video. It became a real 3D object: my co-founder's flat label artwork wrapped around a cylinder, with aluminium top and bottom. The label can't warp because nothing is being generated. The can turns while the headline slides behind it, falls between sections with real physics, and turns into a line-drawn blueprint before the label wraps back on. Video generation is kept for what it does better than 3D: the can bursting open into matcha powder, tonic and ice, a hand pouring it over ice into a glass, and a burst of each flavor's ingredients on its product page.",
       },
       {
         type: "image",
@@ -196,14 +196,14 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "The flavor picker needed two rounds of the same feedback. The first version marked the selected can by stretching it taller, and it looked like a Pringles tube. The fix was to never change a can's size and use light instead: a spotlight on the centre can, the rest in shadow.",
+        text: "The flavor picker needed several rounds. The first version marked the selected can by stretching it taller, and it looked like a Pringles tube. Now every can keeps its proportions: the picked one comes forward at full size, with a disc of its flavor's colour glowing behind it.",
       },
       { type: "heading", text: "What it actually took" },
       {
         type: "list",
         items: [
-          "About four and a half hours from an empty folder to the first deploy, with an agent working the whole time and me reviewing at each stop",
-          "Over 450 Higgsfield credits by the first deploy. The only clips that needed redoing were the ones with text on a spinning can",
+          "Just under six hours from an empty folder to the finished site (about four and a half to the first deploy), with an agent working the whole time and me reviewing at each stop",
+          "About 1,270 Higgsfield credits in total. The only video clips that needed redoing were the ones with text on a spinning can; everything after the can became 3D worked on the first try",
           "A written brief: brand copy taken only from the original concept text, no health claims, a concept notice on every page, checkout that stops at \"TONI is a concept\"",
           "A rewrite of the whole direction partway through, after studying what award-level sites actually do",
           "Many small calls no prompt makes for you: background colour, frame counts, what a selected can should look like, what to leave out",
