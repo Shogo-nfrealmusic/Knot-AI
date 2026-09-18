@@ -219,7 +219,10 @@ export const projects: Project[] = [
       "Higgsfield",
       "Vercel",
     ],
-    links: [{ label: "Live site", href: "https://toni.shogo.build/" }],
+    links: [
+      { label: "Live site", href: "https://toni.shogo.build/" },
+      { label: "How it was built", href: "/blog/you-cant-one-prompt-this" },
+    ],
     metrics: [
       { value: "54.3s → 1.0s", label: "until the can appears on a phone" },
       { value: "147.8 → 1.9 MB", label: "initial download after optimizing" },
