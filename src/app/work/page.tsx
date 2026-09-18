@@ -26,7 +26,7 @@ export default function WorkPage() {
     <SitePageLayout>
       <InnerHero
         title="Work"
-        description="Five systems I built and run in production, plus the audience I grew around them. Each one comes with the problem, the build, and the numbers."
+        description="Systems I built and run in production, one concept build, and the audience I grew around them. Each one comes with the problem, the build, and the numbers."
       />
 
       {/* Same 1080px rails as the home page, so the vertical hairlines run through every section. */}

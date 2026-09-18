@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import {
+  IconBottle,
   IconBriefcase,
   IconCreditCard,
   IconDeviceMobile,
@@ -198,6 +199,12 @@ const items = [
     project: requireProject("tetty-preset-store"),
     title: "Preset Store with Stripe Checkout",
     icon: IconShoppingBag,
+    visual: (project: Project) => <SiteVisual project={project} />,
+  },
+  {
+    project: requireProject("toni-concept-site"),
+    title: "TONI — 3D Scroll Site",
+    icon: IconBottle,
     visual: (project: Project) => <SiteVisual project={project} />,
   },
   {

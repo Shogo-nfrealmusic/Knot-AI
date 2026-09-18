@@ -199,6 +199,68 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "toni-concept-site",
+    name: "TONI",
+    title: "3D Scroll Site for a Concept Drink Brand",
+    summary:
+      "A concept site for a matcha tonic brand: one real-time 3D can travels the whole page, and AI-generated video handles the liquid scenes.",
+    role: "Sole developer. Art direction, 3D, video generation, build.",
+    context: {
+      label: "Brand",
+      value: "Concept by TPS Collective. Can and logo design by Tetsuta Endo.",
+    },
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Three.js",
+      "React Three Fiber",
+      "GSAP",
+      "Lenis",
+      "Higgsfield",
+      "Vercel",
+    ],
+    links: [{ label: "Live site", href: "https://toni.shogo.build/" }],
+    metrics: [
+      { value: "54.3s → 1.0s", label: "until the can appears on a phone" },
+      { value: "147.8 → 1.9 MB", label: "initial download after optimizing" },
+      { value: "6", label: "flavors from one 3D can" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Scroll-animated product sites can now be generated from a single prompt, and they all look alike. I wanted to find out where the craft actually lives: what award-level sites do that a one-prompt build doesn't.",
+        ],
+      },
+      {
+        heading: "What I built",
+        items: [
+          "The can as one real-time 3D object: the brand's unrolled label wrapped on a cylinder, with aluminium top and bottom",
+          "The whole homepage as a single scroll timeline: camera, can, type, background and light all driven by one 0–1 progress value",
+          "Kinetic type the can passes through, a physics-based drop between sections, and a blueprint mode where the can is drawn as line art before the label wraps back on",
+          "Powder, ice, splash and pour scenes generated with Higgsfield (Seedance) and scrubbed frame by frame",
+          "A spotlight flavor carousel, shop, product pages and a working cart; checkout stops at a concept notice",
+        ],
+      },
+      {
+        heading: "Results",
+        items: [
+          "On a phone, the can now appears in 1.0 s instead of 54.3 s, and the first download dropped from 147.8 MB to 1.9 MB",
+          "Frames are never drawn above their source resolution at the screen's pixel ratio, so the can stays sharp on Retina and phone screens",
+          "A concept: nothing is for sale, and all prices and nutrition data are samples",
+        ],
+      },
+    ],
+    images: [
+      {
+        src: "/images/work/toni-desktop.png",
+        alt: "TONI concept site, desktop hero with the 3D can",
+        width: 2880,
+        height: 1800,
+      },
+    ],
+  },
+  {
     slug: "mercari-pm-ai-agent",
     name: "Mercari PM AI Agent",
     title: "AI Agent for Product Management Workflows",
