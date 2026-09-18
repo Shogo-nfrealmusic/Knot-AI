@@ -193,6 +193,51 @@ function Block({ block, category }: { block: BlogBlock; category: BlogCategory }
           ) : null}
         </figure>
       );
+    case "image":
+      return (
+        <figure className="mt-8">
+          <div
+            className={cn(
+              "overflow-hidden",
+              !block.bare && "rounded-2xl border border-neutral-200 bg-white",
+            )}
+          >
+            {/* Charts and screenshots are authored at their own size; scale to the column. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={block.src} alt={block.alt} className="block h-auto w-full" loading="lazy" />
+          </div>
+          {block.caption ? (
+            <figcaption className="mt-3 text-center text-xs text-neutral-400">
+              {block.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      );
+    case "video": {
+      const silentLoop = block.loop !== false;
+      return (
+        <figure className="mt-8">
+          <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-950">
+            <video
+              src={block.src}
+              poster={block.poster}
+              controls
+              playsInline
+              preload="metadata"
+              muted={silentLoop}
+              loop={silentLoop}
+              autoPlay={silentLoop}
+              className="block h-auto w-full"
+            />
+          </div>
+          {block.caption ? (
+            <figcaption className="mt-3 text-center text-xs text-neutral-400">
+              {block.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      );
+    }
     case "stats":
       return (
         <div className="mt-8 grid gap-px overflow-hidden rounded-xl border border-neutral-200 bg-neutral-200 sm:grid-cols-3">

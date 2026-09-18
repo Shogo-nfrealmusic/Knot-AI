@@ -42,7 +42,24 @@ export type BlogBlock =
       code: string;
       caption?: string;
     }
-  | { type: "stats"; items: { value: string; label: string }[] };
+  | { type: "stats"; items: { value: string; label: string }[] }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      caption?: string;
+      /** Rendered without a border or background. Use for transparent charts. */
+      bare?: boolean;
+    }
+  | {
+      type: "video";
+      src: string;
+      /** Shown before the video loads. Keeps the layout from shifting. */
+      poster?: string;
+      caption?: string;
+      /** Silent looping clips autoplay. Anything with sound gets controls only. */
+      loop?: boolean;
+    };
 
 export type BlogAuthor = { name: string; avatar: string };
 
@@ -66,6 +83,191 @@ const shogo: BlogAuthor = {
 };
 
 const posts: BlogPost[] = [
+  {
+    slug: "jev-was-right-157-times",
+    title: "Jev was right 157 times. The system still failed.",
+    description:
+      "An independent benchmark of TypeSafe AI's Jev, three days after launch. 60 support messages, three questions, two baselines — and the finding that mattered wasn't speed or price.",
+    category: "ai",
+    date: "2026-09-18",
+    author: shogo,
+    status: "published",
+    cover: { icon: "claude", label: "Jev · n=60" },
+    body: [
+      {
+        type: "paragraph",
+        text: "TypeSafe AI released [Jev](https://vercel.com/ai-gateway/models/jev) on September 15. It doesn't generate text. You hand it the current state of your application and a set of typed questions, and it returns decisions — a choice, a score, a boolean — each with a probability. The company reports it runs 193.6x faster and 444.6x cheaper than an LLM on its own workflow evaluations.",
+      },
+      {
+        type: "paragraph",
+        text: "Three days later there was no independent number anywhere. I run the booking platform for a photo studio in Tokyo, and routing inbound messages is a job we still do by hand, so I built a benchmark around that and measured it myself. Code and data are in [jev-eval](https://github.com/Shogo-nfrealmusic/jev-eval).",
+      },
+      {
+        type: "paragraph",
+        text: "The speed and cost numbers turned out to be the least interesting part.",
+      },
+      { type: "heading", text: "The setup" },
+      {
+        type: "paragraph",
+        text: "60 synthetic customer messages, written to match what actually arrives: English, Chinese, Korean, Japanese. 40 of them are clean — one obvious category each. The other 20 are deliberately awkward, because that is where a router earns its keep. Real customer messages were never used; they contain personal data.",
+      },
+      {
+        type: "paragraph",
+        text: "Each message gets three questions, and both models get the exact same wording:",
+      },
+      {
+        type: "list",
+        items: [
+          "**category** — one of nine: reschedule, cancel, refund, location, pricing, group size, late arrival, weather, or other",
+          "**urgency** — a score from 0 to 1",
+          "**needs_human** — should a person look at this before we act on it?",
+        ],
+      },
+      {
+        type: "code",
+        filename: "src/jev.ts",
+        language: "ts",
+        code: 'const result = await evaluate({\n  model: "typesafe-ai/jev",\n  state: message.text,\n  questions: QUESTIONS,\n});\n\n// No prose comes back. Just decisions and their probabilities:\n// category: { reschedule: 0.91, weather: 0.07, cancel: 0.02 }',
+        caption: "Jev via the Vercel AI Gateway. The baselines use generateObject with the same QUESTIONS object.",
+      },
+      {
+        type: "paragraph",
+        text: "I labelled every message by hand first — that is the answer key. The baseline is gpt-4o-mini, with a second run against claude-sonnet-4.5 to see whether the multiplier depends on who you compare against. Calls run serially, one warm-up call is discarded, retries are off, the order alternates between models, and cost comes from the gateway's actual billed amount rather than an estimate. Main run: 60 cases, 3 rounds, 180 calls per model, zero errors.",
+      },
+      { type: "heading", text: "Speed and cost, and why the multiplier is nearly meaningless" },
+      {
+        type: "stats",
+        items: [
+          { value: "379 ms", label: "Jev, median latency (p50). gpt-4o-mini: 1,209 ms" },
+          { value: "$0.032", label: "Jev, per 1,000 calls. gpt-4o-mini: $0.122" },
+          { value: "96.1%", label: "Jev category accuracy. gpt-4o-mini: 93.9%" },
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "So: 3.2x faster, 3.8x cheaper. Against Claude Sonnet 4.5 on the same 20 cases, 4.6x faster and 106x cheaper. Neither run reproduces 193.6x or 444.6x — though I don't know what baseline or workload those figures were measured against, so this isn't a contradiction so much as a different experiment.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Latency held. Cost didn't.",
+        text: "Changing the baseline moved the speed multiplier from 3.2x to 4.6x, and the cost multiplier from 3.8x to 106x. A claim of the form 'Nx cheaper' that doesn't name the other model is not really a claim.",
+      },
+      {
+        type: "image",
+        src: "/blog/jev-eval/3-cost-per-1000.svg",
+        alt: "Cost per 1,000 calls: Jev $0.032, gpt-4o-mini $0.122, claude-sonnet-4.5 $3.41",
+        caption: "Cost per 1,000 calls, billed amounts from the gateway.",
+        bare: true,
+      },
+      {
+        type: "paragraph",
+        text: "The accuracy gap is also small enough to ignore at this sample size: 96.1% against 93.9% is seven calls out of 180. On the 40 clean messages both models scored 100%. The entire difference lives in the 20 awkward ones, where Jev got 88.3% and gpt-4o-mini 81.7%.",
+      },
+      {
+        type: "image",
+        src: "/blog/jev-eval/1-category-accuracy.svg",
+        alt: "Category accuracy by gold category for Jev and gpt-4o-mini",
+        caption: "Category accuracy by gold category. The spread only shows up on the hard cases.",
+        bare: true,
+      },
+      { type: "heading", text: "The number I went looking for" },
+      {
+        type: "paragraph",
+        text: "Jev returns a probability with every answer, so you can route on confidence instead of trusting it blindly. I split all 180 calls three ways: above 0.95 auto-process, 0.70 to 0.95 double-check, below 0.70 send to a person.",
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "87.2%", label: "of calls cleared 0.95 and were auto-processed" },
+          { value: "157 / 157", label: "of those were categorised correctly" },
+          { value: "0", label: "of Jev's category mistakes landed in the auto-processed bucket" },
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Every time Jev was wrong about a category, it was already unsure. It called \"what time tomorrow?\" a reschedule at 0.60–0.65 — a message that belongs in other — and that low number pushed it out of automation on its own. On the one case where two categories genuinely overlapped, the probabilities split 0.51 against 0.45 and the answer flipped between rounds. That is a model telling you the truth about its own uncertainty.",
+      },
+      {
+        type: "paragraph",
+        text: "I wrote that down as the headline. Then I checked what else was in those 157 calls.",
+      },
+      { type: "heading", text: "157 correct answers, 18 of them wrong" },
+      {
+        type: "paragraph",
+        text: "157 out of 157 is a statement about **category**. It says nothing about the other two questions. Of those same 157 auto-processed calls, 49 were messages a person needed to see — and on 18 of them, Jev had also answered needs_human = false. Correctly categorised, confidently automated, and no human ever sees them.",
+      },
+      {
+        type: "quote",
+        text: "The routing was right. The system was still wrong.",
+      },
+      {
+        type: "paragraph",
+        text: "Here is one, translated from the Japanese:",
+      },
+      {
+        type: "list",
+        items: [
+          "**Message** — \"My flight is cancelled because of the typhoon, so I'd like to move tomorrow's shoot to Saturday.\"",
+          "**category** — reschedule, at probability 1.00. Correct.",
+          "**urgency** — 0.88. Correct.",
+          "**needs_human** — 0.42, so false. Wrong.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Waiving the change fee for a typhoon is a judgement call somebody at the studio makes. Under the confidence rule this message is filed as a routine reschedule and answered automatically, and the decision never reaches a person. Nothing in the numbers looks like a failure. gpt-4o-mini, for what it's worth, got this one right on all three rounds.",
+      },
+      { type: "heading", text: "Why the confidence signal worked once and not twice" },
+      {
+        type: "paragraph",
+        text: "The obvious fix is to add a second condition: auto-process only when the category is confident **and** P(needs_human) is low. I ran that sweep. The thresholds were picked after seeing the data, so treat this as a design exercise rather than a validated result.",
+      },
+      {
+        type: "list",
+        ordered: false,
+        items: [
+          "**X = 0.50** — same as trusting Jev's own verdict. Catches 0 of the 18.",
+          "**X = 0.40** — catches 6. Auto-processing falls from 87.2% to 55.0%.",
+          "**X = 0.30** — catches 12. Auto-processing falls to 29.4%.",
+          "**X = 0.25** — catches all 18. Auto-processing falls to **19.4%**.",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "To stop every pass-through you have to give up four-fifths of the automation, which is the same as not automating. The reason is in the numbers themselves: the missed cases sit at 0.25, 0.26, 0.27, 0.30, 0.38, 0.42, 0.48 — scattered through exactly the same range as the messages that genuinely needed no human. There is no line to draw.",
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        title: "Confidence is a property of the question, not of the model",
+        text: "The same model, in the same response, produced category probabilities clean enough to automate on and needs_human probabilities that separate nothing. 'It returns confidence, so we can automate safely' is a claim you have to test per output, on your own labels.",
+      },
+      {
+        type: "paragraph",
+        text: "It makes sense in hindsight. Category is in the text — \"move it to Saturday\" is a reschedule in any language. Whether a human needs to look is a policy that lives in our head: out of scope, ambiguous intent, missing information, more than one request in one message. The model isn't hedging on that. It is confidently applying a rule nobody gave it.",
+      },
+      { type: "heading", text: "What I'd actually do with this" },
+      {
+        type: "list",
+        items: [
+          "Use Jev for the routing itself. Sub-400ms, cheap, and the category confidence is good enough to automate the top bucket.",
+          "Don't let the model decide when a human is needed. Escalation rules — refunds, weather exceptions, anything out of scope — belong in code, where they can be read and changed.",
+          "Measure per question, not per model. One benchmark number would have hidden all of this.",
+          "Keep a stack of deliberately awkward messages. The clean ones scored 100% for both models and taught me nothing.",
+        ],
+      },
+      { type: "heading", text: "Limits" },
+      {
+        type: "paragraph",
+        text: "Synthetic data, close to real traffic but not drawn from it. One person wrote the answer key, and some labels are arguable — an unsubscribe request counts as needs_human here because somebody has to forward it, which another team might score differently. n=60, so a single case moves accuracy by 1.7 points and the gap between 96.1% and 93.9% isn't a real difference. One machine, one network, one hour. Both models got identical prompts, which is fair but means the LLM was never tuned for the task. Everything — data, labels, raw responses, scripts — is in [the repo](https://github.com/Shogo-nfrealmusic/jev-eval).",
+      },
+      {
+        type: "paragraph",
+        text: "The part I'd keep if I threw out everything else: a model can be right about the question you asked and wrong about the decision you were actually making. Mine was right 157 times in a row.",
+      },
+    ],
+  },
   {
     slug: "mercari-pm-agent-design",
     title:
@@ -520,6 +722,10 @@ export function readingMinutes(post: BlogPost): number {
           return `${block.title ?? ""} ${block.text}`;
         case "figure":
           return block.caption;
+        case "image":
+          return `${block.alt} ${block.caption ?? ""}`;
+        case "video":
+          return block.caption ?? "";
         default:
           return block.text;
       }
