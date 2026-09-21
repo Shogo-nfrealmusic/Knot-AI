@@ -84,6 +84,194 @@ const shogo: BlogAuthor = {
 
 const posts: BlogPost[] = [
   {
+    slug: "the-number-matched",
+    title: "The number matched. Everything else about it was wrong.",
+    description:
+      "SIGNAL reads English sources and used to write Japanese. A checker verified every figure against the source article and reported clean. It was comparing digits \u2014 so a \u20ac403M fine became a number in the wrong currency, off by three orders of magnitude, and passed.",
+    category: "ai",
+    date: "2026-09-22",
+    author: shogo,
+    status: "published",
+    cover: { icon: "claude", label: "SIGNAL" },
+    body: [
+      {
+        type: "paragraph",
+        text: "[SIGNAL](https://signal-woad-five.vercel.app/) reads 43 sources six times a day, groups the same event across outlets, and publishes twelve stories a day. The sources are in English. For months the output was in Japanese.",
+      },
+      {
+        type: "paragraph",
+        text: "That sounds like one job. It is two: summarise, and translate, in the same pass, with no intermediate anyone reads. Everything I later found wrong happened in that seam.",
+      },
+      { type: "heading", text: "The checker that reported clean" },
+      {
+        type: "paragraph",
+        text: "There was already a verifier. Every proper noun and every number in a summary had to appear in the article it came from, or the summary got rewritten. It ran on every story. It almost never complained.",
+      },
+      {
+        type: "paragraph",
+        text: "Then I switched the output to English and re-ran it on the same material. 480 words compared, 172 flagged as \"not in the source\" \u2014 36% of the summary.",
+      },
+      {
+        type: "paragraph",
+        text: "Twelve of those 172 were capitalised. The other 160 were words like *goes*, *beats*, *new*, *hotline*. The verifier had no test for what counted as a name. Any run of three or more Latin letters was checked against the article.",
+      },
+      {
+        type: "callout",
+        title: "Why nobody noticed for months",
+        text: "In Japanese output, almost every Latin-script word *is* a proper noun \u2014 GPT-6, Qwen, Cloudflare. The rule \"check every Latin word\" and the rule \"check every proper noun\" produce the same answer, right up until the language changes. The checker was never correct. It was correct-shaped for one input.",
+      },
+      { type: "heading", text: "\u20ac403M" },
+      {
+        type: "paragraph",
+        text: "The fix was narrow: only compare words containing a digit or an internal capital \u2014 GPT-6, Qwen-Image-2.1 \u2014 or words capitalised mid-sentence. Strip possessives. Split on hyphens. 480 comparisons became 53, with two false positives, both hyphen artefacts. On real model output afterwards: 76 names compared, zero false positives.",
+      },
+      {
+        type: "paragraph",
+        text: "With the noise gone, a real error was sitting underneath it. Ireland fined Google \u20ac403M. The Japanese said 403 *oku* yen \u2014 wrong currency, and wrong by roughly three orders of magnitude.",
+      },
+      {
+        type: "paragraph",
+        text: "The checker had passed it, and it was right to by its own rule. *403* appeared in the source. The digits matched. Nothing in the comparison looked at the symbol in front of them or the unit behind them.",
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "480 \u2192 53", label: "words compared, after the filter" },
+          { value: "172 \u2192 0", label: "false positives, on real output" },
+          { value: "1", label: "genuine mistranslation the noise was hiding" },
+        ],
+      },
+      { type: "heading", text: "What it checks now" },
+      {
+        type: "list",
+        items: [
+          "Currency, by symbol (\u20ac $ \u00a5 \u00a3) and by code (EUR USD JPY GBP CNY), in both directions \u2014 a currency that appears in the translation but not the original, and one that disappears from the original",
+          "Magnitude, by normalising M, B, \u5104 and \u5146 to actual values before comparing, so $10B against 10\u5104\u30c9\u30eb fails and $10B against 100\u5104\u30c9\u30eb passes",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "And when the Japanese still disagrees with the English after one rewrite, the story publishes in English alone rather than not at all. A missing translation is a gap. A confident wrong number is a lie with a citation attached.",
+      },
+      {
+        type: "quote",
+        text: "A verifier is only valid for the shape of input it was built against. Change the language, the format, the source \u2014 and it keeps returning the same reassuring answer for a reason that no longer holds.",
+      },
+    ],
+  },
+  {
+    slug: "a-studios-second-product",
+    title: "A photo studio's second product was already sitting there",
+    description:
+      "Tetty had spent two years building a look. That look was a product the whole time \u2014 it just had no storefront, no checkout, and no way to hand it over.",
+    category: "building",
+    date: "2026-09-22",
+    author: shogo,
+    status: "published",
+    cover: { icon: "stripe", label: "Preset Store" },
+    body: [
+      {
+        type: "paragraph",
+        text: "A photo studio sells shoots. That is the whole business: a customer books, a photographer shows up, images come back. Every hour of revenue needs a person standing somewhere holding a camera.",
+      },
+      {
+        type: "paragraph",
+        text: "But the studio had been making a second thing the entire time, without noticing it was a thing. The look \u2014 the colour, the grade, the reason the photos are recognisably ours \u2014 lives in a set of presets. They were built for internal use. They were also, it turns out, the only part of the business that can be sold without anyone being there.",
+      },
+      { type: "heading", text: "What was missing was not the product" },
+      {
+        type: "paragraph",
+        text: "The presets already existed and already worked. What did not exist was everything around them: a storefront, product pages, a cart, a checkout, a way to deliver a file after payment, and somewhere to keep the orders. The booking platform covers none of that \u2014 it is built for scheduling a person, not for selling a download.",
+      },
+      {
+        type: "list",
+        items: [
+          "Storefront with collections and product pages",
+          "Cart and Stripe checkout for a digital product",
+          "Supabase for the product and order data",
+          "Deployed on Vercel and operated after launch",
+        ],
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "Live", label: "in production at tettyphotostudiolut.com" },
+          { value: "Stripe", label: "checkout for a digital product" },
+          { value: "Solo", label: "designed, built, shipped, operated" },
+        ],
+      },
+      { type: "heading", text: "Why it was worth building" },
+      {
+        type: "paragraph",
+        text: "Shoot revenue is bounded by photographer hours. Preset revenue is not bounded by anything except whether anyone wants the look. Those are different shapes, and a company with only the first shape has to grow by hiring.",
+      },
+      {
+        type: "callout",
+        title: "The general version",
+        text: "If you run a service business, look at what you built to deliver the service. The internal tool, the checklist, the preset, the template \u2014 it was produced as a byproduct, it already works, and it is usually the only part you can sell while asleep.",
+      },
+    ],
+  },
+  {
+    slug: "ten-videos-before-i-wake-up",
+    title: "Ten videos every morning, and nobody decides which",
+    description:
+      "A two-person company cannot produce daily short-form content by hand. The pipeline did not save time \u2014 it removed the decision, which was the expensive part.",
+    category: "ai",
+    date: "2026-09-22",
+    author: shogo,
+    status: "published",
+    cover: { icon: "video", label: "Content Pipeline" },
+    body: [
+      {
+        type: "paragraph",
+        text: "Posting short-form content consistently is not one job. It is three, repeated every single day: choose the footage, write the caption, render and prepare the file. None of them is hard. All of them need a person who has decided to sit down and do it.",
+      },
+      {
+        type: "paragraph",
+        text: "That does not scale in a two-person company. It does not fail loudly either. It fails by quietly not happening on the days when something else is on fire, which is most days.",
+      },
+      { type: "heading", text: "What runs" },
+      {
+        type: "paragraph",
+        text: "A pipeline that runs every morning with no human input:",
+      },
+      {
+        type: "list",
+        items: [
+          "Selects source footage",
+          "Generates captions",
+          "Renders 10 short-form videos",
+          "Prepares them for distribution",
+        ],
+        ordered: true,
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "10", label: "videos rendered every morning, unattended" },
+          { value: "1.14M", label: "views on the account in 30 days" },
+          { value: "1,598", label: "new followers in the same window" },
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "What these numbers do and do not show",
+        text: "The account figures are for the studio's Instagram over 30 days to September 2026: 1.14M views, 1,598 new followers, 61.4K interactions. They are account totals, not a controlled comparison. What the pipeline demonstrably removed is the daily production work; what it contributed to the reach is not isolated here.",
+      },
+      { type: "heading", text: "The part that actually mattered" },
+      {
+        type: "paragraph",
+        text: "The obvious framing is that automation saves time. The more accurate one is that it removes a decision. Ten videos exist by the time I am awake, so the question stops being whether to make content today and becomes which of the ten to use \u2014 and that question survives a bad week.",
+      },
+      {
+        type: "quote",
+        text: "The work that kills a small company is rarely difficult. It is easy work that has to happen every day, with nobody left to notice when it stops.",
+      },
+    ],
+  },
+  {
     slug: "you-cant-one-prompt-this",
     title: "You can't one-prompt this",
     description:

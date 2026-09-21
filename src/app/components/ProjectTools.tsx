@@ -7,10 +7,9 @@ import {
   IconBriefcase,
   IconCreditCard,
   IconDeviceMobile,
+  IconNews,
   IconRobot,
-  IconShoppingBag,
   IconTool,
-  IconVideo,
 } from "@tabler/icons-react";
 import { StickyScroll } from "@/app/components/ui/sticky-scroll";
 import { FeatureIconContainer } from "@/app/components/ui/feature-icon-container";
@@ -196,12 +195,6 @@ const items = [
     visual: () => <OpsAppMock />,
   },
   {
-    project: requireProject("tetty-preset-store"),
-    title: "Preset Store with Stripe Checkout",
-    icon: IconShoppingBag,
-    visual: (project: Project) => <SiteVisual project={project} />,
-  },
-  {
     project: requireProject("toni-concept-site"),
     title: "TONI — 3D Scroll Site",
     icon: IconBottle,
@@ -214,9 +207,9 @@ const items = [
     visual: () => <AgentFlow />,
   },
   {
-    project: requireProject("automated-content-pipeline"),
-    title: "Automated Content Pipeline",
-    icon: IconVideo,
+    project: requireProject("signal-ai-brief"),
+    title: "SIGNAL — A Daily AI Brief",
+    icon: IconNews,
     visual: () => <PipelineFlow />,
   },
   {

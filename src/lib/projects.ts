@@ -144,61 +144,6 @@ export const projects: Project[] = [
     images: [],
   },
   {
-    slug: "tetty-preset-store",
-    name: "Tetty Preset Store",
-    title: "Preset Store with Stripe Checkout",
-    summary:
-      "A storefront where the studio sells its own cinematic photo presets, with Stripe checkout.",
-    role: "Sole developer. Design, build, deploy, and operate.",
-    stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "Vercel"],
-    links: [
-      { label: "Live site", href: "https://www.tettyphotostudiolut.com/" },
-    ],
-    metrics: [
-      { value: "Live", label: "storefront in production" },
-      { value: "Stripe", label: "checkout for a digital product" },
-      { value: "Solo", label: "designed, built, and shipped alone" },
-    ],
-    sections: [
-      {
-        heading: "Problem",
-        paragraphs: [
-          "The studio had a second thing to sell besides shoots: the presets behind its own look. Selling a digital product needs its own storefront, checkout, and delivery — none of which the booking platform covers.",
-        ],
-      },
-      {
-        heading: "What I built",
-        items: [
-          "Storefront with preset collections and product pages",
-          "Cart and Stripe checkout",
-          "Supabase for the product and order data",
-          "Deployed on Vercel and operated after launch",
-        ],
-      },
-      {
-        heading: "Results",
-        items: [
-          "In production and selling presets at tettyphotostudiolut.com",
-          "A second revenue line for the studio, separate from bookings",
-        ],
-      },
-    ],
-    images: [
-      {
-        src: "/images/work/preset-store-desktop.png",
-        alt: "Tetty Preset Store, desktop home page",
-        width: 2880,
-        height: 1800,
-      },
-      {
-        src: "/images/work/preset-store-mobile.png",
-        alt: "Tetty Preset Store on a phone",
-        width: 1170,
-        height: 2532,
-      },
-    ],
-  },
-  {
     slug: "toni-concept-site",
     name: "TONI",
     title: "3D Scroll Site for a Concept Drink Brand",
@@ -310,51 +255,6 @@ export const projects: Project[] = [
     images: [],
   },
   {
-    slug: "automated-content-pipeline",
-    name: "Automated Content Pipeline",
-    title: "Fully Automated Short-Form Video Pipeline",
-    summary:
-      "A pipeline that selects footage, writes captions, and renders 10 short-form videos every morning with no human input.",
-    role: "Sole developer.",
-    stack: ["Python", "AWS", "LLM APIs", "Video processing"],
-    links: [
-      {
-        label: "Output on Instagram",
-        href: "https://www.instagram.com/tettyphotostudio/",
-      },
-    ],
-    metrics: [
-      { value: "10", label: "videos generated every morning" },
-      { value: "1.14M", label: "views on the account in 30 days" },
-    ],
-    sections: [
-      {
-        heading: "Problem",
-        paragraphs: [
-          "Producing short-form content consistently requires selecting clips, writing captions, and publishing across platforms — every single day. That work does not scale with a two-person company.",
-        ],
-      },
-      {
-        heading: "What I built",
-        paragraphs: ["A pipeline that runs every morning with no human input:"],
-        items: [
-          "Selects source footage",
-          "Generates captions",
-          "Renders 10 short-form videos",
-          "Prepares them for distribution",
-        ],
-      },
-      {
-        heading: "Results",
-        items: [
-          "10 videos generated every morning, unattended",
-          "1.14M views, 1,598 new followers and 61.4K interactions on the studio's Instagram in the last 30 days (Sep 2026)",
-        ],
-      },
-    ],
-    images: [],
-  },
-  {
     slug: "iron-and-code",
     name: "Iron & Code",
     title: "Iron & Code — A Free Tool Every Monday",
@@ -384,6 +284,50 @@ export const projects: Project[] = [
         heading: "Why it matters",
         paragraphs: [
           "This project is proof of shipping cadence, not scale: a fixed weekly release rhythm, run solo.",
+        ],
+      },
+    ],
+    images: [],
+  },
+  {
+    slug: "signal-ai-brief",
+    name: "SIGNAL",
+    title: "A Daily AI Brief That Ranks Stories by Consequence",
+    summary:
+      "A news product that reads 43 sources six times a day, groups the same event across outlets, and ranks the day by what actually changes \u2014 not by how loudly it was covered.",
+    role: "Sole developer. Design, build, deploy, and operate in production.",
+    stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Anthropic API", "Vercel"],
+    links: [{ label: "Live site", href: "https://signal-woad-five.vercel.app/" }],
+    metrics: [
+      { value: "6\u00d7/day", label: "collection runs, unattended, on a cron" },
+      { value: "43 \u2192 12", label: "sources read, stories published each day" },
+      { value: "1.5s", label: "mobile first paint, down from 2.2s" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Coverage volume is not importance. The story on 37 outlets is often the one that changes least, and the model release on four is often the one that changes most. Every aggregator ranks by volume anyway, because volume is the number that is easy to count.",
+        ],
+      },
+      {
+        heading: "What I built",
+        paragraphs: [
+          "A pipeline that pulls 43 feeds six times a day, clusters the same event across outlets, scores each cluster on what it changes rather than how many outlets ran it, and publishes twelve stories a day as a five-minute read.",
+          "Summaries are written by a model and then checked against the source article: every proper noun, number, currency and unit has to appear in the text it came from. A mistranslation that turned a \u20ac403M fine into a figure in the wrong currency was caught by that check before it could publish.",
+        ],
+      },
+      {
+        heading: "Operating it",
+        paragraphs: [
+          "It is a product that runs whether I look at it or not: scheduled collection, a hard per-run and per-day spend cap, a run log, and alerts when a run stops early. Serverless functions were moved next to the database to cut mobile first paint from 2.2s to 1.5s.",
+          "Article images are pulled from the source page at no extra request, and any story without a usable one gets a cover generated in the browser \u2014 so no story is ever published without a picture.",
+        ],
+      },
+      {
+        heading: "Why it matters",
+        paragraphs: [
+          "This is the difference between building something and running something. It publishes on a schedule, costs real money per issue, and has to be correct without me watching.",
         ],
       },
     ],
@@ -424,6 +368,111 @@ export const projects: Project[] = [
           "Most developers can build a product but can't get anyone to see it.",
           "Most creators can get attention but can't build anything.",
           "I do both, and I measure both.",
+        ],
+      },
+    ],
+    images: [],
+  },
+];
+
+// Moved off /work on 2026-09-22 (7-slot rule). Kept here so nothing is lost:
+// each still needs a Blog post before it is surfaced again.
+export const archivedProjects: Project[] = [
+  {
+    slug: "tetty-preset-store",
+    name: "Tetty Preset Store",
+    title: "Preset Store with Stripe Checkout",
+    summary:
+      "A storefront where the studio sells its own cinematic photo presets, with Stripe checkout.",
+    role: "Sole developer. Design, build, deploy, and operate.",
+    stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "Vercel"],
+    links: [
+      { label: "Live site", href: "https://www.tettyphotostudiolut.com/" },
+    ],
+    metrics: [
+      { value: "Live", label: "storefront in production" },
+      { value: "Stripe", label: "checkout for a digital product" },
+      { value: "Solo", label: "designed, built, and shipped alone" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "The studio had a second thing to sell besides shoots: the presets behind its own look. Selling a digital product needs its own storefront, checkout, and delivery — none of which the booking platform covers.",
+        ],
+      },
+      {
+        heading: "What I built",
+        items: [
+          "Storefront with preset collections and product pages",
+          "Cart and Stripe checkout",
+          "Supabase for the product and order data",
+          "Deployed on Vercel and operated after launch",
+        ],
+      },
+      {
+        heading: "Results",
+        items: [
+          "In production and selling presets at tettyphotostudiolut.com",
+          "A second revenue line for the studio, separate from bookings",
+        ],
+      },
+    ],
+    images: [
+      {
+        src: "/images/work/preset-store-desktop.png",
+        alt: "Tetty Preset Store, desktop home page",
+        width: 2880,
+        height: 1800,
+      },
+      {
+        src: "/images/work/preset-store-mobile.png",
+        alt: "Tetty Preset Store on a phone",
+        width: 1170,
+        height: 2532,
+      },
+    ],
+  },
+  {
+    slug: "automated-content-pipeline",
+    name: "Automated Content Pipeline",
+    title: "Fully Automated Short-Form Video Pipeline",
+    summary:
+      "A pipeline that selects footage, writes captions, and renders 10 short-form videos every morning with no human input.",
+    role: "Sole developer.",
+    stack: ["Python", "AWS", "LLM APIs", "Video processing"],
+    links: [
+      {
+        label: "Output on Instagram",
+        href: "https://www.instagram.com/tettyphotostudio/",
+      },
+    ],
+    metrics: [
+      { value: "10", label: "videos generated every morning" },
+      { value: "1.14M", label: "views on the account in 30 days" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "Producing short-form content consistently requires selecting clips, writing captions, and publishing across platforms — every single day. That work does not scale with a two-person company.",
+        ],
+      },
+      {
+        heading: "What I built",
+        paragraphs: ["A pipeline that runs every morning with no human input:"],
+        items: [
+          "Selects source footage",
+          "Generates captions",
+          "Renders 10 short-form videos",
+          "Prepares them for distribution",
+        ],
+      },
+      {
+        heading: "Results",
+        items: [
+          "10 videos generated every morning, unattended",
+          "1.14M views, 1,598 new followers and 61.4K interactions on the studio's Instagram in the last 30 days (Sep 2026)",
         ],
       },
     ],
