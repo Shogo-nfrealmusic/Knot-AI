@@ -15,7 +15,6 @@ import { StickyScroll } from "@/app/components/ui/sticky-scroll";
 import { FeatureIconContainer } from "@/app/components/ui/feature-icon-container";
 import { BlurImage } from "@/app/components/ui/blur-image";
 import Beam from "@/app/components/ui/beam";
-import PipelineFlow from "@/app/components/PipelineFlow";
 import OpsAppMock from "@/app/components/OpsAppMock";
 import AgentFlow from "@/app/components/AgentFlow";
 import ShipCadence from "@/app/components/ShipCadence";
@@ -210,7 +209,7 @@ const items = [
     project: requireProject("signal-ai-brief"),
     title: "SIGNAL — A Daily AI Brief",
     icon: IconNews,
-    visual: () => <PipelineFlow />,
+    visual: (project: Project) => <SiteVisual project={project} />,
   },
   {
     project: requireProject("iron-and-code"),
