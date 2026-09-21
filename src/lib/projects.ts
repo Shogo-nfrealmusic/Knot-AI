@@ -331,7 +331,14 @@ export const projects: Project[] = [
         ],
       },
     ],
-    images: [],
+    images: [
+      {
+        src: "/images/work/signal-desktop.png",
+        alt: "SIGNAL, the day's issue on desktop",
+        width: 2880,
+        height: 1800,
+      },
+    ],
   },
   {
     slug: "instagram-personal-brand",

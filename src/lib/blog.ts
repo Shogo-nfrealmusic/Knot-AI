@@ -181,7 +181,7 @@ const posts: BlogPost[] = [
       { type: "heading", text: "What was missing was not the product" },
       {
         type: "paragraph",
-        text: "The presets already existed and already worked. What did not exist was everything around them: a storefront, product pages, a cart, a checkout, a way to deliver a file after payment, and somewhere to keep the orders. The booking platform covers none of that \u2014 it is built for scheduling a person, not for selling a download.",
+        text: "The presets already existed and already worked. What did not exist was everything around them: a storefront, product pages, a cart, a checkout, a way to deliver a file after payment, and somewhere to keep the orders. The booking platform covers none of that \u2014 it is built for scheduling a person, not for selling a download. The store is live at [tettyphotostudiolut.com](https://www.tettyphotostudiolut.com/).",
       },
       {
         type: "list",
