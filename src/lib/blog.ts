@@ -96,7 +96,7 @@ const posts: BlogPost[] = [
     body: [
       {
         type: "paragraph",
-        text: "[SIGNAL](https://signal-woad-five.vercel.app/) reads 43 sources six times a day, groups the same event across outlets, and publishes twelve stories a day. The sources are in English. For months the output was in Japanese.",
+        text: "[SIGNAL](https://www.sgnl.news/) reads 43 sources six times a day, groups the same event across outlets, and publishes twelve stories a day. The sources are in English. For months the output was in Japanese.",
       },
       {
         type: "paragraph",

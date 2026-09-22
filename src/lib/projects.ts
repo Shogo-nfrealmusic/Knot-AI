@@ -297,7 +297,7 @@ export const projects: Project[] = [
       "A news product that reads 43 sources six times a day, groups the same event across outlets, and ranks the day by what actually changes \u2014 not by how loudly it was covered.",
     role: "Sole developer. Design, build, deploy, and operate in production.",
     stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Anthropic API", "Vercel"],
-    links: [{ label: "Live site", href: "https://signal-woad-five.vercel.app/" }],
+    links: [{ label: "Live site", href: "https://www.sgnl.news/" }],
     metrics: [
       { value: "6\u00d7/day", label: "collection runs, unattended, on a cron" },
       { value: "43 \u2192 12", label: "sources read, stories published each day" },
