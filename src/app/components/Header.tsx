@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { socialLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -12,8 +11,6 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
-
-const upworkHref = socialLinks.find((link) => link.label === "Upwork")?.href;
 
 function Monogram() {
   return (
@@ -110,16 +107,6 @@ export default function Header() {
           <DesktopNav pathname={pathname} />
 
           <div className="hidden grow basis-0 justify-end gap-2 lg:flex">
-            {upworkHref ? (
-              <a
-                href={upworkHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-8 items-center rounded-lg border border-neutral-200 bg-white px-4 text-sm text-neutral-900 transition-all hover:bg-neutral-50"
-              >
-                Upwork
-              </a>
-            ) : null}
             <Link
               href="/contact"
               className="flex h-8 items-center rounded-lg border border-black bg-black px-4 text-sm text-white transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200"
@@ -158,18 +145,6 @@ export default function Header() {
                 </Link>
               </li>
             ))}
-            {upworkHref ? (
-              <li className="py-3">
-                <a
-                  href={upworkHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full font-semibold text-neutral-900"
-                >
-                  Upwork ↗
-                </a>
-              </li>
-            ) : null}
             <li className="pt-5">
               <Link
                 href="/contact"
