@@ -76,7 +76,7 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
               <div className="mt-8">
                 <GuideSignup uid={drop.guide.kitUid} src={drop.guide.kitScript} />
                 <p className="mt-3 text-xs text-neutral-500">
-                  We&apos;ll email you a confirmation link. Confirm, and the PDF downloads. Unsubscribe any time.
+                  Enter your email and the PDF opens right away. You&apos;ll also get new guides by email. Unsubscribe any time.
                 </p>
               </div>
             </div>
