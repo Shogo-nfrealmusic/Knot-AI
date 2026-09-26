@@ -1,4 +1,5 @@
 import { IconArrowUpRight, IconCheck, IconX } from "@tabler/icons-react";
+import { CodeCopy } from "@/app/free/CodeCopy";
 
 // Sales section for a paid kit drop (/free/05). Kit's own checkout does the payment; this page does the explaining.
 // Media lives in /public/free/05 (real screen recordings of toni.shogo.build and the NORTH ROAST verification build).
@@ -20,15 +21,18 @@ function Clip({ src, poster, className = "" }: { src: string; poster: string; cl
   );
 }
 
-/** Launch pricing: the regular price is struck through only because it really goes up after launchEnds (Shogo, 2026-09-27). */
-function PriceTag({ price, regular, launchEnds, center = false }: { price: string; regular?: string; launchEnds?: string; center?: boolean }) {
-  if (!regular) return null;
+/** Launch offer: the kit's real price on Kit is `regular`; the code takes it to `price` until `until` (Shogo, 2026-09-27). */
+type Offer = { code: string; until: string; regular: string };
+function PriceTag({ price, offer, center = false }: { price: string; offer?: Offer; center?: boolean }) {
+  if (!offer) return null;
   return (
-    <p className={`mt-3 text-sm text-neutral-500 ${center ? "text-center" : ""}`}>
-      <span className="mr-2 text-neutral-400 line-through">{regular}</span>
+    <div className={`mt-3 flex flex-wrap items-center gap-2 text-sm text-neutral-500 ${center ? "justify-center" : ""}`}>
+      <span className="text-neutral-400 line-through">{offer.regular}</span>
       <span className="font-semibold text-neutral-900">{price}</span>
-      {launchEnds ? <span> · launch price until {launchEnds}, then {regular}</span> : null}
-    </p>
+      <span>with code</span>
+      <CodeCopy code={offer.code} />
+      <span>· until {offer.until}</span>
+    </div>
   );
 }
 
@@ -60,7 +64,7 @@ const P = ({ children }: { children: React.ReactNode }) => (
   <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-neutral-600">{children}</p>
 );
 
-export function KitSales({ href, price, regular, launchEnds }: { href: string; price: string; regular?: string; launchEnds?: string }) {
+export function KitSales({ href, price, offer }: { href: string; price: string; offer?: Offer }) {
   return (
     <div>
       {/* 1. the result */}
@@ -84,7 +88,7 @@ export function KitSales({ href, price, regular, launchEnds }: { href: string; p
           </div>
           <div className="w-full md:w-auto">
             <BuyButton href={href} price={price} className="w-full md:w-auto" />
-            <PriceTag price={price} regular={regular} launchEnds={launchEnds} />
+            <PriceTag price={price} offer={offer} />
           </div>
         </div>
       </div>
@@ -191,9 +195,9 @@ export function KitSales({ href, price, regular, launchEnds }: { href: string; p
           The $5,000 3D website, for {price}.
         </h2>
         <BuyButton href={href} price={price} className="mt-8 w-full max-w-xs" />
-        <PriceTag price={price} regular={regular} launchEnds={launchEnds} center />
+        <PriceTag price={price} offer={offer} center />
         <p className="mt-4 max-w-md text-xs leading-relaxed text-neutral-500">
-          Secure checkout by Kit. Use it for your own and your clients&apos; sites; please don&apos;t resell the kit.
+          Enter the code at checkout. Secure checkout by Kit. Use it for your own and your clients&apos; sites; please don&apos;t resell the kit.
         </p>
       </div>
     </div>

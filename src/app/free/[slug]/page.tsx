@@ -57,7 +57,7 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
           </p>
         </div>
         {drop.kit ? (
-          <KitSales href={drop.kit.href} price={drop.kit.price} regular={drop.kit.regular} launchEnds={drop.kit.launchEnds} />
+          <KitSales href={drop.kit.href} price={drop.kit.price} offer={drop.kit.offer} />
         ) : drop.guide ? (
           <div className="grid grid-cols-1 gap-10 px-5 py-10 sm:px-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center md:py-14">
             {/* eslint-disable-next-line @next/next/no-img-element */}
