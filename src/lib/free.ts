@@ -21,12 +21,25 @@ export type FreeDrop = {
   tools: FreeTool[];
   /** email-gated PDF (Kit form). When set, the page shows the sign-up instead of the tool list. */
   guide?: { kitUid: string; kitScript: string; cover: string; points: string[] };
+  /** paid kit sold on Kit Commerce. When set, the page shows the sales section. */
+  kit?: { href: string; price: string; cover: string };
 };
 
 export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 5,
+    slug: "05-3d-website-kit",
+    title: "The $5,000 3D website: build it yourself",
+    description:
+      "The kit behind the reel: how I build scroll-driven 3D product sites with Claude Code and Higgsfield. The guide, a working starter project and the exact prompts, tested on a second product.",
+    date: "2026-09-27",
+    keyword: "3D",
+    tools: [],
+    kit: { href: "https://fantastic-mover-4460.kit.com/products/3d-website-kit", price: "$30", cover: "/free/05/s0_f_0000.jpg" },
+  },
   {
     number: 4,
     slug: "04-tiny-team-ai",

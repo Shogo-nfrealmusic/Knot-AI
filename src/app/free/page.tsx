@@ -6,9 +6,9 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { DropCover, FollowBlock } from "@/app/free/FreeParts";
 import { formatDropDate, getDrops, pad } from "@/lib/free";
 
-const title = "Free tools — every tool from my reels | Shogo Kikuchi";
+const title = "From the reels: tools, guides and kits | Shogo Kikuchi";
 const description =
-  "Every tool from the @copilot_shogo reels in one place. Open source and free to use, grouped by reel.";
+  "Every tool, guide and build kit from the @copilot_shogo reels in one place, grouped by reel.";
 
 export const metadata: Metadata = {
   title,
@@ -24,8 +24,8 @@ export default function FreePage() {
   return (
     <SitePageLayout>
       <InnerHero
-        title="Free tools"
-        description="Every tool from my reels, in one place. Open source and free to use."
+        title="From the reels"
+        description="Every tool, guide and build kit from my reels, in one place. Most are free."
       />
 
       <GridSection>

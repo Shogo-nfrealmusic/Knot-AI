@@ -7,6 +7,7 @@ import InnerHero from "@/app/components/InnerHero";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { FollowBlock, ToolRow } from "@/app/free/FreeParts";
 import { GuideSignup } from "@/app/free/GuideSignup";
+import { KitSales } from "@/app/free/KitSales";
 import { formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
 
 export const dynamicParams = false;
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title,
     description: drop.description,
     alternates: { canonical: path },
-    openGraph: { title: drop.title, description: drop.description, url: path, type: "website" },
+    openGraph: { title: drop.title, description: drop.description, url: path, type: "website", ...(drop.kit ? { images: ["/free/05/og.png"] } : {}) },
   };
 }
 
@@ -48,14 +49,16 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
             className="inline-flex items-center gap-1.5 text-sm text-neutral-500 transition-colors hover:text-neutral-900"
           >
             <IconArrowLeft className="size-4" />
-            All free tools
+            From the reels
           </Link>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400">
-            Reel {pad(drop.number)} · {drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`} ·{" "}
+            Reel {pad(drop.number)} · {drop.kit ? "build kit" : drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`} ·{" "}
             {formatDropDate(drop.date)}
           </p>
         </div>
-        {drop.guide ? (
+        {drop.kit ? (
+          <KitSales href={drop.kit.href} price={drop.kit.price} />
+        ) : drop.guide ? (
           <div className="grid grid-cols-1 gap-10 px-5 py-10 sm:px-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center md:py-14">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

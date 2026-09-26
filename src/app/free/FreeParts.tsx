@@ -55,7 +55,10 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
         strokeWidth={1}
         className="text-black/[0.06] [mask-image:radial-gradient(75%_75%_at_50%_50%,black,transparent)]"
       />
-      {drop.guide ? (
+      {drop.kit ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={drop.kit.cover} alt="" className="relative h-[62%] w-auto rounded-md border border-neutral-200 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.45)]" />
+      ) : drop.guide ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={drop.guide.cover} alt="" className="relative h-[62%] w-auto rounded-md border border-neutral-200 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.45)]" />
       ) : (
@@ -66,7 +69,7 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
         </div>
       )}
       <span className="relative mt-[4%] rounded-full border border-neutral-200 bg-white/80 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-600 backdrop-blur-sm">
-        Reel {pad(drop.number)} · {drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`}
+        Reel {pad(drop.number)} · {drop.kit ? "build kit" : drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`}
       </span>
     </div>
   );
@@ -128,7 +131,7 @@ export function FollowBlock({ showAllLink = true }: { showAllLink?: boolean }) {
             href="/free"
             className="inline-flex h-10 items-center rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all hover:bg-neutral-50 hover:ring-4 hover:ring-black/5"
           >
-            All free tools
+            Everything from the reels
           </Link>
         ) : null}
       </div>
