@@ -55,13 +55,18 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
         strokeWidth={1}
         className="text-black/[0.06] [mask-image:radial-gradient(75%_75%_at_50%_50%,black,transparent)]"
       />
-      <div className="relative flex items-center gap-[2.5%] px-[8%]">
-        {drop.tools.map((tool) => (
-          <ToolTile key={tool.name} icon={tool.icon} className="w-[13%] min-w-10" />
-        ))}
-      </div>
+      {drop.guide ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={drop.guide.cover} alt="" className="relative h-[62%] w-auto rounded-md border border-neutral-200 shadow-[0_16px_40px_-16px_rgba(0,0,0,0.45)]" />
+      ) : (
+        <div className="relative flex items-center gap-[2.5%] px-[8%]">
+          {drop.tools.map((tool) => (
+            <ToolTile key={tool.name} icon={tool.icon} className="w-[13%] min-w-10" />
+          ))}
+        </div>
+      )}
       <span className="relative mt-[4%] rounded-full border border-neutral-200 bg-white/80 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-600 backdrop-blur-sm">
-        Reel {pad(drop.number)} · {drop.tools.length} {drop.tools.length === 1 ? "tool" : "tools"}
+        Reel {pad(drop.number)} · {drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`}
       </span>
     </div>
   );

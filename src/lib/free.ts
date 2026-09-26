@@ -19,12 +19,35 @@ export type FreeDrop = {
   date: string; // ISO
   keyword: string; // the comment keyword on the reel
   tools: FreeTool[];
+  /** email-gated PDF (Kit form). When set, the page shows the sign-up instead of the tool list. */
+  guide?: { kitFormId: string; cover: string; points: string[] };
 };
 
 export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 4,
+    slug: "04-tiny-team-ai",
+    title: "Run your business with a tiny team + AI",
+    description:
+      "The free guide from the reel: how two of us run a six-figure business with almost everything automated, and the exact tools we use.",
+    date: "2026-09-27",
+    keyword: "GUIDE",
+    tools: [],
+    guide: {
+      kitFormId: "9965640",
+      cover: "/free/04-guide-cover.jpg",
+      points: [
+        "Sales & payments on autopilot",
+        "Content that posts itself to Instagram and TikTok",
+        "Money & expenses, synced from the bank",
+        "Numbers you don't have to pull",
+        "Every tool we use, and a 7-day plan to start",
+      ],
+    },
+  },
   {
     number: 3,
     slug: "03-laya",
