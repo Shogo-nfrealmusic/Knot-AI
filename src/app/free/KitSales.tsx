@@ -197,7 +197,7 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
         <BuyButton href={href} price={price} className="mt-8 w-full max-w-xs" />
         <PriceTag price={price} offer={offer} center />
         <p className="mt-4 max-w-md text-xs leading-relaxed text-neutral-500">
-          Enter the code at checkout. Secure checkout by Kit. Use it for your own and your clients&apos; sites; please don&apos;t resell the kit.
+          The button applies the code for you. Secure checkout by Kit. Use it for your own and your clients&apos; sites; please don&apos;t resell the kit.
         </p>
       </div>
     </div>

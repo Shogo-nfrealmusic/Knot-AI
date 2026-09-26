@@ -38,7 +38,7 @@ const drops: FreeDrop[] = [
     date: "2026-09-27",
     keyword: "3D",
     tools: [],
-    kit: { href: "https://fantastic-mover-4460.kit.com/products/3d-website-kit", price: "$29", offer: { code: "3DWEBSITE", until: "October 31", regular: "$54" }, cover: "/free/05/s0_f_0000.jpg" },
+    kit: { href: "https://fantastic-mover-4460.kit.com/products/3d-website-kit?promo=3DWEBSITE", price: "$29", offer: { code: "3DWEBSITE", until: "October 31", regular: "$54" }, cover: "/free/05/s0_f_0000.jpg" },
   },
   {
     number: 4,
