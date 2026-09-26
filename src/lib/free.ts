@@ -20,7 +20,7 @@ export type FreeDrop = {
   keyword: string; // the comment keyword on the reel
   tools: FreeTool[];
   /** email-gated PDF (Kit form). When set, the page shows the sign-up instead of the tool list. */
-  guide?: { kitFormId: string; cover: string; points: string[] };
+  guide?: { kitUid: string; kitScript: string; cover: string; points: string[] };
 };
 
 export const INSTAGRAM_HANDLE = "copilot_shogo";
@@ -37,7 +37,8 @@ const drops: FreeDrop[] = [
     keyword: "GUIDE",
     tools: [],
     guide: {
-      kitFormId: "9965640",
+      kitUid: "3ba02ef07c",
+      kitScript: "https://fantastic-mover-4460.kit.com/3ba02ef07c/index.js",
       cover: "/free/04-guide-cover.jpg",
       points: [
         "Sales & payments on autopilot",
