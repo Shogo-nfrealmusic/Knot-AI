@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getCategoriesWithPosts, getRoutablePosts } from "@/lib/blog";
+import { getDrops } from "@/lib/free";
 
 const BASE = "https://shogo.build";
 
@@ -36,5 +37,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...pages, ...postPages, ...categoryPages];
+  const freePages: MetadataRoute.Sitemap = [
+    { url: `${BASE}/free`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.6 },
+    ...getDrops().map((drop) => ({
+      url: `${BASE}/free/${drop.slug}`,
+      lastModified: new Date(drop.date),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+    })),
+  ];
+
+  return [...pages, ...postPages, ...categoryPages, ...freePages];
 }
