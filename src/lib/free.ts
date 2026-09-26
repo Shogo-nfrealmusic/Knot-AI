@@ -27,17 +27,17 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 const drops: FreeDrop[] = [
   {
     number: 3,
-    slug: "03-ollaya",
-    title: "Jev-style decision models, free on your own computer",
+    slug: "03-laya",
+    title: "A free, open-source Jev that runs on your own computer",
     description:
-      "Ollaya runs open decision models locally, the way Ollama runs LLMs. One command, Apache-2.0, Mac, Windows and Linux.",
+      "Laya is a local System 1 decision model: typed answers about any text in one pass, about 30 ms. Apache-2.0, pip install, MCP server for Claude Code.",
     date: "2026-09-26",
     keyword: "LOCAL",
     tools: [
       {
-        name: "Ollaya",
-        what: "Answers typed questions about any text in one pass (intent, urgency, churn risk…). Install: curl -fsSL https://ollaya.dev/install.sh | sh, then ollaya run laya. Claude Code: claude mcp add ollaya -- ollaya mcp",
-        href: "https://github.com/ollaya-dev/ollaya",
+        name: "Laya",
+        what: "Answers typed questions about any text (intent, urgency, churn risk…) without generating text. Install: pip install laya, then laya \"your text\" --preset triage --predict. The base model is near chance out of the box: fine-tune it on your own data with the notebook in the repo, and Claude Code can do that for you.",
+        href: "https://github.com/NandhaKishorM/laya",
         icon: "cpu",
       },
     ],
