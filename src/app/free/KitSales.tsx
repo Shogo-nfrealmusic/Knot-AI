@@ -20,6 +20,18 @@ function Clip({ src, poster, className = "" }: { src: string; poster: string; cl
   );
 }
 
+/** Launch pricing: the regular price is struck through only because it really goes up after launchEnds (Shogo, 2026-09-27). */
+function PriceTag({ price, regular, launchEnds, center = false }: { price: string; regular?: string; launchEnds?: string; center?: boolean }) {
+  if (!regular) return null;
+  return (
+    <p className={`mt-3 text-sm text-neutral-500 ${center ? "text-center" : ""}`}>
+      <span className="mr-2 text-neutral-400 line-through">{regular}</span>
+      <span className="font-semibold text-neutral-900">{price}</span>
+      {launchEnds ? <span> · launch price until {launchEnds}, then {regular}</span> : null}
+    </p>
+  );
+}
+
 function BuyButton({ href, price, className = "" }: { href: string; price: string; className?: string }) {
   return (
     <a
@@ -48,7 +60,7 @@ const P = ({ children }: { children: React.ReactNode }) => (
   <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-neutral-600">{children}</p>
 );
 
-export function KitSales({ href, price }: { href: string; price: string }) {
+export function KitSales({ href, price, regular, launchEnds }: { href: string; price: string; regular?: string; launchEnds?: string }) {
   return (
     <div>
       {/* 1. the result */}
@@ -70,7 +82,10 @@ export function KitSales({ href, price }: { href: string; price: string }) {
               Try the live site: toni.shogo.build <IconArrowUpRight className="size-3.5" />
             </a>
           </div>
-          <BuyButton href={href} price={price} className="w-full md:w-auto" />
+          <div className="w-full md:w-auto">
+            <BuyButton href={href} price={price} className="w-full md:w-auto" />
+            <PriceTag price={price} regular={regular} launchEnds={launchEnds} />
+          </div>
         </div>
       </div>
 
@@ -176,6 +191,7 @@ export function KitSales({ href, price }: { href: string; price: string }) {
           The $5,000 3D website, for {price}.
         </h2>
         <BuyButton href={href} price={price} className="mt-8 w-full max-w-xs" />
+        <PriceTag price={price} regular={regular} launchEnds={launchEnds} center />
         <p className="mt-4 max-w-md text-xs leading-relaxed text-neutral-500">
           Secure checkout by Kit. Use it for your own and your clients&apos; sites; please don&apos;t resell the kit.
         </p>
