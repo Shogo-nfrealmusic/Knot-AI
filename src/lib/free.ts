@@ -2,7 +2,7 @@
 // Slugs are numbered ("02-claude-design-tools") so they never collide as reels pile up;
 // /free/02 redirects to the full slug, which is what the DMs link to.
 
-export type ToolIcon = "palette" | "wand" | "browser" | "file" | "cube" | "plug";
+export type ToolIcon = "palette" | "wand" | "browser" | "file" | "cube" | "plug" | "cpu";
 
 export type FreeTool = {
   name: string;
@@ -25,6 +25,23 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 3,
+    slug: "03-ollaya",
+    title: "Jev-style decision models, free on your own computer",
+    description:
+      "Ollaya runs open decision models locally, the way Ollama runs LLMs. One command, Apache-2.0, Mac, Windows and Linux.",
+    date: "2026-09-26",
+    keyword: "LOCAL",
+    tools: [
+      {
+        name: "Ollaya",
+        what: "Answers typed questions about any text in one pass (intent, urgency, churn risk…). Install: curl -fsSL https://ollaya.dev/install.sh | sh, then ollaya run laya. Claude Code: claude mcp add ollaya -- ollaya mcp",
+        href: "https://github.com/ollaya-dev/ollaya",
+        icon: "cpu",
+      },
+    ],
+  },
   {
     number: 2,
     slug: "02-claude-design-tools",

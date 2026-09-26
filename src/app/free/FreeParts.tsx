@@ -4,6 +4,7 @@ import {
   IconArrowUpRight,
   IconBrandGithub,
   IconBrowserCheck,
+  IconCpu,
   IconCube,
   IconFileDescription,
   IconPalette,
@@ -21,6 +22,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   file: IconFileDescription,
   cube: IconCube,
   plug: IconPlugConnected,
+  cpu: IconCpu,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
