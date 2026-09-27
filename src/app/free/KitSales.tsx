@@ -74,8 +74,8 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
           <div>
             <p className="font-mono text-[13px] text-warm">WHAT YOU&apos;LL BUILD</p>
             <p className="mt-3 max-w-xl text-balance text-xl font-medium tracking-[-0.02em] text-neutral-900 sm:text-2xl">
-              A product site where the product turns, opens and moves through a day as you scroll. Sharp on a Retina
-              laptop, 60 fps on a phone.
+              A product site where the product turns, opens and moves through a day as you scroll, and stays sharp
+              on Retina screens and phones.
             </p>
             <a
               href="https://toni.shogo.build"
@@ -97,8 +97,8 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
       <Row label="WHY IT'S HARD">
         <H>You can&apos;t get this by asking an AI for &quot;a 3D website&quot;.</H>
         <P>
-          Ask ChatGPT and you get a spinning sphere on a dark page. That&apos;s the $50 site in the reel. The $5,000
-          version is a pipeline: generated keyframes that keep the label intact, video that turns in the right
+          Ask ChatGPT and you get a spinning sphere on a dark page. That&apos;s the $50 site in the reel. The real
+          thing is a pipeline: generated keyframes that keep the label intact, video that turns in the right
           direction, frames that stay sharp at 3× pixel density, and scrolling that doesn&apos;t stutter. Every step
           has a way to fail. This kit is the version that works, with each failure written down.
         </P>
@@ -121,10 +121,11 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
 
       {/* 3. proof it transfers */}
       <Row label="TESTED ON A NEW PRODUCT">
-        <H>Then I rebuilt it for a different product, using only the kit.</H>
+        <H>Then I had it rebuilt for a different product, following the kit.</H>
         <P>
-          A fictional cold brew with a black can and a dark palette, nothing like the original. It took 30 minutes of generation
-          and build time, and every video worked on the first take.
+          A fictional cold brew with a black can and a dark palette, nothing like the original. Claude Code built a minimal
+          three-section version on its own, following an earlier version of the kit. All six videos were kept on the first
+          take. Everything the test (and an independent review afterwards) found is fixed in the version you get.
         </P>
         <div className="mt-8 grid grid-cols-[minmax(0,3fr)_minmax(0,1fr)] items-start gap-4">
           <Clip src="northroast-scroll.mp4" poster="northroast-poster.jpg" />
@@ -133,8 +134,8 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
         <dl className="mt-8 grid grid-cols-3 divide-x divide-neutral-200 rounded-lg border border-neutral-200">
           {[
             ["272", "Higgsfield credits"],
-            ["~30 min", "generation + build"],
-            ["60 fps", "on phone, 0 dropped frames"],
+            ["~30 min", "unattended run. Plan 1–2 days with your own reviews"],
+            ["60 fps", "in Chrome's phone emulation, 0 dropped frames"],
           ].map(([v, l]) => (
             <div key={l} className="px-4 py-5">
               <dt className="text-2xl font-semibold tracking-[-0.03em] text-neutral-900 sm:text-3xl">{v}</dt>
@@ -149,11 +150,11 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
         <H>Everything I figured out, packaged so you skip the months.</H>
         <ul className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200">
           {[
-            ["10-page guide", "The process, the technique, the real costs (1,484 credits for the full site, ~350 for the minimal one), and the 19 rounds of feedback that took it from “60/100” to premium."],
+            ["10-page guide", "The process, the technique, the real costs (1,484 credits for the full site, an estimated ~350 for a minimal one), and the 19 rounds of feedback that took it from “60/100” to premium."],
             ["Starter project", "A Next.js project that already works: the scroll-driven frame player, smooth scrolling and a demo page. Run npm run dev and it's scrubbing."],
             ["Prompt pack", "The exact Higgsfield prompts and API settings that keep a label from melting, plus the ones that failed and why."],
             ["Scripts", "Video → sharp, color-matched frames for desktop and phone. Seamless loops. Product cut-outs. A performance audit."],
-            ["Instructions for Claude Code", "Fill-in-the-blanks BRIEF.md and CLAUDE.md. Drop in your product, send one line, and Claude Code follows the same process."],
+            ["Instructions for Claude Code", "Fill-in-the-blanks BRIEF.md, CLAUDE.md and DESIGN.md. Drop in your product, send one line, and Claude Code follows the same process."],
           ].map(([t, d]) => (
             <li key={t} className="grid grid-cols-1 gap-1 py-5 sm:grid-cols-[12rem_1fr] sm:gap-6">
               <span className="text-[15px] font-semibold text-neutral-900">{t}</span>
@@ -163,7 +164,7 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
         </ul>
         <div className="mt-8">
           <Clip src="toni-flavors.mp4" poster="flavors-poster.jpg" />
-          <p className="mt-2 text-xs text-neutral-500">Six flavor variants for 0 extra credits: the recoloring trick is in the kit.</p>
+          <p className="mt-2 text-xs text-neutral-500">Six flavor variants from one can, with no extra generations. The kit includes the script as an example to adapt.</p>
         </div>
       </Row>
 
@@ -173,7 +174,7 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
         <ul className="mt-6 space-y-3">
           {[
             "Launch your own product with a page that looks like a funded brand's.",
-            "Build these for clients. Premium product sites sell for thousands.",
+            "Build these for clients, as a premium add-on to a normal website.",
             "Learn the pipeline once, then reuse it for every product you make.",
           ].map((t) => (
             <li key={t} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-700">
@@ -183,8 +184,9 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
           ))}
         </ul>
         <p className="mt-6 text-sm text-neutral-500">
-          You&apos;ll need Claude Code, a Higgsfield plan (the minimal build uses about 300 to 350 credits), Node.js, ffmpeg, Python,
-          and your product&apos;s design. No deep coding: you run commands and talk to Claude Code.
+          You&apos;ll need a Mac, Claude Code, a paid Higgsfield plan (the test build used 272 credits; budget ~300–350), Node.js
+          20.9+, ffmpeg, Python, and your product&apos;s design. No deep coding, but you should be comfortable running commands in a
+          terminal and talking to Claude Code.
         </p>
       </Row>
 
@@ -192,7 +194,7 @@ export function KitSales({ href, price, offer }: { href: string; price: string; 
       <div className="flex flex-col items-center border-t border-neutral-200 px-5 py-16 text-center sm:py-20">
         <p className="font-mono text-[13px] text-warm">ONE PAYMENT · INSTANT DOWNLOAD</p>
         <h2 className="mt-4 max-w-lg text-balance text-3xl font-medium tracking-[-0.03em] text-neutral-900">
-          The $5,000 3D website, for {price}.
+          Build the 3D website from the reel, for {price}.
         </h2>
         <BuyButton href={href} price={price} className="mt-8 w-full max-w-xs" />
         <PriceTag price={price} offer={offer} center />
