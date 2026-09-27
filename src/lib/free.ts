@@ -2,13 +2,29 @@
 // Slugs are numbered ("02-claude-design-tools") so they never collide as reels pile up;
 // /free/02 redirects to the full slug, which is what the DMs link to.
 
-export type ToolIcon = "palette" | "wand" | "browser" | "file" | "cube" | "plug" | "cpu";
+export type ToolIcon =
+  | "palette"
+  | "wand"
+  | "browser"
+  | "file"
+  | "cube"
+  | "plug"
+  | "cpu"
+  | "scissors"
+  | "review"
+  | "brain"
+  | "notebook"
+  | "store";
 
 export type FreeTool = {
   name: string;
   what: string;
   href: string;
   icon: ToolIcon;
+  /** commands to paste, one per copy line (e.g. Claude Code /plugin commands) */
+  install?: string[];
+  /** one short caveat shown under the install lines */
+  note?: string;
 };
 
 export type FreeDrop = {
@@ -23,12 +39,67 @@ export type FreeDrop = {
   guide?: { kitUid: string; kitScript: string; cover: string; points: string[] };
   /** paid kit sold on Kit Commerce. When set, the page shows the sales section. */
   kit?: { href: string; price: string; offer?: { code: string; until: string; regular: string }; cover: string };
+  /** one-line tip under the tool list, with a command to copy */
+  tip?: { before: string; command: string; after: string };
 };
 
 export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 6,
+    slug: "06-claude-code-plugins",
+    title: "5 Claude Code plugins worth installing",
+    description:
+      "Less code, parallel PR review, memory across sessions, your Obsidian vault as memory, and Anthropic's official plugin directory. Each with the commands to install it.",
+    date: "2026-09-27",
+    keyword: "PLUGINS",
+    tools: [
+      {
+        name: "Ponytail",
+        what: "Makes Claude Code write less code. The README's benchmark: ~54% less code and ~20% lower cost (Claude Code, Haiku 4.5, 12 tasks). Results vary by model.",
+        href: "https://github.com/DietrichGebert/ponytail",
+        icon: "scissors",
+        install: ["/plugin marketplace add DietrichGebert/ponytail", "/plugin install ponytail@ponytail"],
+      },
+      {
+        name: "Code Review (by Anthropic)",
+        what: "Run /code-review on a pull request: 4 agents review it in parallel (2 check your CLAUDE.md rules, 2 look for bugs), and each flagged issue is validated before it's reported.",
+        href: "https://github.com/anthropics/claude-code/tree/main/plugins/code-review",
+        icon: "review",
+        install: ["/plugin marketplace add anthropics/claude-code", "/plugin install code-review@claude-code-plugins"],
+      },
+      {
+        name: "Claude Mem",
+        what: "Carries context from your past sessions into new ones.",
+        href: "https://github.com/thedotmack/claude-mem",
+        icon: "brain",
+        install: ["/plugin marketplace add thedotmack/claude-mem", "/plugin install claude-mem"],
+        note: "Its hosted memory needs a sign-in and is free for your first 30 days. After that, memory falls back to your Anthropic plan unless you subscribe.",
+      },
+      {
+        name: "Obsidian Second Brain",
+        what: "Turns your Obsidian vault into long-term memory for Claude Code. 47 commands.",
+        href: "https://github.com/eugeniughelbur/obsidian-second-brain",
+        icon: "notebook",
+        install: [
+          "/plugin marketplace add eugeniughelbur/obsidian-second-brain",
+          "/plugin install obsidian-second-brain@obsidian-second-brain",
+        ],
+        note: "Then follow the README to point it at your vault.",
+      },
+      {
+        name: "Official marketplace",
+        what: "Anthropic's managed plugin directory, with 300+ plugins listed. Install any of them with one command.",
+        href: "https://github.com/anthropics/claude-plugins-official",
+        icon: "store",
+        install: ["/plugin install {plugin-name}@claude-plugins-official"],
+        note: "Anthropic says it doesn't control what's inside these plugins and can't verify they work as intended, so check each one before you install it.",
+      },
+    ],
+    tip: { before: "Run", command: "/plugin", after: "inside Claude Code to browse and manage your plugins." },
+  },
   {
     number: 5,
     slug: "05-3d-website-kit",

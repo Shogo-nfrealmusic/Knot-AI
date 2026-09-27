@@ -3,14 +3,20 @@ import Link from "next/link";
 import {
   IconArrowUpRight,
   IconBrandGithub,
+  IconBrain,
   IconBrowserCheck,
+  IconBuildingStore,
   IconCpu,
   IconCube,
   IconFileDescription,
+  IconGitPullRequest,
+  IconNotebook,
   IconPalette,
   IconPlugConnected,
+  IconScissors,
   IconWand,
 } from "@tabler/icons-react";
+import { CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import { INSTAGRAM_HANDLE, INSTAGRAM_URL, pad, type FreeDrop, type FreeTool, type ToolIcon } from "@/lib/free";
 import { cn } from "@/lib/utils";
@@ -23,6 +29,11 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   cube: IconCube,
   plug: IconPlugConnected,
   cpu: IconCpu,
+  scissors: IconScissors,
+  review: IconGitPullRequest,
+  brain: IconBrain,
+  notebook: IconNotebook,
+  store: IconBuildingStore,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
@@ -76,36 +87,89 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
 }
 
 // One tool: number, tile, name, one line, and a GitHub button. Stacks on phones (most visitors come from Instagram).
+// Without install commands the whole row is the link; with them, only the button is (copy buttons can't sit inside a link).
 export function ToolRow({ tool, index }: { tool: FreeTool; index: number }) {
   const repo = tool.href.replace(/^https?:\/\/(www\.)?github\.com\//, "");
+  const grid =
+    "grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-4 px-5 py-7 sm:grid-cols-[3rem_auto_1fr_auto] sm:items-center sm:gap-x-6 sm:px-10 sm:py-8";
+  const button =
+    "col-span-2 inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all sm:col-span-1";
+  const body = (
+    <>
+      <span className="hidden font-mono text-[13px] text-neutral-400 sm:block">{pad(index + 1)}</span>
+      <ToolTile icon={tool.icon} className="w-12 sm:w-14" />
+      <span className="min-w-0">
+        <span className="flex items-baseline gap-2">
+          <span className="font-mono text-[11px] text-neutral-400 sm:hidden">{pad(index + 1)}</span>
+          <span className="text-lg font-semibold tracking-[-0.015em] text-neutral-900">{tool.name}</span>
+        </span>
+        <span className="mt-1.5 block text-[15px] leading-relaxed tracking-[-0.01em] text-neutral-500">{tool.what}</span>
+        <span className="mt-2 block truncate font-mono text-[11px] text-neutral-400">github.com/{repo}</span>
+      </span>
+    </>
+  );
+  const buttonInner = (
+    <>
+      <IconBrandGithub className="size-4" />
+      Open on GitHub
+      <IconArrowUpRight className="size-4 text-neutral-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+    </>
+  );
+
   return (
     <li
       className="animate-slide-up-fade [--offset:12px]"
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      <a
-        href={tool.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-4 px-5 py-7 transition-colors duration-200 hover:bg-neutral-50 sm:grid-cols-[3rem_auto_1fr_auto] sm:items-center sm:gap-x-6 sm:px-10 sm:py-8"
-      >
-        <span className="hidden font-mono text-[13px] text-neutral-400 sm:block">{pad(index + 1)}</span>
-        <ToolTile icon={tool.icon} className="w-12 sm:w-14" />
-        <span className="min-w-0">
-          <span className="flex items-baseline gap-2">
-            <span className="font-mono text-[11px] text-neutral-400 sm:hidden">{pad(index + 1)}</span>
-            <span className="text-lg font-semibold tracking-[-0.015em] text-neutral-900">{tool.name}</span>
+      {tool.install?.length ? (
+        <div className={grid}>
+          {body}
+          <a
+            href={tool.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(button, "group hover:bg-neutral-50 hover:ring-4 hover:ring-black/5 sm:col-start-4 sm:row-start-1")}
+          >
+            {buttonInner}
+          </a>
+          <div className="col-span-2 sm:col-span-2 sm:col-start-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400">
+              Install · paste into Claude Code
+            </p>
+            <div className="mt-2 space-y-2">
+              {tool.install.map((command) => (
+                <CommandCopy key={command} command={command} />
+              ))}
+            </div>
+            {tool.note ? <p className="mt-3 text-sm leading-relaxed text-neutral-500">{tool.note}</p> : null}
+          </div>
+        </div>
+      ) : (
+        <a
+          href={tool.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn("group transition-colors duration-200 hover:bg-neutral-50", grid)}
+        >
+          {body}
+          <span className={cn(button, "group-hover:bg-neutral-50 group-hover:ring-4 group-hover:ring-black/5")}>
+            {buttonInner}
           </span>
-          <span className="mt-1.5 block text-[15px] leading-relaxed tracking-[-0.01em] text-neutral-500">{tool.what}</span>
-          <span className="mt-2 block truncate font-mono text-[11px] text-neutral-400">github.com/{repo}</span>
-        </span>
-        <span className="col-span-2 inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all group-hover:bg-neutral-50 group-hover:ring-4 group-hover:ring-black/5 sm:col-span-1">
-          <IconBrandGithub className="size-4" />
-          Open on GitHub
-          <IconArrowUpRight className="size-4 text-neutral-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </span>
-      </a>
+        </a>
+      )}
     </li>
+  );
+}
+
+// One-line tip under a drop's tool list, with the command to copy.
+export function DropTip({ tip }: { tip: NonNullable<FreeDrop["tip"]> }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-2 border-t border-neutral-200 px-5 py-6 text-[15px] text-neutral-500 sm:px-10">
+      <span className="font-mono text-[13px] text-warm">TIP</span>
+      <span>{tip.before}</span>
+      <CommandCopy command={tip.command} className="w-auto" />
+      <span>{tip.after}</span>
+    </div>
   );
 }
 
