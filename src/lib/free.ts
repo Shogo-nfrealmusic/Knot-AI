@@ -69,13 +69,13 @@ const drops: FreeDrop[] = [
     slug: "08-legal-check",
     title: "/legal-check: find the legal traps in your vibe-coded app",
     description:
-      "A free Claude Code skill (MIT) by Shogo. It audits your web app for eight common legal traps, then fixes what code can fix. Not legal advice.",
+      "A free Claude Code skill (MIT) by Shogo. It audits a vibe-coded web or mobile app for the things most likely to get it sued, fined, breached, or rejected from the App Store. Then it fixes what code can fix, in your app's own stack. Not legal advice.",
     date: "2026-09-28",
     keyword: "LEGAL",
     tools: [
       {
         name: "/legal-check",
-        what: "Checks for: sign-up with no age screen (COPPA), Google Fonts loaded from Google's servers (GDPR, EU), session replay recording typed text or recording before consent (California wiretap law, CIPA), marketing email with no unsubscribe link or postal address (CAN-SPAM), a subscribe button with no renewal terms, consent or online cancel (California Automatic Renewal Law), user uploads with no DMCA page, no privacy policy or terms page (CalOPPA), and analytics that load before consent (EU/UK consent rules).",
+        what: "23 checks, reported by risk (High → Medium → Low): security that creates liability (secret keys in client code, an open database, admin routes with no auth, raw card data, login limits), privacy & tracking (session replay, ad pixels before consent, Google Fonts, privacy policy and terms, account deletion, \"Do Not Sell or Share\"), kids (COPPA, app-store age ratings), marketing (CAN-SPAM, TCPA, FTC testimonials), payments (auto-renewal, refunds), content & IP (DMCA, report and block, trademarks, AI disclosure) and accessibility (ADA/WCAG basics).",
         href: "https://github.com/Shogo-nfrealmusic/ship-legal",
         icon: "legal",
         install: ["/plugin marketplace add Shogo-nfrealmusic/ship-legal", "/plugin install legal-check@ship-legal"],
@@ -84,25 +84,29 @@ const drops: FreeDrop[] = [
     tip: {
       before: "Then run",
       command: "/legal-check",
-      after: "in your project (also available as /legal-check:legal-check).",
+      after: "in your project. It also answers to /legal-check:legal-check.",
     },
     about: {
       steps: [
         {
           title: "Scan (read-only)",
-          text: "A bundled script searches your code for sign-up forms, font links, replay SDKs, email sends, Stripe subscriptions, file uploads and policy pages. Each check is marked PASS, RISK or N/A in a table, with file:line.",
+          text: "A bundled shell script detects the stack, then collects evidence as file:line for every check. It skips node_modules, build output, lockfiles, and files over 1 MB, and it redacts secret values.",
         },
         {
-          title: "Explain",
-          text: "One short block per RISK: where it is, the risk in plain words, and the fix.",
+          title: "Judge",
+          text: "Claude reads only the files the scan points at, then applies fixed rules. Each check comes back as RISK (the code shows the problem; it gets a priority), CHECK (only a human can settle it, e.g. whether a testimonial is real, or a dashboard setting), PASS or N/A.",
         },
         {
-          title: "Ask once",
-          text: "Then one question: apply the fixes? Nothing in your code changes before you say yes.",
+          title: "Report, then ask once",
+          text: "You get the summary table first, then one short block per RISK (Found / Risk / Fix), then one question: apply the fixes?",
         },
         {
-          title: "Fix, then Human TODO",
-          text: "It edits your code, runs your own typecheck / lint / build scripts, and lists what code can't do: your real postal address, registering a DMCA agent at dmca.copyright.gov ($6, renew every 3 years), turning on cancellation in Stripe, and a lawyer's review.",
+          title: "Fix",
+          text: "This only happens after you say yes. It edits your code with your stack's own idioms. It never runs installs, migrations, deploys, or git commits. Then it runs your project's own checks: npm run build/typecheck/test, pytest, node --check, …",
+        },
+        {
+          title: "Human TODO",
+          text: "A list of what code can't do. For example: rotate leaked keys, apply the new database rules, add your postal address, register a DMCA agent, answer the app-store rating questionnaires, get a lawyer's review.",
         },
       ],
       altInstall: {
@@ -114,23 +118,28 @@ const drops: FreeDrop[] = [
       },
       example: {
         question: "/legal-check",
-        output: `legal-check · vibely · 8 RISK · 0 PASS · 0 N/A
+        output: `legal-check · lovable · vite-react + supabase (lovable)
+14 RISK (4 High) · 0 CHECK · 0 PASS · 10 N/A
 
- #  Check                          Status  Where
- 1  Kids under 13 (COPPA)          RISK    app/signup/page.tsx:28
- 2  Google Fonts CDN (GDPR, EU)    RISK    app/layout.tsx:14
- 3  Session replay (CIPA)          RISK    app/providers.tsx:15
- 4  Marketing email (CAN-SPAM)     RISK    emails/launch-announcement.ts:4
- 5  Subscriptions (CA auto-renew)  RISK    app/pricing/page.tsx:19
- 6  User uploads (DMCA)            RISK    app/api/avatar/route.ts:11
- 7  Privacy policy & terms         RISK    -
- 8  Analytics consent              RISK    app/providers.tsx:9`,
-        source: "Real output on examples/vibely-sample, a small Next.js app built to contain the traps. Full run in the repo's examples/.",
+ ID  Risk    Check                               Where
+ S1  High    Secret keys exposed                 .env:3
+ S2  High    Database open to anyone             supabase/migrations/…_init.sql:1
+ S3  High    Admin area without auth             src/pages/Admin.tsx:8
+ P2  High    Ad pixels without consent           index.html:10
+ P5  Medium  Privacy policy & terms              (no /privacy, /terms)
+ P6  Medium  Account deletion & data export      (none)
+ ...
+ A1  Medium  Accessibility basics                src/index.css:4
+ P4  Low     Google Fonts from Google            index.html:8
+N/A    S4 Card data · S5 Hosted auth · P1 Replay · ...`,
+        source: "Real output on examples/lovable-vite-supabase, a Lovable-style React + Vite + Supabase app built with seeded traps. After yes, it edited 27 files and npm run typecheck and npm run build still passed. Full runs in the repo's examples/runs/.",
       },
       notes: [
-        "This is not legal advice. It is an automated check of eight common traps, not a full legal review. It can miss things. Have a lawyer review your policies and flows before you rely on them.",
-        "The scan and report take about 45 seconds. Applying the fixes takes a few minutes.",
+        "This is not legal advice. It's an automated check of common traps, not a full legal review, and it can miss things. Have a lawyer review your policies and flows before you rely on them.",
+        "Works across stacks: Next.js, React + Vite (Lovable / Bolt), plain HTML, Vue/Nuxt, SvelteKit, Astro, Remix, Expo (React Native), Flask, FastAPI, Django, Rails, Supabase, Firebase and v0 exports. Fixes were tested end to end on five: Next.js, Vite + Supabase, plain HTML, Expo + Firebase and FastAPI.",
+        "The audit took 30–62 s in our runs. Applying the fixes took 2.5–6 min.",
         "Tip: before you say yes, press Shift+Tab until the footer says \"accept edits\", so it doesn't ask before every file edit.",
+        "Fixes are drafts to review: policy, terms, refund and DMCA pages are full of TODO(legal-check) placeholders, and new database rules are written but not applied.",
         "It answers in the language you ask in, for example /legal-check このアプリ大丈夫？ gets a Japanese report.",
       ],
     },
