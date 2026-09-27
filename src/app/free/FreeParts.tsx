@@ -13,6 +13,7 @@ import {
   IconNotebook,
   IconPalette,
   IconPlugConnected,
+  IconScale,
   IconScissors,
   IconUsersGroup,
   IconWand,
@@ -45,6 +46,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   notebook: IconNotebook,
   store: IconBuildingStore,
   council: IconUsersGroup,
+  legal: IconScale,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.

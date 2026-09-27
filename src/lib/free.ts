@@ -15,7 +15,8 @@ export type ToolIcon =
   | "brain"
   | "notebook"
   | "store"
-  | "council";
+  | "council"
+  | "legal";
 
 export type FreeTool = {
   name: string;
@@ -63,6 +64,77 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 8,
+    slug: "08-legal-check",
+    title: "/legal-check: find the legal traps in your vibe-coded app",
+    description:
+      "A free Claude Code skill (MIT) by Shogo. It audits your web app for eight common legal traps, then fixes what code can fix. Not legal advice.",
+    date: "2026-09-28",
+    keyword: "LEGAL",
+    tools: [
+      {
+        name: "/legal-check",
+        what: "Checks for: sign-up with no age screen (COPPA), Google Fonts loaded from Google's servers (GDPR, EU), session replay recording typed text or recording before consent (California wiretap law, CIPA), marketing email with no unsubscribe link or postal address (CAN-SPAM), a subscribe button with no renewal terms, consent or online cancel (California Automatic Renewal Law), user uploads with no DMCA page, no privacy policy or terms page (CalOPPA), and analytics that load before consent (EU/UK consent rules).",
+        href: "https://github.com/Shogo-nfrealmusic/ship-legal",
+        icon: "legal",
+        install: ["/plugin marketplace add Shogo-nfrealmusic/ship-legal", "/plugin install legal-check@ship-legal"],
+      },
+    ],
+    tip: {
+      before: "Then run",
+      command: "/legal-check",
+      after: "in your project (also available as /legal-check:legal-check).",
+    },
+    about: {
+      steps: [
+        {
+          title: "Scan (read-only)",
+          text: "A bundled script searches your code for sign-up forms, font links, replay SDKs, email sends, Stripe subscriptions, file uploads and policy pages. Each check is marked PASS, RISK or N/A in a table, with file:line.",
+        },
+        {
+          title: "Explain",
+          text: "One short block per RISK: where it is, the risk in plain words, and the fix.",
+        },
+        {
+          title: "Ask once",
+          text: "Then one question: apply the fixes? Nothing in your code changes before you say yes.",
+        },
+        {
+          title: "Fix, then Human TODO",
+          text: "It edits your code, runs your own typecheck / lint / build scripts, and lists what code can't do: your real postal address, registering a DMCA agent at dmca.copyright.gov ($6, renew every 3 years), turning on cancellation in Stripe, and a lawyer's review.",
+        },
+      ],
+      altInstall: {
+        label: "Or copy the skill folder (in a terminal)",
+        commands: [
+          "git clone https://github.com/Shogo-nfrealmusic/ship-legal.git",
+          "cp -R ship-legal/plugins/legal-check/skills/legal-check ~/.claude/skills/",
+        ],
+      },
+      example: {
+        question: "/legal-check",
+        output: `legal-check · vibely · 8 RISK · 0 PASS · 0 N/A
+
+ #  Check                          Status  Where
+ 1  Kids under 13 (COPPA)          RISK    app/signup/page.tsx:28
+ 2  Google Fonts CDN (GDPR, EU)    RISK    app/layout.tsx:14
+ 3  Session replay (CIPA)          RISK    app/providers.tsx:15
+ 4  Marketing email (CAN-SPAM)     RISK    emails/launch-announcement.ts:4
+ 5  Subscriptions (CA auto-renew)  RISK    app/pricing/page.tsx:19
+ 6  User uploads (DMCA)            RISK    app/api/avatar/route.ts:11
+ 7  Privacy policy & terms         RISK    -
+ 8  Analytics consent              RISK    app/providers.tsx:9`,
+        source: "Real output on examples/vibely-sample, a small Next.js app built to contain the traps. Full run in the repo's examples/.",
+      },
+      notes: [
+        "This is not legal advice. It is an automated check of eight common traps, not a full legal review. It can miss things. Have a lawyer review your policies and flows before you rely on them.",
+        "The scan and report take about 45 seconds. Applying the fixes takes a few minutes.",
+        "Tip: before you say yes, press Shift+Tab until the footer says \"accept edits\", so it doesn't ask before every file edit.",
+        "It answers in the language you ask in, for example /legal-check このアプリ大丈夫？ gets a Japanese report.",
+      ],
+    },
+  },
   {
     number: 7,
     slug: "07-llm-council",
