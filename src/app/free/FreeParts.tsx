@@ -14,11 +14,21 @@ import {
   IconPalette,
   IconPlugConnected,
   IconScissors,
+  IconUsersGroup,
   IconWand,
 } from "@tabler/icons-react";
 import { CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
-import { INSTAGRAM_HANDLE, INSTAGRAM_URL, pad, type FreeDrop, type FreeTool, type ToolIcon } from "@/lib/free";
+import {
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  pad,
+  type DropAbout,
+  type FreeDrop,
+  type FreeTool,
+  type RichText,
+  type ToolIcon,
+} from "@/lib/free";
 import { cn } from "@/lib/utils";
 
 const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
@@ -34,6 +44,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   brain: IconBrain,
   notebook: IconNotebook,
   store: IconBuildingStore,
+  council: IconUsersGroup,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
@@ -169,6 +180,96 @@ export function DropTip({ tip }: { tip: NonNullable<FreeDrop["tip"]> }) {
       <span>{tip.before}</span>
       <CommandCopy command={tip.command} className="w-auto" />
       <span>{tip.after}</span>
+    </div>
+  );
+}
+
+function Rich({ parts }: { parts: RichText }) {
+  return (
+    <>
+      {parts.map((part, i) =>
+        typeof part === "string" ? (
+          part
+        ) : (
+          <a
+            key={i}
+            href={part.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900"
+          >
+            {part.text}
+          </a>
+        ),
+      )}
+    </>
+  );
+}
+
+const aboutLabel = "font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400";
+
+// Longer write-up under a single-tool drop: how it works, a second install path, a real run, caveats, and why.
+export function DropAboutBlock({ about }: { about: DropAbout }) {
+  return (
+    <div className="divide-y divide-neutral-200 border-t border-neutral-200">
+      {about.steps?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>How it works</p>
+          <ol className="mt-4 space-y-4">
+            {about.steps.map((step, index) => (
+              <li key={step.title} className="grid grid-cols-[1.75rem_1fr] gap-x-2">
+                <span className="font-mono text-[13px] leading-relaxed text-neutral-400">{index + 1}</span>
+                <span className="text-[15px] leading-relaxed text-neutral-500">
+                  <span className="font-semibold text-neutral-900">{step.title}.</span> {step.text}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+      {about.altInstall ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>{about.altInstall.label}</p>
+          <div className="mt-2 space-y-2">
+            {about.altInstall.commands.map((command) => (
+              <CommandCopy key={command} command={command} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+      {about.example ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>Example</p>
+          <p className="mt-3 font-mono text-[13px] leading-relaxed text-neutral-900 [overflow-wrap:anywhere]">
+            {about.example.question}
+          </p>
+          <pre className="mt-3 overflow-x-auto rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 font-mono text-[12px] leading-relaxed text-neutral-800">
+            {about.example.output}
+          </pre>
+          <p className="mt-2 text-xs text-neutral-400">{about.example.source}</p>
+        </section>
+      ) : null}
+      {about.notes?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>Good to know</p>
+          <ul className="mt-3 space-y-2">
+            {about.notes.map((note) => (
+              <li key={note} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-500">
+                <span className="mt-2.5 size-1 shrink-0 rounded-full bg-neutral-400" />
+                {note}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      {about.why?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>Why</p>
+          <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+            <Rich parts={about.why} />
+          </p>
+        </section>
+      ) : null}
     </div>
   );
 }

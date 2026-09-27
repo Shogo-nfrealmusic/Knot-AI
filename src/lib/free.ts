@@ -14,7 +14,8 @@ export type ToolIcon =
   | "review"
   | "brain"
   | "notebook"
-  | "store";
+  | "store"
+  | "council";
 
 export type FreeTool = {
   name: string;
@@ -41,12 +42,102 @@ export type FreeDrop = {
   kit?: { href: string; price: string; offer?: { code: string; until: string; regular: string }; cover: string };
   /** one-line tip under the tool list, with a command to copy */
   tip?: { before: string; command: string; after: string };
+  /** longer write-up under the tool list, for single-tool drops */
+  about?: DropAbout;
+};
+
+/** A run of text; a part with href renders as a link. */
+export type RichText = (string | { text: string; href: string })[];
+
+export type DropAbout = {
+  steps?: { title: string; text: string }[];
+  /** second way to install, run in a terminal instead of Claude Code */
+  altInstall?: { label: string; commands: string[] };
+  /** a real run, quoted verbatim */
+  example?: { question: string; output: string; source: string };
+  notes?: string[];
+  why?: RichText;
 };
 
 export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 7,
+    slug: "07-llm-council",
+    title: "/llm-council: make Claude argue with you, not agree",
+    description:
+      "A free Claude Code skill (MIT) by Shogo. One command sends your question to a council: five independent advisors, three anonymous reviewers and a chairman who makes the call.",
+    date: "2026-09-28",
+    keyword: "COUNCIL",
+    tools: [
+      {
+        name: "/llm-council",
+        what: "Pressure-tests a decision. Instead of one assistant telling you your idea sounds great, five advisors argue it from different angles, their answers are reviewed anonymously, and a chairman gives a verdict.",
+        href: "https://github.com/Shogo-nfrealmusic/llm-council",
+        icon: "council",
+        install: ["/plugin marketplace add Shogo-nfrealmusic/llm-council", "/plugin install llm-council@llm-council"],
+      },
+    ],
+    tip: {
+      before: "Then run",
+      command: "/llm-council:llm-council <your question>",
+      after: "(or /llm-council if you copied the skill folder into ~/.claude/skills/).",
+    },
+    about: {
+      steps: [
+        {
+          title: "Neutral brief",
+          text: "Your question is rewritten without your own opinion (\"I'm sure\", \"Good idea?\"). You see the brief and what was removed. No advisor sees your original wording.",
+        },
+        {
+          title: "Five advisors, independently",
+          text: "Contrarian, First-principles thinker, Expansionist, Outsider and Executor each answer as a separate subagent. None can see the others. Each picks GO, NO-GO or CHANGE and gives a confidence.",
+        },
+        {
+          title: "Anonymous review",
+          text: "The five answers are shuffled and labelled A–E. Three reviewers critique them without knowing who wrote what, and are told to reward the strongest dissent, not the majority.",
+        },
+        {
+          title: "Chairman",
+          text: "A verdict (go / no-go / change it), the strongest objection still standing, what would change the decision, and 3 next steps.",
+        },
+      ],
+      altInstall: {
+        label: "Or copy the skill folder (in a terminal)",
+        commands: [
+          "git clone https://github.com/Shogo-nfrealmusic/llm-council.git",
+          "cp -R llm-council/plugins/llm-council/skills/llm-council ~/.claude/skills/",
+        ],
+      },
+      example: {
+        question:
+          "/llm-council I'm raising my app's price from $9 to $19 a month next week. I'm sure users will pay. Good idea?",
+        output: `VERDICT: CHANGE IT — Charge $19 to new signups next week; existing users stay at $9 for now.
+...
+NEXT 3 STEPS:
+1. Pull subscriber count, monthly churn and cost per user — you'll know whether $9 loses
+   money.
+2. Put $19 on new signups only and compare 2 weeks against the prior 4 — it works if
+   revenue per visitor is at or above baseline.
+3. Survey existing users on what price they'd accept (a price-sensitivity survey) — this
+   works if at least 60% say $19 or less is acceptable.`,
+        source: "Chairman output from a real run, trimmed. Full run in examples/03-demo-price-increase.md.",
+      },
+      notes: [
+        "A run takes about 3 minutes and makes 9 subagent calls. It counts toward your Claude plan's usage.",
+        "It's a thinking aid. It doesn't eliminate sycophancy: all advisors run on the same model family and can share a blind spot.",
+      ],
+      why: [
+        "A Stanford study published in ",
+        { text: "Science", href: "https://www.science.org/doi/10.1126/science.aec8352" },
+        " (Cheng et al., March 26, 2026) tested 11 AI models: on average, they affirmed users' actions 49% more often than humans did. The idea comes from ",
+        { text: "Andrej Karpathy's llm-council", href: "https://github.com/karpathy/llm-council" },
+        ", where several models answer, rank each other anonymously and a chairman writes the final answer. This version runs inside Claude Code with subagents.",
+      ],
+    },
+  },
   {
     number: 6,
     slug: "06-claude-code-plugins",
