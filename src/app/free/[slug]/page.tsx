@@ -8,7 +8,7 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { DropAboutBlock, DropTip, FollowBlock, ToolRow } from "@/app/free/FreeParts";
 import { GuideSignup } from "@/app/free/GuideSignup";
 import { KitSales } from "@/app/free/KitSales";
-import { formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
+import { dropKind, formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
 
 export const dynamicParams = false;
 
@@ -52,7 +52,7 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
             From the reels
           </Link>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400">
-            Reel {pad(drop.number)} · {drop.kit ? "build kit" : drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`} ·{" "}
+            Reel {pad(drop.number)} · {dropKind(drop)} ·{" "}
             {formatDropDate(drop.date)}
           </p>
         </div>

@@ -16,7 +16,8 @@ export type ToolIcon =
   | "notebook"
   | "store"
   | "council"
-  | "legal";
+  | "legal"
+  | "shield";
 
 export type FreeTool = {
   name: string;
@@ -45,18 +46,35 @@ export type FreeDrop = {
   tip?: { before: string; command: string; after: string };
   /** longer write-up under the tool list, for single-tool drops */
   about?: DropAbout;
+  /** cover tile for drops with no tools (e.g. a checklist) */
+  icon?: ToolIcon;
 };
 
-/** A run of text; a part with href renders as a link. */
-export type RichText = (string | { text: string; href: string })[];
+/** A run of text; a part with href renders as a link, a part with code as inline code. */
+export type RichText = (string | { text: string; href: string } | { code: string })[];
+
+/** One item of a checklist drop: why it matters, and how to verify it. */
+export type DropCheck = {
+  title: string;
+  why: RichText;
+  how: RichText;
+  /** commands to copy, one per line */
+  commands?: string[];
+};
 
 export type DropAbout = {
+  /** one line above everything else */
+  intro?: RichText;
+  /** a numbered checklist; the drop is labelled "N checks" */
+  checks?: DropCheck[];
+  /** a boxed summary under the checks: tools that cover several of them at once */
+  runAll?: { title: string; items: { text: RichText; command?: string }[] };
   steps?: { title: string; text: string }[];
   /** second way to install, run in a terminal instead of Claude Code */
   altInstall?: { label: string; commands: string[] };
   /** a real run, quoted verbatim */
   example?: { question: string; output: string; source: string };
-  notes?: string[];
+  notes?: (string | RichText)[];
   why?: RichText;
 };
 
@@ -64,6 +82,202 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 9,
+    slug: "09-vibe-secure",
+    title: "12 security checks for your vibe-coded app — and the free tool for each",
+    description:
+      "What to check before real users touch an app you built with AI: why each check matters, and the free command, tool or setting that verifies it. Not a professional security audit.",
+    date: "2026-09-29",
+    keyword: "SECURE",
+    tools: [],
+    icon: "shield",
+    about: {
+      intro: [
+        "In March 2025, researchers scanned 1,645 apps on Lovable's showcase; 170 had data anyone could read (",
+        { text: "CVE-2025-48757", href: "https://nvd.nist.gov/vuln/detail/CVE-2025-48757" },
+        ").",
+      ],
+      checks: [
+        {
+          title: "Row level security on every table",
+          why: [
+            "In Supabase, a table in the public schema without RLS can usually be read and changed by anyone who has your public key, and that key ships in your app. This is what the Lovable scan found.",
+          ],
+          how: [
+            "Supabase: Dashboard → Advisors → ",
+            { text: "Security Advisor", href: "https://supabase.com/docs/guides/observability/advisors" },
+            ", or run it from a terminal with Supabase CLI v2.81.0 or later (after supabase link). Firebase: ",
+            { text: "test mode", href: "https://firebase.google.com/docs/firestore/quickstart" },
+            " \"allows anyone to read and overwrite your data\", so replace those rules before launch.",
+          ],
+          commands: ["supabase db advisors --linked --type security"],
+        },
+        {
+          title: "Secret keys never in the browser",
+          why: [
+            "Publishable and anon keys are ",
+            { text: "meant to be public", href: "https://supabase.com/docs/guides/getting-started/api-keys" },
+            ". Secret and service_role keys bypass RLS, so they must stay on the server.",
+          ],
+          how: [
+            "In Next.js, anything prefixed ",
+            { code: "NEXT_PUBLIC_" },
+            " is ",
+            { text: "shipped to the browser", href: "https://nextjs.org/docs/app/guides/environment-variables" },
+            " (in Vite, ",
+            { code: "VITE_" },
+            "). Keep secret keys unprefixed and use them only in server code. ",
+            { text: "/legal-check", href: "/free/08" },
+            " flags exposed keys.",
+          ],
+        },
+        {
+          title: "No reading other users' data by changing an ID",
+          why: [
+            { text: "Broken access control", href: "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control" },
+            " is #1 in the OWASP Top 10 (2025). It includes viewing or editing someone else's account by changing its ID (IDOR).",
+          ],
+          how: [
+            "Test it by hand: log in as user A, then change an id in a URL or API call to one that belongs to user B. You should get 403, not B's data.",
+          ],
+        },
+        {
+          title: ".env not in your repo",
+          why: [
+            "Deleting a committed .env doesn't remove it: the key stays in your git history for anyone who can read the repo.",
+          ],
+          how: [
+            { text: "gitleaks", href: "https://github.com/gitleaks/gitleaks" },
+            " (MIT) scans your commit history (add --log-opts=\"--all\" to include every branch). Add ",
+            { code: ".env" },
+            " to ",
+            { code: ".gitignore" },
+            ", and rotate any key it finds. Turn on ",
+            { text: "GitHub push protection", href: "https://docs.github.com/en/code-security/concepts/secret-security/push-protection" },
+            ": free for public repos; private repos need GitHub Secret Protection, a paid add-on for GitHub Team or Enterprise organizations. Don't use ",
+            { code: "npx gitleaks" },
+            ": the npm package with that name isn't the gitleaks project.",
+          ],
+          commands: ["brew install gitleaks", "gitleaks git -v"],
+        },
+        {
+          title: "Rate limits on logins and AI endpoints",
+          why: [
+            "Without a limit, a bot can keep guessing passwords, and one script can run up your AI bill through your own endpoint.",
+          ],
+          how: [
+            { text: "/legal-check", href: "/free/08" },
+            " checks login rate limits if you wrote your own password login (it skips hosted auth like Supabase Auth). For AI endpoints, add a per-user or per-IP limit at your host or edge, for example ",
+            { text: "Vercel WAF rate limiting", href: "https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting" },
+            ".",
+          ],
+        },
+        {
+          title: "A hard spending cap on your AI API account",
+          why: ["A leaked key or a runaway loop keeps spending until something stops it."],
+          how: [
+            { text: "OpenAI", href: "https://developers.openai.com/api/docs/guides/spend-limits" },
+            ": Organization limits (or a project's Limits) → Spend → Edit spend limit, and turn on \"Enforce a hard limit\". ",
+            { text: "Anthropic", href: "https://platform.claude.com/docs/en/api/rate-limits" },
+            ": Claude Console → Settings → Billing → Spend limits, or a workspace's Spend limits tab. Caps aren't instant: OpenAI says spend can slightly exceed the limit.",
+          ],
+        },
+        {
+          title: "Server-side input validation",
+          why: ["Checks in your form run in the browser. Anyone can skip them by calling your API directly."],
+          how: [
+            "Validate every request body on the server with a schema, for example ",
+            { text: "zod", href: "https://zod.dev" },
+            "'s ",
+            { code: "safeParse" },
+            ", and reject what doesn't match.",
+          ],
+          commands: ["npm install zod"],
+        },
+        {
+          title: "Stripe webhooks verify the signature",
+          why: ["Without it, anyone can send your webhook URL a fake \"payment succeeded\" event."],
+          how: [
+            "Call ",
+            { code: "stripe.webhooks.constructEvent(rawBody, signature, endpointSecret)" },
+            " with the raw request body, the Stripe-Signature header and your endpoint's signing secret, and reject the request if it throws. ",
+            { text: "Stripe's guide", href: "https://docs.stripe.com/webhooks#verify-signature" },
+            ".",
+          ],
+        },
+        {
+          title: "Admin and debug routes locked or removed",
+          why: [
+            "An /admin page or a test endpoint that's in your deployed app is public unless the server checks who's asking.",
+          ],
+          how: [
+            { text: "/legal-check", href: "/free/08" },
+            " flags admin routes with no auth. Check the role on the server, not only in the UI, and delete debug routes before you ship.",
+          ],
+        },
+        {
+          title: "Real packages, then an audit",
+          why: [
+            "AI can suggest packages that don't exist, and anyone can publish a package under a name it keeps inventing.",
+          ],
+          how: [
+            "Look up each new package on npmjs.com before you install it: the owner, the repo link, how widely it's used. Then run ",
+            { text: "npm audit", href: "https://docs.npmjs.com/cli/commands/npm-audit" },
+            " for known vulnerabilities.",
+          ],
+          commands: ["npm audit"],
+        },
+        {
+          title: "Logs that catch attacks",
+          why: ["If nothing is logged, you hear about an attack from your users or your bill."],
+          how: [
+            "Check your host's logs: ",
+            { text: "Vercel runtime logs", href: "https://vercel.com/docs/logs/runtime" },
+            ", ",
+            { text: "Supabase logs", href: "https://supabase.com/docs/guides/observability/logs" },
+            ". Vercel's Hobby plan keeps runtime logs for only 1 hour, so look often, or send them to a log drain if you need history.",
+          ],
+        },
+        {
+          title: "Backups you've restored",
+          why: ["A backup you've never restored is a guess."],
+          how: [
+            "Supabase keeps ",
+            { text: "daily backups", href: "https://supabase.com/docs/guides/platform/backups" },
+            " on Pro (7 days), Team (14) and Enterprise (up to 30), under Database → Backups. The Free plan has none, so export your data with the Supabase CLI. Then do one test restore.",
+          ],
+        },
+      ],
+      runAll: {
+        title: "Run the whole thing",
+        items: [
+          {
+            text: [
+              { text: "/security-review", href: "https://code.claude.com/docs/en/commands" },
+              " is built into Claude Code. It reviews the changes on your branch (the diff against your default branch), not the whole app, so run it before each merge. It needs an origin remote.",
+            ],
+            command: "/security-review",
+          },
+          {
+            text: [
+              { text: "/legal-check", href: "/free/08" },
+              " covers several of these automatically: exposed keys (2), an open database (1), login rate limits for custom password logins (5) and admin routes with no auth (9).",
+            ],
+            command: "/legal-check",
+          },
+        ],
+      },
+      notes: [
+        "This is not a professional security audit. It's a checklist of common gaps, and passing it doesn't mean your app is secure. If you handle payments or sensitive data, have a security professional review it.",
+        [
+          "Lovable disputes CVE-2025-48757, saying protecting app data is each customer's responsibility. The 1,645 and 170 are from the ",
+          { text: "researchers' statement", href: "https://mattpalmer.io/posts/2025/05/statement-on-CVE-2025-48757/" },
+          ", which scanned only homepages.",
+        ],
+      ],
+    },
+  },
   {
     number: 8,
     slug: "08-legal-check",
@@ -397,6 +611,15 @@ export function getDropByNumber(value: string): FreeDrop | undefined {
 }
 
 export const pad = (n: number) => String(n).padStart(2, "0");
+
+/** What a drop contains, for the cover badge and the page header: "build kit", "free guide", "12 checks", "1 tool". */
+export function dropKind(drop: FreeDrop): string {
+  if (drop.kit) return "build kit";
+  if (drop.guide) return "free guide";
+  const checks = drop.about?.checks?.length;
+  if (checks) return `${checks} ${checks === 1 ? "check" : "checks"}`;
+  return `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`;
+}
 
 export function formatDropDate(iso: string): string {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {

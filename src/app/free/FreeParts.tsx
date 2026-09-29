@@ -15,6 +15,7 @@ import {
   IconPlugConnected,
   IconScale,
   IconScissors,
+  IconShieldLock,
   IconUsersGroup,
   IconWand,
 } from "@tabler/icons-react";
@@ -23,6 +24,7 @@ import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  dropKind,
   pad,
   type DropAbout,
   type FreeDrop,
@@ -47,6 +49,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   store: IconBuildingStore,
   council: IconUsersGroup,
   legal: IconScale,
+  shield: IconShieldLock,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
@@ -90,10 +93,11 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
           {drop.tools.map((tool) => (
             <ToolTile key={tool.name} icon={tool.icon} className="w-[13%] min-w-10" />
           ))}
+          {!drop.tools.length && drop.icon ? <ToolTile icon={drop.icon} className="w-[13%] min-w-10" /> : null}
         </div>
       )}
       <span className="relative mt-[4%] rounded-full border border-neutral-200 bg-white/80 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-neutral-600 backdrop-blur-sm">
-        Reel {pad(drop.number)} · {drop.kit ? "build kit" : drop.guide ? "free guide" : `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`}
+        Reel {pad(drop.number)} · {dropKind(drop)}
       </span>
     </div>
   );
@@ -186,20 +190,28 @@ export function DropTip({ tip }: { tip: NonNullable<FreeDrop["tip"]> }) {
   );
 }
 
+const richLink =
+  "text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900";
+
 function Rich({ parts }: { parts: RichText }) {
   return (
     <>
       {parts.map((part, i) =>
         typeof part === "string" ? (
           part
-        ) : (
-          <a
+        ) : "code" in part ? (
+          <code
             key={i}
-            href={part.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-900"
+            className="rounded bg-neutral-100 px-1 py-0.5 font-mono text-[0.85em] text-neutral-900 [overflow-wrap:anywhere]"
           >
+            {part.code}
+          </code>
+        ) : part.href.startsWith("/") ? (
+          <Link key={i} href={part.href} className={richLink}>
+            {part.text}
+          </Link>
+        ) : (
+          <a key={i} href={part.href} target="_blank" rel="noopener noreferrer" className={richLink}>
             {part.text}
           </a>
         ),
@@ -210,10 +222,65 @@ function Rich({ parts }: { parts: RichText }) {
 
 const aboutLabel = "font-mono text-[11px] uppercase tracking-[0.12em] text-neutral-400";
 
-// Longer write-up under a single-tool drop: how it works, a second install path, a real run, caveats, and why.
+// Longer write-up under a drop: an intro line, a checklist with a "run the whole thing" box,
+// how it works, a second install path, a real run, caveats, and why.
 export function DropAboutBlock({ about }: { about: DropAbout }) {
   return (
     <div className="divide-y divide-neutral-200 border-t border-neutral-200">
+      {about.intro?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className="max-w-2xl text-lg leading-relaxed tracking-[-0.015em] text-neutral-900">
+            <Rich parts={about.intro} />
+          </p>
+        </section>
+      ) : null}
+      {about.checks?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>The {about.checks.length} checks</p>
+          <ol className="mt-4 divide-y divide-neutral-200">
+            {about.checks.map((check, index) => (
+              <li key={check.title} className="grid grid-cols-[1.75rem_1fr] gap-x-2 py-6 first:pt-2 last:pb-0">
+                <span className="font-mono text-[13px] leading-7 text-neutral-400">{pad(index + 1)}</span>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-semibold tracking-[-0.015em] text-neutral-900">{check.title}</h3>
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-neutral-700">Why: </span>
+                    <Rich parts={check.why} />
+                  </p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-neutral-700">Check it: </span>
+                    <Rich parts={check.how} />
+                  </p>
+                  {check.commands?.length ? (
+                    <div className="mt-3 space-y-2">
+                      {check.commands.map((command) => (
+                        <CommandCopy key={command} command={command} />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+      {about.runAll ? (
+        <section className="px-5 py-8 sm:px-10">
+          <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-5 sm:p-6">
+            <p className="font-mono text-[13px] text-warm">{about.runAll.title.toUpperCase()}</p>
+            <ul className="mt-4 space-y-5">
+              {about.runAll.items.map((item, index) => (
+                <li key={index}>
+                  <p className="text-[15px] leading-relaxed text-neutral-600">
+                    <Rich parts={item.text} />
+                  </p>
+                  {item.command ? <CommandCopy command={item.command} className="mt-2 w-full sm:w-auto" /> : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
       {about.steps?.length ? (
         <section className="px-5 py-8 sm:px-10">
           <p className={aboutLabel}>How it works</p>
@@ -255,10 +322,10 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
         <section className="px-5 py-8 sm:px-10">
           <p className={aboutLabel}>Good to know</p>
           <ul className="mt-3 space-y-2">
-            {about.notes.map((note) => (
-              <li key={note} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-500">
+            {about.notes.map((note, index) => (
+              <li key={index} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-500">
                 <span className="mt-2.5 size-1 shrink-0 rounded-full bg-neutral-400" />
-                {note}
+                <span>{typeof note === "string" ? note : <Rich parts={note} />}</span>
               </li>
             ))}
           </ul>
