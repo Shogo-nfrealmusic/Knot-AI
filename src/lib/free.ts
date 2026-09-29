@@ -309,7 +309,7 @@ const drops: FreeDrop[] = [
         { text: "OpenAI: Introducing GPT-6.1 Sol", href: "https://openai.com/index/introducing-gpt-6-1-sol/" },
         { text: "ChatGPT docs: dots", href: "https://learn.chatgpt.com/docs/dots" },
         { text: "OpenAI Help Center: About ChatGPT Pro tiers", href: "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers" },
-        { text: "OpenAI Help Center: related article", href: "https://help.openai.com/en/articles/20001542" },
+        { text: "OpenAI Help Center: Use your ChatGPT plan in partner apps", href: "https://help.openai.com/en/articles/20001542" },
         { text: "@OpenAIDevs on X", href: "https://x.com/OpenAIDevs/status/2105003318917697873" },
         { text: "Reporting: CNBC, Engadget, Every, The Decoder" },
       ],
