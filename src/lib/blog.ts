@@ -134,7 +134,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Many creators in this niche front their accounts with an AI version of themselves. I label mine as AI on every platform. Instagram and TikTok both cut the reach of undisclosed AI people when they catch them, and disclosing costs nothing.",
+        text: "Many creators in this niche also front their accounts with an AI version of themselves, so a generated face was not the unusual part. What people share is.",
       },
       { type: "heading", text: "What gets posted" },
       {
