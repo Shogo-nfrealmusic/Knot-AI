@@ -84,6 +84,140 @@ const shogo: BlogAuthor = {
 
 const posts: BlogPost[] = [
   {
+    slug: "a-second-account-with-a-clone-of-me",
+    title: "A second Instagram, fronted by a clone of me",
+    description:
+      "I started @copilot_shogo on September 26: English short videos about AI tools I actually use. The face and the voice are generated from mine. Nine reels in five days taught me that generating a video is cheap and making it worth watching is not.",
+    category: "ai",
+    date: "2026-09-30",
+    author: shogo,
+    status: "published",
+    cover: { icon: "instagram", label: "@copilot_shogo" },
+    body: [
+      {
+        type: "paragraph",
+        text: "On September 26 I posted the first reel on a new account, [@copilot_shogo](https://www.instagram.com/copilot_shogo/). It is in English, it is about AI tools and the things I build with them, and the person talking in it is me — except I never sat in front of a camera. The face is a HeyGen digital twin trained on video of me. The voice is an ElevenLabs clone of my own, made from about four minutes of me reading aloud.",
+      },
+      {
+        type: "paragraph",
+        text: "By September 29 there were nine finished reels. This is how the account is set up, how a reel gets made, and the part that turned out to be hard.",
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "9", label: "finished reels in the first five days" },
+          { value: "480", label: "reels from 16 accounts studied before the first post" },
+          { value: "9", label: "pages under /free that the reels point to" },
+        ],
+      },
+      { type: "heading", text: "Why a second account" },
+      {
+        type: "paragraph",
+        text: "My personal account, @imshogo.k, has about 29,000 followers. A story on it reaches 200 to 500 people. Follower count stopped meaning reach a while ago, and the content there is fitness and motivation, not the work I spend my days on.",
+      },
+      {
+        type: "paragraph",
+        text: "So the new account has one job: show the AI tools I actually use and the things I build with them, in a form people can take away. Every reel ends with a keyword. Comment it, and an automated DM sends a link to a page on this site under [/free](/free) — install commands, how the thing works, a real run. The reel is the trailer; the page is the thing you keep.",
+      },
+      { type: "heading", text: "Research before the first post" },
+      {
+        type: "paragraph",
+        text: "Before making anything, I pulled 480 reels from 16 accounts in this niche and measured them. Three things came out of it:",
+      },
+      {
+        type: "list",
+        items: [
+          "What grew was not a particular hook shape. It was whether the viewer gets something they can use — a step, a prompt, a tool, something the creator built",
+          "A face talking the whole way through, and opinion or mindset pieces, did badly",
+          "\"Comment a keyword for the link\" is used by nearly everyone, so it is table stakes rather than an edge",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Many creators in this niche front their accounts with an AI version of themselves. I label mine as AI on every platform. Instagram and TikTok both cut the reach of undisclosed AI people when they catch them, and disclosing costs nothing.",
+      },
+      { type: "heading", text: "What gets posted" },
+      {
+        type: "list",
+        items: [
+          "Tool roundups: [five Claude Code plugins](/free/06-claude-code-plugins), [free design tools for Claude](/free/02-claude-design-tools), [a free LLM API gateway](/free/01-freellmapi)",
+          "Things I built and gave away: [/llm-council](/free/07-llm-council), a Claude Code skill that asks several models and has a chair decide, and [/legal-check](/free/08-legal-check), which audits an app for legal traps",
+          "Warnings for people shipping with AI: [the legal traps in a vibe-coded app](/free/08-legal-check), [12 security checks](/free/09-vibe-secure)",
+        ],
+      },
+      {
+        type: "video",
+        src: "/blog/copilot/reel-08.mp4",
+        poster: "/blog/copilot/reel-08-poster.jpg",
+        caption:
+          "Reel #08, the legal traps of a vibe-coded app. Screens and graphics take the top two thirds; the twin sits in the bottom third.",
+      },
+      { type: "heading", text: "How a reel gets made" },
+      {
+        type: "paragraph",
+        text: "Every reel lives in one folder in a small studio repo, and Claude Code does most of the assembly.",
+      },
+      {
+        type: "list",
+        ordered: true,
+        items: [
+          "Ideas. A script collects what moved in the last day on X, Instagram, GitHub Trending and Hacker News, and Claude proposes five topics, each with the reference reel it came from and three hooks",
+          "Verification. A separate checker confirms every name, number and claim against the official source before a topic is accepted. More on why below",
+          "Voice. The script goes to my voice clone, which returns the audio and a timestamp for every word. Captions and cuts are placed on those timestamps",
+          "Face. The same audio drives the HeyGen twin through its API. No camera, no manual export",
+          "Picture. The video is written in Remotion. Real pages are recorded with Playwright and zoomed to measured boxes, terminals are real sessions recorded with VHS, and 57 company logos come from official sources. Nothing on screen may pretend to be a tool's output",
+          "Sound and finish. Music on a fixed tempo, one sound per visual event, loudness normalised to -14 LUFS, and a separate cover image",
+        ],
+      },
+      {
+        type: "image",
+        src: "/blog/copilot/cover-08.jpg",
+        alt: "Cover for reel #08: 'Sued for $100K. Before one sale.' over a photo of Shogo at a laptop, with a 3D badge and a printed receipt",
+        caption:
+          "Covers use a real photo, a 3D badge for the subject, and a serif headline. The reel uses the twin; the cover never does.",
+      },
+      { type: "heading", text: "The hard part was taste, not generation" },
+      {
+        type: "paragraph",
+        text: "Generating a reel is cheap now. Making one worth watching was not. My second reel went through several versions. I scored the first one 65 out of 100. The rebuild, which Claude had scored 80, I scored 52: text cut off by a zoom it had chosen itself, a rainbow title that meant nothing, too many sound effects.",
+      },
+      {
+        type: "paragraph",
+        text: "Across the first week, the model's scores for its own work ran 5 to 30 points above mine. So I stopped asking it whether a reel was good and started writing down what good means. The studio now has a craft document with rules a reel has to satisfy before I see it:",
+      },
+      {
+        type: "list",
+        items: [
+          "A fixed layout. The explanation is the star; I get the bottom third",
+          "Two typefaces and one accent colour. A brand's colour only on that brand's own logo",
+          "Never add a visual the script doesn't say, and never reuse a screenshot in a context it doesn't belong to",
+          "Before I watch: a table of spoken words, picture and caption for every section, and contact sheets of the render checked against a reference",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Reel #08 started out, in my words, looking cheap. Four revisions against those rules later, I called it excellent.",
+      },
+      { type: "heading", text: "Checking what the reel says" },
+      {
+        type: "paragraph",
+        text: "The other failure was factual. One early topic came from a reference reel about a project called Laya. The transcript misheard the name, and the research built the whole idea on a different, much smaller project. I caught it only because the name on the screen did not match. Since then, the subject of every reference reel is confirmed from the text on screen, and topics are checked by a separate verifier, not the one that proposed them.",
+      },
+      {
+        type: "paragraph",
+        text: "It has already paid for itself. The reference reel behind my LLM Council video attributed a benchmark number to the wrong model and a skill to the wrong author. Mine says what the sources say.",
+      },
+      {
+        type: "quote",
+        text: "The model can make a reel in minutes. It cannot tell you whether the reel is good, or whether it is true. Those two checks are the actual work, and they have to be written down or they don't happen.",
+      },
+      {
+        type: "paragraph",
+        text: "Next: once ten reels are live, each one gets measured against my own median rather than anyone else's numbers, and the formats that beat it get made again.",
+      },
+    ],
+  },
+  {
     slug: "the-number-matched",
     title: "The number matched. Everything else about it was wrong.",
     description:
