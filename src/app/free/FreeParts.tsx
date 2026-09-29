@@ -6,6 +6,7 @@ import {
   IconBrain,
   IconBrowserCheck,
   IconBuildingStore,
+  IconCalendarEvent,
   IconCpu,
   IconCube,
   IconFileDescription,
@@ -27,6 +28,7 @@ import {
   dropKind,
   pad,
   type DropAbout,
+  type DropBreakdown,
   type FreeDrop,
   type FreeTool,
   type RichText,
@@ -50,6 +52,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   council: IconUsersGroup,
   legal: IconScale,
   shield: IconShieldLock,
+  event: IconCalendarEvent,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
@@ -339,6 +342,111 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
           </p>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+const sectionId = (title: string) =>
+  title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+// News explainer: the 60-second version, a jump list, each announcement as
+// what it is / who gets it / why it matters, then caveats and sources.
+export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) {
+  return (
+    <div className="divide-y divide-neutral-200">
+      <section className="px-5 py-8 sm:px-10">
+        <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-5 sm:p-6">
+          <p className="font-mono text-[13px] text-warm">THE 60-SECOND VERSION</p>
+          <ul className="mt-4 space-y-3">
+            {breakdown.tldr.map((line, index) => (
+              <li key={index} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-700">
+                <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-neutral-900" />
+                <span className="min-w-0">
+                  <Rich parts={line} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <nav aria-label="Sections" className="mt-6 flex flex-wrap gap-2">
+          {breakdown.sections.map((section, index) => (
+            <a
+              key={section.title}
+              href={`#${sectionId(section.title)}`}
+              className="inline-flex h-8 items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 text-[13px] text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900"
+            >
+              <span className="font-mono text-[11px] text-neutral-400">{pad(index + 1)}</span>
+              {section.title}
+            </a>
+          ))}
+        </nav>
+      </section>
+      {breakdown.sections.map((section, sectionIndex) => (
+        <section key={section.title} id={sectionId(section.title)} className="scroll-mt-20 px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>
+            {pad(sectionIndex + 1)} · {section.items.length} {section.items.length === 1 ? "launch" : "launches"}
+          </p>
+          <h2 className="mt-2 text-2xl font-medium tracking-[-0.03em] text-neutral-900 sm:text-3xl">{section.title}</h2>
+          <ol className="mt-4 divide-y divide-neutral-200">
+            {section.items.map((item) => (
+              <li key={item.name} className="py-6 last:pb-0">
+                <h3 className="text-lg font-semibold tracking-[-0.015em] text-neutral-900 [overflow-wrap:anywhere]">
+                  {item.name}
+                </h3>
+                <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-neutral-600">
+                  <Rich parts={item.what} />
+                </p>
+                {item.who?.length ? (
+                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-neutral-700">Who gets it: </span>
+                    <Rich parts={item.who} />
+                  </p>
+                ) : null}
+                {item.more ? (
+                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-neutral-700">{item.more.label}: </span>
+                    <Rich parts={item.more.text} />
+                  </p>
+                ) : null}
+                <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                  <span className="font-medium text-warm">Why it matters: </span>
+                  <Rich parts={item.why} />
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+      {breakdown.notes?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>Good to know</p>
+          <ul className="mt-3 space-y-2">
+            {breakdown.notes.map((note, index) => (
+              <li key={index} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-500">
+                <span className="mt-2.5 size-1 shrink-0 rounded-full bg-neutral-400" />
+                <span>{typeof note === "string" ? note : <Rich parts={note} />}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+      <section className="px-5 py-8 sm:px-10">
+        <p className={aboutLabel}>Sources</p>
+        <ul className="mt-3 space-y-2">
+          {breakdown.sources.map((source) => (
+            <li key={source.text} className="text-[15px] leading-relaxed text-neutral-500 [overflow-wrap:anywhere]">
+              {source.href ? (
+                <a href={source.href} target="_blank" rel="noopener noreferrer" className={richLink}>
+                  {source.text}
+                </a>
+              ) : (
+                source.text
+              )}
+              {source.note ? <span> · {source.note}</span> : null}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import InnerHero from "@/app/components/InnerHero";
 import { GridSection } from "@/app/components/ui/grid-section";
-import { DropAboutBlock, DropTip, FollowBlock, ToolRow } from "@/app/free/FreeParts";
+import { DropAboutBlock, DropBreakdownBlock, DropTip, FollowBlock, ToolRow } from "@/app/free/FreeParts";
 import { GuideSignup } from "@/app/free/GuideSignup";
 import { KitSales } from "@/app/free/KitSales";
 import { dropKind, formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
@@ -93,6 +93,7 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
             </ul>
             {drop.tip ? <DropTip tip={drop.tip} /> : null}
             {drop.about ? <DropAboutBlock about={drop.about} /> : null}
+            {drop.breakdown ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}
           </>
         )}
       </GridSection>

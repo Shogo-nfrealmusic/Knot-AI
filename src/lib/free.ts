@@ -17,7 +17,8 @@ export type ToolIcon =
   | "store"
   | "council"
   | "legal"
-  | "shield";
+  | "shield"
+  | "event";
 
 export type FreeTool = {
   name: string;
@@ -48,6 +49,28 @@ export type FreeDrop = {
   about?: DropAbout;
   /** cover tile for drops with no tools (e.g. a checklist) */
   icon?: ToolIcon;
+  /** news explainer: a short TL;DR, grouped announcements, and the sources */
+  breakdown?: DropBreakdown;
+};
+
+/** One announcement: what it is, who gets it (plans, price, availability), and why it matters. */
+export type BreakdownItem = {
+  name: string;
+  what: RichText;
+  who?: RichText;
+  /** e.g. the safety rules for an agent */
+  more?: { label: string; text: RichText };
+  why: RichText;
+};
+
+export type DropBreakdown = {
+  /** "The 60-second version": one line per bullet */
+  tldr: RichText[];
+  sections: { title: string; items: BreakdownItem[] }[];
+  /** official pages first, then reporting */
+  sources: { text: string; href?: string; note?: string }[];
+  /** caveats shown above the sources */
+  notes?: (string | RichText)[];
 };
 
 /** A run of text; a part with href renders as a link, a part with code as inline code. */
@@ -82,6 +105,216 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 10,
+    slug: "10-devday-2026",
+    title: "OpenAI DevDay 2026: the full breakdown",
+    description:
+      "Everything OpenAI announced at DevDay (September 29, 2026, San Francisco) in plain English: what each launch is, who gets it and what it costs, and why it matters. An independent explainer, not affiliated with OpenAI.",
+    date: "2026-09-30",
+    keyword: "DEVDAY",
+    tools: [],
+    icon: "event",
+    breakdown: {
+      tldr: [
+        ["dots: always-on AI agents with their own cloud computer. They work 24/7, and you can message or call them. Included in Pro, Business Premium and Enterprise."],
+        ["GPT-6.1 Sol: close to GPT-6 Astra for a fifth of the price. The planned GPT-6.1 Astra was pulled over safety."],
+        ["Astra Ultrafast: GPT-6 Astra runs up to 8x faster in Codex."],
+        ["ChatGPT Space: shared pages where you @mention teammates and their dots."],
+        ["For builders: a Decisions API for fast, constrained choices (it reads images), computer use in the Agents API, and Codex in the cloud."],
+        ["Plans: your ChatGPT plan now works inside 16 partner apps. There's a new $500 Pro tier, and Pro 200 drops from 20x to 10x Plus usage."],
+      ],
+      sections: [
+        {
+          title: "New ways of working",
+          items: [
+            {
+              name: "dots",
+              what: [
+                "Always-on agents that work for you 24/7. Each dot has its own cloud computer and browser, connects to 4,000+ apps, and keeps working when your laptop is closed. You message or call it in ChatGPT (desktop, web and mobile), Slack or Teams, and it messages you with progress and approval requests.",
+              ],
+              who: [
+                "Included in ChatGPT Pro, Business Premium and Enterprise, and it doesn't draw down your usage. You get one primary dot today; teams of dots come later. On Pro it isn't available in the EEA, Switzerland or the UK. Extra dots: price not announced. Powered by GPT-6 Astra, running on the Codex harness.",
+              ],
+              more: {
+                label: "Safety",
+                text: [
+                  "It needs your approval before it buys anything with a saved card. You can add your own rules (for example \"never send email\"), and an independent auto-review checks each action before it runs; a dot can't turn it off. Password changes and bank transfers are handed back to you. OpenAI says dots can still make mistakes.",
+                ],
+              },
+              why: ["It's the first ChatGPT feature that keeps working while you're away, not only when you ask."],
+            },
+            {
+              name: "GPT-6.1 Sol",
+              what: [
+                "OpenAI's new workhorse model: close to GPT-6 Astra on coding, computer use and professional work, at a fifth of the price. 1.05M-token context.",
+              ],
+              who: [
+                "API: $2 per 1M input tokens, $10 per 1M output, $0.10 cached input (GPT-6 Astra: $10 / $50 / $1). The planned GPT-6.1 Astra release was pulled because it didn't meet OpenAI's safety standards.",
+              ],
+              why: ["Near-top quality at a fifth of the cost makes all-day agents much cheaper to run."],
+            },
+            {
+              name: "Astra Ultrafast",
+              what: [
+                "A faster way to run GPT-6 Astra: up to 8x faster in Codex and 6x in the API, around 300 tokens per second.",
+              ],
+              who: [
+                "In the API, ChatGPT and Codex. Available for Astra today; coming soon for GPT-6.1 Sol. Included in Pro 500. API price: not in the announcement.",
+              ],
+              why: ["Agents that wait less get through more work per hour."],
+            },
+            {
+              name: "Private Intelligence",
+              what: [
+                "A privacy layer for companies building agents. Zero data retention (ZDR) now comes with private safety processing, so safety checks run without storing your content. Private inference, in preview, adds confidential computing and verifiable controls while your data is processed.",
+              ],
+              who: ["For businesses. Design partners: Cisco, Databricks and Snowflake. Pricing: not announced."],
+              why: ["It removes a common blocker to putting sensitive data through agents."],
+            },
+          ],
+        },
+        {
+          title: "People and AI",
+          items: [
+            {
+              name: "ChatGPT Space",
+              what: [
+                "Shared pages where you work with teammates and dots. @mention a dot (yours or a teammate's) in a comment to change a chart or pull in a fact. Living Pages keep themselves up to date in the background, and slides can be co-edited.",
+              ],
+              who: ["Pro, Business and Enterprise, on desktop and web. Mobile is coming soon."],
+              why: ["Agents become members of the doc, not a separate chat window."],
+            },
+            {
+              name: "@ChatGPT in Slack and Teams",
+              what: [
+                "Mention ChatGPT inside Slack or Microsoft Teams. Dots work there too: in the keynote demo, one dot took over a forwarded thread and another fixed a bug from a report and opened a pull request.",
+              ],
+              why: ["The AI works where the conversation already happens."],
+            },
+            {
+              name: "Meetings plugin",
+              what: [
+                "Takes meeting notes in ChatGPT and Codex: a live transcript, notes that update as you talk, and a summary when recording stops. It can see your upcoming meetings from your calendar.",
+              ],
+              why: ["Meeting notes land in the same tools that act on them."],
+            },
+          ],
+        },
+        {
+          title: "Build",
+          items: [
+            {
+              name: "Decisions API",
+              what: [
+                "Fast, constrained decisions: instead of writing free text, the model picks from options you define. Powered by GPT-6 Luna, it takes text or image input. The keynote demo searched for a flight one UI action at a time.",
+              ],
+              who: [
+                "Limited preview for selected customers, with a broad release in the coming days. OpenAI quotes about 150 ms per decision, versus 1.6 s in its comparison. Pricing: not announced.",
+              ],
+              why: [
+                "Media call it a rival to Jev by TypeSafe AI, which is text-only for now. Early tests were mixed (Every).",
+              ],
+            },
+            {
+              name: "Computer use in the Agents API",
+              what: [
+                "The Agents API gives developers the same harness that runs Codex and dots: an environment, memory, tools and MCP, compaction, and multiple agents. It now supports computer use, so your agent can operate a browser and desktop.",
+              ],
+              who: ["The Agents API has been in public beta since September 10; computer use was added at DevDay."],
+              why: ["You can build dot-style agents into your own product."],
+            },
+            {
+              name: "Codex cloud with reusable environments",
+              what: [
+                "Codex runs in the cloud from environments you configure once and reuse, so each task starts from your setup instead of from scratch.",
+              ],
+              who: ["Plus, Pro, Business, Healthcare, Edu and Enterprise."],
+              why: ["Close your laptop and the coding agent keeps going."],
+            },
+            {
+              name: "Codex Security Cloud",
+              what: ["A security product for Codex in the cloud. OpenAI's recap lists it; plans and pricing weren't in the keynote."],
+              why: ["Security review moves into the same cloud where the code gets written."],
+            },
+            {
+              name: "New Codex CLI and code review",
+              what: ["A new version of the Codex command-line tool, and updated code review."],
+              why: ["The terminal and the review step get upgrades alongside Codex in the cloud."],
+            },
+            {
+              name: "Amazon Bedrock Managed Agents for OpenAI",
+              what: [
+                "OpenAI inside AWS: Bedrock Managed Agents with GPT-6 Astra and Ultrafast, plus Codex and ChatGPT Work, next to your existing AWS apps and data.",
+              ],
+              who: ["AWS customers. Pricing: not announced."],
+              why: ["Companies can adopt OpenAI's agents without leaving AWS."],
+            },
+          ],
+        },
+        {
+          title: "Distribution and plans",
+          items: [
+            {
+              name: "Use your ChatGPT plan in partner apps",
+              what: [
+                "Your ChatGPT subscription can pay for AI usage inside other apps. 16 launch partners, including Notion, Devin, Vercel, Lovable, Warp, Amp, Conductor, T3, opencode and Kilo.",
+              ],
+              who: ["Plus and Pro."],
+              why: ["One subscription instead of a separate AI bill in every tool, and an easier first try for new apps."],
+            },
+            {
+              name: "Sign in with ChatGPT",
+              what: ["A login button for apps. It shares only your name, email and profile photo, not your chats or memory."],
+              why: ["Together with plan portability: sign in, and your plan comes with you."],
+            },
+            {
+              name: "Plugin extensions and discovery",
+              what: [
+                "Developers can put their apps inside ChatGPT, and ChatGPT can suggest them when they fit what you're asking. Creating, submitting and searching plugins also got easier.",
+              ],
+              who: ["Plugin extensions: all plans."],
+              why: ["A way to reach ChatGPT's 1.2 billion weekly users."],
+            },
+            {
+              name: "OpenAI Marketplace",
+              what: [
+                "A marketplace launching with 30+ partners, including Adobe, Datadog, ElevenLabs, Harvey, Lovable, Notion, Salesforce, Vercel and Zendesk.",
+              ],
+              who: ["How discovery, payments and revenue share work: not announced."],
+              why: ["Another channel to put an AI product in front of OpenAI's customers."],
+            },
+            {
+              name: "New Pro tiers",
+              what: [
+                "Pro now comes in three tiers: Pro 100, Pro 200 and the new Pro 500. Pro 500 costs $500 a month and gives 25x Plus usage, Ultrafast, and no 5-hour limit.",
+              ],
+              who: [
+                "Pro 200 ($200 a month) drops to 10x Plus usage (it was 20x), and GPT-6 Pro messages go from 200 to 100 a week. Existing subscribers keep their old allowance until October 29, 2026. Every Pro tier includes dots.",
+              ],
+              why: ["On $200 Pro? Check whether the new limits still fit before October 29."],
+            },
+          ],
+        },
+      ],
+      notes: [
+        "An independent explainer by @copilot_shogo. Not affiliated with or endorsed by OpenAI.",
+        "Written on September 30, 2026, the day after the keynote. Prices, plans and dates can change, so check the official pages below before you rely on them.",
+        "Where a price, plan or date wasn't announced, this page says so instead of guessing.",
+        "Early hands-on: Every found dots too buggy to recommend in the first days.",
+      ],
+      sources: [
+        { text: "OpenAI: DevDay 2026 recap", href: "https://openai.com/index/devday-2026-recap/" },
+        { text: "OpenAI: Introducing dots", href: "https://openai.com/index/introducing-dots/" },
+        { text: "OpenAI: Introducing GPT-6.1 Sol", href: "https://openai.com/index/introducing-gpt-6-1-sol/" },
+        { text: "ChatGPT docs: dots", href: "https://learn.chatgpt.com/docs/dots" },
+        { text: "OpenAI Help Center: About ChatGPT Pro tiers", href: "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers" },
+        { text: "OpenAI Help Center: related article", href: "https://help.openai.com/en/articles/20001542" },
+        { text: "@OpenAIDevs on X", href: "https://x.com/OpenAIDevs/status/2105003318917697873" },
+        { text: "Reporting: CNBC, Engadget, Every, The Decoder" },
+      ],
+    },
+  },
   {
     number: 9,
     slug: "09-vibe-secure",
@@ -615,6 +848,7 @@ export const pad = (n: number) => String(n).padStart(2, "0");
 /** What a drop contains, for the cover badge and the page header: "build kit", "free guide", "12 checks", "1 tool". */
 export function dropKind(drop: FreeDrop): string {
   if (drop.kit) return "build kit";
+  if (drop.breakdown) return "full breakdown";
   if (drop.guide) return "free guide";
   const checks = drop.about?.checks?.length;
   if (checks) return `${checks} ${checks === 1 ? "check" : "checks"}`;
