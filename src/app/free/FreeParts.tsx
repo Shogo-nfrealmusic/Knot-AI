@@ -108,10 +108,11 @@ export function DropCover({ drop }: { drop: FreeDrop }) {
   );
 }
 
-// One tool: number, tile, name, one line, and a GitHub button. Stacks on phones (most visitors come from Instagram).
+// One tool: number, tile, name, one line, and a button to the repo (or the site, for non-GitHub tools). Stacks on phones (most visitors come from Instagram).
 // Without install commands the whole row is the link; with them, only the button is (copy buttons can't sit inside a link).
 export function ToolRow({ tool, index }: { tool: FreeTool; index: number }) {
-  const repo = tool.href.replace(/^https?:\/\/(www\.)?github\.com\//, "");
+  const onGitHub = /^https?:\/\/(www\.)?github\.com\//.test(tool.href);
+  const shown = tool.href.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
   const grid =
     "grid grid-cols-[auto_1fr] items-start gap-x-4 gap-y-4 px-5 py-7 sm:grid-cols-[3rem_auto_1fr_auto] sm:items-center sm:gap-x-6 sm:px-10 sm:py-8";
   const button =
@@ -126,14 +127,14 @@ export function ToolRow({ tool, index }: { tool: FreeTool; index: number }) {
           <span className="text-lg font-semibold tracking-[-0.015em] text-neutral-900">{tool.name}</span>
         </span>
         <span className="mt-1.5 block text-[15px] leading-relaxed tracking-[-0.01em] text-neutral-500">{tool.what}</span>
-        <span className="mt-2 block truncate font-mono text-[11px] text-neutral-400">github.com/{repo}</span>
+        <span className="mt-2 block truncate font-mono text-[11px] text-neutral-400">{shown}</span>
       </span>
     </>
   );
   const buttonInner = (
     <>
-      <IconBrandGithub className="size-4" />
-      Open on GitHub
+      {onGitHub ? <IconBrandGithub className="size-4" /> : null}
+      {onGitHub ? "Open on GitHub" : "Open the site"}
       <IconArrowUpRight className="size-4 text-neutral-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
     </>
   );

@@ -114,6 +114,57 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 12,
+    slug: "12-design-md",
+    title: "DESIGN.md: stop your AI from building generic UI",
+    description:
+      "Give your AI a real design system instead of \"make it clean\". Refero Styles is a free library of 2,000+ AI-readable design systems from real product websites. How to use one with Claude Code, Codex, Cursor, v0 or Lovable. An independent guide.",
+    date: "2026-10-01",
+    keyword: "DESIGN",
+    tools: [
+      {
+        name: "Refero Styles",
+        what: "2,000+ design systems taken from real product websites (Apple, Linear, Notion, ElevenLabs, OpenAI, Perplexity, Superhuman, teenage engineering…). Each one has colors with their roles, a type scale, spacing and radii, components, and explicit do's and don'ts. Export it as Markdown (DESIGN.md), a Tailwind v4 theme or CSS variables, or connect it to your AI over MCP.",
+        href: "https://styles.refero.design",
+        icon: "file",
+      },
+    ],
+    about: {
+      intro: [
+        "Why AI UI looks generic: \"clean\" and \"minimal\" are vibes, not specs, so the model fills in the average of the web: purple gradients, the same cards, fake stats. A ",
+        { code: "DESIGN.md" },
+        " gives it exact values and rules to follow.",
+      ],
+      steps: [
+        { title: "Pick a style", text: "Open styles.refero.design and pick a style close to your product." },
+        { title: "Copy it", text: "Open the DESIGN.md tab and copy or download it (or take the Tailwind v4 theme or CSS variables)." },
+        { title: "Save it", text: "Save it as DESIGN.md in your project root." },
+        {
+          title: "Prompt",
+          text: "\"Build (or restyle) <X>. Use DESIGN.md in this folder.\" Or reference it from CLAUDE.md / AGENTS.md so every run follows it.",
+        },
+        {
+          title: "Review and iterate",
+          text: "Use the design language, not the identity: don't copy another brand's logo or trademarks.",
+        },
+      ],
+      example: {
+        question: "Build a landing page for Stride, a habit-tracking app",
+        output: `Without DESIGN.md:
+  purple gradients, generic cards
+With Linear's DESIGN.md:
+  near-black surfaces, one acid-lime
+  accent, hairline borders`,
+        source: "My test from the reel: same model, same prompt, run once without and once with Linear's DESIGN.md. A summary of what came out, not the full output.",
+      },
+      notes: [
+        "Works with Claude Code, Codex, Cursor, v0 and Lovable, or any tool that can read a file in your project.",
+        "As of October 1, 2026, viewing and copying styles needed no login or payment. Check the site for current terms.",
+        "An independent guide by @copilot_shogo. Not affiliated with Refero or with the brands whose styles are listed.",
+      ],
+    },
+  },
+  {
     number: 11,
     slug: "11-ai-bots",
     title: "The AI bot war: 6 personal AI agents compared (Sep 2026)",
