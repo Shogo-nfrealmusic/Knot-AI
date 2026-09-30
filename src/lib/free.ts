@@ -323,18 +323,6 @@ const drops: FreeDrop[] = [
             { name: "Apple Siri AI", what: ["Unclear whether it's always on."] },
           ],
         },
-        {
-          title: "My day-one take",
-          unit: { one: "take", many: "takes" },
-          items: [
-            {
-              name: "I set up a dot on launch night",
-              what: [
-                "Setup is slick, and the cloud computer is real. But it isn't reliable enough to hand real work to yet. It's day one for all six.",
-              ],
-            },
-          ],
-        },
       ],
       notes: [
         "An independent explainer by @copilot_shogo. Not affiliated with or endorsed by any company named here.",
