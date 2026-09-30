@@ -18,7 +18,8 @@ export type ToolIcon =
   | "council"
   | "legal"
   | "shield"
-  | "event";
+  | "event"
+  | "robot";
 
 export type FreeTool = {
   name: string;
@@ -58,15 +59,22 @@ export type BreakdownItem = {
   name: string;
   what: RichText;
   who?: RichText;
+  /** replaces "Who gets it" (e.g. "Price & access") */
+  whoLabel?: string;
   /** e.g. the safety rules for an agent */
   more?: { label: string; text: RichText };
-  why: RichText;
+  /** further labelled lines, shown after `more` */
+  details?: { label: string; text: RichText }[];
+  why?: RichText;
+  /** replaces "Why it matters" (e.g. "Watch out") */
+  whyLabel?: string;
 };
 
 export type DropBreakdown = {
   /** "The 60-second version": one line per bullet */
   tldr: RichText[];
-  sections: { title: string; items: BreakdownItem[] }[];
+  /** `unit` names the items in the section label; default "launch" / "launches" */
+  sections: { title: string; items: BreakdownItem[]; unit?: { one: string; many: string } }[];
   /** official pages first, then reporting */
   sources: { text: string; href?: string; note?: string }[];
   /** caveats shown above the sources */
@@ -105,6 +113,254 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 11,
+    slug: "11-ai-bots",
+    title: "The AI bot war: 6 personal AI agents compared (Sep 2026)",
+    description:
+      "Six always-on AI agents side by side: dots (OpenAI), Muse (Meta), Grok Bot (SpaceXAI), Cue (Manus), Gemini Spark (Google) and Poke (Cognition). Price and access, what each can do, spending controls, and what to watch out for. An independent explainer, as of September 30, 2026.",
+    date: "2026-09-30",
+    keyword: "BOTS",
+    tools: [],
+    icon: "robot",
+    breakdown: {
+      tldr: [
+        ["A \"bot\" is an AI agent with its own computer that keeps working while you're away. Six of them are now out or in beta."],
+        ["dots (OpenAI, Sep 29): included in ChatGPT Pro and Business Premium. Message or call it in ChatGPT, Slack or Teams."],
+        ["Muse (Meta, Sep 8): free, $20 or $100 a month, US only. #1 free iPhone app in the US on Sep 30."],
+        ["Grok Bot (SpaceXAI, beta since Aug 11): comes with paid Cursor plans or a linked SuperGrok / X Premium+ plan. 418,000 weekly users (Sep 14)."],
+        ["Cue (Manus, Sep 28): each agent gets its own email, phone number, wallet and computer. Invite-only."],
+        ["Gemini Spark (Google) needs Google AI Pro or Ultra. Poke (Cognition) lives in your texts, from free to $199 a month."],
+        ["Spending rules differ: dots, Muse and Spark ask first, Grok Bot hands payment back to you, Cue spends within a budget you set, and Poke's rules aren't stated."],
+      ],
+      sections: [
+        {
+          title: "What makes it a bot",
+          unit: { one: "trait", many: "traits" },
+          items: [
+            {
+              name: "Its own computer",
+              what: ["It works on a cloud computer with a browser that belongs to the agent, not on your laptop."],
+            },
+            {
+              name: "Works 24/7",
+              what: ["It keeps going when your laptop is closed, and messages you with progress."],
+            },
+            {
+              name: "Acts across apps",
+              what: ["It uses other apps and websites for you instead of only answering in a chat."],
+            },
+            {
+              name: "Has a name and a face",
+              what: ["It's a named character you message, call or text, more like a coworker than a chat box."],
+            },
+          ],
+        },
+        {
+          title: "The six bots",
+          unit: { one: "bot", many: "bots" },
+          items: [
+            {
+              name: "dots — OpenAI",
+              what: [
+                "Launched September 29, 2026 at DevDay, powered by GPT-6 Astra. OpenAI: dots \"have their own cloud computer… can work towards your goals 24/7\".",
+              ],
+              whoLabel: "Price & access",
+              who: [
+                "Included in ChatGPT Pro or Business Premium at no extra cost; a beta for Enterprise, Edu and Healthcare when admins turn it on. In eligible markets. Price of extra dots: not announced. Message or call it in ChatGPT (desktop, web, mobile), Slack and Teams; texting is coming soon.",
+              ],
+              details: [
+                {
+                  label: "What it can do",
+                  text: [
+                    "Its own cloud computer (Linux + Chrome), 4,000+ apps, and proactive research (read-only). One primary dot today; teams of dots later.",
+                  ],
+                },
+                {
+                  label: "Spending & controls",
+                  text: [
+                    "Purchases with a saved card require your approval. Your own rules (allow, ask or never), an independent auto-review before actions, and an Activity view to watch or stop it. Password changes and bank transfers are handed to you.",
+                  ],
+                },
+              ],
+              whyLabel: "Watch out",
+              why: ["In OpenAI's own words, \"dots can still make mistakes\"."],
+            },
+            {
+              name: "Muse — Meta",
+              what: ["\"Muse from Meta\", launched September 8, 2026. Model: Muse Spark."],
+              whoLabel: "Price & access",
+              who: [
+                "Free with a usage limit; Power $20 a month; Maximum $100 a month (paid plans 18+). US only, on iOS, Android and muse.ai, plus Mac and WhatsApp.",
+              ],
+              details: [
+                {
+                  label: "What it can do",
+                  text: [
+                    "Runs on Muse Secure VM, \"a persistent, isolated Linux computer with a full browser\", and keeps working in the background.",
+                  ],
+                },
+                {
+                  label: "Spending & controls",
+                  text: [
+                    "Buys with your approval, using one-time cards (Link by Stripe). A separate Sentinel agent approves outbound actions; you choose allow once, always allow or deny; there's an audit log. Meta says it isn't shared with its ad systems.",
+                  ],
+                },
+                {
+                  label: "Traction",
+                  text: [
+                    "#1 free iPhone app in the US (Apple chart, September 30). Download estimates run from 2.3M to 4.3M depending on the firm (",
+                    { text: "TechCrunch", href: "https://techcrunch.com/2026/09/25/meta-is-putting-its-muscle-behind-muse-as-the-ai-app-takes-off/" },
+                    ", September 25).",
+                  ],
+                },
+              ],
+              whyLabel: "Watch out",
+              why: [
+                "Amazon asked Meta to remove Amazon from Muse shopping (",
+                { text: "GeekWire", href: "https://www.geekwire.com/2026/amazon-blocks-metas-muse-ai-assistant-in-new-standoff-over-agentic-shopping/" },
+                ", September 20). In Meta's internal tests, an agent routed around its guardrails and exposed a tester's iCloud photos (",
+                { text: "Reuters", href: "https://www.carriermanagement.com/news/2026/09/09/291788.htm" },
+                ", September 9). That was an internal test, not a user breach.",
+              ],
+            },
+            {
+              name: "Grok Bot — SpaceXAI",
+              what: [
+                "From SpaceXAI (formerly xAI, renamed in July 2026). In beta since August 11, 2026. The model is chosen automatically; there's no model picker.",
+              ],
+              whoLabel: "Price & access",
+              who: [
+                "Included in paid Cursor individual and Teams plans, or link a SuperGrok, Plus, Heavy or X Premium+ plan. Free trial credit with a 7-day window. Apps for macOS, Windows, Linux, iOS and Android.",
+              ],
+              details: [
+                {
+                  label: "What it can do",
+                  text: [
+                    "Message it in the app or talk by voice. It has its own cloud computer, works 24/7, and gets more proactive over time.",
+                  ],
+                },
+                {
+                  label: "Spending & controls",
+                  text: [
+                    "It never pays by itself: it hands the computer to you for logins, 2FA and payment. Allow once, always or deny, plus auto-review rules.",
+                  ],
+                },
+                {
+                  label: "Traction",
+                  text: [
+                    "418,000 weekly users as of September 14 (Bloomberg, via ",
+                    { text: "PYMNTS", href: "https://www.pymnts.com/news/artificial-intelligence/2026/spacexai-grok-bot-gains-early-traction-ai-agent-push/" },
+                    ").",
+                  ],
+                },
+              ],
+              whyLabel: "Watch out",
+              why: ["\"All of your Bots use the same cloud computer\": several bots don't mean several machines."],
+            },
+            {
+              name: "Cue — Manus",
+              what: ["Launched September 28, 2026. Model: not stated."],
+              whoLabel: "Price & access",
+              who: [
+                "Early access, free with an invite code (limited). Web, desktop and mobile; iOS after App Store review.",
+              ],
+              details: [
+                {
+                  label: "What it can do",
+                  text: [
+                    "Each agent has its own email address, phone number, wallet and computer. It can take your calls and leave a summary, and agents can group-chat with each other. Integrations: not stated.",
+                  ],
+                },
+                { label: "Spending & controls", text: ["Pays within a budget you set. Other controls: not stated."] },
+              ],
+              whyLabel: "Watch out",
+              why: ["Invite-only, and the model and integrations aren't stated yet. The budget you set is the limit on what it pays."],
+            },
+            {
+              name: "Gemini Spark — Google",
+              what: [
+                "Announced May 19, 2026 for trusted testers. Powered by Gemini 3.5 Flash with the Antigravity harness. Google calls it \"a 24/7 personal AI agent\".",
+              ],
+              whoLabel: "Price & access",
+              who: [
+                "Needs Google AI Pro or Ultra; 18+. Not available in the EEA, Nigeria, Switzerland or the UK. Mobile app, Mac app and web.",
+              ],
+              details: [
+                {
+                  label: "What it can do",
+                  text: ["A remote browser and computer. Texting and emailing Spark are coming."],
+                },
+                { label: "Spending & controls", text: ["Asks you before spending money. Other controls: not stated."] },
+              ],
+              whyLabel: "Watch out",
+              why: ["Check your country before you upgrade a plan to get it."],
+            },
+            {
+              name: "Poke — Cognition",
+              what: ["Now part of Cognition. Its pitch: \"Proactive, private, personal, and right in your texts\"."],
+              whoLabel: "Price & access",
+              who: [
+                "Free, Pro $19 a month, Ultra $199 a month. Works in iMessage, SMS and Telegram (WhatsApp in Brazil).",
+              ],
+              details: [
+                { label: "What it can do", text: ["Lives in your texts instead of a separate app. Its own computer: not stated."] },
+                { label: "Spending & controls", text: ["Not stated."] },
+              ],
+              whyLabel: "Watch out",
+              why: ["The only one of the six where its own computer isn't stated."],
+            },
+          ],
+        },
+        {
+          title: "Also in the space (borderline)",
+          unit: { one: "entry", many: "entries" },
+          items: [
+            { name: "Perplexity Personal Computer", what: ["Works 24/7, but runs on your own Mac or PC."] },
+            { name: "Microsoft Copilot Autopilot", what: ["Enterprise private preview, as reported."] },
+            { name: "OpenClaw", what: ["Open-source and self-hosted; the one with the lobster mascot."] },
+            { name: "Amazon Alexa+", what: ["Does tasks for you, but no computer of its own is confirmed."] },
+            { name: "Apple Siri AI", what: ["Unclear whether it's always on."] },
+          ],
+        },
+        {
+          title: "My day-one take",
+          unit: { one: "take", many: "takes" },
+          items: [
+            {
+              name: "I set up a dot on launch night",
+              what: [
+                "Setup is slick, and the cloud computer is real. But it isn't reliable enough to hand real work to yet. It's day one for all six.",
+              ],
+            },
+          ],
+        },
+      ],
+      notes: [
+        "An independent explainer by @copilot_shogo. Not affiliated with or endorsed by any company named here.",
+        "As of September 30, 2026. Prices, plans and availability change, so check the official pages below before you rely on them.",
+        "\"Not stated\" means the sources below don't say. This page doesn't guess.",
+      ],
+      sources: [
+        { text: "OpenAI: Introducing dots", href: "https://openai.com/index/introducing-dots/" },
+        { text: "OpenAI: How we build safety, security and privacy into dots", href: "https://openai.com/index/how-we-build-safety-security-and-privacy-into-dots/" },
+        { text: "Meta: Introducing Muse", href: "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/" },
+        { text: "Meta Help Center: Muse subscriptions", href: "https://www.meta.com/help/subscriptions/1021145227643680/" },
+        { text: "SpaceXAI: Introducing Grok Bot", href: "https://x.ai/news/introducing-grok-bot" },
+        { text: "SpaceXAI docs: Grok Bot overview", href: "https://docs.x.ai/grok-bot/overview" },
+        { text: "Cursor Help: Grok Bot plans", href: "https://cursor.com/help/grok-bot/plans" },
+        { text: "Manus: Introducing Manus 2.0", href: "https://manus.im/blog/introducing-manus-2-0" },
+        { text: "Cue", href: "https://cue.im/" },
+        { text: "Google: The next evolution of the Gemini app", href: "https://blog.google/innovation-and-ai/products/gemini-app/next-evolution-gemini-app/" },
+        { text: "Gemini Help: Gemini Spark", href: "https://support.google.com/gemini/answer/17094507" },
+        { text: "Poke: Pricing", href: "https://poke.com/pricing" },
+        { text: "GeekWire: Amazon blocks Meta's Muse", href: "https://www.geekwire.com/2026/amazon-blocks-metas-muse-ai-assistant-in-new-standoff-over-agentic-shopping/" },
+        { text: "Reuters (via Carrier Management): Meta's internal Muse tests", href: "https://www.carriermanagement.com/news/2026/09/09/291788.htm" },
+        { text: "TechCrunch: Meta is putting its muscle behind Muse", href: "https://techcrunch.com/2026/09/25/meta-is-putting-its-muscle-behind-muse-as-the-ai-app-takes-off/" },
+        { text: "PYMNTS: Grok Bot gains early traction", href: "https://www.pymnts.com/news/artificial-intelligence/2026/spacexai-grok-bot-gains-early-traction-ai-agent-push/" },
+      ],
+    },
+  },
   {
     number: 10,
     slug: "10-devday-2026",

@@ -14,6 +14,7 @@ import {
   IconNotebook,
   IconPalette,
   IconPlugConnected,
+  IconRobot,
   IconScale,
   IconScissors,
   IconShieldLock,
@@ -53,6 +54,7 @@ const icons: Record<ToolIcon, ComponentType<{ className?: string }>> = {
   legal: IconScale,
   shield: IconShieldLock,
   event: IconCalendarEvent,
+  robot: IconRobot,
 };
 
 // Same tile as the blog covers: white, 22% radius, hairline border, soft drop shadow.
@@ -384,7 +386,8 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
       {breakdown.sections.map((section, sectionIndex) => (
         <section key={section.title} id={sectionId(section.title)} className="scroll-mt-20 px-5 py-8 sm:px-10">
           <p className={aboutLabel}>
-            {pad(sectionIndex + 1)} · {section.items.length} {section.items.length === 1 ? "launch" : "launches"}
+            {pad(sectionIndex + 1)} · {section.items.length}{" "}
+            {section.items.length === 1 ? (section.unit?.one ?? "launch") : (section.unit?.many ?? "launches")}
           </p>
           <h2 className="mt-2 text-2xl font-medium tracking-[-0.03em] text-neutral-900 sm:text-3xl">{section.title}</h2>
           <ol className="mt-4 divide-y divide-neutral-200">
@@ -398,7 +401,7 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
                 </p>
                 {item.who?.length ? (
                   <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                    <span className="font-medium text-neutral-700">Who gets it: </span>
+                    <span className="font-medium text-neutral-700">{item.whoLabel ?? "Who gets it"}: </span>
                     <Rich parts={item.who} />
                   </p>
                 ) : null}
@@ -408,10 +411,18 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
                     <Rich parts={item.more.text} />
                   </p>
                 ) : null}
-                <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                  <span className="font-medium text-warm">Why it matters: </span>
-                  <Rich parts={item.why} />
-                </p>
+                {item.details?.map((detail) => (
+                  <p key={detail.label} className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-neutral-700">{detail.label}: </span>
+                    <Rich parts={detail.text} />
+                  </p>
+                ))}
+                {item.why?.length ? (
+                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                    <span className="font-medium text-warm">{item.whyLabel ?? "Why it matters"}: </span>
+                    <Rich parts={item.why} />
+                  </p>
+                ) : null}
               </li>
             ))}
           </ol>
