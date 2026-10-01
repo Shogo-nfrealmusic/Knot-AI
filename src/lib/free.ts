@@ -114,6 +114,73 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 14,
+    slug: "14-open-dots",
+    title: "OpenDots: a free, open-source take on OpenAI's dots",
+    description:
+      "OpenDots by CopilotKit is an MIT-licensed template for persistent AI agents, each with its own computer. You host it yourself and bring your own model. What it does, how it compares to OpenAI's dots, and how to run it. An independent guide.",
+    date: "2026-10-02",
+    keyword: "DOTS",
+    tools: [
+      {
+        name: "OpenDots by CopilotKit",
+        what: "An open-source template for persistent AI agents, each with its own computer. Available on Web and Mobile. MIT license, fully self-hostable, early alpha (created September 29, 2026).",
+        href: "https://github.com/CopilotKit/OpenDots",
+        icon: "robot",
+      },
+    ],
+    about: {
+      intro: [
+        "OpenAI's dots (launched September 29, 2026) need ChatGPT Pro, Business Premium or Enterprise. OpenDots is free software you host yourself: no plan required, but you pay for your own model and services.",
+      ],
+      steps: [
+        { title: "Specialist Dots", text: "Give each Dot a name, a role, instructions and the tools it's allowed to use." },
+        {
+          title: "Its own computer",
+          text: "Each Dot can get a computer through OpenBot services: browser control, human takeover, files and terminal, with permissions set per Dot.",
+        },
+        { title: "Draft first", text: "Ask for a draft before saving. A card pauses the chat with \"Approve & save\" or \"Decline\"." },
+        {
+          title: "Voice calls",
+          text: "Realtime speech paired with a separate compute agent, so longer work runs while you talk. Voice needs its own provider config.",
+        },
+        {
+          title: "Slack",
+          text: "Mention a Dot in Slack via Channels SDK. The README says live Slack still needs connected-service verification.",
+        },
+        { title: "Spaces & pages", text: "A searchable library of pages you can edit. Single-owner: no shared editing yet." },
+        {
+          title: "Any model",
+          text: "Any OpenAI-compatible model: set OPENAI_BASE_URL and OPENAI_MODEL in .env.",
+        },
+      ],
+      altInstall: {
+        label: "Get started · Node.js 24",
+        commands: [
+          "git clone https://github.com/CopilotKit/OpenDots.git",
+          "cd OpenDots && npm ci",
+          "cp .env.example .env",
+          "npm run dev",
+        ],
+      },
+      notes: [
+        [
+          "Open ",
+          { code: "http://127.0.0.1:5173" },
+          ". See ",
+          { text: "docs/SETUP.md", href: "https://github.com/CopilotKit/OpenDots/blob/main/docs/SETUP.md" },
+          " for Slack, calls, the browser and Docker, and ",
+          { text: "docs/COMPUTERS.md", href: "https://github.com/CopilotKit/OpenDots/blob/main/docs/COMPUTERS.md" },
+          " for Dot computers.",
+        ],
+        "OPENAI_BASE_URL changes the compute model only. The included call adapter uses OpenAI's Realtime API.",
+        "Early alpha, and a template, not a hosted product: you run it and configure the services.",
+        "Not the same as composio-community/open-dot, which is a separate Mac app.",
+        "An independent guide by @copilot_shogo. Not affiliated with OpenAI or CopilotKit.",
+      ],
+    },
+  },
+  {
     number: 12,
     slug: "12-design-md",
     title: "DESIGN.md: stop your AI from building generic UI",
