@@ -114,6 +114,41 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 15,
+    slug: "15-quiver-arrow",
+    title: "QuiverAI Arrow 2: AI that draws real, editable SVG",
+    description:
+      "Most AI image tools give you pixels. QuiverAI's Arrow 2 generates real SVG: logos, icons, illustrations and technical drawings you can keep editing. It also vectorizes PNGs and animates SVGs. What it does, what it costs, and how to use it from Cursor. An independent guide.",
+    date: "2026-10-03",
+    keyword: "ARROW",
+    tools: [
+      {
+        name: "QuiverAI (Arrow 2)",
+        what: "Foundational models for generating, editing and animating vector graphics. Arrow 2 is the current model in the app and the API (September 2026). Every creation is a real, editable SVG.",
+        href: "https://quiver.ai",
+        icon: "palette",
+      },
+    ],
+    about: {
+      intro: [
+        "QuiverAI is built by the researchers behind StarVector and raised an $8.3M seed round led by a16z. Arrow 2 is their newest model, alongside Arrow 2 Telos for extra refinement.",
+      ],
+      steps: [
+        { title: "Prompt to SVG", text: "Describe what you want and get an SVG back: logos, icons, illustrations, technical drawings and line work." },
+        { title: "Real paths", text: "Arrow 2 uses fewer, more precise control points, with fewer messy or overlapping paths, so the file is easy to edit in Figma or any vector tool." },
+        { title: "PNG to SVG", text: "Vectorize raster images (a logo PNG, a sketch) into editable SVGs." },
+        { title: "Animation", text: "Animate the shapes already in an SVG: logo reveals, loading states, animated icons, web-ready." },
+        { title: "API & MCP", text: "An API (model id arrow-2) and a hosted MCP server in beta, with plugins for Cursor and Codex." },
+      ],
+      notes: [
+        "Plans start at $8/month (Go) with a 14-day trial; a card is required for the trial.",
+        "Subscription usage is for the app only. The API is billed separately from a prepaid balance.",
+        "Arrow 1.x models retire on October 16, 2026.",
+        "An independent guide by @copilot_shogo. Not affiliated with QuiverAI.",
+      ],
+    },
+  },
+  {
     number: 14,
     slug: "14-open-dots",
     title: "OpenDots: a free, open-source take on OpenAI's dots",
