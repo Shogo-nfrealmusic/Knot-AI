@@ -114,6 +114,46 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 16,
+    slug: "16-e2e",
+    title: "e2e: the open-source AI testing framework",
+    description:
+      "e2e by TesterArmy lets you describe a goal in plain English and an AI agent drives your web or mobile app to reach it. Verified agent steps replay on the next run with no model call, and the agent takes over when your UI changes. How it works, what it costs, and how to start. An independent guide.",
+    date: "2026-10-03",
+    keyword: "E2E",
+    tools: [
+      {
+        name: "e2e by TesterArmy",
+        what: "An open-source (Apache-2.0) end-to-end testing framework for web and mobile apps. Mix agent steps like agent.act() and agent.assert() with normal locators and assertions in the same test.",
+        href: "https://github.com/tester-army/e2e",
+        icon: "browser",
+      },
+    ],
+    about: {
+      intro: [
+        "Selector-based tests break when the UI changes. With e2e you write the goal (\"upgrade the workspace to the Pro plan\") and an agent clicks through the app. Deterministic checks still run as usual.",
+      ],
+      steps: [
+        { title: "Describe the goal", text: "agent.act('upgrade the workspace to the Pro plan') drives the app; agent.assert() checks the result in plain English." },
+        { title: "Mix in real assertions", text: "Locators and expect() work in the same test, so the parts you want deterministic stay deterministic." },
+        { title: "Replay cache", text: "Once a later check confirms an agent step worked, its actions are recorded. The next run replays that step with no model call. agent.assert always runs live." },
+        { title: "When the UI changes", text: "If a recorded control or end state no longer matches, the agent takes over from the current screen." },
+        { title: "Web, iOS, Android, CI", text: "Playwright for web (Chromium, Firefox, WebKit); iOS simulators and Android emulators for mobile; hosted options via Kernel and EAS Simulators; runs locally or in CI." },
+        { title: "Your own model", text: "On your machine, sign in with ChatGPT Plus or Pro, GitHub Copilot, or SuperGrok / X Premium+. In CI, use an API key (e.g. Vercel AI Gateway). Claude subscriptions aren't supported." },
+      ],
+      altInstall: {
+        label: "Get started · Node.js 22.12+",
+        commands: ["npx e2e init", "npx e2e login openai   # optional: use your ChatGPT plan", "npx e2e run"],
+      },
+      notes: [
+        "Still before 1.0: APIs and config can change between minor releases.",
+        "The CLI sends anonymous usage telemetry by default; turn it off with npx e2e telemetry disable.",
+        "In our test: the first run's agent step took 4 model calls; the replay took none (the live agent.assert took 1).",
+        "An independent guide by @copilot_shogo. Not affiliated with TesterArmy.",
+      ],
+    },
+  },
+  {
     number: 15,
     slug: "15-quiver-arrow",
     title: "QuiverAI Arrow 2: AI that draws real, editable SVG",
