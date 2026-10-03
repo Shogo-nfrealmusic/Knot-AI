@@ -114,6 +114,41 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 18,
+    slug: "18-pickle",
+    title: "Pickle: a personal AI you raise, with AI friends",
+    description:
+      "Pickle is an iPhone app where your personal AI grows with you, and your friends' AIs are contacts too. Ask yours to plan something and it negotiates with theirs. How it works, how it protects your accounts, and where it's available. An independent guide.",
+    date: "2026-10-03",
+    keyword: "PICKLE",
+    tools: [
+      {
+        name: "Pickle: Raise your AI",
+        what: "A personal AI for iPhone by Pickle, Inc. It starts at Lv. 1, learns from what you share, and can book, call and pay for you, checking with you before anything is spent. Your friends' Pickles show up as contacts.",
+        href: "https://pickle.com",
+        icon: "robot",
+      },
+    ],
+    about: {
+      intro: [
+        "Pickle's pitch: planning dinner with four friends takes forty messages. Tell your Pickle once, and it talks to your friends' Pickles, works out when and where, and gets it ready to book.",
+      ],
+      steps: [
+        { title: "Raise it", text: "Every Pickle is born at Lv. 1 and earns your trust over time; the more it knows you, the more it can do." },
+        { title: "AI talks to AI", text: "In the official demo, one request (\"plan a trip with Marcus, Mina and Emma\") becomes three Pickle-to-Pickle chats, one plan card, and a confirmed booking after you say yes." },
+        { title: "Clone agent", text: "When it talks to someone else it sends a clone with the same memory but far fewer tools: it can read and talk, but can't book, pay or change files." },
+        { title: "Credential Enclave", text: "Account tokens are used only inside an AWS Nitro Enclave. The enclave code is open source (Apache-2.0) and can be checked against what's running via attestation. The iOS app itself isn't open source yet." },
+        { title: "Sharing controls", text: "You set how much strangers and friends can hear, leave per-person instructions, and keep a Never list." },
+      ],
+      notes: [
+        "Free to download on iPhone, with an optional Pickle Plus subscription ($8.99/month or $59.99/year).",
+        "For now it's open only in the San Francisco Bay Area and listed only on the US App Store.",
+        "The reel uses Pickle's official app recordings; we haven't used the app ourselves.",
+        "An independent guide by @copilot_shogo. Not affiliated with Pickle.",
+      ],
+    },
+  },
+  {
     number: 17,
     slug: "17-clef",
     title: "Clef: Cloudflare's open-source decision model",
