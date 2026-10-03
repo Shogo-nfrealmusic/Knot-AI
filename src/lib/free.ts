@@ -131,6 +131,7 @@ const drops: FreeDrop[] = [
     ],
     about: {
       intro: [
+        "Pickle, Inc. is a Y Combinator company (Winter 2025), led by co-founder and CEO Daniel Park, who describes himself as a med school dropout. The same team previously open-sourced Glass, a desktop AI assistant that passed 7,000 GitHub stars.",
         "Pickle's pitch: planning dinner with four friends takes forty messages. Tell your Pickle once, and it talks to your friends' Pickles, works out when and where, and gets it ready to book.",
       ],
       steps: [
