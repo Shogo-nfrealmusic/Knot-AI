@@ -114,6 +114,39 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 17,
+    slug: "17-clef",
+    title: "Clef: Cloudflare's open-source decision model",
+    description:
+      "Clef and Clef-flash are open-source decision models from Cloudflare. Instead of writing text, they return a probability for every allowed answer, which makes them fast, cheap building blocks for agent workflows. What they do, what we got when we ran them, and how to try them. An independent guide.",
+    date: "2026-10-03",
+    keyword: "CLEF",
+    tools: [
+      {
+        name: "Clef / Clef-flash (Cloudflare)",
+        what: "Decision models announced October 1, 2026. Give them a state (text, JSON or images) and typed questions (yes/no, choice, score); they return a probability per option in one pass. Apache-2.0 weights on Hugging Face; hosted on Workers AI.",
+        href: "https://blog.cloudflare.com/clef-decision-models/",
+        icon: "cpu",
+      },
+    ],
+    about: {
+      intro: [
+        "LLMs are great at open-ended work, but agents also make lots of small, bounded decisions: is this urgent, which team, how severe. Clef is built only for that, and it's compatible with Typesafe AI's Jev API.",
+      ],
+      steps: [
+        { title: "What we got", text: "Cloudflare's own example ticket (\"Checkout has been failing for every customer for the last hour\") on Workers AI: urgent 99.1%, team technical 80.9%, severity Critical 97.0%. Three runs, identical numbers." },
+        { title: "Two sizes", text: "Clef (Qwen3.8-27B base) for precision, Clef-flash (Qwen3.5-9B base) for latency. In Cloudflare's own tests, Clef-flash's median latency was 38.8 ms; Jev's hosted API was 524.1 ms (Cloudflare notes these aren't directly comparable)." },
+        { title: "The index", text: "In Cloudflare's own run of the Jev Decision Index, Clef scores 61.21 vs Jev 57.91. These results are self-reported and not on the upstream board; Jev still wins several benchmarks, especially reasoning-heavy ones." },
+        { title: "Images and context", text: "Clef has a vision encoder (up to 4 images per request) and a 64k context window on Workers AI." },
+        { title: "Run it", text: "Workers AI models @cf/cloudflare/clef ($0.24 / M input tokens) and @cf/cloudflare/clef-flash, or download the Apache-2.0 weights from Hugging Face." },
+      ],
+      notes: [
+        "Cloudflare also announced a reinforcement-learning fine-tuning service for Clef, starting as a hands-on offering.",
+        "An independent guide by @copilot_shogo. Not affiliated with Cloudflare.",
+      ],
+    },
+  },
+  {
     number: 16,
     slug: "16-e2e",
     title: "e2e: the open-source AI testing framework",
