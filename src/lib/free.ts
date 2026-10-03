@@ -114,6 +114,48 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 19,
+    slug: "19-underdog",
+    title: "Underdog: a private AI that runs on your own Mac",
+    description:
+      "Underdog is a personal AI for email, calendar, meeting notes and errands whose model runs on your own computer. Backed by a16z, Naval, and the CEOs of Stripe and Vercel. We ran its 27B model with the network blocked. What it is, what we measured, and how to try it. An independent guide.",
+    date: "2026-10-03",
+    keyword: "UNDERDOG",
+    tools: [
+      {
+        name: "Underdog",
+        what: "A private personal AI by Sigil Wen. 100% local AI: the model runs on your Mac, and your data isn't sent to a cloud AI. Free; invite-only beta for Mac (Windows in beta).",
+        href: "https://underdog.ai",
+        icon: "shield",
+      },
+      {
+        name: "Underdog 27B weights",
+        what: "The 27B model (MLX 4-bit, ~16 GB, Apache-2.0) on Hugging Face, by Conway Research. Runs on Apple silicon Macs.",
+        href: "https://huggingface.co/ConwayResearch/Underdog-27B-1.0",
+        icon: "cpu",
+      },
+    ],
+    about: {
+      intro: [
+        "Founder Sigil Wen got GPT-2 running on an Apple Watch in 2023. Underdog's backers include Andreessen Horowitz, Khosla Ventures, the Anthology fund (Anthropic and Menlo), Patrick Collison, Naval Ravikant and Guillermo Rauch.",
+      ],
+      steps: [
+        { title: "What we measured", text: "On a MacBook Pro (M3 Max, 48 GB) with the network blocked (underdog.ai couldn't even resolve), Underdog 27B wrote a 3-sentence email at 21.9 tokens/sec with plain MLX. The small Woof 4B ran at about 111 tokens/sec." },
+        { title: "The Opus claim", text: "The founder says Underdog 27B beats Claude Opus 4.6, the top model six months ago. The published comparison is the base model (Qwen 3.8 27B) on the Artificial Analysis index: 33.7 vs an estimated 31.9. Opus still leads on some benchmarks." },
+        { title: "Husky", text: "Underdog's own inference engine. In their tests it runs the small Woof 4B model up to 4.5x faster than Apple's MLX (range 1.3-4.5x)." },
+        { title: "Privacy", text: "Underdog says there are no Underdog servers for personal data; context is stored on device, encrypted. Email sync and bookings still talk to your providers and websites." },
+      ],
+      altInstall: {
+        label: "Run the 27B model yourself · Apple silicon, ~16 GB",
+        commands: ["pip install mlx-lm", "mlx_lm.generate --model ConwayResearch/Underdog-27B-1.0 --prompt \"Hello\""],
+      },
+      notes: [
+        "The Underdog app is invite-only for now.",
+        "An independent guide by @copilot_shogo. Not affiliated with Underdog.",
+      ],
+    },
+  },
+  {
     number: 18,
     slug: "18-pickle",
     title: "Pickle: a personal AI you raise, with AI friends",
