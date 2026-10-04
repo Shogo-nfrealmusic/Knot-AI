@@ -114,6 +114,48 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 20,
+    slug: "20-strix",
+    title: "Strix: open-source AI that pentests your own app",
+    description:
+      "Strix is a team of autonomous AI agents that test your app like real hackers: they run your code, find vulnerabilities and prove them with working exploits. The same kind of tool attackers now use, pointed at your own code. How it works and how to run it. An independent guide.",
+    date: "2026-10-04",
+    keyword: "STRIX",
+    tools: [
+      {
+        name: "Strix",
+        what: "Open-source (Apache-2.0) AI penetration-testing agents. Run your code dynamically, find and validate vulnerabilities with real proof-of-concepts, and get remediation guidance. 66k+ GitHub stars.",
+        href: "https://github.com/usestrix/strix",
+        icon: "shield",
+      },
+    ],
+    about: {
+      intro: [
+        "In the AI era, attackers have autonomous agents too. In September 2026 a single operator ran open-source AI agents (one of them Strix) against online retailers, compromising at least 27 companies in under a week and taking 600,000+ card records (Gambit Security). The defensive move is to run the same kind of tool against your own app first.",
+      ],
+      steps: [
+        { title: "AI hackers, on your code", text: "Strix agents act just like real hackers: reconnaissance, exploitation and validation out of the box. Findings come with a working proof-of-concept, not a false positive." },
+        { title: "Real exploit in the demo", text: "In Strix's own demo it finds a business-logic bug that lets a shopper place an order with a negative total (−$149.90), confirms it, and writes a CVSS-scored vulnerability report." },
+        { title: "Fix and gate your PRs", text: "It gives remediation guidance, and the open-source tool runs in GitHub Actions on every pull request (with your own LLM key) to block insecure code before it ships. One-click autofix PRs are a Strix Cloud feature." },
+        { title: "Run it yourself", text: "Needs Docker and an LLM API key (OpenAI, Anthropic, Google, etc.). Strix Cloud needs neither." },
+      ],
+      altInstall: {
+        label: "Install & first scan · needs Docker + an LLM key",
+        commands: [
+          "curl -sSL https://strix.ai/install | bash",
+          "export STRIX_LLM=\"openai/gpt-5\"",
+          "export LLM_API_KEY=\"your-api-key\"",
+          "strix --target ./app-directory",
+        ],
+      },
+      notes: [
+        "Only ever run Strix against systems you own or are explicitly authorized to test. Unauthorized testing is illegal.",
+        "Star count and the attacker-campaign figures are as of early October 2026.",
+        "An independent guide by @copilot_shogo. Not affiliated with Strix.",
+      ],
+    },
+  },
+  {
     number: 19,
     slug: "19-underdog",
     title: "Underdog: a private AI that runs on your own Mac",
