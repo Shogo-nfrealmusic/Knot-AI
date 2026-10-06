@@ -114,6 +114,58 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 24,
+    slug: "24-cua-spaces",
+    title: "Cua Spaces: give your AI agent its own computer",
+    description:
+      "Cua Spaces gives AI agents like Claude Code, Codex, Cursor and Gemini CLI their own desktop: a macOS VM (or Linux container) running on your Mac. You share the screen with your own cursor and can step in anytime. What it does, what it needs, and how to start. An independent guide.",
+    date: "2026-10-07",
+    keyword: "SPACE",
+    tools: [
+      {
+        name: "Cua Spaces",
+        what: "By Cua (YC). Gives AI agents (Claude Code, Codex, Cursor, Gemini CLI and others, via the Cua MCP server) their own desktop: a macOS VM (or Linux container) running on your Mac. Free on your own machines.",
+        href: "https://spaces.cua.ai",
+        icon: "robot",
+      },
+      {
+        name: "Cua on GitHub",
+        what: "The Cua repository (trycua/cua). Spaces is source-available under FSL-1.1-MIT.",
+        href: "https://github.com/trycua/cua",
+        icon: "plug",
+      },
+    ],
+    tip: {
+      before: "From our own test: in Claude Code, a project-scoped .mcp.json pointing at",
+      command: "cua mcp --sandbox <name>",
+      after: "keeps your global config untouched.",
+    },
+    about: {
+      intro: [
+        "Your agent gets a computer of its own instead of yours. It works in a separate desktop on your Mac, and you can watch and take over at any point.",
+      ],
+      steps: [
+        { title: "Share the screen", text: "You and your agent each have your own cursor in the Space. Step in anytime, then hand it back." },
+        { title: "Teleport", text: "Moves a signed-in app session (Chrome, Slack, Notion, VS Code, Claude Code…) into the Space. Nothing is read until you approve, and sensitive items need Touch ID." },
+        { title: "More Spaces", text: "Add a spare Mac you own (e.g. a Mac mini) as a host for more Spaces. Max 2 macOS VMs per Mac (Apple's license)." },
+        { title: "How to start", text: "Download from spaces.cua.ai → turn telemetry off in Welcome → create a Space (the macOS 26-slim image is a large download) → let the installer connect your agent (Claude Code etc.) through the Cua MCP server." },
+      ],
+      notes: [
+        "Needs a Mac with macOS 26 or later. macOS Spaces need Apple silicon; Linux Spaces run via Docker or Podman.",
+        "Early software (v0.7). Start with things you don't mind the agent touching.",
+        [
+          "Anonymous usage telemetry is on by default. Turn it off in Settings, with ",
+          { code: "cua telemetry off" },
+          ", or with ",
+          { code: "DO_NOT_TRACK=1" },
+          ".",
+        ],
+        "Free on your own machines. The hosted relay is free during early access; cloud Spaces are billed by your cloud provider.",
+        "An independent guide by @copilot_shogo. Not affiliated with Cua.",
+      ],
+    },
+  },
+  {
     number: 20,
     slug: "20-strix",
     title: "Strix: open-source AI that pentests your own app",
