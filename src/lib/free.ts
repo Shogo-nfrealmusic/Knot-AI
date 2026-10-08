@@ -114,6 +114,58 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 26,
+    slug: "26-prompt-motion",
+    title: "Prompt Motion: 230+ Claude motion videos, each with its prompt",
+    description:
+      "Prompt Motion is a free gallery of motion videos made with Claude Opus 5.5. Every video shows the full prompt (or skill) behind it, with a Copy button, credited to the creator who posted it on X. The three pieces from the reel, and how to use a prompt. An independent guide.",
+    date: "2026-10-09",
+    keyword: "MOTION",
+    tools: [
+      {
+        name: "Prompt Motion",
+        what: "The gallery: 232 videos as of Oct 9, 2026, every one with its full prompt and a Copy button. No login, no paywall. Curated by @p4nthera_.",
+        href: "https://www.prompt-motion.com",
+        icon: "palette",
+      },
+      {
+        name: "Shape morphing through UI states",
+        what: "By @twoclipping. One shape that never cuts, morphing through a dozen UI states. The prompt this reel was built from.",
+        href: "https://www.prompt-motion.com/twoclipping-5cba86",
+        icon: "wand",
+      },
+      {
+        name: "Photo print app launch film",
+        what: "By @twoclipping. A one-take launch film: wordmark, photos, liquid-glass UI, a framed print on a wall.",
+        href: "https://www.prompt-motion.com/twoclipping-221cab",
+        icon: "browser",
+      },
+      {
+        name: "Jev engineering showreel",
+        what: "By @polydao. A pitch-deck style explainer that animates itself.",
+        href: "https://www.prompt-motion.com/polydao-7a572b",
+        icon: "notebook",
+      },
+    ],
+    about: {
+      intro: [
+        "Find a video you like, open it, copy the prompt, and start from that style instead of a blank page.",
+      ],
+      steps: [
+        { title: "Pick one", text: "Browse the grid (filter by Prompt or Skill). Each card plays a preview." },
+        { title: "Open it", text: "The page shows the creator, the full prompt (\"Show all\" expands it), and, for some, the model and stack used." },
+        { title: "Copy and paste", text: "Hit Copy and paste it into Claude. Many prompts start by asking you for inputs (your states, colours, a song) before writing any code." },
+        { title: "Make it yours", text: "Change the content, keep the motion rules. This reel used the shape-morph prompt's rules: one shape, closed-form springs, a cursor driving every change, last frame = first frame." },
+      ],
+      notes: [
+        "All videos list Claude Opus 5.5 as the model. The stack is listed on some pages only (Remotion, HyperFrames, HTML and others).",
+        "The videos belong to their creators. Prompt Motion collects them from posts on X and credits each one; you can suggest a post, reviewed by hand.",
+        "The address is prompt-motion.com (with a hyphen). A different site with a similar name is not the same project.",
+        "An independent guide by @copilot_shogo. Not affiliated with Prompt Motion or the creators.",
+      ],
+    },
+  },
+  {
     number: 24,
     slug: "24-cua-spaces",
     title: "Cua Spaces: give your AI agent its own computer",
