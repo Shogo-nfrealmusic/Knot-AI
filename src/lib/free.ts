@@ -166,6 +166,52 @@ const drops: FreeDrop[] = [
     },
   },
   {
+    number: 25,
+    slug: "25-monid",
+    title: "Monid: one connection to 2,400+ paid tools for your AI agent",
+    description:
+      "Monid calls itself the OpenRouter for agent tools: your agent connects once and can discover, run and pay per use for about 2,400 endpoints from 87 providers (search, sales leads, SEO, social data, image and video generation, email and phone). How to connect it, what it costs, and what to watch out for. An independent guide.",
+    date: "2026-10-08",
+    keyword: "MONID",
+    tools: [
+      {
+        name: "Monid",
+        what: "monid.ai. One prepaid balance, pay per use, no subscriptions; Monid adds 10% on top of the provider price. Starts with $1 of free credit, no card. 2,442 endpoints from 87 providers on Oct 8, 2026.",
+        href: "https://monid.ai",
+        icon: "plug",
+        install: ["claude mcp add --transport http monid https://mcp.monid.ai/v1"],
+        note: "Then run /mcp in Claude Code, select monid and authenticate.",
+      },
+      {
+        name: "Monid docs",
+        what: "Other ways to connect: a Skill (tell your agent \"set up https://monid.ai/SKILL.md\"), the CLI (npm install -g @monid-ai/cli), the REST API, and Codex / ChatGPT / Claude.ai connectors.",
+        href: "https://monid.ai/docs",
+        icon: "file",
+      },
+      {
+        name: "Monid on GitHub",
+        what: "The open-source connector layer (MIT). \"OpenRouter, but for agent tools.\"",
+        href: "https://github.com/monid-ai/monid",
+        icon: "cpu",
+      },
+    ],
+    about: {
+      intro: ["Instead of signing up for a dozen APIs, your agent finds the right tool while it works, runs it, and pays per use from one balance."],
+      steps: [
+        { title: "Discover", text: "The agent searches the catalog for a tool that fits the task. Free." },
+        { title: "Inspect", text: "It reads the tool's inputs and price before running. Free." },
+        { title: "Run", text: "It runs the tool and the cost comes off your balance. Failed provider calls are not charged." },
+      ],
+      notes: [
+        "Prices are per call, per result or per unit (e.g. per second of a phone call), and they change. A few items renew: a phone number is $2/month until released.",
+        "Your balance can go negative. Start small and watch your usage; a public spending-limit setting was not found in the docs.",
+        "Tools are third-party providers that Monid brokers; some are web scrapers, so each platform's terms are your responsibility.",
+        "Monid has raised $7.7M (pre-seed + seed), led by Long Journey Ventures with Madrona and 1984 Ventures, per the company's launch video.",
+        "An independent guide by @copilot_shogo. Not affiliated with Monid.",
+      ],
+    },
+  },
+  {
     number: 24,
     slug: "24-cua-spaces",
     title: "Cua Spaces: give your AI agent its own computer",
@@ -214,6 +260,85 @@ const drops: FreeDrop[] = [
         ],
         "Free on your own machines. The hosted relay is free during early access; cloud Spaces are billed by your cloud provider.",
         "An independent guide by @copilot_shogo. Not affiliated with Cua.",
+      ],
+    },
+  },
+  {
+    number: 23,
+    slug: "23-auday",
+    title: "Auday: turn your Apple Watch into an all-day AI recorder",
+    description:
+      "Auday records audio on your Apple Watch, transcribes and searches it on your iPhone, and links what you said to your heart rate, stress estimate and places. No servers; AI features use your own API key. Price, what it can and can't do, and privacy notes. An independent guide.",
+    date: "2026-10-06",
+    keyword: "WATCH",
+    tools: [
+      {
+        name: "Auday on the App Store",
+        what: "One-time purchase, no subscription: $9.99 launch price in the US (¥1,500 in Japan) on Oct 6, 2026; regular price $19.80. Needs iOS 18+ and an Apple Watch with watchOS 11+.",
+        href: "https://apps.apple.com/us/app/auday-all-day-watch-recorder/id6814210373",
+        icon: "event",
+      },
+      {
+        name: "auday.ai",
+        what: "The official site and FAQ: how recording, sync, stress estimates, storage and privacy work.",
+        href: "https://auday.ai",
+        icon: "browser",
+      },
+    ],
+    about: {
+      intro: ["Your Watch records; your iPhone transcribes, indexes and searches it locally. Ask what you were talking about when your heart raced."],
+      steps: [
+        { title: "Record", text: "Start recording on the Watch. Tap to mark a moment you want the AI to pay attention to." },
+        { title: "Sync and transcribe", text: "Recordings sync to the iPhone about every 15 minutes and are transcribed there (not live, word by word)." },
+        { title: "Look back", text: "A timeline of conversations, highlights, body and places; search by meaning; a daily reflection; chat with citations back to the original words." },
+        { title: "Connect AI", text: "Summaries, highlights and chat use a provider you choose with your own API key." },
+      ],
+      notes: [
+        "Transcription is Chinese and English only for now, with no speaker separation.",
+        "Stress is an on-device estimate from heart rate and HRV against your own baseline. Not a live monitor and not clinically validated.",
+        "Battery: in one team test, a Series 11 (GPS) recorded 12.5 hours and went from 100% to 49%. Not a guaranteed runtime.",
+        "Privacy: original audio stays on your devices and there are no Auday servers, but text and context go to the AI provider you configure, and your own key does not guarantee zero retention. There is no backup: the archive is excluded from iCloud.",
+        "Recording people may require their consent where you live.",
+        "Made by an independent developer (BaiFu / GUO HANGJIANG), also the creator of MiroFish and BettaFish on GitHub. An independent guide by @copilot_shogo; not affiliated with Auday.",
+      ],
+    },
+  },
+  {
+    number: 22,
+    slug: "22-dreamwork",
+    title: "Dreamwork: an AI that tailors and submits your job applications",
+    description:
+      "Dreamwork scans company career pages every day, writes a tailored resume, cover letter and answers for each role, fills out the application and submits it, with your approval or on autopilot. It also has an MCP server so you can run it from Claude. Plans and what to check before you turn on autopilot. An independent guide.",
+    date: "2026-10-05",
+    keyword: "DREAMWORK",
+    tools: [
+      {
+        name: "Dreamwork",
+        what: "Upload one resume to start. Free plan; Pro $33/mo (50 Autopilot applications a month) and Dreamer $126/mo (300) as of Oct 5, 2026.",
+        href: "https://dreamworkhq.com",
+        icon: "robot",
+      },
+      {
+        name: "Dreamwork MCP server",
+        what: "Run your job search from inside Claude or another MCP client.",
+        href: "https://dreamworkhq.com",
+        icon: "plug",
+        note: "Add it as an MCP server in your client's config with the command: npx -y @dreamworkhq/mcp",
+      },
+    ],
+    about: {
+      intro: ["You upload one resume; it finds roles, writes the application for each one and submits it. Recruiter replies come back to one inbox."],
+      steps: [
+        { title: "Upload a resume", text: "One resume is the starting point for every tailored version." },
+        { title: "Matching", text: "It crawls company career sites daily. The site lists more than 1.4 million active roles, including companies like Anthropic, NVIDIA and Stripe." },
+        { title: "Tailor and apply", text: "For each role it writes a tailored resume, cover letter and answers, then fills out the employer's form." },
+        { title: "Approve or autopilot", text: "Approve applications one by one, or turn on Autopilot within your plan's monthly limit." },
+      ],
+      notes: [
+        "Read what it sends before turning on Autopilot: everything goes out under your name.",
+        "Built by Colin Johnson (co-founder and CEO, previously at Apple and American Express) and Ben Adamsky (co-founder and CTO, a two-time founder); company Ponder Labs, Inc.",
+        "Plans and limits change; check the site for current pricing.",
+        "An independent guide by @copilot_shogo. Not affiliated with Dreamwork.",
       ],
     },
   },
