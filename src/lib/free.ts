@@ -114,6 +114,122 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 27,
+    slug: "27-claude-video-edit",
+    title: "Edit a cinematic reel with Claude: the workflow, the tools, and 10 prompt rules for AI shots",
+    description:
+      "Claude can edit video. This reel was cut, colored, timed to the beat and sound-designed by Claude Opus 5.5 in Claude Code, with Higgsfield and ElevenLabs connected for the shots and sounds my footage didn't have. The workflow step by step, a prompt template, and 10 rules for camera angle, light, speed, water and people that make AI shots blend into real footage.",
+    date: "2026-10-10",
+    keyword: "EDIT",
+    tools: [
+      {
+        name: "Claude Code (Opus 5.5)",
+        what: "Does the editing: reads every clip in a folder, finds the beats in the music, cuts, colors and renders with ffmpeg. You give notes like you would to an editor.",
+        href: "https://claude.com/claude-code",
+        icon: "scissors",
+      },
+      {
+        name: "Higgsfield",
+        what: "Generates the shots you couldn't film (night aerials, a skyline penthouse, car inserts). Connect it to Claude and Claude writes the prompts and pulls the clips in. Models used: Seedance 2.5, Kling 3, Veo 3.1.",
+        href: "https://higgsfield.ai?fpr=shogo-3d2023",
+        icon: "wand",
+        note: "Affiliate link.",
+      },
+      {
+        name: "ElevenLabs",
+        what: "Sound effects and music from a text prompt: keystrokes, an engine rev, a low hit on a beat. Connect it to Claude and it places each sound on the exact frame.",
+        href: "https://try.elevenlabs.io/xf5rkcdkc5ar",
+        icon: "plug",
+        note: "Affiliate link.",
+      },
+    ],
+    about: {
+      intro: [
+        "Most people don't know Claude can edit video. You hand it your footage and a reference, it does the cutting, the color and the timing, and you give notes. Below is exactly how this reel was made, and the prompt rules that made the AI shots look like they came from my phone.",
+      ],
+      steps: [
+        { title: "Connect the tools", text: "In Claude, connect Higgsfield and ElevenLabs as connectors. Claude Code also needs ffmpeg installed; it does all the cutting and color with it." },
+        { title: "Give it your footage and a reference", text: "Point Claude Code at your clips folder and a reel whose pace you want. It makes a contact sheet of every clip (4 frames each; I had 348 clips) and catalogs what's in each: subject, light, camera move, and a 1-5 quality score." },
+        { title: "Show it your past edits", text: "Give it 5 to 10 videos you've already posted. Claude matches them against the raw clips frame by frame, so it knows which clips and which exact moments you actually use (the top of a squat, not the walk to the bar)." },
+        { title: "Let it find the beat", text: "Claude measures where the music hits, to 0.01s, and puts every cut on one. Big hits get a one-frame flash or a quick zoom punch; the cut lands on the hit, not inside the shot." },
+        { title: "Match your color, don't invent one", text: "Instead of a \"cinematic\" preset, Claude measures your grade from your past edits (same clip, raw vs posted) and applies it, plus a per-shot white balance so snow is white and red lights stay red." },
+        { title: "Fill the gaps with AI shots", text: "For shots you can't film, Claude prompts Higgsfield (rules below), checks each result frame by frame, keeps the cleanest 0.3 to 0.6 seconds and grades it like your footage." },
+        { title: "Add sound last, and little", text: "ElevenLabs makes the sounds. Keep only the ones that match a picture one-to-one, like an engine rev on the pedal shot. Ten different effects made it worse; two made it better." },
+        { title: "Score every version", text: "Give each version a score and say what's wrong. This reel took about 20 versions. The big jumps came from replacing weak shots, not from adding effects." },
+      ],
+      runAll: {
+        title: "The prompt template",
+        items: [
+          {
+            text: ["Write every AI shot in this order. One subject, one action, one camera move:"],
+            command: "[shot size + angle], [subject + action], [place + time], [light: source, direction, color], [camera move + speed], [look: e.g. realistic iPhone night footage, natural colors, deep blacks], no people / seen from behind, no text, no logos, no license plate",
+          },
+          {
+            text: ["A real one from this reel (Higgsfield, Seedance 2.5, 1:1, 4s):"],
+            command: "Empty luxury private gym on a high floor at night, black squat racks, floor-to-ceiling windows overlooking the city lights of Tokyo, dim warm downlights, slow smooth dolly forward between the racks. Realistic iPhone night footage, natural colors, slightly dark. No text, no logos, no people.",
+          },
+        ],
+      },
+      checks: [
+        {
+          title: "Name the angle",
+          why: ["The angle sets the feeling more than the subject. Low angle = power (cars, a barbell), eye level = documentary, high or aerial = scale. If you don't say it, you get a flat eye-level shot."],
+          how: ["Use camera words: \"low rear three-quarter\", \"top-down\", \"from the back of the arena\", \"aerial drone, slowly flying toward\"."],
+        },
+        {
+          title: "Name the light source and its direction",
+          why: ["\"Cinematic lighting\" means nothing to the model. A named source gives you shadows and contrast that match real footage."],
+          how: ["\"Single hard overhead spotlight\", \"backlit by the city skyline\", \"warm cabin windows\", \"one streetlight behind him\"."],
+        },
+        {
+          title: "Add something that reflects",
+          why: ["Reflections are the cheapest way to get depth and a premium look: highlights double, blacks stay black."],
+          how: ["\"Wet asphalt\", \"light rain\", \"puddles reflecting neon\", \"thin haze in the air\", \"glass floor-to-ceiling windows\"."],
+        },
+        {
+          title: "Describe speed in real terms, then retime in the edit",
+          why: ["Fast action in 4 to 5 seconds smears and warps. Movement rendered at a normal pace looks real, and you can speed it up afterwards."],
+          how: ["Ask for the motion plainly (\"the tachometer needle sweeps from idle to the redline\", \"the rotor starts spinning faster\"), then speed it up 2x to 8x in the edit. For dust, water or steam, add \"slow motion\"."],
+        },
+        {
+          title: "Pick the moment before water and particles break",
+          why: ["Waves, chalk dust, steam and smoke look right for about a second, then start to melt or loop."],
+          how: ["Watch at quarter speed and use the 0.3 to 0.6 seconds right after the burst or the crash, before the shape goes soft. Close, dark waves hold up better than wide bright ones."],
+        },
+        {
+          title: "One camera move per shot",
+          why: ["Two moves in one prompt (push in and orbit) is where buildings bend and wheels wobble."],
+          how: ["Pick one: \"slow push-in\", \"tracking alongside\", \"static locked-off\". Add any extra push or zoom in the edit."],
+        },
+        {
+          title: "Keep faces and hands out",
+          why: ["Faces and close-up hands are where viewers spot AI first, and they won't look like you."],
+          how: ["\"Seen from behind\", \"silhouette\", \"no people\". If a face still shows up (it did in my arena shot), crop it out or don't use the shot."],
+        },
+        {
+          title: "Ask for your footage's look, not a film look",
+          why: ["A shot that looks better than the rest of your video stands out as much as a bad one."],
+          how: ["If you shoot on a phone: \"realistic iPhone night footage, natural colors, slightly underexposed, subtle noise\". Save \"ARRI, anamorphic\" for when your own footage is like that."],
+        },
+        {
+          title: "Exclude text, logos and plates, then check anyway",
+          why: ["Models invent signs, logos and fake license plates, which look wrong and can be a problem."],
+          how: ["Add \"no text, no logos, no license plate, no registration numbers\". Still check every frame; one car shot came back with a plate and had to be covered."],
+        },
+        {
+          title: "Generate in your final aspect ratio",
+          why: ["Cropping a 16:9 shot to a square throws away the subject and the composition."],
+          how: ["Set 1:1 or 9:16 in the generator to match the post, and put the subject in the center of frame in the prompt."],
+        },
+      ],
+      notes: [
+        "Sound prompts (ElevenLabs) work the same way: the sound, the perspective and the length, e.g. \"Porsche flat-six engine rev from idle to high rpm, interior perspective, 1.5 seconds\". Place the loudest moment on the cut.",
+        "The Higgsfield and ElevenLabs links above are affiliate links: if you sign up through them, I may earn a commission at no extra cost to you. I only list tools I used for this video.",
+        "An independent guide by @copilot_shogo. Not affiliated with Anthropic, Higgsfield or ElevenLabs.",
+      ],
+    },
+  },
+  {
     number: 26,
     slug: "26-prompt-motion",
     title: "Prompt Motion: 230+ Claude motion videos, each with its prompt",
