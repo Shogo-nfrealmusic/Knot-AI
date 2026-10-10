@@ -92,8 +92,9 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
               ))}
             </ul>
             {drop.tip ? <DropTip tip={drop.tip} /> : null}
+            {drop.breakdown && drop.about ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}
             {drop.about ? <DropAboutBlock about={drop.about} /> : null}
-            {drop.breakdown ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}
+            {drop.breakdown && !drop.about ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}
           </>
         )}
       </GridSection>

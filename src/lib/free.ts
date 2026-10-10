@@ -118,35 +118,102 @@ const drops: FreeDrop[] = [
     slug: "28-ai-influencer",
     title: "Make your own AI influencer in two steps",
     description:
-      "The AI influencers in your feed are pulling tens of millions of views. Here is how I made my own with Higgsfield: design a character in AI Influencer, then give it a dance video so it copies every move. Settings I used, costs, and what to watch out for. An independent guide.",
+      "The AI influencers in your feed are pulling tens of millions of views. This is exactly how I made my own with Higgsfield: the traits I picked, the dance video, the model and prompt, what every step cost, and the rules to follow before you post. An independent guide.",
     date: "2026-10-11",
     keyword: "INFLUENCER",
     tools: [
       {
         name: "Higgsfield AI Influencer",
-        what: "Builds a character sheet (face close-up + full body) from traits you pick: hairstyle, nose, height, proportions, outfit style and more. Launched Oct 2, 2026. About 1.12 credits per sheet; our 8 sheets came back in under a minute.",
+        what: "Step 1. Pick traits (hair, nose, height, outfit…) and it returns a character sheet: a face close-up and a full-body shot of the same person. Launched Oct 2, 2026. 1.12 credits per sheet; you can make 1 to 4 at once.",
         href: "https://higgsfield.ai/ai-influencer",
         icon: "robot",
       },
       {
         name: "Higgsfield Genjutsu",
-        what: "Moves a character through someone else's motion: give it a dance video (up to 30 seconds) and your character sheet, and it keeps the moves, camera and timing.",
+        what: "Step 2 (option A). Give it a dance video (up to 30 seconds) and your character sheet; it keeps the moves, camera and timing and swaps in your character. Up to 1080p.",
         href: "https://higgsfield.ai/genjutsu",
         icon: "wand",
       },
+      {
+        name: "Seedance 2.5 on Higgsfield",
+        what: "Step 2 (option B, what I used for the final). Same idea with the sheet and the dance video as references; has a cheap 480p draft you can upgrade to 1080p.",
+        href: "https://higgsfield.ai",
+        icon: "cpu",
+      },
     ],
-    about: {
-      intro: ["Step 1 designs the look, step 2 brings it to life with a dance video."],
-      steps: [
-        { title: "Pick weird traits", text: "The viral ones share a silhouette you can read from far away. I used the Bold tier: wing-shaped bob, giant nose, very tall, long limbs, a vintage tweed suit. Generate 4 sheets at once and keep the best." },
-        { title: "Give it a dance video", text: "Use a clip where the full body is in frame and the background is simple. Trim it to the moves you want (I used 12 seconds); shorter is cheaper." },
-        { title: "Draft first, then finalize", text: "I used Seedance 2.5 with the sheet and the dance video as references. A 480p draft cost 36 credits; the 1080p final of the same draft cost 144. Check the motion in the draft before paying for the final." },
-        { title: "Post it", text: "Label it as AI-generated on Instagram and TikTok." },
+    breakdown: {
+      tldr: [
+        ["Characters with a strange, readable silhouette (wild hair, big features, vintage suits) are getting tens of millions of views by dancing to trending moves."],
+        ["You can make one in two steps: design it in ", { text: "Higgsfield AI Influencer", href: "https://higgsfield.ai/ai-influencer" }, ", then give it a dance video."],
+        ["Mine cost about 195 credits in total: 12 character sheets, one 480p draft and one 1080p final. Most of that is the 1080p video."],
+        ["Use a dance clip you are allowed to use, and label the post as AI-generated."],
+      ],
+      sections: [
+        {
+          title: "The trend",
+          unit: { one: "account", many: "accounts" },
+          items: [
+            {
+              name: "@jean_philanthrope",
+              what: ["Blonde bob, curled moustache, tweed suit, dancing in the street. First Instagram post Sep 17, 2026; 12 posts and about 243K followers by Oct 11; his most-played video is at about 37 million plays."],
+              whoLabel: "Is it AI?",
+              who: ["Widely reported as an AI character. The account itself has not said so, so I don't state it as fact."],
+            },
+            {
+              name: "@abu.shalab",
+              what: ["White thobe, black bob, big moustache, dancing on a stage. One TikTok (Sep 25) is at about 26.6 million views."],
+            },
+            {
+              name: "@miltonbumford",
+              what: ["Red bowl cut, round glasses, tweed suit. One Instagram reel (Sep 28) is at about 7.5 million plays. His bio says the account is AI and made with Higgsfield."],
+            },
+          ],
+        },
+        {
+          title: "What I paid",
+          unit: { one: "item", many: "items" },
+          items: [
+            { name: "Character sheets", what: ["12 sheets × 1.12 = about 13.4 credits (4 that missed, 8 for the final pick)."] },
+            { name: "480p draft (12 s)", what: ["36 credits. Enough to check that the moves transfer."] },
+            { name: "1080p final (12 s, high bitrate)", what: ["144 credits. Only after the draft looked right."] },
+            { name: "For comparison: Genjutsu (12 s)", what: ["84 credits for one 12-second motion transfer."] },
+          ],
+        },
       ],
       notes: [
-        "Use a dance video you have the rights to (your own is best). Higgsfield's terms require permission for other people's likeness and work.",
-        "Credit costs are as of Oct 11, 2026 and change.",
-        "Clips in the reel: @jean_philanthrope, @abu.shalab, @miltonbumford, credited to their creators.",
+        "Credit prices and the free allowance are as of Oct 11, 2026 and can change. New accounts got 5 free AI Influencer sheets (as of Oct 3).",
+        "View and follower counts were checked on Oct 11, 2026 (JST) and are rounded.",
+      ],
+      sources: [
+        { text: "Higgsfield AI Influencer", href: "https://higgsfield.ai/ai-influencer" },
+        { text: "Higgsfield Genjutsu", href: "https://higgsfield.ai/genjutsu" },
+        { text: "@jean_philanthrope on Instagram", href: "https://www.instagram.com/jean_philanthrope/" },
+        { text: "@miltonbumford on Instagram", href: "https://www.instagram.com/miltonbumford/" },
+        { text: "@abu.shalab on TikTok", href: "https://www.tiktok.com/@abu.shalab" },
+      ],
+    },
+    about: {
+      intro: ["The exact steps I took for the character in the reel. Step 1 is the look; step 2 makes it move."],
+      steps: [
+        { title: "Open AI Influencer and pick a tier", text: "There are three human tiers (Normal, Bold, Total) plus animals (cats, dogs, frogs, birds…). Bold unlocks the strange options. I used Bold." },
+        { title: "Pick traits that read from far away", text: "The viral ones are recognisable from their silhouette alone. Mine: Hair wings (a bob whose sides flare out), platinum blonde, very tall, slim build, long limbs, long head and neck, close-set eyes, a big potato nose, brush brows, a pencil moustache, Suits style. You can also add a one-line description; mine asked for a vintage brown houndstooth tweed suit and striped tie." },
+        { title: "Make 4 sheets at once and compare", text: "Each sheet is a face close-up next to a full-body shot. My first batch (soft-serve swirl hair) looked like a costume, not a character, so I changed the hair, nose and height and ran 4 more of two hair types. I picked one with wide wing hair." },
+        { title: "Get a dance video", text: "Full body in frame, camera mostly still, simple background, 10 to 15 seconds. Trim it to the best moves; you pay per second. Use your own clip or one you have the rights to." },
+        { title: "Run a 480p draft", text: "In Seedance 2.5 I set the mode to reference, attached the character sheet and the dance video, 9:16, 12 seconds, draft on, sound off. The prompt is below. Check the moves, the hair shape and the face before spending more." },
+        { title: "Finalize at 1080p", text: "Upgrade the same draft to 1080p (high bitrate). The motion stays the same, the detail goes up." },
+        { title: "Edit and post", text: "Cut it to the beat, add your caption, and turn on the AI label on Instagram (AI info) and TikTok (AI-generated)." },
+      ],
+      example: {
+        question: "The prompt I used for the dance video (Seedance 2.5, reference mode, with the character sheet + the dance clip attached)",
+        output:
+          "Recreate the reference video exactly: same shadow-boxing dance moves, same timing,\nsame handheld camera framing, same sunny city sidewalk with apartment buildings and\ncrosswalk. Replace the dancer with the character from the reference image: an extremely\ntall, lanky man with a huge platinum blonde bob whose sides flare out wide and flat like\nstiff wings, dark center roots, bushy brows, pale grey eyes, a very large bulbous nose,\nthin pencil moustache and small chin tuft, brown houndstooth double-breasted suit, white\nshirt, brown striped tie, brown suede loafers. Photorealistic, natural daylight, sharp detail.",
+        source: "Swap the character description for yours. Describe the outfit in detail; the model holds it better.",
+      },
+      notes: [
+        "Rights: Higgsfield's terms say you need permission for other people's likeness and work you put in. Your own dance clip is the safest.",
+        "Hair shapes can shrink in motion (my wings came out a bit smaller than on the sheet). Exaggerate the trait in the description.",
+        "Keep the outfit simple to describe; busy patterns flicker more.",
+        "Clips in the reel are credited to @jean_philanthrope, @abu.shalab and @miltonbumford.",
         "An independent guide by @copilot_shogo. Not affiliated with Higgsfield.",
       ],
     },
