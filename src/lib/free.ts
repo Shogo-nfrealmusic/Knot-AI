@@ -114,6 +114,44 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 28,
+    slug: "28-ai-influencer",
+    title: "Make your own AI influencer in two steps",
+    description:
+      "The AI influencers in your feed are pulling tens of millions of views. Here is how I made my own with Higgsfield: design a character in AI Influencer, then give it a dance video so it copies every move. Settings I used, costs, and what to watch out for. An independent guide.",
+    date: "2026-10-11",
+    keyword: "INFLUENCER",
+    tools: [
+      {
+        name: "Higgsfield AI Influencer",
+        what: "Builds a character sheet (face close-up + full body) from traits you pick: hairstyle, nose, height, proportions, outfit style and more. Launched Oct 2, 2026. About 1.12 credits per sheet; our 8 sheets came back in under a minute.",
+        href: "https://higgsfield.ai/ai-influencer",
+        icon: "robot",
+      },
+      {
+        name: "Higgsfield Genjutsu",
+        what: "Moves a character through someone else's motion: give it a dance video (up to 30 seconds) and your character sheet, and it keeps the moves, camera and timing.",
+        href: "https://higgsfield.ai/genjutsu",
+        icon: "wand",
+      },
+    ],
+    about: {
+      intro: ["Step 1 designs the look, step 2 brings it to life with a dance video."],
+      steps: [
+        { title: "Pick weird traits", text: "The viral ones share a silhouette you can read from far away. I used the Bold tier: wing-shaped bob, giant nose, very tall, long limbs, a vintage tweed suit. Generate 4 sheets at once and keep the best." },
+        { title: "Give it a dance video", text: "Use a clip where the full body is in frame and the background is simple. Trim it to the moves you want (I used 12 seconds); shorter is cheaper." },
+        { title: "Draft first, then finalize", text: "I used Seedance 2.5 with the sheet and the dance video as references. A 480p draft cost 36 credits; the 1080p final of the same draft cost 144. Check the motion in the draft before paying for the final." },
+        { title: "Post it", text: "Label it as AI-generated on Instagram and TikTok." },
+      ],
+      notes: [
+        "Use a dance video you have the rights to (your own is best). Higgsfield's terms require permission for other people's likeness and work.",
+        "Credit costs are as of Oct 11, 2026 and change.",
+        "Clips in the reel: @jean_philanthrope, @abu.shalab, @miltonbumford, credited to their creators.",
+        "An independent guide by @copilot_shogo. Not affiliated with Higgsfield.",
+      ],
+    },
+  },
+  {
     number: 27,
     slug: "27-claude-video-edit",
     title: "Edit a cinematic reel with Claude: the workflow, the tools, and 10 prompt rules for AI shots",
