@@ -134,9 +134,9 @@ export default function Measured() {
           Measured, not guessed
         </h2>
         <p className="mt-3 max-w-xl text-pretty text-base text-neutral-500 sm:text-lg">
-          Every step of the booking funnel is instrumented — which is how a 39%
-          drop-off between picking a date and picking a time showed up, and got
-          fixed.
+          Every step of the booking funnel is instrumented — which is how it showed
+          up that only 39% of visitors who picked a date went on to pick a
+          time, and got fixed.
         </p>
         <div className="mt-8">
           <a

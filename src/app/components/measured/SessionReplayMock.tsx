@@ -50,7 +50,7 @@ export default function SessionReplayMock({ animate = true }: { animate?: boolea
 
           <div className="mt-3 flex flex-wrap gap-2 text-xs">
             <span className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white py-1 pl-2.5 pr-1.5 text-neutral-600">
-              Drop-off: date → time · 39%
+              Date → time: 39% continue
               <Switch tone="bg-violet-600" />
             </span>
             <span className="flex items-center gap-2 rounded-full border border-neutral-200 bg-white py-1 pl-2.5 pr-1.5 text-neutral-600">

@@ -1,6 +1,6 @@
 import { IconBulb, IconInfoCircle, IconLink } from "@tabler/icons-react";
 import FigureZoom from "@/app/components/blog/FigureZoom";
-import { slugifyHeading, type BlogBlock, type BlogCategory } from "@/lib/blog";
+import { slugifyHeading, type BlogBlock, type BlogCategory, type CodeLanguage } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 
 // Minimal highlighter in the site's min-light code colors (see StackTabs).
@@ -11,15 +11,33 @@ const COLORS = {
   fn: "#6F42C1",
 };
 
-const KEYWORDS: Record<"go" | "python" | "ts", string[]> = {
+const TS_KEYWORDS = ["const", "let", "function", "return", "import", "from", "export", "await", "async", "if"];
+
+const KEYWORDS: Record<CodeLanguage, string[]> = {
   go: ["func", "return", "package", "import", "var", "const", "type", "struct", "if", "for", "range"],
   python: ["def", "for", "in", "return", "import", "from", "if", "else", "class"],
-  ts: ["const", "let", "function", "return", "import", "from", "export", "await", "async", "if"],
+  ts: TS_KEYWORDS,
+  tsx: TS_KEYWORDS,
+  sql: ["select", "from", "where", "join", "on", "group", "by", "order", "as", "and", "or", "with", "create", "view", "case", "when", "then", "else", "end"],
+  bash: ["if", "then", "else", "fi", "for", "do", "done", "while", "exit", "set", "export"],
+  swift: ["func", "let", "var", "return", "import", "struct", "class", "if", "guard", "else", "for", "in", "await", "async"],
+  json: [],
 };
 
-function highlightLine(line: string, language: "go" | "python" | "ts", key: number) {
-  const commentToken = language === "python" ? "#" : "//";
-  const commentAt = line.indexOf(commentToken);
+const COMMENT_TOKENS: Record<CodeLanguage, string | null> = {
+  go: "//",
+  python: "#",
+  ts: "//",
+  tsx: "//",
+  sql: "--",
+  bash: "#",
+  swift: "//",
+  json: null,
+};
+
+function highlightLine(line: string, language: CodeLanguage, key: number) {
+  const commentToken = COMMENT_TOKENS[language];
+  const commentAt = commentToken ? line.indexOf(commentToken) : -1;
   const codePart = commentAt >= 0 ? line.slice(0, commentAt) : line;
   const commentPart = commentAt >= 0 ? line.slice(commentAt) : "";
 
@@ -35,7 +53,7 @@ function highlightLine(line: string, language: "go" | "python" | "ts", key: numb
             </span>
           );
         }
-        if (KEYWORDS[language].includes(token)) {
+        if (KEYWORDS[language].includes(language === "sql" ? token.toLowerCase() : token)) {
           return (
             <span key={index} style={{ color: COLORS.keyword }}>
               {token}

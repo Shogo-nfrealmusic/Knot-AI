@@ -47,7 +47,7 @@ export const SkeletonFive = () => {
           Funnel analysis
         </p>
         <div className="flex items-center gap-2 text-xs mt-4 text-neutral-500">
-          <p>Drop-off found</p>
+          <p>Date → time</p>
           <div className="h-1 w-1 rounded-full bg-neutral-400" />
           <p>39%</p>
         </div>

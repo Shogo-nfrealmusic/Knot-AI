@@ -13,7 +13,7 @@ const cards = [
   {
     number: "02",
     title: "I measure before I automate.",
-    body: "I found a 39% drop-off in a booking funnel from session replay data before touching the code. Automation comes after you know where the time and money actually go.",
+    body: "I found that only 39% of visitors who picked a date in a booking funnel went on to pick a time, from analytics and session replays, before touching the code. Automation comes after you know where the time and money actually go.",
   },
   {
     number: "03",

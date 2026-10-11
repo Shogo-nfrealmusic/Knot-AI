@@ -83,7 +83,7 @@ export default async function BlogPostPage({
           headline: post.title,
           description: post.description,
           datePublished: post.date,
-          dateModified: post.date,
+          dateModified: post.updated ?? post.date,
           image: OG_IMAGE_URL,
           mainEntityOfPage: {
             "@type": "WebPage",
@@ -114,10 +114,10 @@ export default async function BlogPostPage({
             <p className="text-sm text-neutral-500">
               Last updated •{" "}
               <time
-                dateTime={post.date}
+                dateTime={post.updated ?? post.date}
                 className="underline decoration-neutral-300 decoration-dotted underline-offset-4"
               >
-                {formatPostDate(post.date)}
+                {formatPostDate(post.updated ?? post.date)}
               </time>
             </p>
             {post.status === "draft" ? (
