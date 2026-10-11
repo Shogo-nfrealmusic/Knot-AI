@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# private planning notes (public repo)
+PORTFOLIO.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+UPWORK.md

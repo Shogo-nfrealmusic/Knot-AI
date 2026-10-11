@@ -54,7 +54,7 @@ function getMissingEnv() {
 
 function buildTextEmail(fields: NonNullable<ReturnType<typeof validatePayload>>) {
   return [
-    "New Knot contact form submission",
+    "New portfolio contact form submission",
     "",
     `Name: ${fields.name}`,
     `Email: ${fields.email}`,
@@ -87,7 +87,7 @@ function buildHtmlEmail(fields: NonNullable<ReturnType<typeof validatePayload>>)
 
   return `
     <div style="font-family: Inter, Arial, sans-serif; color: #111827;">
-      <h1 style="font-size: 20px; margin: 0 0 16px;">New Knot contact form submission</h1>
+      <h1 style="font-size: 20px; margin: 0 0 16px;">New portfolio contact form submission</h1>
       <table style="border-collapse: collapse; width: 100%; max-width: 680px;">
         ${rows
           .map(
@@ -149,7 +149,7 @@ export async function POST(request: Request) {
       from: process.env.CONTACT_FROM ?? process.env.SMTP_USER,
       to: process.env.CONTACT_TO,
       replyTo: fields.email,
-      subject: `New Knot inquiry: ${fields.projectType} from ${fields.company}`,
+      subject: `New portfolio inquiry: ${fields.projectType} from ${fields.company}`,
       text: buildTextEmail(fields),
       html: buildHtmlEmail(fields),
     });

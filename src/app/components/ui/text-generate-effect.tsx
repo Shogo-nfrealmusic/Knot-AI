@@ -53,9 +53,9 @@ export function TextGenerateEffect({
           <motion.span
             key={`${word}-${idx}`}
             className="opacity-0"
-            style={{
-              filter: filter && !shouldReduceMotion ? "blur(10px)" : "none",
-            }}
+            // Not derived from useReducedMotion: it is null on the server, so the
+            // initial style must not depend on it or hydration mismatches.
+            style={{ filter: filter ? "blur(10px)" : "none" }}
           >
             {word}{" "}
           </motion.span>
