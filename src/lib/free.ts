@@ -114,6 +114,68 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 29,
+    slug: "29-rea",
+    title: "REA: let your AI find out how an app's feature works",
+    description:
+      "REA (Reverse Engineer Anything) is a free, open-source MCP that lets Claude Code, Codex or Cursor inspect an app without its source code and explain how a feature works, with the evidence. How to set it up, a real run on MarkText, what it can't see, and the rules for using it. An independent guide.",
+    date: "2026-10-12",
+    keyword: "REA",
+    tools: [
+      {
+        name: "REA on GitHub",
+        what: "morluto/rea. MIT license. 130K+ GitHub stars on Oct 12, 2026, most of them in about ten days of October. Built by an independent developer, morluto, with 100+ contributors.",
+        href: "https://github.com/morluto/rea",
+        icon: "cpu",
+        install: ["npx rea-agents setup"],
+        note: "Setup asks which agents to add it to (Claude Code, Codex, Cursor and other MCP agents) and shows the changes before applying them. Restart your agent afterward. Needs Node.js 22.19+, 24.11+ or 26+.",
+      },
+      {
+        name: "rea.tools",
+        what: "The official site: setup guide, guides per target (JavaScript/Electron, native binaries, Android, websites) and case studies.",
+        href: "https://rea.tools",
+        icon: "browser",
+      },
+      {
+        name: "MarkText",
+        what: "The open-source (MIT) Markdown editor used for the demo in the reel. A safe app to practise on.",
+        href: "https://github.com/marktext/marktext",
+        icon: "file",
+      },
+    ],
+    about: {
+      intro: [
+        "Point your agent at an app, ask how one feature works, and it answers with the files and functions behind it.",
+      ],
+      steps: [
+        { title: "Set it up", text: "Run npx rea-agents setup, pick your agent, approve the changes, restart the agent." },
+        { title: "Ask about one feature", text: "For example: \"Using REA, find out how MarkText exports a document to PDF. Show me the evidence: file and function names, step by step.\"" },
+        { title: "Read the evidence", text: "The answer lists where each step lives. Check the claims against the files it names before you rely on them." },
+        { title: "Build your own version", text: "Use what you learned to write your own implementation. Learn from the design; don't copy someone else's code." },
+      ],
+      example: {
+        question: "Using REA, find out how MarkText exports a document to PDF. Show me the evidence (file + function names).",
+        output: `MarkText exports PDFs with Electron's built-in webContents.printToPDF: the renderer lays the document out as styled HTML, and the main process prints that window to a file.
+
+1. Menu → renderer: exportFile(win, type) in out/main/index.js sends mt::show-export-dialog to the window.
+2. Renderer → main: the EXPORT({ type, content, pageOptions }) store action sends mt::response-export with the title, path and page options.
+3. Main handler: out/main/index.js registers ipcMain.on("mt::response-export", handleResponseForExport).
+4. The export itself: handleResponseForExport shows dialog.showSaveDialog, then for type === "pdf" calls win.webContents.printToPDF(options).
+5. Write and report: it calls removePrintServiceFromWindow(win), then writeFile(filePath, data, extension, "binary"), and sends mt::export-success back.`,
+        source: "A real run in Claude Code (Opus 5.5) with REA on MarkText 0.21.2, Oct 12, 2026, quoted from the answer. REA's automatic graph did not find printToPDF on its own; Claude read the app's packaged files through REA to finish the trace. It took about 15 minutes.",
+      },
+      notes: [
+        "It only sees what reaches your machine: the app's files, or a website's scripts. Anything that runs on a company's servers stays hidden.",
+        "Analysis runs locally, but the results go to your agent, so your model provider's data policy applies.",
+        "JavaScript / Electron apps and .NET need only Node.js. Native binaries need Hopper, Ghidra or IDA; Android needs JADX and a JDK.",
+        "Other people's apps are protected by copyright and their license terms. REA's own disclaimer: it is for lawful research, education, interoperability, software preservation, and analysis of software you own or are authorized to examine. It does not support copying proprietary software, bypassing DRM or license checks, or making game cheats.",
+        "In REA's case studies (rea.tools/showcase), code from the 1996 game DX-Ball was rebuilt until it matched all 63 compiled bytes; REA supplied the evidence and the reconstruction project wrote and tested the code.",
+        "\"Software is done.\" was Matthew Berman's post about REA on X (Oct 8, 2026), not the project's own claim.",
+        "An independent guide by @copilot_shogo. Not affiliated with REA or its authors.",
+      ],
+    },
+  },
+  {
     number: 28,
     slug: "28-ai-influencer",
     title: "Make your own AI influencer in two steps",
