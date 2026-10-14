@@ -125,6 +125,58 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 31,
+    slug: "31-vibe-tools",
+    title: "4 tools to add to Claude Code before you vibe code",
+    description:
+      "Ponytail (less code), OmniRoute (one gateway, automatic fallback), Graphify (your codebase as a knowledge graph) and Addy Osmani's Agent Skills (25 engineering skills). What each one does, how to install it, and what to know first. Facts checked against each project's README on Oct 15, 2026. An independent guide.",
+    date: "2026-10-15",
+    keyword: "VIBE",
+    tools: [
+      {
+        name: "Ponytail",
+        what: "DietrichGebert/ponytail. MIT. Makes the agent write the simplest, shortest solution that actually works. In the author's own benchmark (Ponytail 5, Opus 5.5, 39 tasks): about half the code (-53%) and -45% output tokens. Example from the README: a date picker went from 335 lines to 10.",
+        href: "https://github.com/DietrichGebert/ponytail",
+        icon: "scissors",
+        install: ["/plugin marketplace add DietrichGebert/ponytail", "/plugin install ponytail@ponytail"],
+        note: "A Claude Code plugin. Only install it from DietrichGebert/ponytail (or @dietrichgebert/ponytail on npm); the README warns about look-alikes.",
+      },
+      {
+        name: "OmniRoute",
+        what: "diegosouzapw/OmniRoute. MIT, self-hostable. One local gateway in front of many AI providers: 154 of the 372 it lists are marked as having free tiers. When a provider hits its quota or fails, a \"combo\" can move to the next healthy model.",
+        href: "https://github.com/diegosouzapw/OmniRoute",
+        icon: "plug",
+        install: ["npm install -g omniroute", "omniroute configure claude"],
+        note: "Not a plugin: an app you run (dashboard on localhost:20128). Free tiers use your own provider accounts; some need a signup or a card, and the fallback only uses providers you connected.",
+      },
+      {
+        name: "Graphify",
+        what: "Graphify-Labs/graphify. Apache-2.0. Maps your project into a knowledge graph your agent can query instead of re-reading files. Code is parsed locally with tree-sitter, and building the graph uses 0 LLM credits. Made by Graphify Labs (YC S26).",
+        href: "https://github.com/Graphify-Labs/graphify",
+        icon: "brain",
+        install: ["uv tool install graphifyy", "graphify install"],
+        note: "The PyPI package is graphifyy (two y's); other graphify* packages are not affiliated. In Claude Code run /graphify . — graphify claude install makes it the default.",
+      },
+      {
+        name: "Agent Skills",
+        what: "addyosmani/agent-skills. MIT. 25 skills for the whole lifecycle (define, plan, build, verify, review, ship) with /spec, /plan, /build, /test, /review and /ship. By Addy Osmani: ex-Director at Google Cloud AI, now a Member of Technical Staff at Anthropic working on Claude Code.",
+        href: "https://github.com/addyosmani/agent-skills",
+        icon: "review",
+        install: ["/plugin marketplace add addyosmani/agent-skills", "/plugin install agent-skills@addy-agent-skills"],
+        note: "Skills activate when the task matches their description, so they are not guaranteed to fire; you can always call a command like /spec yourself.",
+      },
+    ],
+    about: {
+      notes: [
+        "Only Ponytail and Agent Skills are Claude Code plugins. OmniRoute is an app you run, Graphify is a CLI that registers a skill.",
+        "The Ponytail numbers are the author's own benchmark, not an independent test. An earlier Haiku benchmark showed smaller savings, and on some OpenAI reasoning models it cost more.",
+        "\"Cut agent token spend by 80%\" on graphify.com is about the paid Graphify Cloud, not the open-source CLI.",
+        "Star counts move fast and are not user counts: Ponytail 163K, Graphify 126K, Agent Skills 107K, OmniRoute 76K (GitHub, Oct 15, 2026).",
+        "An independent guide by @copilot_shogo. Not affiliated with any of these projects.",
+      ],
+    },
+  },
+  {
     number: 29,
     slug: "29-rea",
     title: "REA: let your AI find out how an app's feature works",
