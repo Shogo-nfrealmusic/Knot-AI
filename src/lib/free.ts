@@ -93,9 +93,20 @@ export type DropCheck = {
   commands?: string[];
 };
 
+/** One chapter of a step-by-step guide: paragraphs, bullets, commands to copy, and code blocks. */
+export type DropChapter = {
+  title: string;
+  text?: (string | RichText)[];
+  bullets?: (string | RichText)[];
+  commands?: string[];
+  code?: { label: string; body: string }[];
+};
+
 export type DropAbout = {
   /** one line above everything else */
   intro?: RichText;
+  /** a numbered step-by-step guide; the drop is labelled "step-by-step guide" */
+  chapters?: DropChapter[];
   /** a numbered checklist; the drop is labelled "N checks" */
   checks?: DropCheck[];
   /** a boxed summary under the checks: tools that cover several of them at once */
@@ -622,6 +633,375 @@ const drops: FreeDrop[] = [
         "Built by Colin Johnson (co-founder and CEO, previously at Apple and American Express) and Ben Adamsky (co-founder and CTO, a two-time founder); company Ponder Labs, Inc.",
         "Plans and limits change; check the site for current pricing.",
         "An independent guide by @copilot_shogo. Not affiliated with Dreamwork.",
+      ],
+    },
+  },
+  {
+    number: 21,
+    slug: "21-motion-as-code",
+    title: "Motion graphics with Claude Opus 5.5, no After Effects",
+    description:
+      "How I made a 41-second motion-graphics reel without After Effects: Claude Opus 5.5 wrote every scene as code on top of the open-source pdoom-video engine. The setup, the workflow, the prompts and the code building blocks, so you can make your own.",
+    date: "2026-10-14",
+    keyword: "CODE",
+    tools: [
+      {
+        name: "pdoom-video",
+        what: "The open-source engine the reel runs on, by mexicat (Giacomo Magnanini). MIT license. TypeScript + three.js: glowing HDR post-processing, word-synced typography, and an exporter with real motion blur. Every frame is a function of time, so the browser preview and the final video match.",
+        href: "https://github.com/mexicat/pdoom-video",
+        icon: "cube",
+        install: ["git clone https://github.com/mexicat/pdoom-video", "cd pdoom-video/app && bun install && bunx vite"],
+        note: "Needs bun, Google Chrome and ffmpeg (with libx264). The preview opens at localhost:5173: space plays, ← → seeks, [ ] jumps between scenes.",
+      },
+      {
+        name: "Claude Code",
+        what: "Where Claude Opus 5.5 reads the engine and writes the scenes. You describe the motion in plain English; it writes and edits the code.",
+        href: "https://claude.com/claude-code",
+        icon: "wand",
+      },
+      {
+        name: "ElevenLabs",
+        what: "The voiceover. Any voice works; the timing of every animation comes from the words in it.",
+        href: "https://elevenlabs.io",
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "No timeline, no keyframes: every word, shape and move in the reel is code that Claude wrote. Here is exactly how, and how to do it on your own project.",
+      ],
+      chapters: [
+        {
+          title: "How this reel was made",
+          bullets: [
+            ["Engine: ", { text: "pdoom-video", href: "https://github.com/mexicat/pdoom-video" }, " (MIT). It handles the glow, the typography and the export. I didn't build that part, and it is a big reason the reel looks the way it does."],
+            ["Script: 9 lines, voiced with ElevenLabs."],
+            ["Timing: every word got a start and end time, and each animation is tied to a word, not to a second."],
+            ["Scenes: 6 scene files, all written by Claude Opus 5.5 in Claude Code."],
+            ["Iteration: 6 versions in one day. Watch, say what's wrong in plain English, render again."],
+            ["Export: 1080p at 60 fps with motion blur, then voice, sound effects and music mixed with ffmpeg. 41 seconds."],
+          ],
+        },
+        {
+          title: "The idea: every frame is a function of time",
+          text: [
+            ["In After Effects you place keyframes on a timeline. Here, each thing on screen is a function: give it the time ", { code: "t" }, " and it says where it is, how big, what colour. Same ", { code: "t" }, " in, same frame out."],
+            ["That is why it suits an AI. Claude can't drag keyframes, but it writes functions very well. And \"slower\", \"bluer\" or \"loop the end\" becomes a small edit to the code, not a hundred keyframes by hand."],
+          ],
+        },
+        {
+          title: "Set up the engine",
+          text: ["Clone it, install, and open the live preview. Watch the original video once in the preview: it shows you what the engine can do before you change anything."],
+          commands: [
+            "git clone https://github.com/mexicat/pdoom-video",
+            "cd pdoom-video/app && bun install",
+            "bunx vite",
+          ],
+          bullets: [
+            [{ code: "app/src/engine/" }, " the renderer, timeline, post-processing (glow, grain) and typography."],
+            [{ code: "app/src/scenes/" }, " one file per scene. This is where Claude writes."],
+            [{ code: "app/src/timeline.ts" }, " which scene plays when, anchored to the words."],
+            [{ code: "data/lyrics.json" }, " the word timings. The original uses a song; you will swap in your voiceover."],
+          ],
+        },
+        {
+          title: "Write the voiceover and get word timings",
+          text: [
+            "Write short lines, one idea each: every line becomes a scene. Generate the voice, then get the start and end time of every word. Two easy ways:",
+          ],
+          bullets: [
+            ["ElevenLabs' text-to-speech ", { text: "with timestamps", href: "https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps" }, " endpoint returns the timing of every character along with the audio."],
+            ["Or run Whisper on the finished audio with word timestamps on (command below)."],
+          ],
+          commands: ["whisper voiceover.mp3 --model small --word_timestamps True --output_format json"],
+          code: [
+            {
+              label: "Prompt: swap the song for your voiceover",
+              body: `Replace the song in this project with my voiceover.
+- The audio is at audio/voiceover.mp3.
+- My word timings are in voiceover.json (Whisper output).
+Open data/lyrics.json to see the format the engine expects, convert my
+timings into that format (one line per sentence), and update whatever
+reads the song file. Don't touch any scene yet. When you're done, tell me
+the start time of each line.`,
+            },
+          ],
+        },
+        {
+          title: "Have Claude write one scene per line",
+          text: [
+            "Start a new Claude Code session in the repo and ask for one scene at a time. The two rules that matter: Claude reads the engine and an existing scene first, and every timing comes from a word, never a typed-in number of seconds.",
+          ],
+          code: [
+            {
+              label: "Prompt: one scene",
+              body: `Read app/src/engine/ and two existing scenes in app/src/scenes/ before
+writing anything, so you use the engine the way its author does.
+
+Then add a new scene for this voiceover line:
+"Every word, every shape, every move is a function of time."
+
+Rules:
+- Every value is a pure function of time t. No hidden clocks, no unseeded random.
+- Anchor every timing to a word in data/lyrics.json, never to hard-coded seconds.
+- Things are built on screen: lines and panels are drawn by a pen, not faded in.
+- The words light up karaoke-style as they're spoken.
+- The camera never stops moving.
+Register it in timeline.ts and tell me the time range to preview.`,
+            },
+            {
+              label: "What a scene looks like (TypeScript, 1920×1080 canvas)",
+              body: `// One scene = one function of time. Times come from the words, never typed-in seconds.
+import { words } from "./words"; // [{ w: "Every", start: 9.82, end: 10.05 }, ...]
+import { window01, spring, pulse } from "./motion";
+import { drawPen } from "./pen";
+import { drawKaraoke } from "./karaoke";
+
+const find = (w: string) => words.findIndex((x) => x.w.toLowerCase().startsWith(w));
+const at = (w: string) => words[find(w)].start;
+const line = (from: string, to: string) => words.slice(find(from), find(to) + 1);
+
+const box: [number, number][] = [[140, 380], [1780, 380], [1780, 700], [140, 700], [140, 380]];
+
+export function sceneEveryMove(ctx: CanvasRenderingContext2D, t: number) {
+  const life = window01(t, at("every") - 0.3, at("then"));
+  if (life <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = life;
+  drawPen(ctx, box, t, at("every") - 0.3, at("every") + 0.5); // the frame is drawn, not faded in
+  drawKaraoke(ctx, line("every", "time"), t, 200, 560);       // the line lights up as it's said
+  const pop = spring(t, at("function"));                       // "function" lands with a pop...
+  const hit = pulse(t, at("function"));                        // ...and a short flash
+  ctx.font = "700 64px JetBrains Mono";
+  ctx.fillStyle = "rgba(77,139,255," + (0.6 + 0.4 * hit) + ")";
+  ctx.translate(200, 660);
+  ctx.scale(pop, pop);
+  ctx.fillText("x(t) = f(t)", 0, 0);
+  ctx.restore();
+}`,
+            },
+          ],
+        },
+        {
+          title: "Make it look pro: 7 moves",
+          text: [
+            "My first version scored 45 out of 100 next to a professional piece, even on the same engine. The difference was never how much was on screen. It was how things arrive. Ask for these by name:",
+          ],
+          bullets: [
+            [{ code: "Pen" }, ": lines, boxes, rulers and underlines are drawn by a glowing pen tip, never faded in. This is the single biggest difference."],
+            [{ code: "Karaoke" }, ": unspoken words are a thin outline, the spoken word wipes in with the accent colour, then settles."],
+            [{ code: "Hot → cool" }, ": anything new appears in the accent colour and cools to the normal colour in about 0.3 s. It reads as \"just made\"."],
+            [{ code: "Syllable sync" }, ": hit the parts of a word, not just its start (\"five · point · five\" lands one digit at a time)."],
+            [{ code: "Live tools" }, ": a graph editor whose handle gets dragged, a table that gets typed, a preview that actually plays. No still screenshots of UI."],
+            [{ code: "Camera" }, ": start zoomed in and pull out on the headline, then whip to the next block. It never sits still. When things stop moving, the video feels slow."],
+            [{ code: "One signature move per element" }, ": an odometer roll for numbers, sparks off the pen, a scale pop on a slam. Easing, overshoot and short flashes do more than extra elements."],
+          ],
+          code: [
+            {
+              label: "Prompt: upgrade a scene",
+              body: `Go through this scene and replace every plain fade with real motion:
+- lines and panels are drawn by the pen,
+- text is karaoke, synced to the words (and syllables for numbers),
+- new elements appear in the accent colour and cool to the ink colour over 0.3 s,
+- each element gets one signature micro-animation (odometer roll, spark, scale pop),
+- the camera starts zoomed in, pulls out on the headline, and never stops moving.
+Keep the layout and the timing the same.`,
+            },
+          ],
+        },
+        {
+          title: "The building blocks (copy these)",
+          text: [
+            "Small, engine-independent helpers for a 2D canvas. Put them in your project, or paste them to Claude as the house style for every scene.",
+          ],
+          code: [
+            {
+              label: "motion.ts: easing, lifetimes, springs, flashes, seeded random",
+              body: `// Every value on screen is a pure function of time t (seconds).
+// Same t in → same frame out, so the preview and the export always match.
+export const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+
+// Fast start, soft landing: most entrances. In-out: camera moves.
+export const outExpo = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+export const inOutCubic = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+// 0 → 1 as t goes from a to b, eased.
+export const tween = (t: number, a: number, b: number, ease = outExpo) => ease(clamp01((t - a) / (b - a)));
+
+// An element's life: fades in from a, holds, fades out by b. Returns 0..1.
+export const window01 = (t: number, a: number, b: number, fadeIn = 0.25, fadeOut = 0.25) =>
+  Math.min(clamp01((t - a) / fadeIn), clamp01((b - t) / fadeOut));
+
+// Damped spring from 0 to 1 starting at t0: a small overshoot, then it settles.
+export const spring = (t: number, t0: number, freq = 4.5, damping = 0.55) => {
+  const x = t - t0;
+  if (x <= 0) return 0;
+  const w = 2 * Math.PI * freq;
+  return 1 - Math.exp(-damping * w * x) * Math.cos(w * Math.sqrt(1 - damping * damping) * x);
+};
+
+// A flash that hits at t0 and decays: impacts, punch-ins, number slams.
+export const pulse = (t: number, t0: number, decay = 8) => (t < t0 ? 0 : Math.exp(-(t - t0) * decay));
+
+// Seeded randomness: the same "random" layout on every render.
+export const mulberry32 = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let r = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+  return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+};
+
+// Mix two hex colours, k = 0..1 (hot → cool).
+export const mix = (a: string, b: string, k: number) => {
+  const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16);
+  const ch = (s: number) => Math.round(((pa >> s) & 255) * (1 - k) + ((pb >> s) & 255) * k);
+  return "rgb(" + ch(16) + "," + ch(8) + "," + ch(0) + ")";
+};`,
+            },
+            {
+              label: "pen.ts: a glowing pen draws the line",
+              body: `import { tween, inOutCubic, pulse, mix } from "./motion";
+type Pt = [number, number];
+
+// Draw a polyline as if a glowing pen draws it between t0 and t1.
+export function drawPen(ctx: CanvasRenderingContext2D, pts: Pt[], t: number, t0: number, t1: number) {
+  const p = tween(t, t0, t1, inOutCubic);
+  if (p <= 0) return;
+  // cumulative length, so the pen moves at a steady speed around corners
+  const len = [0];
+  for (let i = 1; i < pts.length; i++)
+    len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const target = p * len[len.length - 1];
+
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#EAF0FA";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  let head: Pt = pts[0];
+  for (let i = 1; i < pts.length; i++) {
+    if (len[i] <= target) { ctx.lineTo(pts[i][0], pts[i][1]); head = pts[i]; continue; }
+    const k = (target - len[i - 1]) / (len[i] - len[i - 1]);
+    head = [pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * k, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * k];
+    ctx.lineTo(head[0], head[1]);
+    break;
+  }
+  ctx.stroke();
+
+  // the pen tip glows while drawing, then fades once the line is finished
+  const glow = p < 1 ? 1 : pulse(t, t1, 6);
+  if (glow > 0.01) {
+    ctx.shadowColor = "#4D8BFF";
+    ctx.shadowBlur = 24 * glow;
+    ctx.fillStyle = mix("#EAF0FA", "#FFFFFF", glow);
+    ctx.beginPath();
+    ctx.arc(head[0], head[1], 3 + 3 * glow, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}`,
+            },
+            {
+              label: "karaoke.ts: words light up as they're spoken",
+              body: `import { clamp01, mix } from "./motion";
+type Word = { w: string; start: number; end: number }; // seconds, from your voiceover
+
+// Unspoken: thin outline. Being spoken: the accent colour wipes left → right.
+// Spoken: cools to the ink colour over 0.3 s.
+export function drawKaraoke(ctx: CanvasRenderingContext2D, words: Word[], t: number, x: number, y: number) {
+  ctx.save();
+  ctx.font = "800 72px Inter";
+  let cx = x;
+  for (const word of words) {
+    const text = word.w + " ";
+    const width = ctx.measureText(text).width;
+    const lead = 0.08; // start a hair early: the eye is faster than the ear
+    const p = clamp01((t - (word.start - lead)) / Math.max(0.05, word.end - word.start));
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgba(234,240,250,.35)";
+    ctx.strokeText(text, cx, y);
+    if (p > 0) {
+      const cool = clamp01((t - word.end) / 0.3); // 0 = hot, 1 = settled
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(cx, y - 90, width * p, 120); // the wipe
+      ctx.clip();
+      ctx.fillStyle = mix("#4D8BFF", "#EAF0FA", cool);
+      ctx.fillText(text, cx, y);
+      ctx.restore();
+    }
+    cx += width;
+  }
+  ctx.restore();
+}`,
+            },
+            {
+              label: "camera.ts: zoom in log space toward a point",
+              body: `import { tween, inOutCubic } from "./motion";
+
+// Zooming in log space makes 1× → 4× feel as even as 4× → 16×.
+// Apply it before drawing the scene.
+export function applyCamera(
+  ctx: CanvasRenderingContext2D, t: number, t0: number, t1: number,
+  z0: number, z1: number, focus: [number, number], W = 1920, H = 1080,
+) {
+  const k = tween(t, t0, t1, inOutCubic);
+  const zoom = Math.exp(Math.log(z0) + (Math.log(z1) - Math.log(z0)) * k);
+  ctx.translate(W / 2, H / 2);
+  ctx.scale(zoom, zoom);
+  ctx.translate(-focus[0], -focus[1]);
+}
+
+// e.g. start 3× on the headline and pull out to the full frame:
+// applyCamera(ctx, t, at("this") - 0.2, at("this") + 0.8, 3, 1, [960, 540]);`,
+            },
+          ],
+        },
+        {
+          title: "Fix it in plain English, one thing at a time",
+          text: [
+            "This is where the quality comes from. Watch the scene, name the one thing that's off, and ask for only that. Describe what you see like you'd tell a friend; it works better than technical words.",
+          ],
+          code: [
+            {
+              label: "Prompt: one change",
+              body: `Only change one thing: the code panel arrives too slowly and sits still
+after it lands. Make it land 30% faster and keep the camera drifting
+while it holds. Keep everything else the same, then tell me the time
+range to preview.`,
+            },
+          ],
+          bullets: [
+            ["Preview the exact seconds Claude names, frame by frame (", { code: "," }, " and ", { code: "." }, " step one frame in the preview)."],
+            ["Keep a reference you love open next to it, and compare the same moment side by side."],
+            ["When a version is clearly better, save it before asking for the next change."],
+          ],
+        },
+        {
+          title: "Render and mix",
+          text: [
+            "Export from the app folder. --samples auto adds real motion blur: fast moves get more sub-frames per frame. If you want music and sound effects under the voice, or the export has no sound, mix it with ffmpeg.",
+          ],
+          commands: [
+            "bun scripts/render.ts video --samples auto --shutter 0.2 --out ../out/my-video.mp4",
+            "ffmpeg -i ../out/my-video.mp4 -i ../audio/voiceover.mp3 -map 0:v -map 1:a -c:v copy -c:a aac -b:a 320k -shortest ../out/final.mp4",
+          ],
+          bullets: [
+            ["A higher ", { code: "--shutter" }, " (I used 0.5 to 0.6) gives longer motion streaks on fast slams."],
+            ["Keep sound effects for moments that mean something (a slam, a number landing) and well under the voice."],
+          ],
+        },
+      ],
+      notes: [
+        "Be honest with yourself about where the quality comes from: the engine, your eye, and many rounds of fixing. Claude Opus 5.5 writes the code; it doesn't judge what looks good. You do.",
+        [
+          "The engine's code is MIT, so keep its license notice if you share your project. The original song, lyrics and audio in the repo are not covered by MIT and belong to their creators: don't reuse them. Fonts keep their own licenses (SIL OFL).",
+        ],
+        ["Want something lighter, or to put graphics over a talking video? ", { text: "Remotion", href: "https://www.remotion.dev" }, " (React) uses the same idea, every frame as a function of time, and Claude writes it just as well."],
+        "Does it replace After Effects? Not for everything. For type-driven motion graphics synced to a voice, it already works.",
+        "An independent guide by @copilot_shogo. Not affiliated with Anthropic, Adobe, ElevenLabs or the pdoom-video author.",
       ],
     },
   },
@@ -1952,6 +2332,7 @@ export function dropKind(drop: FreeDrop): string {
   if (drop.kit) return "build kit";
   if (drop.breakdown) return "full breakdown";
   if (drop.guide) return "free guide";
+  if (drop.about?.chapters?.length) return "step-by-step guide";
   const checks = drop.about?.checks?.length;
   if (checks) return `${checks} ${checks === 1 ? "check" : "checks"}`;
   return `${drop.tools.length} ${drop.tools.length === 1 ? "tool" : "tools"}`;

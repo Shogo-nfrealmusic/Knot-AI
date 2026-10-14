@@ -21,7 +21,7 @@ import {
   IconUsersGroup,
   IconWand,
 } from "@tabler/icons-react";
-import { CommandCopy } from "@/app/free/CodeCopy";
+import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
   INSTAGRAM_HANDLE,
@@ -238,6 +238,50 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
           <p className="max-w-2xl text-lg leading-relaxed tracking-[-0.015em] text-neutral-900">
             <Rich parts={about.intro} />
           </p>
+        </section>
+      ) : null}
+      {about.chapters?.length ? (
+        <section className="px-5 py-8 sm:px-10">
+          <p className={aboutLabel}>The guide · {about.chapters.length} parts</p>
+          <ol className="mt-4 divide-y divide-neutral-200">
+            {about.chapters.map((chapter, index) => (
+              <li key={chapter.title} className="grid grid-cols-[1.75rem_1fr] gap-x-2 py-7 first:pt-2 last:pb-0">
+                <span className="font-mono text-[13px] leading-7 text-neutral-400">{pad(index + 1)}</span>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-semibold tracking-[-0.015em] text-neutral-900">{chapter.title}</h3>
+                  {chapter.text?.map((para, i) => (
+                    <p key={i} className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                      {typeof para === "string" ? para : <Rich parts={para} />}
+                    </p>
+                  ))}
+                  {chapter.bullets?.length ? (
+                    <ul className="mt-3 max-w-2xl space-y-2">
+                      {chapter.bullets.map((bullet, i) => (
+                        <li key={i} className="flex items-start gap-3 text-[15px] leading-relaxed text-neutral-500">
+                          <span className="mt-2.5 size-1 shrink-0 rounded-full bg-neutral-400" />
+                          <span>{typeof bullet === "string" ? bullet : <Rich parts={bullet} />}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {chapter.commands?.length ? (
+                    <div className="mt-3 space-y-2">
+                      {chapter.commands.map((command) => (
+                        <CommandCopy key={command} command={command} />
+                      ))}
+                    </div>
+                  ) : null}
+                  {chapter.code?.length ? (
+                    <div className="mt-4 space-y-3">
+                      {chapter.code.map((block) => (
+                        <CodeBlock key={block.label} label={block.label} code={block.body} />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ol>
         </section>
       ) : null}
       {about.checks?.length ? (
