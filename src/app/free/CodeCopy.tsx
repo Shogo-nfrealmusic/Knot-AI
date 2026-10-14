@@ -45,3 +45,30 @@ export function CommandCopy({ command, className = "w-full" }: { command: string
     </button>
   );
 }
+
+// A multi-line snippet with a label and a copy button (guides that teach with code).
+export function CodeBlock({ label, code }: { label: string; code: string }) {
+  const [done, setDone] = useState(false);
+  return (
+    <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-50">
+      <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-3 py-1.5">
+        <span className="font-mono text-[11px] text-neutral-500">{label}</span>
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(code).then(() => {
+              setDone(true);
+              setTimeout(() => setDone(false), 1600);
+            });
+          }}
+          className="inline-flex items-center gap-1.5 font-mono text-[11px] text-neutral-500 transition-colors hover:text-neutral-900"
+          aria-label={`Copy ${label}`}
+        >
+          {done ? <IconCheck className="size-3.5 text-emerald-600" /> : <IconCopy className="size-3.5" />}
+          {done ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <pre className="overflow-x-auto px-4 py-3 font-mono text-[12px] leading-relaxed text-neutral-800">{code}</pre>
+    </div>
+  );
+}
