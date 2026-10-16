@@ -2326,7 +2326,7 @@ NEXT 3 STEPS:
     date: "2026-09-27",
     keyword: "3D",
     tools: [],
-    kit: { href: "https://fantastic-mover-4460.kit.com/products/3d-website-kit?promo=3DWEBSITE", price: "$29", offer: { code: "3DWEBSITE", until: "October 31", regular: "$54" }, cover: "/free/05/s0_f_0000.jpg" },
+    kit: { href: "https://hustling-builder-9442.kit.com/products/3d-website-kit?promo=3DWEBSITE", price: "$29", offer: { code: "3DWEBSITE", until: "October 31", regular: "$54" }, cover: "/free/05/s0_f_0000.jpg" },
   },
   {
     number: 4,
@@ -2338,8 +2338,8 @@ NEXT 3 STEPS:
     keyword: "GUIDE",
     tools: [],
     guide: {
-      kitUid: "3ba02ef07c",
-      kitScript: "https://fantastic-mover-4460.kit.com/3ba02ef07c/index.js",
+      kitUid: "2422b2a6b1",
+      kitScript: "https://hustling-builder-9442.kit.com/2422b2a6b1/index.js",
       cover: "/free/04-guide-cover.jpg",
       points: [
         "Sales & payments on autopilot",
