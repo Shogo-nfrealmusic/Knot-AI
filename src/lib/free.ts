@@ -125,6 +125,70 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 32,
+    slug: "32-argon-vs-opus",
+    title: "Gemini 4 Argon vs Claude Opus 5.5: three 3D tests, and how Google built the temple",
+    description:
+      "The three viral tests from the reel (ship in a bottle, firefly jar, gummy bears) with each tester's own numbers, the list prices behind them, and the four stages Google DeepMind's George Kenwright showed for building a temple complex in Blender with Argon inside Antigravity. Facts checked against each post and the official pages on Oct 16, 2026. An independent guide.",
+    date: "2026-10-16",
+    keyword: "ARGON",
+    tools: [
+      {
+        name: "Test 1: ship in a bottle (@vib3coded)",
+        what: "Same scene, two models. The video labels read Gemini 4 Argon $0.19 and Claude Opus 5.5 $12.06. The tester's verdict: \"For quality, I'm picking Opus.\"",
+        href: "https://x.com/vib3coded/status/2110136719827747181",
+        icon: "cube",
+      },
+      {
+        name: "Test 2: firefly jar (@0xRhinoX)",
+        what: "Same prompt: a firefly jar you can open gently. Opus 5.5: $15.00, 64 min. Gemini 4 Argon: $0.19, 8 min. In the poster's words, Opus made real glass and Gemini made a glowstick in a box.",
+        href: "https://x.com/0xRhinoX/status/2110382089476407630",
+        icon: "cube",
+      },
+      {
+        name: "Test 3: gummy bears (@semichenkko)",
+        what: "Opus: $7.2. Gemini: $22. Over 600K views. The post carries a Community Note: \"Multiple users reproducing the prompt with Gemini 4 Argon (medium/high) obtained soft deformable jelly physics like the top panel, not rigid statues.\"",
+        href: "https://x.com/semichenkko/status/2110131790136401989",
+        icon: "cube",
+      },
+      {
+        name: "The temple video (Google Antigravity)",
+        what: "George Kenwright, Creative Producer at Google DeepMind, walks through the temple complex he built in Blender with Gemini 4 Argon inside Antigravity. Posted by Google Antigravity on Oct 13, 2026.",
+        href: "https://x.com/antigravity/status/2110040109789708543",
+        icon: "event",
+      },
+      {
+        name: "Gemini 4 Argon: price (Google blog)",
+        what: "$2 per 1M input tokens and $10 per 1M output tokens as an introductory price. From Nov 30, 2026: $4 and $20.",
+        href: "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-argon/",
+        icon: "file",
+      },
+      {
+        name: "Claude Opus 5.5: price (Claude docs)",
+        what: "$4 per 1M input tokens and $20 per 1M output tokens.",
+        href: "https://platform.claude.com/docs/en/models/opus-5-5/overview",
+        icon: "file",
+      },
+    ],
+    about: {
+      intro: [
+        "Per token, Argon costs half of Opus until Nov 30, 2026, then the same. So a run's bill comes from how many tokens the model burns on that prompt, not from the price list alone.",
+      ],
+      steps: [
+        { title: "Blueprints first", text: "The model called a tool to create architectural blueprints (CAD) before building anything." },
+        { title: "Four reference images", text: "Nano Banana generated four images of the temple from different angles. They served as the references for everything after." },
+        { title: "A team of agents with a critic", text: "Four Gemini 4 Argon specialist subagents worked in parallel, managed and reviewed by an Argon orchestrator acting as an adversarial critic." },
+        { title: "Compare, over and over", text: "Renders from Blender were compared against the four reference images, again and again. George says he came back the next morning to the finished still renders." },
+      ],
+      notes: [
+        "The costs in the three tests are what each tester reported. None of them published how they measured it (tokens, settings, effort level).",
+        "The four stages are what George says and shows in the video. Google has not published the full prompt or a skill file for it.",
+        "\"Not with 'build me a pagoda'\" is a paraphrase of George's words: it was \"a little more complex than just build me a pagoda\".",
+        "An independent guide by @copilot_shogo. Not affiliated with Google, Anthropic or the testers.",
+      ],
+    },
+  },
+  {
     number: 31,
     slug: "31-vibe-tools",
     title: "4 tools to add to Claude Code before you vibe code",
