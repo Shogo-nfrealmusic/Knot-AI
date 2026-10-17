@@ -125,6 +125,65 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 33,
+    slug: "33-six-agents",
+    title: "Six AI agents, two camps: which one is for you",
+    description:
+      "The six AI agents everyone is talking about, split by where they run. Three are done for you in someone else's cloud (dots, Muse, Grok Bot) and three run on your own machine (OpenClaw, Hermes Agent, MausBot). What each one does, who can use it, and what to check before you give it access. Facts checked against each official page on Oct 17, 2026. An independent guide.",
+    date: "2026-10-17",
+    keyword: "AGENTS",
+    tools: [
+      {
+        name: "dots (OpenAI)",
+        what: "An always-on agent inside ChatGPT with its own computer and browser in the cloud. Give it a goal and it keeps working across 4,000+ apps through ChatGPT plugins. Pro, Business Premium and Enterprise (Pro: 18+, not EEA/UK/CH).",
+        href: "https://learn.chatgpt.com/docs/dots",
+        icon: "browser",
+      },
+      {
+        name: "Muse (Meta)",
+        what: "A personal agent: books, shops, fills out forms, turns long-term goals into plans, and comes back when something changes. Free for most uses, Power $20/mo and Maximum $100/mo. Rolling out in the US on iOS, Android and muse.ai.",
+        href: "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/",
+        icon: "robot",
+      },
+      {
+        name: "Grok Bot (xAI, beta)",
+        what: "A team of always-on bots: give each one a role (sales, marketing, operations…) and put them in a group chat to coordinate. Included with SuperGrok plans and Cursor Pro and up.",
+        href: "https://x.ai/news/introducing-grok-bot",
+        icon: "council",
+      },
+      {
+        name: "OpenClaw (open source, MIT)",
+        what: "Runs on your own computer; you text it from WhatsApp, Telegram, Slack, iMessage and 20+ more. 392k GitHub stars (Oct 16, 2026). By default exec approvals are off (security=full, ask=off): turn approvals on before giving it real access.",
+        href: "https://github.com/openclaw/openclaw",
+        icon: "cpu",
+        install: ["curl -fsSL https://openclaw.ai/install.sh | bash", "openclaw onboard --install-daemon"],
+        note: "Approvals are off by default: docs.openclaw.ai/tools/exec-approvals",
+      },
+      {
+        name: "Hermes Agent (Nous Research, MIT)",
+        what: "Creates skills from experience and improves them. Bot Mode gives each bot its own role, model and memory and lets them talk in group chats. By default an auxiliary LLM reviews risky commands (Smart mode) and asks you when unsure.",
+        href: "https://github.com/NousResearch/hermes-agent",
+        icon: "brain",
+      },
+      {
+        name: "MausBot (open source, Apache-2.0)",
+        what: "An open-source Grok Bot alternative started on Aug 11, 2026 (the day Grok Bot launched) by Milind Soni and Omkar Satpute. Your bots run on the claude, codex and grok CLIs installed on your own machine. The desktop and companion apps are free; Cloud plans are paid.",
+        href: "https://github.com/milind-soni/OpenMausBot",
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "Pick the camp first. Done for you (their cloud): dots, Muse, Grok Bot. You own it (your machine): OpenClaw, Hermes, MausBot.",
+      ],
+      notes: [
+        "Plans, prices and availability are as listed on each official page on Oct 17, 2026, and change often.",
+        "Star counts move fast and are not user counts.",
+        "An independent guide by @copilot_shogo. Not affiliated with OpenAI, Meta, xAI, Nous Research or any of these projects.",
+      ],
+    },
+  },
+  {
     number: 32,
     slug: "32-argon-vs-opus",
     title: "Gemini 4 Argon vs Claude Opus 5.5: three 3D tests, and how Google built the temple",
