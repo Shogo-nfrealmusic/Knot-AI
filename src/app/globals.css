@@ -58,6 +58,18 @@
   }
 }
 
+/* /links: the Orbit stills bob a few pixels, like the rendered loops. Translation only, never a squash. */
+@keyframes links-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 /* dub.co chip rows: each row renders its items twice, so -50% lands on an identical frame. */
 @keyframes infinite-scroll {
   from {

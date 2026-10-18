@@ -17,24 +17,18 @@ export const viewport: Viewport = {
   themeColor: "#fafaf9",
 };
 
-/** Fills the AI "Free tools" card from the real drop list, so it never goes stale. */
+/** Fills the AI "Free tools" terminal from the real drop list, so it never goes stale. */
 function withFreeStats(ai: ModeContent): ModeContent {
   const drops = getDrops();
-  const latest = drops[0];
+  const lines = [
+    "% ls -t ~/free | head -3",
+    ...drops.slice(0, 3).map((drop) => `${pad(drop.number)}-${drop.slug.replace(/^\d+-/, "")}`),
+    "% ls ~/free | wc -l",
+    `${drops.length} drops, all free`,
+  ];
   return {
     ...ai,
-    highlights: ai.highlights.map((card) =>
-      card.id === "free"
-        ? {
-            ...card,
-            rows: [
-              ["drops", String(drops.length)],
-              ...(latest ? ([["latest", `#${pad(latest.number)} ${latest.keyword}`]] as [string, string][]) : []),
-              ...(card.rows ?? []),
-            ],
-          }
-        : card,
-    ),
+    highlights: ai.highlights.map((card) => (card.kind === "terminal" ? { ...card, lines } : card)),
   };
 }
 
