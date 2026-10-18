@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { getDrops, pad } from "@/lib/free";
-import { linksContent, type ModeContent } from "@/lib/links";
+import { HERO_SIZES, heroSrcSet, linksContent, type ModeContent } from "@/lib/links";
 import LinksPage from "./LinksPage";
 
 const title = "Shogo Kikuchi — Links";
@@ -21,7 +21,9 @@ export const viewport: Viewport = {
 // is read in the browser by the inline script below, before the first paint, so there is no flash.
 export const dynamic = "force-static";
 
-const INIT = `(function(){var d=document.documentElement,f=new URLSearchParams(location.search).get("m")==="fit";d.setAttribute("data-links",f?"fit":"ai");d.setAttribute("data-links-js","");if(f){var t=document.querySelector('meta[name="theme-color"]');if(t)t.setAttribute("content","#0b0b0b")}})()`;
+// Sets the side, and preloads only that side's hero photo (same srcset/sizes as the <img>, so the
+// browser reuses the response instead of downloading twice).
+const INIT = `(function(){var d=document.documentElement,f=new URLSearchParams(location.search).get("m")==="fit";d.setAttribute("data-links",f?"fit":"ai");d.setAttribute("data-links-js","");if(f){var t=document.querySelector('meta[name="theme-color"]');if(t)t.setAttribute("content","#0b0b0b")}var l=document.createElement("link");l.rel="preload";l.as="image";l.setAttribute("imagesrcset",f?${JSON.stringify(heroSrcSet(linksContent.fit.photo.base))}:${JSON.stringify(heroSrcSet(linksContent.ai.photo.base))});l.setAttribute("imagesizes",${JSON.stringify(HERO_SIZES)});l.setAttribute("fetchpriority","high");document.head.appendChild(l)})()`;
 
 /** Fills the AI "Free tools" terminal from the real drop list, so it never goes stale. */
 function withFreeStats(ai: ModeContent): ModeContent {

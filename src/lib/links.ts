@@ -39,7 +39,9 @@ export type ModeContent = {
   name: string;
   /** one line under the name; the part in `em` is set in the serif italic */
   line: { before: string; em: string; after: string };
-  photo: { src: string; alt: string; width: number; height: number };
+  /** `${base}-640.jpg` and `${base}-960.jpg` must both exist (page.tsx preloads them by name) */
+  /** `${base}-640.jpg` and `${base}-960.jpg` must both exist: page.tsx preloads them by name */
+  photo: { base: string; alt: string; width: number; height: number };
   socials: Social[];
   highlightsLabel: string;
   highlights: Highlight[];
@@ -53,7 +55,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     tab: "AI",
     name: "Shogo Kikuchi",
     line: { before: "I build software with ", em: "AI", after: " and run it in a real business in Tokyo." },
-    photo: { src: "/links/ai.jpg", alt: "Shogo at his laptop with a camera", width: 1200, height: 1800 },
+    photo: { base: "/links/ai", alt: "Shogo at his laptop with a camera", width: 1200, height: 1800 },
     socials: [
       { id: "ig_copilot", label: "Instagram @copilot_shogo", icon: "instagram", href: "https://www.instagram.com/copilot_shogo/" },
       // TODO(Shogo): confirm the X handle
@@ -123,7 +125,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     tab: "Fitness",
     name: "Shogo",
     line: { before: "Training every day. ", em: "No days off", after: " from the work either." },
-    photo: { src: "/links/fitness.jpg", alt: "Shogo in a black jacket on a mountain lookout", width: 1200, height: 1800 },
+    photo: { base: "/links/fitness", alt: "Shogo in a black jacket on a mountain lookout", width: 1200, height: 1800 },
     socials: [
       { id: "ig_imshogo", label: "Instagram @imshogo.k", icon: "instagram", href: "https://www.instagram.com/imshogo.k/" },
       { id: "youtube", label: "YouTube sho_vlog", icon: "youtube", href: "https://www.youtube.com/@imshogo.k/videos" },
@@ -177,6 +179,10 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     closing: { text: "Questions about training?", cta: "Message me on Instagram", href: "https://ig.me/m/imshogo.k" },
   },
 };
+
+/** Shared by the hero <img> and the preload in page.tsx; they must match exactly or the photo downloads twice. */
+export const HERO_SIZES = "(max-width: 440px) 100vw, 440px";
+export const heroSrcSet = (base: string) => `${base}-640.jpg 640w, ${base}-960.jpg 960w`;
 
 /** `?src=ig_ai` style source tags: short, lowercase, so a typo in a bio link can't flood the event list. */
 export function parseSource(value: string | string[] | undefined): string {

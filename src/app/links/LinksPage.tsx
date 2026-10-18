@@ -6,7 +6,15 @@ import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { FiArrowUpRight, FiMail } from "react-icons/fi";
-import { parseSource, type Highlight, type LinksMode, type ModeContent, type SocialIcon } from "@/lib/links";
+import {
+  HERO_SIZES,
+  heroSrcSet,
+  parseSource,
+  type Highlight,
+  type LinksMode,
+  type ModeContent,
+  type SocialIcon,
+} from "@/lib/links";
 import "./links.css";
 
 // Speed first: the page is static, both sides are in the HTML, and switching sides only flips
@@ -214,16 +222,20 @@ function Line({ c, className }: { c: ModeContent; className: string }) {
 }
 
 function HeroPhoto({ c, className }: { c: ModeContent; className: string }) {
-  // lazy + high priority: the visible side's photo starts at once, the hidden side's never loads
+  // The inline script in page.tsx preloads this exact srcset for the side being opened, so the
+  // visible photo downloads alongside the CSS; lazy keeps the hidden side's photo from loading at all.
   return (
-    <Image
-      src={c.photo.src}
+    // eslint-disable-next-line @next/next/no-img-element -- pre-sized files, preloaded by name before paint
+    <img
+      src={`${c.photo.base}-640.jpg`}
+      srcSet={heroSrcSet(c.photo.base)}
+      sizes={HERO_SIZES}
       alt={c.photo.alt}
       width={c.photo.width}
       height={c.photo.height}
       loading="lazy"
+      decoding="async"
       fetchPriority="high"
-      sizes="(max-width: 440px) 100vw, 440px"
       className={`links-hero-photo aspect-[4/5] w-full object-cover ${className}`}
     />
   );
