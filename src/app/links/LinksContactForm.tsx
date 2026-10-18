@@ -21,7 +21,7 @@ const projectTypes = [
 const timelines = ["As soon as possible", "This month", "This quarter", "Exploring options"];
 
 const field =
-  "w-full rounded-[14px] border border-[var(--l-line)] bg-white/80 px-3.5 py-3 text-[15px] text-[var(--l-fg)] outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-[#a3a29f] focus:border-[#191919] focus:shadow-[0_0_0_4px_rgba(0,0,0,0.06)]";
+  "w-full rounded-[14px] border border-[var(--l-line)] bg-white/80 px-3.5 py-3 text-[15px] outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-[#a3a29f] focus:border-[#191919] focus:shadow-[0_0_0_4px_rgba(0,0,0,0.06)]";
 
 const validEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -95,7 +95,7 @@ export default function LinksContactForm({ onSent }: { onSent: () => void }) {
         className={field}
       />
       <div className="grid grid-cols-2 gap-3">
-        <select aria-label="Project type" value={values.projectType} onChange={set("projectType")} className={`${field} appearance-none`}>
+        <select aria-label="Project type" value={values.projectType} onChange={set("projectType")} className={`${field} appearance-none ${values.projectType ? "" : "text-[#a3a29f]"}`}>
           <option value="">Project type</option>
           {projectTypes.map((t) => (
             <option key={t} value={t}>
@@ -103,7 +103,7 @@ export default function LinksContactForm({ onSent }: { onSent: () => void }) {
             </option>
           ))}
         </select>
-        <select aria-label="Timeline" value={values.timeline} onChange={set("timeline")} className={`${field} appearance-none`}>
+        <select aria-label="Timeline" value={values.timeline} onChange={set("timeline")} className={`${field} appearance-none ${values.timeline ? "" : "text-[#a3a29f]"}`}>
           <option value="">Timeline</option>
           {timelines.map((t) => (
             <option key={t} value={t}>
