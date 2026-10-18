@@ -6,27 +6,21 @@ import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { FiArrowUpRight, FiMail } from "react-icons/fi";
-import type { Highlight, LinksMode, ModeContent, SocialIcon } from "@/lib/links";
+import { parseSource, type Highlight, type LinksMode, type ModeContent, type SocialIcon } from "@/lib/links";
+import "./links.css";
 
-// Two looks on one page. AI: warm white, Notion-like, Orbit everywhere. Fitness: black and white, editorial, no mascot.
-const THEME: Record<LinksMode, Record<string, string>> = {
-  ai: {
-    "--l-bg": "#fbfbfa",
-    "--l-fg": "#191919",
-    "--l-muted": "#73726e",
-    "--l-line": "#e9e9e7",
-    "--l-card": "#ffffff",
-    "--l-well": "#f1f1ef",
-  },
-  fit: {
-    "--l-bg": "#0b0b0b",
-    "--l-fg": "#f2f2f2",
-    "--l-muted": "#8c8c8c",
-    "--l-line": "#262626",
-    "--l-card": "#141414",
-    "--l-well": "#141414",
-  },
+// Speed first: the page is static, both sides are in the HTML, and switching sides only flips
+// html[data-links] (set before first paint by the script in page.tsx). No re-render, no refetch.
+// Motion is CSS only (links.css), so no animation library ships with the page.
+
+type OnLink = (id: string, place: string) => void;
+
+const getMode = (): LinksMode => (document.documentElement.getAttribute("data-links") === "fit" ? "fit" : "ai");
+const subscribeMode = (cb: () => void) => {
+  window.addEventListener("links-mode", cb);
+  return () => window.removeEventListener("links-mode", cb);
 };
+const useLinksMode = () => useSyncExternalStore(subscribeMode, getMode, () => "ai" as LinksMode);
 
 const isExternal = (href: string) => /^(https?:|mailto:)/.test(href);
 
@@ -40,36 +34,48 @@ function SmartLink({ href, ...rest }: React.ComponentProps<"a"> & { href: string
   );
 }
 
-export default function LinksPage({
-  content,
-  initialMode,
-  source,
-}: {
-  content: Record<LinksMode, ModeContent>;
-  initialMode: LinksMode;
-  source: string;
-}) {
-  const [mode, setMode] = useState<LinksMode>(initialMode);
-  const c = content[mode];
-  const fit = mode === "fit";
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
-  // One view per page load, tagged with the mode it opened in and the bio link it came from.
-  useEffect(() => {
-    track("links_view", { mode: initialMode, src: source });
-  }, [initialMode, source]);
+export default function LinksPage({ content }: { content: Record<LinksMode, ModeContent> }) {
+  const mode = useLinksMode();
+  const source = useRef("direct");
 
-  // Overscroll and the browser bar follow the mode.
   useEffect(() => {
-    const bg = THEME[mode]["--l-bg"];
-    document.body.style.backgroundColor = bg;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", bg);
-  }, [mode]);
+    const root = document.documentElement;
+    source.current = parseSource(new URLSearchParams(window.location.search).get("src") ?? undefined);
+    // One view per page load, tagged with the side it opened on and the bio link it came from.
+    track("links_view", { mode: getMode(), src: source.current });
+
+    // Scroll reveal: one observer for the whole page; each element animates in once.
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -6% 0px" },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+
+    return () => {
+      io.disconnect();
+      // Leaving /links: hand the page back to the rest of the site untouched.
+      root.removeAttribute("data-links");
+      root.removeAttribute("data-links-js");
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#ffffff");
+    };
+  }, []);
 
   const switchMode = (next: LinksMode) => {
-    if (next === mode) return;
-    setMode(next);
+    if (next === getMode()) return;
+    document.documentElement.setAttribute("data-links", next);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "fit" ? "#0b0b0b" : "#fbfbfa");
+    window.dispatchEvent(new Event("links-mode"));
     window.scrollTo({ top: 0 });
-    track("links_mode", { to: next, src: source });
+    track("links_mode", { to: next, src: source.current });
     // Keep the choice in the URL so a shared or reloaded link opens the same side.
     const url = new URL(window.location.href);
     if (next === "fit") url.searchParams.set("m", "fit");
@@ -77,75 +83,89 @@ export default function LinksPage({
     window.history.replaceState(null, "", url);
   };
 
-  const onLink = (id: string, place: string) => track("links_click", { id, place, mode, src: source });
+  const onLink: OnLink = (id, place) => track("links_click", { id, place, mode: getMode(), src: source.current });
 
   return (
-    <main
-      style={THEME[mode] as CSSProperties}
-      className="min-h-screen overflow-x-clip bg-[var(--l-bg)] text-[var(--l-fg)] transition-colors duration-500"
-    >
+    <main className="min-h-screen overflow-x-clip">
       <div className="mx-auto max-w-[440px] pb-14">
         <ModeSwitch mode={mode} content={content} onChange={switchMode} />
-
-        <div key={mode} className="animate-slide-up-fade [--offset:10px]">
-          {fit ? <FitHero c={c} onLink={onLink} /> : <AiHero c={c} onLink={onLink} />}
-
-          <section className="mt-16">
-            <div className="mb-4 flex items-end justify-between px-5">
-              <SectionTitle fit={fit}>{c.highlightsLabel}</SectionTitle>
-              {fit ? null : <OrbitStill name="yellow-think" className="-mb-3 -mr-2 w-[72px]" delay={0.6} />}
-            </div>
-            <Highlights items={c.highlights} fit={fit} onOpen={(id) => onLink(id, "highlight")} />
-          </section>
-
-          {c.pages.length ? (
-            <section className="mt-16 px-5">
-              <div className="relative">
-                {fit ? null : (
-                  <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
-                )}
-                <ul className="relative overflow-hidden rounded-[18px] border border-[var(--l-line)] bg-[var(--l-card)]">
-                  {c.pages.map((page, i) => (
-                    <li key={page.id} className={i ? "border-t border-[var(--l-line)]" : ""}>
-                      <SmartLink
-                        href={page.href}
-                        onClick={() => onLink(page.id, "pages")}
-                        className="flex items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-[var(--l-well)]"
-                      >
-                        <span className="min-w-0">
-                          <span
-                            className={
-                              fit
-                                ? "block text-[14px] font-bold uppercase tracking-[0.04em]"
-                                : "block text-[15px] font-medium tracking-[-0.01em]"
-                            }
-                          >
-                            {page.label}
-                          </span>
-                          <span className="block truncate text-[13px] text-[var(--l-muted)]">{page.note}</span>
-                        </span>
-                        <span aria-hidden className="text-[var(--l-muted)]">
-                          →
-                        </span>
-                      </SmartLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-          ) : null}
-
-          <Closing c={c} fit={fit} onLink={onLink} />
+        <div data-pane="ai">
+          <Side c={content.ai} fit={false} onLink={onLink} />
         </div>
-
-        <footer className="mt-12 flex flex-col items-center gap-3 text-[12px] text-[var(--l-muted)]">
-          {fit ? null : <OrbitStill name="friends" className="w-[140px]" delay={0.4} />}
-          <Link href="/" onClick={() => onLink("home", "footer")} className="hover:text-[var(--l-fg)]">
-            shogo.build
-          </Link>
-        </footer>
+        <div data-pane="fit">
+          <Side c={content.fit} fit onLink={onLink} />
+        </div>
       </div>
     </main>
+  );
+}
+
+function Side({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
+  return (
+    <>
+      {fit ? <FitHero c={c} onLink={onLink} /> : <AiHero c={c} onLink={onLink} />}
+
+      <section className="mt-16">
+        <div data-reveal className="mb-4 flex items-end justify-between px-5">
+          <SectionTitle fit={fit}>{c.highlightsLabel}</SectionTitle>
+          {fit ? null : <OrbitStill name="yellow-think" className="-mb-3 -mr-2 w-[72px]" delay={0.6} />}
+        </div>
+        <div data-reveal style={delay(80)}>
+          <Highlights items={c.highlights} fit={fit} onOpen={(id) => onLink(id, "highlight")} />
+        </div>
+      </section>
+
+      {c.videos ? <YouTubeList videos={c.videos} onLink={onLink} /> : null}
+
+      {c.pages.length ? (
+        <section className="mt-16 px-5">
+          <div data-reveal className="relative">
+            {fit ? null : (
+              <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
+            )}
+            <ul className="relative overflow-hidden rounded-[18px] border border-[var(--l-line)] bg-[var(--l-card)]">
+              {c.pages.map((page, i) => (
+                <li key={page.id} className={i ? "border-t border-[var(--l-line)]" : ""}>
+                  <SmartLink
+                    href={page.href}
+                    onClick={() => onLink(page.id, "pages")}
+                    className="group flex items-center justify-between gap-4 px-4 py-3.5 transition-colors duration-300 hover:bg-[var(--l-well)]"
+                  >
+                    <span className="min-w-0">
+                      <span
+                        className={
+                          fit
+                            ? "block text-[14px] font-bold uppercase tracking-[0.04em]"
+                            : "block text-[15px] font-medium tracking-[-0.01em]"
+                        }
+                      >
+                        {page.label}
+                      </span>
+                      <span className="block truncate text-[13px] text-[var(--l-muted)]">{page.note}</span>
+                    </span>
+                    <span
+                      aria-hidden
+                      className="text-[var(--l-muted)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  </SmartLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
+      <Closing c={c} fit={fit} onLink={onLink} />
+
+      <footer className="mt-12 flex flex-col items-center gap-3 text-[12px] text-[var(--l-muted)]">
+        {fit ? null : <OrbitStill name="friends" className="w-[140px]" delay={0.4} />}
+        <Link href="/" onClick={() => onLink("home", "footer")} className="transition-colors hover:text-[var(--l-fg)]">
+          shogo.build
+        </Link>
+      </footer>
+    </>
   );
 }
 
@@ -158,35 +178,22 @@ function ModeSwitch({
   content: Record<LinksMode, ModeContent>;
   onChange: (mode: LinksMode) => void;
 }) {
-  const fit = mode === "fit";
   return (
-    <div
-      className={`sticky top-0 z-40 flex justify-center px-5 pb-5 pt-3 ${
-        fit ? "" : "bg-gradient-to-b from-[var(--l-bg)] from-60% to-transparent"
-      }`}
-    >
+    <div className="pointer-events-none sticky top-0 z-40 flex justify-center px-5 pb-3 pt-3">
       <div
         role="tablist"
         aria-label="Choose a side"
-        className={`relative grid w-[208px] grid-cols-2 rounded-full p-[3px] backdrop-blur-xl transition-colors duration-500 ${
-          fit ? "bg-white/10 ring-1 ring-white/15" : "bg-white/80 ring-1 ring-black/[0.07] shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-        }`}
+        className="lg pointer-events-auto relative grid w-[212px] grid-cols-2 rounded-full p-[3px]"
       >
-        <span
-          aria-hidden
-          className={`absolute inset-y-[3px] left-[3px] w-[calc(50%-3px)] rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            fit ? "translate-x-full bg-[#f2f2f2]" : "translate-x-0 bg-[#191919]"
-          }`}
-        />
+        <span aria-hidden className="links-pill absolute inset-y-[3px] left-[3px] w-[calc(50%-3px)] rounded-full" />
         {(["ai", "fit"] as const).map((m) => (
           <button
             key={m}
             role="tab"
+            data-for={m}
             aria-selected={mode === m}
             onClick={() => onChange(m)}
-            className={`relative z-10 h-8 rounded-full text-[12px] font-semibold tracking-[0.04em] transition-colors duration-300 ${
-              mode === m ? (fit ? "text-[#0b0b0b]" : "text-white") : fit ? "text-white/60" : "text-[#73726e]"
-            }`}
+            className="links-tab press relative z-10 h-8 rounded-full text-[12px] font-semibold tracking-[0.04em]"
           >
             {content[m].tab}
           </button>
@@ -206,56 +213,64 @@ function Line({ c, className }: { c: ModeContent; className: string }) {
   );
 }
 
-function AiHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: string) => void }) {
+function HeroPhoto({ c, className }: { c: ModeContent; className: string }) {
+  // lazy + high priority: the visible side's photo starts at once, the hidden side's never loads
   return (
-    <section className="px-5 pt-10">
+    <Image
+      src={c.photo.src}
+      alt={c.photo.alt}
+      width={c.photo.width}
+      height={c.photo.height}
+      loading="lazy"
+      fetchPriority="high"
+      sizes="(max-width: 440px) 100vw, 440px"
+      className={`links-hero-photo aspect-[4/5] w-full object-cover ${className}`}
+    />
+  );
+}
+
+function AiHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
+  return (
+    <section className="-mt-[62px] px-3">
+      {/* the glass switch floats over the top of the photo */}
       <div className="relative">
-        <div className="relative z-10 overflow-hidden rounded-[22px] bg-[var(--l-well)] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_18px_40px_-20px_rgba(0,0,0,0.35)] ring-1 ring-black/[0.06]">
-          <Image
-            src={c.photo.src}
-            alt={c.photo.alt}
-            width={c.photo.width}
-            height={c.photo.height}
-            priority
-            sizes="(max-width: 440px) 100vw, 440px"
-            className="aspect-[4/5] w-full object-cover object-[50%_42%]"
-          />
+        <div className="relative z-10 overflow-hidden rounded-[28px] bg-[var(--l-well)] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_24px_48px_-24px_rgba(0,0,0,0.4)]">
+          <HeroPhoto c={c} className="object-[50%_42%]" />
         </div>
-        <OrbitLoop clip="type" className="absolute -bottom-14 -left-6 z-20 w-[184px]" priority />
+        <OrbitLoop clip="type" className="absolute -bottom-14 -left-4 z-20 w-[184px]" />
       </div>
 
-      <div className="relative mt-16">
-        {/* curious about the name, from the right edge */}
-        <OrbitStill name="pink-curious" className="absolute -right-2 -top-6 w-[92px]" delay={0.3} />
-        <h1 className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">{c.name}</h1>
-        <Line c={c} className="mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
-        <Socials c={c} fit={false} onLink={onLink} />
+      <div className="relative mt-16 px-2">
+        <OrbitStill name="pink-curious" className="absolute -right-1 -top-6 w-[92px]" delay={0.3} />
+        <h1 data-reveal className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">
+          {c.name}
+        </h1>
+        <div data-reveal style={delay(80)}>
+          <Line c={c} className="mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
+        </div>
+        <Socials c={c} onLink={onLink} />
       </div>
     </section>
   );
 }
 
-function FitHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: string) => void }) {
+function FitHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
   return (
     // full-bleed on a phone; on wider screens the photo becomes a rounded card so it doesn't read as a box on black
-    <section className="relative -mt-[70px] sm:mt-2">
-      <div className="relative overflow-hidden sm:mx-5 sm:rounded-[22px]">
-        <Image
-          src={c.photo.src}
-          alt={c.photo.alt}
-          width={c.photo.width}
-          height={c.photo.height}
-          priority
-          sizes="(max-width: 440px) 100vw, 440px"
-          className="aspect-[4/5] w-full object-cover object-[50%_40%]"
-        />
+    <section className="relative -mt-[62px] sm:mt-0">
+      <div className="relative overflow-hidden sm:mx-3 sm:rounded-[28px]">
+        <HeroPhoto c={c} className="object-[50%_40%]" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0b0b0b]" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0b0b0b]/50 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0b0b0b]/45 to-transparent" />
       </div>
       <div className="relative -mt-20 px-5">
-        <h1 className="text-[72px] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">{c.name}</h1>
-        <Line c={c} className="mt-4 max-w-[30ch] text-[15px] leading-[1.55] text-[var(--l-muted)]" />
-        <Socials c={c} fit onLink={onLink} />
+        <h1 data-reveal className="text-[72px] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">
+          {c.name}
+        </h1>
+        <div data-reveal style={delay(80)}>
+          <Line c={c} className="mt-4 max-w-[30ch] text-[15px] leading-[1.55] text-[var(--l-muted)]" />
+        </div>
+        <Socials c={c} onLink={onLink} />
       </div>
     </section>
   );
@@ -270,22 +285,18 @@ const ICONS: Record<SocialIcon, ReactNode> = {
   email: <FiMail />,
 };
 
-/** The usual link-in-bio row: one icon per account, side by side. */
-function Socials({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id: string, place: string) => void }) {
+/** The usual link-in-bio row: one glass icon per account, side by side, arriving one after another. */
+function Socials({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
   return (
     <ul className="mt-6 flex flex-wrap gap-2.5">
-      {c.socials.map((s) => (
-        <li key={s.id}>
+      {c.socials.map((s, i) => (
+        <li key={s.id} data-reveal style={delay(160 + i * 60)}>
           <SmartLink
             href={s.href}
             aria-label={s.label}
             title={s.label}
             onClick={() => onLink(s.id, "social")}
-            className={`flex h-11 w-11 items-center justify-center rounded-full text-[18px] transition-all duration-200 hover:-translate-y-0.5 ${
-              fit
-                ? "bg-white/[0.06] text-[#f2f2f2] ring-1 ring-white/15 hover:bg-white hover:text-[#0b0b0b]"
-                : "bg-white text-[#191919] shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08] hover:bg-[#191919] hover:text-white"
-            }`}
+            className="lg press flex h-11 w-11 items-center justify-center rounded-full text-[18px] text-[var(--l-fg)] hover:bg-[var(--l-fg)] hover:text-[var(--l-bg)]"
           >
             {ICONS[s.icon]}
           </SmartLink>
@@ -321,7 +332,17 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
   const rail = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [touched, setTouched] = useState(false);
+  const [onScreen, setOnScreen] = useState(false);
   const reduced = useReducedMotion();
+
+  // Only advance while the rail is actually visible (the hidden side never ticks).
+  useEffect(() => {
+    const el = rail.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const goTo = (i: number) => {
     const el = rail.current;
@@ -331,10 +352,10 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
 
   useEffect(() => {
     // Videos carry their own motion; only the AI cards advance by themselves.
-    if (fit || reduced || touched || items.length < 2) return;
+    if (fit || reduced || touched || !onScreen || items.length < 2) return;
     const id = window.setInterval(() => goTo((active + 1) % items.length), 5000);
     return () => window.clearInterval(id);
-  }, [active, fit, reduced, touched, items.length]);
+  }, [active, fit, reduced, touched, onScreen, items.length]);
 
   const onScroll = () => {
     const el = rail.current;
@@ -359,7 +380,7 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
         onScroll={onScroll}
         onPointerDown={() => setTouched(true)}
         onWheel={() => setTouched(true)}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) =>
           item.kind === "video" ? (
@@ -369,15 +390,17 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
               key={item.id}
               href={item.href}
               onClick={() => onOpen(item.id)}
-              className="group flex w-[80%] shrink-0 snap-start flex-col rounded-[20px] bg-[var(--l-card)] p-[18px] ring-1 ring-black/[0.06] shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+              className="press group flex w-[80%] shrink-0 snap-start flex-col rounded-[22px] bg-[var(--l-card)] p-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/[0.06]"
             >
               <span className="text-[12px] text-[var(--l-muted)]">{item.kicker}</span>
               <span className="mt-0.5 flex items-center gap-1.5 text-[19px] font-semibold tracking-[-0.03em]">
                 {item.title}
-                <FiArrowUpRight className="text-[15px] text-[var(--l-muted)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <FiArrowUpRight className="text-[15px] text-[var(--l-muted)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
               <span className="relative mt-4 block h-[300px] overflow-hidden rounded-[14px] bg-[var(--l-well)]">
-                <CardVisual item={item} />
+                <span className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]">
+                  <CardVisual item={item} />
+                </span>
               </span>
             </SmartLink>
           ),
@@ -393,8 +416,8 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
                 setTouched(true);
                 goTo(i);
               }}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === active ? "w-4 bg-[var(--l-fg)]" : "w-1.5 bg-[var(--l-fg)]/20"
+              className={`h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                i === active ? "w-5 bg-[var(--l-fg)]" : "w-1.5 bg-[var(--l-fg)]/20"
               }`}
             />
           ))}
@@ -411,10 +434,7 @@ function CardVisual({ item }: { item: Exclude<Highlight, { kind: "video" }> }) {
         <>
           <span className="absolute left-3.5 top-3.5 z-10 flex flex-col gap-1.5">
             {item.stats.map(([value, label]) => (
-              <span
-                key={label}
-                className="rounded-[10px] bg-white/90 px-2.5 py-1.5 shadow-[0_1px_2px_rgba(0,0,0,0.06)] ring-1 ring-black/[0.05] backdrop-blur"
-              >
+              <span key={label} className="lg rounded-[12px] px-2.5 py-1.5">
                 <span className="block text-[15px] font-semibold leading-tight tracking-[-0.02em]">{value}</span>
                 <span className="block text-[11px] leading-tight text-[var(--l-muted)]">{label}</span>
               </span>
@@ -490,7 +510,7 @@ function MacTerminal({ lines }: { lines: string[] }) {
   );
 }
 
-/** A vertical edit, playing silently while it is on screen. */
+/** A vertical edit: nothing downloads until it is on screen, then it plays silently while visible. */
 function VideoCard({
   item,
   reduced,
@@ -520,7 +540,7 @@ function VideoCard({
     <SmartLink
       href={item.href}
       onClick={() => onOpen(item.id)}
-      className="relative block w-[64%] shrink-0 snap-start overflow-hidden rounded-[18px] bg-[#141414] ring-1 ring-white/10"
+      className="press relative block w-[64%] shrink-0 snap-start overflow-hidden rounded-[22px] bg-[#141414] ring-1 ring-white/10"
     >
       <video
         ref={ref}
@@ -529,20 +549,66 @@ function VideoCard({
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         className="aspect-[9/16] w-full object-cover"
       />
-      <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-4 pb-4 pt-16">
-        <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60">{item.kicker}</span>
-        <span className="mt-1 block text-[16px] font-semibold leading-tight tracking-[-0.02em] text-white">{item.title}</span>
+      <span className="lg absolute inset-x-2.5 bottom-2.5 rounded-[16px] px-3.5 py-3">
+        <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{item.kicker}</span>
+        <span className="mt-0.5 block text-[15px] font-semibold leading-tight tracking-[-0.02em] text-white">{item.title}</span>
       </span>
     </SmartLink>
   );
 }
 
-function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id: string, place: string) => void }) {
+/** Long-form uploads. Thumbnails come straight from YouTube's image CDN, lazily, at 320×180. */
+function YouTubeList({ videos, onLink }: { videos: NonNullable<ModeContent["videos"]>; onLink: OnLink }) {
   return (
-    <section className="mt-20 px-5 text-center">
+    <section className="mt-16 px-5">
+      <div data-reveal className="mb-4 flex items-end justify-between">
+        <SectionTitle fit>{videos.label}</SectionTitle>
+        <SmartLink
+          href={videos.channel}
+          onClick={() => onLink("youtube_all", "videos")}
+          className="text-[12px] text-[var(--l-muted)] transition-colors hover:text-[var(--l-fg)]"
+        >
+          All videos ↗
+        </SmartLink>
+      </div>
+      <ul className="space-y-3">
+        {videos.items.map((v, i) => (
+          <li key={v.id} data-reveal style={delay(i * 70)}>
+            <SmartLink
+              href={`https://www.youtube.com/watch?v=${v.id}`}
+              onClick={() => onLink(`yt_${v.id}`, "videos")}
+              className="press group flex items-center gap-3.5"
+            >
+              <span className="relative aspect-video w-[136px] shrink-0 overflow-hidden rounded-[12px] bg-[var(--l-card)] ring-1 ring-white/10">
+                {/* eslint-disable-next-line @next/next/no-img-element -- remote thumbnail, already sized by YouTube */}
+                <img
+                  src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`}
+                  alt=""
+                  width={320}
+                  height={180}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                />
+                <span className="lg absolute bottom-1.5 right-1.5 rounded-[6px] px-1.5 py-[1px] font-mono text-[10px] text-white">
+                  {v.duration}
+                </span>
+              </span>
+              <span className="line-clamp-2 min-w-0 text-[14px] font-medium leading-snug tracking-[-0.01em]">{v.title}</span>
+            </SmartLink>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
+  return (
+    <section data-reveal className="mt-20 px-5 text-center">
       {fit ? null : (
         <div className="mb-2 flex items-end justify-center gap-1">
           <OrbitLoop clip="cheer" className="w-[156px]" />
@@ -561,9 +627,7 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id
       <SmartLink
         href={c.closing.href}
         onClick={() => onLink("closing", "closing")}
-        className={`mt-6 inline-flex h-11 items-center rounded-full px-6 text-[14px] font-semibold transition-transform hover:scale-[1.03] ${
-          fit ? "bg-[#f2f2f2] text-[#0b0b0b]" : "bg-[#191919] text-white"
-        }`}
+        className="press mt-6 inline-flex h-11 items-center rounded-full bg-[var(--l-fg)] px-6 text-[14px] font-semibold text-[var(--l-bg)] hover:scale-[1.03]"
       >
         {c.closing.cta}
       </SmartLink>
@@ -575,8 +639,8 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id
 // Every Orbit here is the Blender render from shorts-studio (scripts/orbit/orbit.py), never redrawn.
 // Loops: a plain H.264 MP4 with the color on top and the alpha (as grey) below, recombined on a canvas.
 // H.264 plays everywhere, iOS Safari and Instagram's in-app browser included, which transparent
-// WebM/HEVC did not. Until the first frame is drawn (or if autoplay is refused, e.g. Low Power Mode,
-// or the visitor prefers reduced motion) the still first frame shows instead.
+// WebM/HEVC did not. Nothing downloads until the loop is on screen; until its first frame is drawn
+// (or if autoplay is refused, e.g. Low Power Mode, or the visitor prefers reduced motion) the still shows.
 
 type OrbitClip = "type" | "cheer";
 type OrbitStillName = "yellow-think" | "purple-happy" | "teal-cheer" | "pink-curious" | "friends";
@@ -584,10 +648,15 @@ type OrbitStillName = "yellow-think" | "purple-happy" | "teal-cheer" | "pink-cur
 const LOOP_W = 400;
 const LOOP_H = 366;
 
-function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?: string; priority?: boolean }) {
+type FrameVideo = HTMLVideoElement & {
+  requestVideoFrameCallback?: (cb: () => void) => number;
+  cancelVideoFrameCallback?: (id: number) => void;
+};
+
+function OrbitLoop({ clip, className }: { clip: OrbitClip; className?: string }) {
   const reduced = useReducedMotion();
   const wrap = useRef<HTMLSpanElement>(null);
-  const video = useRef<HTMLVideoElement>(null);
+  const video = useRef<FrameVideo>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
 
@@ -602,46 +671,55 @@ function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?:
     const sctx = scratch.getContext("2d", { willReadFrequently: true });
     if (!sctx) return;
 
-    let raf = 0;
+    let handle = 0;
+    let running = false;
     let drawn = false;
-    const draw = () => {
-      if (v.readyState >= 2) {
-        sctx.drawImage(v, 0, 0, LOOP_W, LOOP_H * 2);
-        const color = sctx.getImageData(0, 0, LOOP_W, LOOP_H);
-        const mask = sctx.getImageData(0, LOOP_H, LOOP_W, LOOP_H).data;
-        const px = color.data;
-        for (let i = 0; i < px.length; i += 4) {
-          // grey 0..255 is the alpha; a small floor keeps compression noise from tinting the page
-          const a = mask[i] - 6;
-          px[i + 3] = a <= 0 ? 0 : a >= 243 ? 255 : (a * 255) / 243;
-        }
-        out.putImageData(color, 0, 0);
-        if (!drawn) {
-          drawn = true;
-          setLive(true);
-        }
+    const composite = () => {
+      sctx.drawImage(v, 0, 0, LOOP_W, LOOP_H * 2);
+      const color = sctx.getImageData(0, 0, LOOP_W, LOOP_H);
+      const mask = sctx.getImageData(0, LOOP_H, LOOP_W, LOOP_H).data;
+      const px = color.data;
+      for (let i = 0; i < px.length; i += 4) {
+        // grey 0..255 is the alpha; a small floor keeps compression noise from tinting the page
+        const a = mask[i] - 6;
+        px[i + 3] = a <= 0 ? 0 : a >= 243 ? 255 : (a * 255) / 243;
       }
-      raf = requestAnimationFrame(draw);
+      out.putImageData(color, 0, 0);
+      if (!drawn) {
+        drawn = true;
+        setLive(true);
+      }
+    };
+    // Composite once per decoded video frame (30 fps), not once per display refresh.
+    const tick = () => {
+      if (!running) return;
+      if (v.readyState >= 2) composite();
+      handle = v.requestVideoFrameCallback ? v.requestVideoFrameCallback(tick) : requestAnimationFrame(tick);
+    };
+    const stop = () => {
+      running = false;
+      if (v.cancelVideoFrameCallback) v.cancelVideoFrameCallback(handle);
+      else cancelAnimationFrame(handle);
     };
 
-    // Only decode and composite while the loop is on screen.
     const io = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         v.play()
           .then(() => {
-            cancelAnimationFrame(raf);
-            raf = requestAnimationFrame(draw);
+            if (running) return;
+            running = true;
+            tick();
           })
           .catch(() => {});
       } else {
         v.pause();
-        cancelAnimationFrame(raf);
+        stop();
       }
     });
     io.observe(wrap.current);
     return () => {
       io.disconnect();
-      cancelAnimationFrame(raf);
+      stop();
       v.pause();
     };
   }, [reduced]);
@@ -655,8 +733,7 @@ function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?:
           alt=""
           width={LOOP_W}
           height={LOOP_H}
-          priority={priority}
-          className={`w-full transition-opacity duration-300 ${live ? "opacity-0" : "motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite]"}`}
+          className={`w-full transition-opacity duration-300 ${live ? "opacity-0" : "links-bob"}`}
         />
         <canvas
           ref={canvas}
@@ -671,7 +748,7 @@ function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?:
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             className="absolute left-0 top-0 h-px w-px opacity-0"
           />
         )}
@@ -685,9 +762,9 @@ function OrbitStill({ name, className, delay = 0 }: { name: OrbitStillName; clas
     <span
       aria-hidden
       style={{ animationDelay: `${delay}s` }}
-      className={`pointer-events-none block select-none motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite] ${className ?? ""}`}
+      className={`links-bob pointer-events-none block select-none ${className ?? ""}`}
     >
-      <Image src={`/links/orbit/${name}.png`} alt="" width={360} height={327} className="w-full" />
+      <Image src={`/links/orbit/${name}.png`} alt="" width={400} height={364} className="w-full" />
     </span>
   );
 }

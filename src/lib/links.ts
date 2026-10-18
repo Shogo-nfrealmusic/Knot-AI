@@ -31,6 +31,9 @@ export type Highlight =
 
 export type PageTile = { id: string; label: string; note: string; href: string };
 
+/** A long-form YouTube video (not a Short: those repeat what is on Instagram). */
+export type YouTubeVideo = { id: string; title: string; duration: string };
+
 export type ModeContent = {
   tab: string;
   name: string;
@@ -41,6 +44,7 @@ export type ModeContent = {
   highlightsLabel: string;
   highlights: Highlight[];
   pages: PageTile[];
+  videos?: { label: string; channel: string; items: YouTubeVideo[] };
   closing: { text: string; cta: string; href: string };
 };
 
@@ -122,7 +126,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     photo: { src: "/links/fitness.jpg", alt: "Shogo in a black jacket on a mountain lookout", width: 1200, height: 1800 },
     socials: [
       { id: "ig_imshogo", label: "Instagram @imshogo.k", icon: "instagram", href: "https://www.instagram.com/imshogo.k/" },
-      { id: "youtube", label: "YouTube sho_vlog", icon: "youtube", href: "https://www.youtube.com/@imshogo.k/shorts" },
+      { id: "youtube", label: "YouTube sho_vlog", icon: "youtube", href: "https://www.youtube.com/@imshogo.k/videos" },
       { id: "email", label: "Email", icon: "email", href: "mailto:hello@shogo.build" },
     ],
     highlightsLabel: "Latest edits",
@@ -156,17 +160,23 @@ export const linksContent: Record<LinksMode, ModeContent> = {
       },
     ],
     // TODO(Shogo): coaching sign-up, once there is a place to send people
+    // Newest long-form uploads on sho_vlog, checked 2026-10-19. Thumbnails load from YouTube itself.
+    videos: {
+      label: "On YouTube",
+      channel: "https://www.youtube.com/@imshogo.k/videos",
+      items: [
+        { id: "M8Ow1fcOY8g", title: "Tokyo student co-founders locked in for a whole weekend", duration: "10:28" },
+        { id: "GE1th4wqAE8", title: "Training at a 90s gym in Japan, since 1997", duration: "6:07" },
+        { id: "JPtPrvjP8KY", title: "A perfect day in Japan: beach, café, gym", duration: "10:48" },
+        { id: "GBv_XR5i8z4", title: "Back in America after study abroad", duration: "17:48" },
+      ],
+    },
     pages: [
-      { id: "youtube_shorts", label: "YouTube", note: "Every short, sho_vlog", href: "https://www.youtube.com/@imshogo.k/shorts" },
       { id: "edit_guide", label: "How I edit these", note: "Cinematic reels, cut by Claude", href: "/free/27-claude-video-edit" },
     ],
     closing: { text: "Questions about training?", cta: "Message me on Instagram", href: "https://ig.me/m/imshogo.k" },
   },
 };
-
-export function parseMode(value: string | string[] | undefined): LinksMode {
-  return value === "fit" ? "fit" : "ai";
-}
 
 /** `?src=ig_ai` style source tags: short, lowercase, so a typo in a bio link can't flood the event list. */
 export function parseSource(value: string | string[] | undefined): string {

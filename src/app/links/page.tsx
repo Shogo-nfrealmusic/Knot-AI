@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { getDrops, pad } from "@/lib/free";
-import { linksContent, parseMode, parseSource, type ModeContent } from "@/lib/links";
+import { linksContent, type ModeContent } from "@/lib/links";
 import LinksPage from "./LinksPage";
 
 const title = "Shogo Kikuchi — Links";
@@ -14,8 +14,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fafaf9",
+  themeColor: "#fbfbfa",
 };
+
+// Static on purpose: served from the CDN with no server work per visit. The side to open (?m=fit)
+// is read in the browser by the inline script below, before the first paint, so there is no flash.
+export const dynamic = "force-static";
+
+const INIT = `(function(){var d=document.documentElement,f=new URLSearchParams(location.search).get("m")==="fit";d.setAttribute("data-links",f?"fit":"ai");d.setAttribute("data-links-js","");if(f){var t=document.querySelector('meta[name="theme-color"]');if(t)t.setAttribute("content","#0b0b0b")}})()`;
 
 /** Fills the AI "Free tools" terminal from the real drop list, so it never goes stale. */
 function withFreeStats(ai: ModeContent): ModeContent {
@@ -32,13 +38,12 @@ function withFreeStats(ai: ModeContent): ModeContent {
   };
 }
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const query = await searchParams;
+export default function Page() {
   const content = { ai: withFreeStats(linksContent.ai), fit: linksContent.fit };
-
-  return <LinksPage content={content} initialMode={parseMode(query.m)} source={parseSource(query.src)} />;
+  return (
+    <>
+      <script dangerouslySetInnerHTML={{ __html: INIT }} />
+      <LinksPage content={content} />
+    </>
+  );
 }
