@@ -646,32 +646,35 @@ function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?:
   }, [reduced]);
 
   return (
-    <span ref={wrap} aria-hidden className={`pointer-events-none relative block select-none ${className ?? ""}`}>
-      <Image
-        src={`/links/orbit/${clip}.png`}
-        alt=""
-        width={LOOP_W}
-        height={LOOP_H}
-        priority={priority}
-        className={`w-full transition-opacity duration-300 ${live ? "opacity-0" : "motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite]"}`}
-      />
-      <canvas
-        ref={canvas}
-        width={LOOP_W}
-        height={LOOP_H}
-        className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${live ? "opacity-100" : "opacity-0"}`}
-      />
-      {reduced ? null : (
-        <video
-          ref={video}
-          src={`/links/orbit/${clip}.mp4`}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute left-0 top-0 h-px w-px opacity-0"
+    // outer span takes the caller's position (often absolute); the inner one anchors the canvas
+    <span ref={wrap} aria-hidden className={`pointer-events-none block select-none ${className ?? ""}`}>
+      <span className="relative block">
+        <Image
+          src={`/links/orbit/${clip}.png`}
+          alt=""
+          width={LOOP_W}
+          height={LOOP_H}
+          priority={priority}
+          className={`w-full transition-opacity duration-300 ${live ? "opacity-0" : "motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite]"}`}
         />
-      )}
+        <canvas
+          ref={canvas}
+          width={LOOP_W}
+          height={LOOP_H}
+          className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${live ? "opacity-100" : "opacity-0"}`}
+        />
+        {reduced ? null : (
+          <video
+            ref={video}
+            src={`/links/orbit/${clip}.mp4`}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute left-0 top-0 h-px w-px opacity-0"
+          />
+        )}
+      </span>
     </span>
   );
 }
