@@ -86,9 +86,9 @@ export default function LinksPage({ content }: { content: Record<LinksMode, Mode
     track("links_mode", { to: next, src: source.current });
     // Keep the choice in the URL so a shared or reloaded link opens the same side.
     const url = new URL(window.location.href);
-    if (next === "fit") url.searchParams.set("m", "fit");
-    else url.searchParams.delete("m");
-    window.history.replaceState(null, "", url);
+    url.pathname = next === "fit" ? "/links/fit" : "/links";
+    url.searchParams.delete("m");
+    window.history.replaceState(window.history.state, "", url);
   };
 
   const onLink: OnLink = (id, place) => track("links_click", { id, place, mode: getMode(), src: source.current });
