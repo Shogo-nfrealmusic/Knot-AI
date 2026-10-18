@@ -43,3 +43,6 @@ PORTFOLIO.md
 *.tsbuildinfo
 next-env.d.ts
 UPWORK.md
+
+# supabase CLI link state (project ref, local only)
+supabase/.temp/
