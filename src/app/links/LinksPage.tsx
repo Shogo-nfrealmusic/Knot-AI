@@ -139,7 +139,7 @@ export default function LinksPage({
         </div>
 
         <footer className="mt-12 flex flex-col items-center gap-3 text-[12px] text-[var(--l-muted)]">
-          {fit ? null : <OrbitLoop clip="friends" className="w-[140px]" />}
+          {fit ? null : <OrbitStill name="friends" className="w-[140px]" delay={0.4} />}
           <Link href="/" onClick={() => onLink("home", "footer")} className="hover:text-[var(--l-fg)]">
             shogo.build
           </Link>
@@ -237,8 +237,9 @@ function AiHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: str
 
 function FitHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: string) => void }) {
   return (
-    <section className="relative -mt-[70px]">
-      <div className="relative">
+    // full-bleed on a phone; on wider screens the photo becomes a rounded card so it doesn't read as a box on black
+    <section className="relative -mt-[70px] sm:mt-2">
+      <div className="relative overflow-hidden sm:mx-5 sm:rounded-[22px]">
         <Image
           src={c.photo.src}
           alt={c.photo.alt}
@@ -577,8 +578,8 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id
 // WebM/HEVC did not. Until the first frame is drawn (or if autoplay is refused, e.g. Low Power Mode,
 // or the visitor prefers reduced motion) the still first frame shows instead.
 
-type OrbitClip = "type" | "cheer" | "friends";
-type OrbitStillName = "yellow-think" | "purple-happy" | "teal-cheer" | "pink-curious" | "white-type";
+type OrbitClip = "type" | "cheer";
+type OrbitStillName = "yellow-think" | "purple-happy" | "teal-cheer" | "pink-curious" | "friends";
 
 const LOOP_W = 400;
 const LOOP_H = 366;
