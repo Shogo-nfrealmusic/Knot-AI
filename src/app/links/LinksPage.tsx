@@ -1,6 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { track } from "@vercel/analytics";
@@ -28,7 +37,7 @@ const subscribeMode = (cb: () => void) => {
   window.addEventListener("links-mode", cb);
   return () => window.removeEventListener("links-mode", cb);
 };
-const useLinksMode = () => useSyncExternalStore(subscribeMode, getMode, () => "ai" as LinksMode);
+const useLinksMode = (serverMode: LinksMode) => useSyncExternalStore(subscribeMode, getMode, () => serverMode);
 
 const isExternal = (href: string) => /^(https?:|mailto:)/.test(href);
 
@@ -44,6 +53,9 @@ function SmartLink({ href, ...rest }: React.ComponentProps<"a"> & { href: string
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
+/** false while this side has never been shown: its media stays out of the page entirely */
+const LoadMedia = createContext(true);
+
 export default function LinksPage({
   content,
   defaultMode,
@@ -52,8 +64,12 @@ export default function LinksPage({
   /** the side this URL opens on; shown by CSS even before the inline script has run */
   defaultMode: LinksMode;
 }) {
-  const mode = useLinksMode();
+  const mode = useLinksMode(defaultMode);
   const source = useRef("direct");
+  // A side's images, videos and Orbits are only put in the page once that side has been shown,
+  // so opening one side never downloads the other side's media.
+  const [seen, setSeen] = useState<LinksMode[]>([defaultMode]);
+  const shows = (pane: LinksMode) => mode === pane || seen.includes(pane);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -87,6 +103,7 @@ export default function LinksPage({
 
   const switchMode = (next: LinksMode) => {
     if (next === getMode()) return;
+    setSeen((s) => (s.includes(next) ? s : [...s, next]));
     document.documentElement.setAttribute("data-links-switched", "");
     document.documentElement.setAttribute("data-links", next);
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "fit" ? "#0b0b0b" : "#fbfbfa");
@@ -107,10 +124,14 @@ export default function LinksPage({
       <div className="mx-auto max-w-[440px] pb-14">
         <ModeSwitch mode={mode} content={content} onChange={switchMode} />
         <div data-pane="ai">
-          <Side c={content.ai} fit={false} onLink={onLink} />
+          <LoadMedia.Provider value={shows("ai")}>
+            <Side c={content.ai} fit={false} onLink={onLink} />
+          </LoadMedia.Provider>
         </div>
         <div data-pane="fit">
-          <Side c={content.fit} fit onLink={onLink} />
+          <LoadMedia.Provider value={shows("fit")}>
+            <Side c={content.fit} fit onLink={onLink} />
+          </LoadMedia.Provider>
         </div>
       </div>
     </main>
@@ -231,8 +252,10 @@ function Line({ c, className }: { c: ModeContent; className: string }) {
 }
 
 function HeroPhoto({ c, className }: { c: ModeContent; className: string }) {
-  // The inline script in page.tsx preloads this exact srcset for the side being opened, so the
-  // visible photo downloads alongside the CSS; lazy keeps the hidden side's photo from loading at all.
+  // render.tsx preloads this exact srcset in <head> for the URL's side, so the photo downloads
+  // alongside the CSS. The other side's photo is not in the page until that side is opened.
+  const load = useContext(LoadMedia);
+  if (!load) return <span className="block aspect-[4/5] w-full" />;
   return (
     // eslint-disable-next-line @next/next/no-img-element -- pre-sized files, preloaded by name before paint
     <img
@@ -449,6 +472,8 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
 }
 
 function CardVisual({ item }: { item: Exclude<Highlight, { kind: "video" }> }) {
+  const load = useContext(LoadMedia);
+  if (!load && (item.kind === "phone" || item.kind === "screenshot")) return null;
   switch (item.kind) {
     case "phone":
       return (
@@ -542,10 +567,11 @@ function VideoCard({
   onOpen: (id: string) => void;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const load = useContext(LoadMedia);
 
   useEffect(() => {
     const video = ref.current;
-    if (!video || reduced) return;
+    if (!video || reduced || !load) return;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) video.play().catch(() => {});
@@ -555,7 +581,7 @@ function VideoCard({
     );
     io.observe(video);
     return () => io.disconnect();
-  }, [reduced]);
+  }, [reduced, load]);
 
   return (
     <SmartLink
@@ -565,8 +591,8 @@ function VideoCard({
     >
       <video
         ref={ref}
-        src={item.video}
-        poster={item.poster}
+        src={load ? item.video : undefined}
+        poster={load ? item.poster : undefined}
         muted
         loop
         playsInline
@@ -583,6 +609,7 @@ function VideoCard({
 
 /** Long-form uploads. Thumbnails come straight from YouTube's image CDN, lazily, at 320×180. */
 function YouTubeList({ videos, onLink }: { videos: NonNullable<ModeContent["videos"]>; onLink: OnLink }) {
+  const load = useContext(LoadMedia);
   return (
     <section className="mt-16 px-5">
       <div data-reveal className="mb-4 flex items-end justify-between">
@@ -604,8 +631,9 @@ function YouTubeList({ videos, onLink }: { videos: NonNullable<ModeContent["vide
               className="press group flex items-center gap-3.5"
             >
               <span className="relative aspect-video w-[136px] shrink-0 overflow-hidden rounded-[12px] bg-[var(--l-card)] ring-1 ring-white/10">
-                {/* eslint-disable-next-line @next/next/no-img-element -- remote thumbnail, already sized by YouTube */}
-                <img
+                {load ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- remote thumbnail, already sized by YouTube
+                  <img
                   src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`}
                   alt=""
                   width={320}
@@ -613,7 +641,8 @@ function YouTubeList({ videos, onLink }: { videos: NonNullable<ModeContent["vide
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
-                />
+                  />
+                ) : null}
                 <span className="lg absolute bottom-1.5 right-1.5 rounded-[6px] px-1.5 py-[1px] font-mono text-[10px] text-white">
                   {v.duration}
                 </span>
@@ -675,6 +704,11 @@ type FrameVideo = HTMLVideoElement & {
 };
 
 function OrbitLoop({ clip, className }: { clip: OrbitClip; className?: string }) {
+  const load = useContext(LoadMedia);
+  return load ? <OrbitLoopInner clip={clip} className={className} /> : null;
+}
+
+function OrbitLoopInner({ clip, className }: { clip: OrbitClip; className?: string }) {
   const reduced = useReducedMotion();
   const wrap = useRef<HTMLSpanElement>(null);
   const video = useRef<FrameVideo>(null);
@@ -779,6 +813,8 @@ function OrbitLoop({ clip, className }: { clip: OrbitClip; className?: string })
 }
 
 function OrbitStill({ name, className, delay = 0 }: { name: OrbitStillName; className?: string; delay?: number }) {
+  const load = useContext(LoadMedia);
+  if (!load) return null;
   return (
     <span
       aria-hidden
