@@ -12,7 +12,6 @@ import {
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { track } from "@vercel/analytics";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
 import { FiArrowUpRight, FiMail } from "react-icons/fi";
 import {
@@ -24,6 +23,7 @@ import {
   type ModeContent,
   type SocialIcon,
 } from "@/lib/links";
+import LinksContactForm from "./LinksContactForm";
 import "./links.css";
 
 // Speed first: the page is static, both sides are in the HTML, and switching sides only flips
@@ -31,6 +31,17 @@ import "./links.css";
 // Motion is CSS only (links.css), so no animation library ships with the page.
 
 type OnLink = (id: string, place: string) => void;
+
+// Tracking goes to our own endpoint (src/app/api/links/event) and is read back on /admin/links.
+// sendBeacon survives the page being left right after a click, and never delays navigation.
+function send(event: { kind: "view" | "click" | "mode"; mode: LinksMode; src: string; target?: string; place?: string }) {
+  const body = JSON.stringify(event);
+  if (!navigator.sendBeacon?.("/api/links/event", new Blob([body], { type: "application/json" }))) {
+    fetch("/api/links/event", { method: "POST", body, keepalive: true, headers: { "Content-Type": "application/json" } }).catch(
+      () => {},
+    );
+  }
+}
 
 const getMode = (): LinksMode => (document.documentElement.getAttribute("data-links") === "fit" ? "fit" : "ai");
 const subscribeMode = (cb: () => void) => {
@@ -75,7 +86,7 @@ export default function LinksPage({
     const root = document.documentElement;
     source.current = parseSource(new URLSearchParams(window.location.search).get("src") ?? undefined);
     // One view per page load, tagged with the side it opened on and the bio link it came from.
-    track("links_view", { mode: getMode(), src: source.current });
+    send({ kind: "view", mode: getMode(), src: source.current });
 
     // Scroll reveal: one observer for the whole page; each element animates in once.
     const io = new IntersectionObserver(
@@ -109,7 +120,7 @@ export default function LinksPage({
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "fit" ? "#0b0b0b" : "#fbfbfa");
     window.dispatchEvent(new Event("links-mode"));
     window.scrollTo({ top: 0 });
-    track("links_mode", { to: next, src: source.current });
+    send({ kind: "mode", mode: next, src: source.current, target: next });
     // Keep the choice in the URL so a shared or reloaded link opens the same side.
     const url = new URL(window.location.href);
     url.pathname = next === "fit" ? "/links/fit" : "/links";
@@ -117,7 +128,7 @@ export default function LinksPage({
     window.history.replaceState(window.history.state, "", url);
   };
 
-  const onLink: OnLink = (id, place) => track("links_click", { id, place, mode: getMode(), src: source.current });
+  const onLink: OnLink = (id, place) => send({ kind: "click", mode: getMode(), src: source.current, target: id, place });
 
   return (
     <main data-default={defaultMode} className="min-h-screen overflow-x-clip">
@@ -414,6 +425,9 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
         best = i;
       }
     });
+    // The last card can never line up with the left edge (the rail stops at its end), so reaching
+    // the end of the rail means the last card is the one being looked at.
+    if (left >= el.scrollWidth - el.clientWidth - 8) best = el.children.length - 1;
     if (best !== active) setActive(best);
   };
 
@@ -674,13 +688,18 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnL
       >
         {c.closing.text}
       </p>
-      <SmartLink
-        href={c.closing.href}
-        onClick={() => onLink("closing", "closing")}
-        className="press mt-6 inline-flex h-11 items-center rounded-full bg-[var(--l-fg)] px-6 text-[14px] font-semibold text-[var(--l-bg)] hover:scale-[1.03]"
-      >
-        {c.closing.cta}
-      </SmartLink>
+      {fit ? (
+        <SmartLink
+          href={c.closing.href}
+          onClick={() => onLink("closing", "closing")}
+          className="press mt-6 inline-flex h-11 items-center rounded-full bg-[var(--l-fg)] px-6 text-[14px] font-semibold text-[var(--l-bg)] hover:scale-[1.03]"
+        >
+          {c.closing.cta}
+        </SmartLink>
+      ) : (
+        // the contact form right here, so nobody has to leave the page to write
+        <LinksContactForm onSent={() => onLink("contact_sent", "closing")} />
+      )}
     </section>
   );
 }

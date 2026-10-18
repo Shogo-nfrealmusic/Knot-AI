@@ -58,7 +58,6 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     photo: { base: "/links/ai", alt: "Shogo at his laptop with a camera", width: 1200, height: 1800 },
     socials: [
       { id: "ig_copilot", label: "Instagram @copilot_shogo", icon: "instagram", href: "https://www.instagram.com/copilot_shogo/" },
-      // TODO(Shogo): confirm the X handle
       { id: "x", label: "X @copilot_shogo", icon: "x", href: "https://x.com/copilot_shogo" },
       { id: "github", label: "GitHub", icon: "github", href: "https://github.com/Shogo-nfrealmusic" },
       { id: "linkedin", label: "LinkedIn", icon: "linkedin", href: "https://www.linkedin.com/in/shogo-kikuchi-19b792321/" },
@@ -161,7 +160,6 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         poster: "/links/fit/monolith.jpg",
       },
     ],
-    // TODO(Shogo): coaching sign-up, once there is a place to send people
     // Newest long-form uploads on sho_vlog, checked 2026-10-19. Thumbnails load from YouTube itself.
     videos: {
       label: "On YouTube",
@@ -174,9 +172,11 @@ export const linksContent: Record<LinksMode, ModeContent> = {
       ],
     },
     pages: [
+      // Coaching is arranged in Instagram DMs (Shogo, 2026-10-19)
+      { id: "coaching", label: "Coaching", note: "1:1 training. DM me on Instagram", href: "https://ig.me/m/imshogo.k" },
       { id: "edit_guide", label: "How I edit these", note: "Cinematic reels, cut by Claude", href: "/free/27-claude-video-edit" },
     ],
-    closing: { text: "Questions about training?", cta: "Message me on Instagram", href: "https://ig.me/m/imshogo.k" },
+    closing: { text: "Want me to coach you?", cta: "DM me on Instagram", href: "https://ig.me/m/imshogo.k" },
   },
 };
 
