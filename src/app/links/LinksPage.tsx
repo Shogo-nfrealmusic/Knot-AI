@@ -101,7 +101,9 @@ export default function LinksPage({
           {c.pages.length ? (
             <section className="mt-16 px-5">
               <div className="relative">
-                <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
+                {fit ? null : (
+                  <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
+                )}
                 <ul className="relative overflow-hidden rounded-[18px] border border-[var(--l-line)] bg-[var(--l-card)]">
                   {c.pages.map((page, i) => (
                     <li key={page.id} className={i ? "border-t border-[var(--l-line)]" : ""}>
@@ -111,7 +113,15 @@ export default function LinksPage({
                         className="flex items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-[var(--l-well)]"
                       >
                         <span className="min-w-0">
-                          <span className="block text-[15px] font-medium tracking-[-0.01em]">{page.label}</span>
+                          <span
+                            className={
+                              fit
+                                ? "block text-[14px] font-bold uppercase tracking-[0.04em]"
+                                : "block text-[15px] font-medium tracking-[-0.01em]"
+                            }
+                          >
+                            {page.label}
+                          </span>
                           <span className="block truncate text-[13px] text-[var(--l-muted)]">{page.note}</span>
                         </span>
                         <span aria-hidden className="text-[var(--l-muted)]">
@@ -562,40 +572,106 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id
 
 // ---- Orbit ----
 // Every Orbit here is the Blender render from shorts-studio (scripts/orbit/orbit.py), never redrawn.
-// Loops: orange, animated, transparent WebM. WebKit (Safari and every iOS browser, Instagram's included)
-// can't show VP9 alpha, so it gets the first frame; reduced motion does too. Stills: the other colors.
+// Loops: a plain H.264 MP4 with the color on top and the alpha (as grey) below, recombined on a canvas.
+// H.264 plays everywhere, iOS Safari and Instagram's in-app browser included, which transparent
+// WebM/HEVC did not. Until the first frame is drawn (or if autoplay is refused, e.g. Low Power Mode,
+// or the visitor prefers reduced motion) the still first frame shows instead.
 
-type OrbitClip = "type" | "cheer" | "read" | "idea" | "friends";
+type OrbitClip = "type" | "cheer" | "friends";
 type OrbitStillName = "yellow-think" | "purple-happy" | "teal-cheer" | "pink-curious" | "white-type";
 
-const noopSubscribe = () => () => {};
-function canPlayAlphaWebm(): boolean {
-  if (window.matchMedia(reducedMotionQuery).matches) return false;
-  const ua = navigator.userAgent;
-  const webkitOnly = /iP(hone|ad|od)/.test(ua) || (/Safari\//.test(ua) && !/Chrome|Chromium|CriOS|Edg|Android/.test(ua));
-  return !webkitOnly;
-}
+const LOOP_W = 400;
+const LOOP_H = 366;
 
 function OrbitLoop({ clip, className, priority }: { clip: OrbitClip; className?: string; priority?: boolean }) {
-  const playable = useSyncExternalStore(noopSubscribe, canPlayAlphaWebm, () => false);
-  const box = `pointer-events-none select-none ${className ?? ""}`;
-  if (playable) {
-    return (
-      <video
-        className={box}
-        src={`/links/orbit/${clip}.webm`}
-        poster={`/links/orbit/${clip}.png`}
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden
-      />
-    );
-  }
+  const reduced = useReducedMotion();
+  const wrap = useRef<HTMLSpanElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    const v = video.current;
+    const out = canvas.current?.getContext("2d");
+    if (reduced || !v || !out || !wrap.current) return;
+
+    const scratch = document.createElement("canvas");
+    scratch.width = LOOP_W;
+    scratch.height = LOOP_H * 2;
+    const sctx = scratch.getContext("2d", { willReadFrequently: true });
+    if (!sctx) return;
+
+    let raf = 0;
+    let drawn = false;
+    const draw = () => {
+      if (v.readyState >= 2) {
+        sctx.drawImage(v, 0, 0, LOOP_W, LOOP_H * 2);
+        const color = sctx.getImageData(0, 0, LOOP_W, LOOP_H);
+        const mask = sctx.getImageData(0, LOOP_H, LOOP_W, LOOP_H).data;
+        const px = color.data;
+        for (let i = 0; i < px.length; i += 4) {
+          // grey 0..255 is the alpha; a small floor keeps compression noise from tinting the page
+          const a = mask[i] - 6;
+          px[i + 3] = a <= 0 ? 0 : a >= 243 ? 255 : (a * 255) / 243;
+        }
+        out.putImageData(color, 0, 0);
+        if (!drawn) {
+          drawn = true;
+          setLive(true);
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    // Only decode and composite while the loop is on screen.
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        v.play()
+          .then(() => {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(draw);
+          })
+          .catch(() => {});
+      } else {
+        v.pause();
+        cancelAnimationFrame(raf);
+      }
+    });
+    io.observe(wrap.current);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+      v.pause();
+    };
+  }, [reduced]);
+
   return (
-    <span className={`${box} block motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite]`}>
-      <Image src={`/links/orbit/${clip}.png`} alt="" width={360} height={328} priority={priority} className="w-full" />
+    <span ref={wrap} aria-hidden className={`pointer-events-none relative block select-none ${className ?? ""}`}>
+      <Image
+        src={`/links/orbit/${clip}.png`}
+        alt=""
+        width={LOOP_W}
+        height={LOOP_H}
+        priority={priority}
+        className={`w-full transition-opacity duration-300 ${live ? "opacity-0" : "motion-safe:animate-[links-bob_3.4s_ease-in-out_infinite]"}`}
+      />
+      <canvas
+        ref={canvas}
+        width={LOOP_W}
+        height={LOOP_H}
+        className={`absolute inset-0 h-full w-full transition-opacity duration-300 ${live ? "opacity-100" : "opacity-0"}`}
+      />
+      {reduced ? null : (
+        <video
+          ref={video}
+          src={`/links/orbit/${clip}.mp4`}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute left-0 top-0 h-px w-px opacity-0"
+        />
+      )}
     </span>
   );
 }

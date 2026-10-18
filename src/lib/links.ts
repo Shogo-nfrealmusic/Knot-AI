@@ -122,7 +122,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     photo: { src: "/links/fitness.jpg", alt: "Shogo in a black jacket on a mountain lookout", width: 1200, height: 1800 },
     socials: [
       { id: "ig_imshogo", label: "Instagram @imshogo.k", icon: "instagram", href: "https://www.instagram.com/imshogo.k/" },
-      // TODO(Shogo): YouTube SHO_VLOG channel URL
+      { id: "youtube", label: "YouTube sho_vlog", icon: "youtube", href: "https://www.youtube.com/@imshogo.k/shorts" },
       { id: "email", label: "Email", icon: "email", href: "mailto:hello@shogo.build" },
     ],
     highlightsLabel: "Latest edits",
@@ -156,7 +156,10 @@ export const linksContent: Record<LinksMode, ModeContent> = {
       },
     ],
     // TODO(Shogo): coaching sign-up, once there is a place to send people
-    pages: [],
+    pages: [
+      { id: "youtube_shorts", label: "YouTube", note: "Every short, sho_vlog", href: "https://www.youtube.com/@imshogo.k/shorts" },
+      { id: "edit_guide", label: "How I edit these", note: "Cinematic reels, cut by Claude", href: "/free/27-claude-video-edit" },
+    ],
     closing: { text: "Questions about training?", cta: "Message me on Instagram", href: "https://ig.me/m/imshogo.k" },
   },
 };
