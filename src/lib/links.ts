@@ -80,7 +80,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         title: "An AI agent for PM work",
         href: "https://engineering.mercari.com/en/blog/entry/20260427-mercari-pm-agent-design-automating-the-pm-workflow-with-claude-code-skills-and-mcp/",
         source: "engineering.mercari.com",
-        excerpt: "Automating the PM workflow with Claude Code Skills and MCP: from a business problem to a PRD and UI mockups in one session.",
+        excerpt: "From a business problem to a PRD and UI mockups in one session, with evidence pulled from Notion, Slack, Looker and Figma.",
       },
       {
         id: "signal",
@@ -128,15 +128,6 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     highlightsLabel: "Latest edits",
     highlights: [
       {
-        id: "monolith",
-        kind: "video",
-        kicker: "Edit",
-        title: "Monolith",
-        href: "https://www.instagram.com/imshogo.k/",
-        video: "/links/fit/monolith.mp4",
-        poster: "/links/fit/monolith.jpg",
-      },
-      {
         id: "while_they_sleep",
         kind: "video",
         kicker: "Edit",
@@ -153,6 +144,15 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         href: "https://www.instagram.com/imshogo.k/",
         video: "/links/fit/honest-reaction.mp4",
         poster: "/links/fit/honest-reaction.jpg",
+      },
+      {
+        id: "monolith",
+        kind: "video",
+        kicker: "Edit",
+        title: "Monolith",
+        href: "https://www.instagram.com/imshogo.k/",
+        video: "/links/fit/monolith.mp4",
+        poster: "/links/fit/monolith.jpg",
       },
     ],
     // TODO(Shogo): coaching sign-up, once there is a place to send people

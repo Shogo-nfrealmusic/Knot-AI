@@ -93,7 +93,7 @@ export default function LinksPage({
           <section className="mt-16">
             <div className="mb-4 flex items-end justify-between px-5">
               <SectionTitle fit={fit}>{c.highlightsLabel}</SectionTitle>
-              {fit ? null : <OrbitStill name="yellow-think" className="-mb-1 w-[46px]" delay={0.6} />}
+              {fit ? null : <OrbitStill name="yellow-think" className="-mb-3 -mr-2 w-[72px]" delay={0.6} />}
             </div>
             <Highlights items={c.highlights} fit={fit} onOpen={(id) => onLink(id, "highlight")} />
           </section>
@@ -101,7 +101,7 @@ export default function LinksPage({
           {c.pages.length ? (
             <section className="mt-16 px-5">
               <div className="relative">
-                <OrbitStill name="purple-happy" className="absolute -top-[46px] right-4 w-[60px]" delay={1.1} />
+                <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
                 <ul className="relative overflow-hidden rounded-[18px] border border-[var(--l-line)] bg-[var(--l-card)]">
                   {c.pages.map((page, i) => (
                     <li key={page.id} className={i ? "border-t border-[var(--l-line)]" : ""}>
@@ -129,7 +129,7 @@ export default function LinksPage({
         </div>
 
         <footer className="mt-12 flex flex-col items-center gap-3 text-[12px] text-[var(--l-muted)]">
-          {fit ? null : <OrbitLoop clip="friends" className="w-[92px]" />}
+          {fit ? null : <OrbitLoop clip="friends" className="w-[140px]" />}
           <Link href="/" onClick={() => onLink("home", "footer")} className="hover:text-[var(--l-fg)]">
             shogo.build
           </Link>
@@ -150,7 +150,11 @@ function ModeSwitch({
 }) {
   const fit = mode === "fit";
   return (
-    <div className="sticky top-0 z-40 flex justify-center px-5 pb-2 pt-3">
+    <div
+      className={`sticky top-0 z-40 flex justify-center px-5 pb-5 pt-3 ${
+        fit ? "" : "bg-gradient-to-b from-[var(--l-bg)] from-60% to-transparent"
+      }`}
+    >
       <div
         role="tablist"
         aria-label="Choose a side"
@@ -186,7 +190,7 @@ function Line({ c, className }: { c: ModeContent; className: string }) {
   return (
     <p className={className}>
       {c.line.before}
-      <em className="font-serif text-[1.18em] italic leading-none text-[var(--l-fg)]">{c.line.em}</em>
+      <em className="font-serif text-[1.3em] italic leading-none text-[var(--l-fg)]">{c.line.em}</em>
       {c.line.after}
     </p>
   );
@@ -196,8 +200,6 @@ function AiHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: str
   return (
     <section className="px-5 pt-10">
       <div className="relative">
-        {/* peeks over the top edge from behind the photo */}
-        <OrbitStill name="pink-curious" className="absolute -top-[38px] right-7 z-0 w-[64px]" delay={0.3} />
         <div className="relative z-10 overflow-hidden rounded-[22px] bg-[var(--l-well)] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_18px_40px_-20px_rgba(0,0,0,0.35)] ring-1 ring-black/[0.06]">
           <Image
             src={c.photo.src}
@@ -209,12 +211,14 @@ function AiHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: str
             className="aspect-[4/5] w-full object-cover object-[50%_42%]"
           />
         </div>
-        <OrbitLoop clip="type" className="absolute -bottom-10 -left-3 z-20 w-[148px]" priority />
+        <OrbitLoop clip="type" className="absolute -bottom-14 -left-6 z-20 w-[184px]" priority />
       </div>
 
-      <div className="mt-14">
+      <div className="relative mt-16">
+        {/* curious about the name, from the right edge */}
+        <OrbitStill name="pink-curious" className="absolute -right-2 -top-6 w-[92px]" delay={0.3} />
         <h1 className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">{c.name}</h1>
-        <Line c={c} className="mt-2 max-w-[32ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
+        <Line c={c} className="mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
         <Socials c={c} fit={false} onLink={onLink} />
       </div>
     </section>
@@ -223,7 +227,7 @@ function AiHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: str
 
 function FitHero({ c, onLink }: { c: ModeContent; onLink: (id: string, place: string) => void }) {
   return (
-    <section className="relative -mt-[52px]">
+    <section className="relative -mt-[70px]">
       <div className="relative">
         <Image
           src={c.photo.src}
@@ -530,8 +534,8 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: (id
     <section className="mt-20 px-5 text-center">
       {fit ? null : (
         <div className="mb-2 flex items-end justify-center gap-1">
-          <OrbitLoop clip="cheer" className="w-[118px]" />
-          <OrbitStill name="teal-cheer" className="mb-2 w-[62px]" delay={0.9} />
+          <OrbitLoop clip="cheer" className="w-[156px]" />
+          <OrbitStill name="teal-cheer" className="-ml-4 mb-3 w-[96px]" delay={0.9} />
         </div>
       )}
       <p
