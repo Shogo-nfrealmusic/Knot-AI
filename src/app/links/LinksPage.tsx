@@ -44,7 +44,14 @@ function SmartLink({ href, ...rest }: React.ComponentProps<"a"> & { href: string
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
-export default function LinksPage({ content }: { content: Record<LinksMode, ModeContent> }) {
+export default function LinksPage({
+  content,
+  defaultMode,
+}: {
+  content: Record<LinksMode, ModeContent>;
+  /** the side this URL opens on; shown by CSS even before the inline script has run */
+  defaultMode: LinksMode;
+}) {
   const mode = useLinksMode();
   const source = useRef("direct");
 
@@ -73,12 +80,14 @@ export default function LinksPage({ content }: { content: Record<LinksMode, Mode
       // Leaving /links: hand the page back to the rest of the site untouched.
       root.removeAttribute("data-links");
       root.removeAttribute("data-links-js");
+      root.removeAttribute("data-links-switched");
       document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#ffffff");
     };
   }, []);
 
   const switchMode = (next: LinksMode) => {
     if (next === getMode()) return;
+    document.documentElement.setAttribute("data-links-switched", "");
     document.documentElement.setAttribute("data-links", next);
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "fit" ? "#0b0b0b" : "#fbfbfa");
     window.dispatchEvent(new Event("links-mode"));
@@ -94,7 +103,7 @@ export default function LinksPage({ content }: { content: Record<LinksMode, Mode
   const onLink: OnLink = (id, place) => track("links_click", { id, place, mode: getMode(), src: source.current });
 
   return (
-    <main className="min-h-screen overflow-x-clip">
+    <main data-default={defaultMode} className="min-h-screen overflow-x-clip">
       <div className="mx-auto max-w-[440px] pb-14">
         <ModeSwitch mode={mode} content={content} onChange={switchMode} />
         <div data-pane="ai">
@@ -254,10 +263,10 @@ function AiHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
 
       <div className="relative mt-16 px-2">
         <OrbitStill name="pink-curious" className="absolute -right-1 -top-6 w-[92px]" delay={0.3} />
-        <h1 data-reveal className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">
+        <h1 className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">
           {c.name}
         </h1>
-        <div data-reveal style={delay(80)}>
+        <div>
           <Line c={c} className="mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
         </div>
         <Socials c={c} onLink={onLink} />
@@ -276,10 +285,10 @@ function FitHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
         <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0b0b0b]/45 to-transparent" />
       </div>
       <div className="relative -mt-20 px-5">
-        <h1 data-reveal className="text-[72px] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">
+        <h1 className="text-[72px] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">
           {c.name}
         </h1>
-        <div data-reveal style={delay(80)}>
+        <div>
           <Line c={c} className="mt-4 max-w-[30ch] text-[15px] leading-[1.55] text-[var(--l-muted)]" />
         </div>
         <Socials c={c} onLink={onLink} />
@@ -301,8 +310,8 @@ const ICONS: Record<SocialIcon, ReactNode> = {
 function Socials({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
   return (
     <ul className="mt-6 flex flex-wrap gap-2.5">
-      {c.socials.map((s, i) => (
-        <li key={s.id} data-reveal style={delay(160 + i * 60)}>
+      {c.socials.map((s) => (
+        <li key={s.id}>
           <SmartLink
             href={s.href}
             aria-label={s.label}

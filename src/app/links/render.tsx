@@ -51,7 +51,7 @@ export function LinksRoute({ mode }: { mode: LinksMode }) {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: init(mode) }} />
-      <LinksPage content={content} />
+      <LinksPage content={content} defaultMode={mode} />
     </>
   );
 }

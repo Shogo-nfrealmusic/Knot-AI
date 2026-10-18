@@ -39,8 +39,14 @@ html[data-links] body {
 
 html[data-links="ai"] [data-pane="ai"],
 html[data-links="fit"] [data-pane="fit"],
-html:not([data-links]) [data-pane="ai"] {
+html:not([data-links]) [data-default="ai"] [data-pane="ai"],
+html:not([data-links]) [data-default="fit"] [data-pane="fit"] {
   display: block;
+}
+
+/* Only after a switch, never on first load: the first paint is never delayed by an animation. */
+html[data-links-switched][data-links="ai"] [data-pane="ai"],
+html[data-links-switched][data-links="fit"] [data-pane="fit"] {
   animation: links-pane-in 0.7s var(--l-ease) both;
 }
 
@@ -141,22 +147,19 @@ html[data-links="fit"] .links-tab[data-for="fit"] {
   color: #0b0b0b;
 }
 
-/* The hero photo settles in, like a product shot. */
+/* The hero photo settles in, like a product shot. Scale only: it is fully visible from its first
+   frame, so it never holds back the first paint. */
 .links-hero-photo {
-  animation: links-settle 1.4s var(--l-ease) both;
+  animation: links-settle 1.6s var(--l-ease) both;
 }
 
 @keyframes links-settle {
   from {
-    transform: scale(1.06);
-    filter: blur(8px);
-    opacity: 0.4;
+    transform: scale(1.05);
   }
 
   to {
     transform: none;
-    filter: none;
-    opacity: 1;
   }
 }
 
