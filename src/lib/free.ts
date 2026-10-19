@@ -125,6 +125,134 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 34,
+    slug: "34-my-eyes",
+    title: "MY EYES: a lyric video made with code, not After Effects",
+    description:
+      "How the MY EYES lyric video was built with Claude Opus 5.5 in Claude Code: every lyric inside a different app screen (Slack, Claude Code, Notion, Wallet, Spotify, Netflix…), one continuous camera through every cut, Apple-style liquid glass, and a Blender eyeball. The recipes, the prompts, and the bugs that cost the most time.",
+    date: "2026-10-20",
+    keyword: "EYES",
+    tools: [
+      {
+        name: "Remotion",
+        what: "React for video: each frame is a React component rendered at time t. Every screen, word and camera move in the reel is a component Claude wrote. Free for individuals and companies up to 3 people; larger companies need a license.",
+        href: "https://www.remotion.dev",
+        icon: "cube",
+        install: ["npx create-video@latest"],
+        note: "Remotion license: remotion.dev/license",
+      },
+      {
+        name: "Claude Code",
+        what: "Where Claude Opus 5.5 wrote the 16 app screens and the camera. You say what looks wrong in plain English; it edits the code and renders again.",
+        href: "https://claude.com/claude-code",
+        icon: "wand",
+      },
+      {
+        name: "Blender",
+        what: "The eyeball: a sphere with a painted iris, a wet glossy film and two round softbox lights, rendered as a transparent PNG sequence. Free and open source.",
+        href: "https://www.blender.org",
+        icon: "cube",
+      },
+      {
+        name: "ElevenLabs",
+        what: "The intro line (\"Would you believe…\"), voiced with one of the stock voices.",
+        href: "https://elevenlabs.io",
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "No timeline, no keyframes. 28 seconds, 16 app screens, 13 versions in one day. Here is what made it look expensive, and what made it look cheap until I fixed it.",
+      ],
+      chapters: [
+        {
+          title: "How the reel was made",
+          bullets: [
+            ["Each lyric line lives inside a real-looking app: Apple Music, Slack, Maps, the lock screen, ChatGPT, Wallet, Spotify, Claude Code, Netflix, Reminders, Notion, a call, WhatsApp, power off."],
+            ["Word timing: Whisper gave rough times; every word was then snapped to the moment it should appear. The lyric text itself comes from a text file, never typed into the code."],
+            ["Camera: one move carries both scenes through every cut (below). This was the biggest jump in quality."],
+            ["Eyeball: Blender, transparent PNGs, placed in the video like any image."],
+            ["Review: after each render, an independent reviewer scored it frame by frame (54 → 89) and I fixed what it found."],
+          ],
+        },
+        {
+          title: "The cut that flows: one camera for two scenes",
+          text: [
+            "My first versions animated each scene in and out on its own curve. Every cut had a moment where things stopped, jumped, or went dark. The fix: put the next scene right next to the current one, like frames on a film strip, and move both with the same curve.",
+          ],
+          code: [
+            {
+              label: "The core of it (TypeScript, Remotion)",
+              body: `// u: 0 → 1 across the cut, one curve shared by both scenes
+const FLOW = Easing.bezier(0.55, 0, 0.18, 1);
+const u = FLOW(clamp((t - (cutAt - 0.3)) / 0.6));
+
+// outgoing scene: moves away by one screen
+const outY = u * -1920;
+// incoming scene: starts one screen below, arrives at 0
+const inY = (u - 1) * -1920;`,
+            },
+          ],
+          bullets: [
+            "Speed is continuous through the seam, so the eye never feels a stop.",
+            "Zoom cuts (into the eyeball, through the album art) do the same in log-scale.",
+            "Motion blur only in the fast middle of the move (next chapter explains why).",
+          ],
+        },
+        {
+          title: "Liquid glass in CSS",
+          text: ["The glass buttons and fields everywhere. A nearly clear fill, a bright rim that is stronger top-left, and a soft light inside:"],
+          code: [
+            {
+              label: "CSS",
+              body: `background: rgba(255,255,255,.07);
+border: 1.5px solid rgba(255,255,255,.30);
+box-shadow:
+  inset 1.5px 2px 0 rgba(255,255,255,.55),
+  inset -1px -1.5px 0 rgba(255,255,255,.18),
+  inset 0 0 22px rgba(255,255,255,.10),
+  0 8px 28px rgba(0,0,0,.16);`,
+            },
+          ],
+          bullets: ["Skip backdrop-filter for video renders: in headless Chrome it came out blocky."],
+        },
+        {
+          title: "The bug that cost the most: stripes on every gradient",
+          text: [
+            ["For 10 versions, dark gradients showed stripes that looked like noise. I tried new backgrounds and added grain; nothing worked. The cause was Remotion's ", { code: "CameraMotionBlur" }, ": it stacks 10 copies of the frame at 1/10 opacity, and in 8-bit colour every value gets rounded to steps of about 10."],
+            "Fix: blur only while the camera is moving fast, render plain frames everywhere else. Lesson: when you see banding, check the actual pixel values before redesigning anything.",
+          ],
+        },
+        {
+          title: "Prompts to start your own",
+          code: [
+            {
+              label: "Prompt: one lyric line inside one app screen",
+              body: `In this Remotion project, add a scene component for one line of a lyric video.
+- The screen is a pixel-accurate dark-mode <app name> screen (match the real
+  app's layout, spacing and icons; use liquid-glass buttons).
+- Words come from timeline.json (index range a..b), each word appears on its
+  own time with a short spring: rise 10px, blur 6px → 0.
+- Nothing on screen is ever completely still: add a slow 3% push-in.
+Render a still at the middle of the scene so I can check it.`,
+            },
+            {
+              label: "Prompt: make the cuts flow",
+              body: `Change the transitions so both scenes ride ONE camera move:
+the incoming scene sits right next to the outgoing one and both move on
+the same easing curve (0.6s). No fades to black, no separate in/out
+animations. Apply motion blur only in the fast middle of each move.`,
+            },
+          ],
+        },
+      ],
+      notes: [
+        "The music, album art and photos belong to their owners; the reel uses them as a fan edit and they are not included here.",
+        "An independent guide by @copilot_shogo. Not affiliated with Remotion, Anthropic, Blender, ElevenLabs or any app shown.",
+      ],
+    },
+  },
+  {
     number: 33,
     slug: "33-six-agents",
     title: "Six AI agents, two camps: which one is for you",
