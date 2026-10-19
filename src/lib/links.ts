@@ -58,6 +58,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     photo: { base: "/links/ai", alt: "Shogo at his laptop with a camera", width: 1200, height: 1800 },
     socials: [
       { id: "ig_copilot", label: "Instagram @copilot_shogo", icon: "instagram", href: "https://www.instagram.com/copilot_shogo/" },
+      { id: "youtube_copilot", label: "YouTube @copilot_shogo", icon: "youtube", href: "https://www.youtube.com/@copilot_shogo" },
       { id: "x", label: "X @copilot_shogo", icon: "x", href: "https://x.com/copilot_shogo" },
       { id: "github", label: "GitHub", icon: "github", href: "https://github.com/Shogo-nfrealmusic" },
       { id: "linkedin", label: "LinkedIn", icon: "linkedin", href: "https://www.linkedin.com/in/shogo-kikuchi-19b792321/" },
