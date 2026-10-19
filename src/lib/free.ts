@@ -133,137 +133,37 @@ const drops: FreeDrop[] = [
     slug: "34-my-eyes",
     title: "MY EYES: a lyric video built entirely in code",
     description:
-      "The full prompt behind the MY EYES lyric video: 28.8 s, 9:16, 60 fps, 16 app screens, one continuous camera, zero After Effects. Paste it into Claude Code, fill in the brackets, and build your own. With the beat sheet, the real screens, and what made the difference.",
+      "A 28.8-second lyric video made with Claude Opus 5.5 in Claude Code: 16 real-looking app screens, one continuous camera, no After Effects. Here is what it is and the screens. The full prompt and source are coming as a kit.",
     date: "2026-10-20",
     keyword: "EYES",
     tools: [
       {
         name: "Claude Code",
-        what: "Where Claude Opus 5.5 wrote every screen, word and camera move. You describe what looks wrong; it edits the code and renders again.",
+        what: "Where Claude Opus 5.5 wrote every screen, word and camera move.",
         href: "https://claude.com/claude-code",
         icon: "wand",
       },
       {
         name: "Remotion",
-        what: "React for video: each frame is a component rendered at time t. Free for individuals and companies up to 3 people; larger companies need a license.",
+        what: "React for video: every frame is rendered from code. Free for individuals and companies up to 3 people; larger companies need a license.",
         href: "https://www.remotion.dev",
         icon: "cube",
-        install: ["npx create-video@latest"],
-        note: "Remotion license: remotion.dev/license",
       },
       {
         name: "Blender",
-        what: "The eyeball: one sphere, a painted iris, a wet glossy coat, two round softboxes, rendered as a transparent PNG sequence. Free.",
+        what: "The one 3D object in the video: the eyeball.",
         href: "https://www.blender.org",
         icon: "cube",
-      },
-      {
-        name: "ElevenLabs",
-        what: "The one intro line, read by a stock voice (deep, American, male).",
-        href: "https://elevenlabs.io",
-        icon: "plug",
       },
     ],
     about: {
       intro: [
-        "THE PROMPT · 28.8 s · 9:16 · 60 fps. Every frame is rendered by code: no After Effects, no timeline, no AI video generation.",
+        "28.8 s · 9:16 · 60 fps. Every frame rendered by code: no After Effects, no timeline, no AI video generation. 13 versions in one day.",
       ],
       chapters: [
         {
-          title: "How to use it",
-          text: [
-            "Paste the prompt below into Claude Code in an empty folder and fill in the [brackets]. Work in phases and approve each one before the next: brief, assets, word timing, first preview, fixes, final. Keep a reviewer in the loop: after every render, check it frame by frame.",
-          ],
-          bullets: [
-            ["Node.js 18+ and ffmpeg. Remotion (", { code: "npx create-video@latest" }, "), Inter and JetBrains Mono from Google Fonts."],
-            "The song as a file, and the lyrics as a plain text file, one line per lyric line.",
-            "Blender (free) for the one 3D object. An ElevenLabs account if you want a voice intro.",
-            "Python 3 with numpy and Pillow for the timing and checking scripts.",
-          ],
-        },
-        {
-          title: "The prompt",
-          text: ["Copy it whole. The [brackets] are yours to fill."],
-          code: [
-            {
-              label: "The prompt",
-              body: `GOAL
-Make a lyric video for [song, artist], built entirely in code with Remotion
-(React), 9:16 (1080x1920), 60 fps, [length] s. One continuous camera through
-every scene: zero hard cuts, zero fades to black. Premium, Apple-commercial
-clean, readable on a phone.
-
-IDEA
-Every lyric line lives inside a different real app on an iPhone: Apple Music,
-Slack, Maps, the lock screen, ChatGPT, Wallet, Spotify, Claude Code, Netflix,
-Reminders, Notion, an incoming call, WhatsApp, Siri, Slide to power off.
-Pick the app whose meaning matches the line ("tell me your tale" is a
-message; "the road" is Maps; "decide" is a terminal prompt).
-
-LOOK
-Dark mode everywhere. Each app rebuilt by eye to be indistinguishable from
-the real one: real layout, spacing, icons, badges (no placeholder bars, no
-"app-like" screens). Every button and field is Apple liquid glass: nearly
-clear fill, bright 1.5px rim stronger top-left, soft inner light. Flat solid
-backgrounds (no big dark gradients). Inter for UI, JetBrains Mono for the
-terminal. One 3D hero object: [object] rendered in Blender with real gloss.
-
-WORDS
-Lyrics come from lyrics.txt, never typed into the code. Get word times
-with Whisper, then align the lyric words to them (order-preserving), and
-fix by hand where a sung word differs. Each word appears on its own time:
-a short spring, rise 10-30 px, blur 6-16 px → 0, sharp within 0.25 s.
-
-CAMERA
-Every cut is ONE camera move that carries both scenes: the next scene sits
-right next to the current one and both travel on the same curve
-(cubic-bezier 0.55, 0, 0.18, 1) over 0.6 s. Zoom cuts fly through in
-log-scale. Inside a scene nothing is ever still: a slow 3-4 % push-in.
-A +0.5 % pulse on every beat of the song.
-Motion blur ONLY in the fast middle of each move (it bands gradients if
-it runs on still frames).
-
-AUDIO
-[Optional] An intro line before the vocal starts: "[your line]", ElevenLabs
-[voice], music ducked to 20 % under it, swelling to 100 % into the first
-lyric. Mix in ffmpeg after rendering the picture muted.
-
-PROCESS
-1. Beat sheet with exact times per scene (lyric index ranges per scene).
-2. Word timing locked first. 3. Build one scene at a time and render a
-still of each before moving on. 4. Full render, then a frame-by-frame check
-of every cut: no stops, no black frames, no leftovers of the old scene.
-5. Fix round, re-render, check again until it is clean.`,
-            },
-          ],
-        },
-        {
-          title: "Beat sheet",
-          text: ["Times in the finished video (seconds). 16 scenes, 15 camera moves, no hard cuts."],
-          table: {
-            head: ["Seconds", "Scene", "What happens"],
-            rows: [
-              ["0.00–2.78", "Apple Music", "The lyrics view, tilted in 3D, drifting. The intro line plays as the lyric rows: \"Would you believe / Claude Opus 5.5 / made this?\""],
-              ["2.78–4.03", "The eye", "The camera flies out of the pupil. A Blender eyeball pushes in and turns. LOOK AT / MY EYES."],
-              ["4.03–5.34", "Slack", "A DM with Travis Scott. My message, his reply, word by word."],
-              ["5.34–6.93", "Maps", "A blue route draws up the road; words laid on the map; the camera tilts down to the turn banner."],
-              ["6.93–8.65", "Lock screen", "Now playing. CLEAR / OUT / OF / MY / FACE stack over the album art."],
-              ["8.65–10.30", "ChatGPT", "Flying through the art into ChatGPT: the real mark, a liquid-glass search field typing the line."],
-              ["10.30–12.68", "Wallet", "Glowing glass cards drop in: YELLOW, GREEN, then a third card with the rest of the line."],
-              ["12.68–15.23", "Spotify", "The artist page; the song list fills in, one word per track."],
-              ["15.23–16.68", "Claude Code", "The terminal. The line is typed at the prompt; then \"✻ Deciding…\"."],
-              ["16.68–18.43", "Netflix", "The documentary page; the words sit between the gallery stills."],
-              ["18.43–19.90", "Stage + Reminders", "A concert photo with the words beside the artist; then a lock screen notification."],
-              ["19.90–21.65", "Notion", "A page titled with the line; WHAT / SCOTTY / WOULD / DO stack in the body."],
-              ["21.65–22.41", "Call", "Incoming call; Slide to answer shimmers."],
-              ["22.41–25.78", "WhatsApp + Siri", "Two sent messages and a reply; then the rainbow edge glow and a search card."],
-              ["25.78–28.80", "Power off", "The last line rides the slider; the knob slides on the ad-lib; the screen goes black."],
-            ],
-          },
-        },
-        {
-          title: "The real screens",
-          text: ["Stills from the finished video. Each one is plain React and CSS, rebuilt by looking at the real app."],
+          title: "The screens",
+          text: ["Each lyric line lives inside a different app, rebuilt to look like the real thing. Stills from the finished video:"],
           figures: [
             { src: "/free/34/music.jpg", alt: "Apple Music lyrics view", caption: "Apple Music", tall: true },
             { src: "/free/34/eye.jpg", alt: "Blender eyeball", caption: "The eye (Blender)", tall: true },
@@ -280,64 +180,15 @@ of every cut: no stops, no black frames, no leftovers of the old scene.
           ],
         },
         {
-          title: "The cut that flows",
+          title: "Want to make your own?",
           text: [
-            "The biggest jump in quality. My first versions moved each scene in and out on its own curve, so the camera stopped for a moment at every cut. Now the next scene sits right next to the current one, like frames on a film strip, and one move carries both.",
-          ],
-          figures: [
-            { src: "/free/34/speed-curve.png", alt: "Camera speed through one cut, before and after" },
-            { src: "/free/34/cut-strip.jpg", alt: "Spotify handing over to Claude Code in one move", caption: "Spotify → Claude Code, every 6th frame: the old scene leaves as the new one arrives, in one move." },
-          ],
-          code: [
-            {
-              label: "The core of it (TypeScript, Remotion)",
-              body: `const FLOW = Easing.bezier(0.55, 0, 0.18, 1);
-const u = FLOW(clamp((t - (cutAt - 0.3)) / 0.6));   // 0 → 1 across the cut
-
-const outY = u * -1920;          // current scene leaves by one screen
-const inY  = (u - 1) * -1920;    // next scene starts one screen below`,
-            },
-          ],
-        },
-        {
-          title: "Liquid glass in CSS",
-          text: ["The same recipe on every button and field. Skip backdrop-filter in video renders: in headless Chrome it comes out blocky."],
-          code: [
-            {
-              label: "CSS",
-              body: `background: rgba(255,255,255,.07);
-border: 1.5px solid rgba(255,255,255,.30);
-box-shadow:
-  inset 1.5px 2px 0 rgba(255,255,255,.55),
-  inset -1px -1.5px 0 rgba(255,255,255,.18),
-  inset 0 0 22px rgba(255,255,255,.10),
-  0 8px 28px rgba(0,0,0,.16);`,
-            },
-          ],
-        },
-        {
-          title: "The bug that cost the most",
-          text: [
-            ["For 10 versions every gradient showed stripes that looked like noise. New backgrounds and added grain did nothing. The cause was ", { code: "CameraMotionBlur" }, ": it stacks 10 copies of the frame at 1/10 opacity, and in 8-bit colour every value rounds to steps of about 10, even on frames that aren't moving."],
-            "Fix: motion blur only in the fast middle of each camera move. Lesson: when you see banding, read the actual pixel values before redesigning anything.",
-          ],
-          figures: [{ src: "/free/34/banding.png", alt: "The same frame before and after the fix", caption: "Same frame, contrast boosted 4× so the steps are visible." }],
-        },
-        {
-          title: "What made the difference",
-          bullets: [
-            "Real apps, not app-like screens. Rebuilt by eye from the real thing: badges, spacing, wallpapers, icons. Anything generic reads as cheap instantly.",
-            "One camera, not cuts. Every scene hands over to the next in one move, so 28 seconds feel like one shot.",
-            "Pick the app by what the line means. A message for \"tell me your tale\", Maps for \"the road\", a terminal for \"decide\".",
-            "A remix, not a copy. The reference used iMessage, Notes and Contacts; swapping in Slack, Claude Code and Notion made it ours.",
-            "One real 3D object. A single Blender render with proper gloss lifts the whole video.",
-            "Check frame by frame after every render: stops, black frames, leftovers of the old scene, words that stay blurred. 13 versions, scored 54 → 89.",
+            "The full prompt, the beat sheet and the source are being packaged as a kit. DM \"KIT\" to @copilot_shogo on Instagram and you'll hear first when it's out.",
           ],
         },
       ],
       notes: [
-        "A fan edit for portfolio purposes. The song, album art and photos belong to their owners and are not distributed here. Not affiliated with Travis Scott, Apple or any app shown.",
-        "An independent guide by @copilot_shogo. Not affiliated with Remotion, Anthropic, Blender or ElevenLabs.",
+        "A fan edit for portfolio purposes. The song, album art and photos belong to their owners. Not affiliated with Travis Scott, Apple or any app shown.",
+        "By @copilot_shogo. Not affiliated with Remotion, Anthropic or Blender.",
       ],
     },
   },
