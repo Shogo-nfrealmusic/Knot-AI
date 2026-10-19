@@ -3,25 +3,19 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
 
-interface IBlurImage {
-  height?: any;
-  width?: any;
-  src?: string | any;
-  objectFit?: any;
-  className?: string | any;
-  alt?: string | undefined;
-  layout?: any;
-  [x: string]: any;
-}
+type IBlurImage = Omit<React.ComponentProps<typeof Image>, "src" | "alt" | "width" | "height"> & {
+  src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+};
 
 export const BlurImage = ({
   height,
   width,
   src,
   className,
-  objectFit,
   alt,
-  layout,
   ...rest
 }: IBlurImage) => {
   const [isLoading, setLoading] = useState(true);
@@ -32,14 +26,13 @@ export const BlurImage = ({
         isLoading ? "blur-sm" : "blur-0",
         className
       )}
-      onLoadingComplete={() => setLoading(false)}
+      onLoad={() => setLoading(false)}
       src={src}
       width={width}
       height={height}
       loading="lazy"
       decoding="async"
       blurDataURL={src}
-      layout={layout}
       alt={alt ? alt : "Avatar"}
       {...rest}
     />

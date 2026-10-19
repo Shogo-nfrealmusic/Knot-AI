@@ -353,7 +353,9 @@ export default function PipelineFlow() {
   const inView = useInView(wrapperRef, { amount: 0.3 });
   const reduceMotion = useReducedMotion();
   const playing = inView && !reduceMotion;
-  const [tick, setTick] = useState(0);
+  const [liveTick, setTick] = useState(0);
+  // paused with reduced motion: show every video rendered (derived, not set in an effect)
+  const tick = !playing && reduceMotion ? VIDEO_COUNT : liveTick;
   const rendered = Math.min(tick, VIDEO_COUNT);
 
   useEffect(() => {
@@ -366,7 +368,6 @@ export default function PipelineFlow() {
       if (reduceMotion) svg.setCurrentTime(1.5);
       svg.pauseAnimations();
     }
-    if (!playing && reduceMotion) setTick(VIDEO_COUNT);
   }, [playing, reduceMotion]);
 
   useEffect(() => {

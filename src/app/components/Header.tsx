@@ -79,7 +79,12 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setMobileOpen(false), [pathname]);
+  // close the menu when the route changes (adjust state during render, per the React docs)
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
+    setMobileOpen(false);
+  }
 
   const solid = scrolled || mobileOpen;
 

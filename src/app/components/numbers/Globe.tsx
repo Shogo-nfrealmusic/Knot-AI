@@ -61,7 +61,9 @@ export default function Globe({ className }: { className?: string }) {
   const reduceMotion = useReducedMotion();
   const runningRef = useRef(false);
 
-  runningRef.current = inView && !reduceMotion;
+  useEffect(() => {
+    runningRef.current = inView && !reduceMotion;
+  }, [inView, reduceMotion]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
