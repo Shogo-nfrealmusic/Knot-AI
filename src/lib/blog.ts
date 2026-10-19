@@ -241,7 +241,7 @@ def _quiet_span(a0, b0):
       { type: "heading", text: "The face" },
       {
         type: "paragraph",
-        text: "The twin is audio-driven. A script uploads the final narration to HeyGen, requests a render of my avatar speaking it, polls until it is done and downloads the clip. It costs about one API credit per second of audio, so the face is generated only after the voice is final. One known debt: the script still calls an endpoint HeyGen has marked as legacy, with a shutdown date of October 31, 2026. The migration is not done.",
+        text: "The twin is audio-driven. A script uploads the final narration to HeyGen, requests a render of my avatar speaking it, polls until it is done and downloads the clip. It costs about one API credit per second of audio, so the face is generated only after the voice is final. It uses HeyGen's v3 API (upload with /v3/assets, render with /v3/videos), so the October 31, 2026 shutdown of the older endpoints doesn't affect it.",
       },
       {
         type: "paragraph",
