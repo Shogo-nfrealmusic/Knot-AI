@@ -27,6 +27,8 @@ export default function CountUp({
     const rect = element.getBoundingClientRect();
     // Only numbers that start off-screen count up; resetting one already on screen would flash.
     if (rect.top >= window.innerHeight || rect.bottom <= 0) {
+      // Measuring the DOM before paint is the job of a layout effect; setting state here is intended.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setValue(0);
       setArmed(true);
     }

@@ -1,6 +1,14 @@
-import { useId } from "react";
+import React, { useId } from "react";
 
-export function GridPattern({ width, height, x, y, squares, ...props }: any) {
+type GridPatternProps = Omit<React.SVGProps<SVGSVGElement>, "width" | "height" | "x" | "y"> & {
+  width: number;
+  height: number;
+  x?: number;
+  y?: number;
+  squares?: [number, number][];
+};
+
+export function GridPattern({ width, height, x, y, squares, ...props }: GridPatternProps) {
   const patternId = useId();
 
   return (
@@ -25,7 +33,7 @@ export function GridPattern({ width, height, x, y, squares, ...props }: any) {
       />
       {squares && (
         <svg x={x} y={y} className="overflow-visible">
-          {squares.map(([x, y]: any, idx: number) => (
+          {squares.map(([x, y], idx) => (
             <rect
               strokeWidth="0"
               key={`${x}-${y}-${idx}`}

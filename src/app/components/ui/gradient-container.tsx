@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import {
   motion,
-  useMotionValue,
   useMotionValueEvent,
   useScroll,
   useTransform,
@@ -17,7 +16,7 @@ export const GradientContainer = ({
   className?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress, scrollY } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end end"],
   });

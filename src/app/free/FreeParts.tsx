@@ -286,6 +286,8 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                     <div className={chapter.figures.every((fig) => fig.tall) ? "mt-4 grid max-w-2xl grid-cols-3 gap-2 sm:grid-cols-4" : "mt-4 max-w-2xl space-y-4"}>
                       {chapter.figures.map((fig) => (
                         <figure key={fig.src} className="min-w-0">
+                          {/* static screenshots of known size; plain <img> like the other drop images */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={fig.src} alt={fig.alt} loading="lazy" className="w-full rounded-lg border border-neutral-200 bg-neutral-950" />
                           {fig.caption ? <figcaption className="mt-1.5 text-[12px] leading-snug text-neutral-400">{fig.caption}</figcaption> : null}
                         </figure>

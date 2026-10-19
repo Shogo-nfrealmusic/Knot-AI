@@ -297,7 +297,9 @@ export default function AgentFlow() {
   const reduceMotion = useReducedMotion();
   const playing = inView && !reduceMotion;
   // 0: reading, 1: PRD written, 2: prototype written, 3: hold before looping.
-  const [stage, setStage] = useState(0);
+  const [liveStage, setStage] = useState(0);
+  // paused with reduced motion: show the finished state (derived, not set in an effect)
+  const stage = !playing && reduceMotion ? 2 : liveStage;
 
   useEffect(() => {
     for (const svg of svgRefs.current) {
@@ -309,7 +311,6 @@ export default function AgentFlow() {
       if (reduceMotion) svg.setCurrentTime(2);
       svg.pauseAnimations();
     }
-    if (!playing && reduceMotion) setStage(2);
   }, [playing, reduceMotion]);
 
   useEffect(() => {
