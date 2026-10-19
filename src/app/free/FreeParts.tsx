@@ -264,6 +264,34 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                       ))}
                     </ul>
                   ) : null}
+                  {chapter.table ? (
+                    <div className="mt-4 max-w-2xl overflow-x-auto rounded-lg border border-neutral-200">
+                      <table className="w-full text-left text-[14px] leading-relaxed">
+                        <thead className="bg-neutral-50 font-mono text-[11px] uppercase tracking-[0.08em] text-neutral-400">
+                          <tr>{chapter.table.head.map((h) => <th key={h} className="px-3 py-2 font-normal">{h}</th>)}</tr>
+                        </thead>
+                        <tbody className="divide-y divide-neutral-200">
+                          {chapter.table.rows.map((row, i) => (
+                            <tr key={i} className="align-top">
+                              {row.map((cell, j) => (
+                                <td key={j} className={j === 0 ? "whitespace-nowrap px-3 py-2 font-mono text-[12px] text-neutral-400" : j === 1 ? "whitespace-nowrap px-3 py-2 font-medium text-neutral-900" : "px-3 py-2 text-neutral-500"}>{cell}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
+                  {chapter.figures?.length ? (
+                    <div className={chapter.figures.every((fig) => fig.tall) ? "mt-4 grid max-w-2xl grid-cols-3 gap-2 sm:grid-cols-4" : "mt-4 max-w-2xl space-y-4"}>
+                      {chapter.figures.map((fig) => (
+                        <figure key={fig.src} className="min-w-0">
+                          <img src={fig.src} alt={fig.alt} loading="lazy" className="w-full rounded-lg border border-neutral-200 bg-neutral-950" />
+                          {fig.caption ? <figcaption className="mt-1.5 text-[12px] leading-snug text-neutral-400">{fig.caption}</figcaption> : null}
+                        </figure>
+                      ))}
+                    </div>
+                  ) : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (
