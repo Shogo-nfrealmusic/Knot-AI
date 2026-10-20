@@ -129,6 +129,52 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 35,
+    slug: "35-reason-network",
+    title: "Reason Network: let your AI agents message your teammates' agents",
+    description:
+      "Reason Network is a free tool from a Y Combinator startup that puts every coding agent on your team on one network: your Claude Code can ask your cofounder's Codex for a review, or a classmate's agent can ask yours what changed. What it does, the four tools agents get, how to set it up, and the one setting to check first. An independent guide.",
+    date: "2026-10-21",
+    keyword: "NETWORK",
+    tools: [
+      {
+        name: "Reason Network",
+        what: "The official page: what it is, supported agents, security, FAQ. Free: no card, no plan. By Reason Machines (Y Combinator, Spring 2026, San Francisco).",
+        href: "https://reasonmachines.com/network",
+        icon: "browser",
+        install: ["curl -fsSL https://reasonmachines.com/install.sh | bash -s -- network"],
+        note: "The official one-line install for macOS / Linux (Windows has a PowerShell line on the page). It signs you in with a Reason account (Google, GitHub, Apple or email) and sets up the coding agents on your computer. Read the script before you run it; the repo has its own install.sh for the open-source engine only.",
+      },
+      {
+        name: "reason-network on GitHub",
+        what: "reason-machines/reason-network: the open-source engine behind it, MIT OR Apache-2.0. 567 stars on Oct 21, 2026. The Reason CLI that sets it up is free but not open source.",
+        href: "https://github.com/reason-machines/reason-network",
+        icon: "cpu",
+      },
+    ],
+    about: {
+      intro: [
+        "Every agent on your team can see the others and send them a message: Claude Code, Codex, Cursor, Gemini CLI, Copilot CLI, opencode and Pi on your computers, plus hosted bots like Grok Bot and Muse.",
+      ],
+      steps: [
+        { title: "Install and sign in", text: "Run the install line, sign in, and let it set up the agents on this computer. Your other computers join by signing in with the same account." },
+        { title: "Invite your team", text: "Send your invite line to a coworker, cofounder or classmate. They paste it, sign in, and their agents join your network." },
+        { title: "Ask in plain words", text: "For example, in Claude Code: \"Ask my cofounder's Codex to review the retry change in webhook.ts.\" The answer comes back into your session." },
+        { title: "Decide on approvals", text: "When a teammate's agent needs your permission, an Approve / Deny pop-up appears on your screen." },
+      ],
+      notes: [
+        "Agents get four tools: list_team (who is on the team, which machine, busy or idle), send_message, check_inbox and ask_user.",
+        "Computers talk peer to peer, end-to-end encrypted (built on iroh). Reason's relays only forward encrypted traffic, and a team can run its own relay. Hosted bots connect through Reason's server.",
+        "The catch: by default, your teammates' messages go straight to your agent. A \"hold\" mode makes your agent ask you first. Reason's own docs call the approval pop-up a speed bump, not a guarantee. Only invite people you trust.",
+        "Messages to someone offline wait for them (up to a day for a session). Attachments are small text files only: up to 10 files, 256 KB each.",
+        "\"About 2 ms\" on the official page is between two engines on one machine. Across computers, your network's own latency applies.",
+        "It isn't the first way to connect agents (Claude Code has its own agent teams, and Reason lists other projects). What it adds: different agents, on different people's computers, on one network.",
+        "Founders: Adi Singh (CEO) and Sven Myhre (CTO). The engine started as tincan by Lars Talian, who works at Reason.",
+        "An independent guide by @copilot_shogo. Not affiliated with Reason Machines.",
+      ],
+    },
+  },
+  {
     number: 34,
     slug: "34-my-eyes",
     title: "MY EYES: a lyric video built entirely in code",
