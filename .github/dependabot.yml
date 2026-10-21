@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    # Wait a week before proposing a freshly published version (supply-chain safety).
+    # Security updates are not delayed by this.
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      next:
+        patterns: ["next", "eslint-config-next", "@next/*"]
+        update-types: ["minor", "patch"]
+      minor-and-patch:
+        update-types: ["minor", "patch"]
