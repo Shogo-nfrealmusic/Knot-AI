@@ -129,6 +129,96 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 36,
+    slug: "36-reel-machine",
+    title: "How my Mac edits our photo studio's reels every night",
+    description:
+      "We run a photo studio in Tokyo. Every night at midnight, a Mac turns the day's raw shoot clips into ten finished reels and schedules the best three to TikTok. Nobody edits them. Here is how the loop works, step by step, with a diagram, so you can build your own.",
+    date: "2026-10-21",
+    keyword: "REEL",
+    tools: [
+      {
+        name: "Claude Code",
+        what: "Scores one frame of each new clip (does it look like Tokyo? is the client smiling? can you see the camera?) and writes new hook lines when the list runs low. Called from the script in headless mode.",
+        href: "https://claude.com/claude-code",
+        icon: "wand",
+      },
+      {
+        name: "FFmpeg",
+        what: "Free. Measures the brightness of every frame to find the flash, cuts the clips, and builds the 10-second reel in one pass.",
+        href: "https://ffmpeg.org",
+        icon: "scissors",
+      },
+      {
+        name: "Blotato",
+        what: "Schedules the finished reels to TikTok through its API. The Starter plan is $29 a month.",
+        href: "https://www.blotato.com",
+        icon: "event",
+      },
+    ],
+    about: {
+      intro: [
+        "One reel it made got about 100,000 views on TikTok. No human touched the edit. This page is an overview of the loop, not our code.",
+      ],
+      chapters: [
+        {
+          title: "The whole loop",
+          text: ["Raw clips and finished photos go into one shared folder. A scheduled job on a Mac runs this every night at midnight:"],
+          figures: [{ src: "/free/36/loop.png", alt: "Diagram: find the flash, score one frame, pick with weights, cut on my timing; every night at midnight, top 3 to TikTok", caption: "The loop" }],
+        },
+        {
+          title: "1. Find the flash",
+          text: [
+            "Our photographers shoot behind-the-scenes clips while they fire a flash. FFmpeg measures the average brightness of every frame. When one frame is suddenly much brighter than the frames around it, that is the flash: the moment the photo was taken.",
+            "The script cuts a short window around that spike (about a second and a half), with the flash a little past the middle, so every clip lands on the click of the shutter.",
+          ],
+          figures: [{ src: "/free/36/flash.jpg", alt: "Brightness of every frame with the flash spike marked", caption: "The real brightness of one clip", tall: true }],
+        },
+        {
+          title: "2. Let Claude score one frame",
+          text: [
+            "A picture of each new clip goes to Claude with three questions, each scored 0 to 10: does the background look like Tokyo, is the client clearly visible and smiling, and can you see the photographer, camera or flash. The scores are saved, so each clip is only scored once.",
+          ],
+          figures: [{ src: "/free/36/scores.jpg", alt: "One frame with three boxes and the scores 9, 8, 9", caption: "One clip: 9 · 8 · 9", tall: true }],
+        },
+        {
+          title: "3. Pick with weights, not at random",
+          bullets: [
+            "Clips with a flash and higher scores are drawn more often.",
+            "Anything used in the last few reels is pushed almost to zero, so the feed doesn't repeat itself.",
+            "A combination that overlaps too much with an earlier reel is drawn again.",
+          ],
+        },
+        {
+          title: "4. Cut on your own timing",
+          text: [
+            "This is the part that made it look right. Before writing any code, I edited a few reels by hand in CapCut. They kept the same rhythm, so I measured the cut points and copied them exactly, down to the hundredth of a second. Every reel the machine makes uses that rhythm: 3 clips, 5 finished photos, 1 hook line, about 10 seconds.",
+          ],
+          figures: [{ src: "/free/36/cuts.jpg", alt: "My hand edit and the machine's reel cut on the same frames", caption: "Hand edit vs the machine", tall: true }],
+        },
+        {
+          title: "5. Post the top three",
+          text: [
+            "Every night it makes 10 reels, checks that each file plays, and schedules the 3 with the best scores to TikTok at spread-out times, each with a caption from a rotating set.",
+          ],
+        },
+        {
+          title: "Build your own",
+          bullets: [
+            "Edit by hand first. Automate the pattern you already have, not one you imagine.",
+            "Let numbers decide where to cut (the flash) and let the model decide what is good (the scores).",
+            "Keep a record of what each reel used, so the next night can avoid it.",
+            "Start with posting a few a day. More is not better on a new account.",
+          ],
+        },
+      ],
+      notes: [
+        "Results vary: most reels get far fewer views than the best one.",
+        "An overview by @copilot_shogo. Not affiliated with any of the tools above.",
+      ],
+    },
+  },
+  {
     number: 35,
     slug: "35-reason-network",
     title: "Reason Network: let your AI agents message your teammates' agents",
