@@ -129,6 +129,89 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 37,
+    slug: "37-1password-for-agents",
+    title: "1Password for Agents: your AI agent can log in without seeing your password",
+    description:
+      "1Password launched 1Password for Agents on Oct 22, 2026. When an AI agent reaches a sign-in page, it asks your vault; you approve in the 1Password app; 1Password fills the login into the site itself, and the agent only learns that access was granted. How it works, who can use it today, and the one catch.",
+    date: "2026-10-23",
+    keyword: "AGENT",
+    tools: [
+      {
+        name: "1Password for Agents",
+        what: "The official page with the waitlist. Rolling out first with Muse (from Meta) and Grok Bot; more agents are coming soon.",
+        href: "https://1password.com/personal-ai-agent-integrations",
+        icon: "shield",
+      },
+    ],
+    breakdown: {
+      tldr: [
+        ["When your AI agent hits a login, it asks your 1Password vault instead of you handing it the password."],
+        ["You approve in the 1Password app. 1Password fills the login into the site; the agent never sees the password or the one-time code."],
+        ["Nothing touches your vault until you connect an agent. No extra cost on paid Individual and Family plans."],
+        ["Live first with Muse and Grok Bot (rolling out over the coming days). Claude, ChatGPT and Perplexity are coming soon."],
+      ],
+      sections: [
+        {
+          title: "How it works",
+          unit: { one: "step", many: "steps" },
+          items: [
+            { name: "1. The agent asks", what: ["At a sign-in page, the agent verifies itself to 1Password and requests the login for that site."] },
+            { name: "2. You decide", what: ["You see which login is requested and approve or deny it in the 1Password app on your own device."] },
+            { name: "3. 1Password fills it", what: ["1Password fills the username, password and one-time code into the site. The agent only sees that access was granted."] },
+          ],
+        },
+        {
+          title: "Who can use it today",
+          unit: { one: "detail", many: "details" },
+          items: [
+            { name: "Plans", what: ["Included at no additional cost in 1Password Individual and Family accounts (both paid plans; there's a 14-day free trial)."] },
+            { name: "Agents", what: ["Muse (from Meta) and Grok Bot are rolling out now. Coming soon: Anthropic's Claude (Claude Duet), OpenAI's ChatGPT Work and dots, Perplexity, and others. There is a waitlist."] },
+            { name: "Approval", what: ["1Password's developer docs list approval in the desktop apps (Mac, Windows, Linux); phone approval is in development. You approve once per login, not on every fill."] },
+            { name: "Not yet", what: ["Business accounts, shared vaults, passkey-only logins, and 1Password.eu / 1Password.ca accounts."] },
+          ],
+        },
+        {
+          title: "The catch",
+          unit: { one: "point", many: "points" },
+          items: [
+            {
+              name: "Logged in is logged in",
+              what: ["The agent never holds your password, but once it's signed in it works inside that account. In 1Password's words: \"An agent may be able to see information or take actions within the signed-in account.\""],
+              whyLabel: "What to do",
+              why: ["Only connect accounts you'd trust the agent with, and remove a login from the agent when you no longer need it."],
+            },
+          ],
+        },
+      ],
+      notes: [
+        "Availability and the list of agents are as of Oct 23, 2026 and will change as more integrations ship.",
+        "How often you're asked to approve may vary by integration.",
+      ],
+      sources: [
+        { text: "1Password: AI agent integrations (waitlist)", href: "https://1password.com/personal-ai-agent-integrations" },
+        { text: "1Password blog: Introducing 1Password for Agents", href: "https://1password.com/blog/1password-for-ai-agents" },
+        { text: "1Password: personal agents FAQ", href: "https://1password.com/personal-agents" },
+        { text: "1Password developer docs: approval", href: "https://www.1password.dev/agentic-autofill/partners/approval" },
+        { text: "1Password on X (launch post)", href: "https://x.com/1Password/status/2113276767582498943" },
+        { text: "9to5Google", href: "https://9to5google.com/2026/10/22/1password-will-let-ai-agents-use-your-passwords-without-seeing-them/", note: "reporting" },
+      ],
+    },
+    about: {
+      chapters: [
+        {
+          title: "What it looks like",
+          text: ["Step 2 from 1Password's own demo, and what the agent ends up with."],
+          figures: [
+            { src: "/free/37/approve.jpg", alt: "1Password's demo: Allow Muse to log in on your behalf, with Authorize and Deny", caption: "You decide (1Password's demo)" },
+            { src: "/free/37/fill.jpg", alt: "The vault fills the site's password; the agent only gets access granted", caption: "The agent gets access, not the password" },
+          ],
+        },
+      ],
+      notes: ["An overview by @copilot_shogo. Not affiliated with 1Password."],
+    },
+  },
+  {
     number: 36,
     slug: "36-reel-machine",
     title: "How my Mac edits our photo studio's reels every night",
