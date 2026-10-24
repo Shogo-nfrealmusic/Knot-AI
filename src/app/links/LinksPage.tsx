@@ -164,8 +164,6 @@ function Side({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink
         </div>
       </section>
 
-      {c.videos ? <YouTubeList videos={c.videos} onLink={onLink} /> : null}
-
       {c.pages.length ? (
         <section className="mt-16 px-5">
           <div data-reveal className="relative">
@@ -618,55 +616,6 @@ function VideoCard({
         <span className="mt-0.5 block text-[15px] font-semibold leading-tight tracking-[-0.02em] text-white">{item.title}</span>
       </span>
     </SmartLink>
-  );
-}
-
-/** Long-form uploads. Thumbnails come straight from YouTube's image CDN, lazily, at 320×180. */
-function YouTubeList({ videos, onLink }: { videos: NonNullable<ModeContent["videos"]>; onLink: OnLink }) {
-  const load = useContext(LoadMedia);
-  return (
-    <section className="mt-16 px-5">
-      <div data-reveal className="mb-4 flex items-end justify-between">
-        <SectionTitle fit>{videos.label}</SectionTitle>
-        <SmartLink
-          href={videos.channel}
-          onClick={() => onLink("youtube_all", "videos")}
-          className="text-[12px] text-[var(--l-muted)] transition-colors hover:text-[var(--l-fg)]"
-        >
-          All videos ↗
-        </SmartLink>
-      </div>
-      <ul className="space-y-3">
-        {videos.items.map((v, i) => (
-          <li key={v.id} data-reveal style={delay(i * 70)}>
-            <SmartLink
-              href={`https://www.youtube.com/watch?v=${v.id}`}
-              onClick={() => onLink(`yt_${v.id}`, "videos")}
-              className="press group flex items-center gap-3.5"
-            >
-              <span className="relative aspect-video w-[136px] shrink-0 overflow-hidden rounded-[12px] bg-[var(--l-card)] ring-1 ring-white/10">
-                {load ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- remote thumbnail, already sized by YouTube
-                  <img
-                  src={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`}
-                  alt=""
-                  width={320}
-                  height={180}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
-                  />
-                ) : null}
-                <span className="lg absolute bottom-1.5 right-1.5 rounded-[6px] px-1.5 py-[1px] font-mono text-[10px] text-white">
-                  {v.duration}
-                </span>
-              </span>
-              <span className="line-clamp-2 min-w-0 text-[14px] font-medium leading-snug tracking-[-0.01em]">{v.title}</span>
-            </SmartLink>
-          </li>
-        ))}
-      </ul>
-    </section>
   );
 }
 

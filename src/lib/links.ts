@@ -31,9 +31,6 @@ export type Highlight =
 
 export type PageTile = { id: string; label: string; note: string; href: string };
 
-/** A long-form YouTube video (not a Short: those repeat what is on Instagram). */
-export type YouTubeVideo = { id: string; title: string; duration: string };
-
 export type ModeContent = {
   tab: string;
   name: string;
@@ -46,7 +43,6 @@ export type ModeContent = {
   highlightsLabel: string;
   highlights: Highlight[];
   pages: PageTile[];
-  videos?: { label: string; channel: string; items: YouTubeVideo[] };
   closing: { text: string; cta: string; href: string };
 };
 
@@ -161,17 +157,6 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         poster: "/links/fit/monolith.jpg",
       },
     ],
-    // Newest long-form uploads on sho_vlog, checked 2026-10-19. Thumbnails load from YouTube itself.
-    videos: {
-      label: "On YouTube",
-      channel: "https://www.youtube.com/@imshogo.k/videos",
-      items: [
-        { id: "M8Ow1fcOY8g", title: "Tokyo student co-founders locked in for a whole weekend", duration: "10:28" },
-        { id: "GE1th4wqAE8", title: "Training at a 90s gym in Japan, since 1997", duration: "6:07" },
-        { id: "JPtPrvjP8KY", title: "A perfect day in Japan: beach, café, gym", duration: "10:48" },
-        { id: "GBv_XR5i8z4", title: "Back in America after study abroad", duration: "17:48" },
-      ],
-    },
     pages: [
       // Coaching is arranged in Instagram DMs (Shogo, 2026-10-19)
       { id: "coaching", label: "Coaching", note: "1:1 training. DM me on Instagram", href: "https://ig.me/m/imshogo.k" },
