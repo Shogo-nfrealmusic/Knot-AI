@@ -23,6 +23,7 @@ import {
   type ModeContent,
   type SocialIcon,
 } from "@/lib/links";
+import LinksCoachingForm from "./LinksCoachingForm";
 import LinksContactForm from "./LinksContactForm";
 import "./links.css";
 
@@ -380,11 +381,15 @@ const useReducedMotion = () =>
     () => true,
   );
 
-/** Apple-style swipe cards: snap, dots, and autoplay that stops for good once the visitor touches it. */
+/** after a swipe, a dot or a wheel, autoplay waits this long before it moves the rail again */
+const RESUME_MS = 8000;
+
+/** Apple-style swipe cards: snap, dots, and autoplay that pauses while the visitor is using it and then carries on. */
 function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; onOpen: (id: string) => void }) {
   const rail = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
-  const [touched, setTouched] = useState(false);
+  // when the visitor last moved the rail themselves (0 = not yet)
+  const [heldAt, setHeldAt] = useState(0);
   const [onScreen, setOnScreen] = useState(false);
   const reduced = useReducedMotion();
 
@@ -405,10 +410,14 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
 
   useEffect(() => {
     // Videos carry their own motion; only the AI cards advance by themselves.
-    if (fit || reduced || touched || !onScreen || items.length < 2) return;
-    const id = window.setInterval(() => goTo((active + 1) % items.length), 5000);
-    return () => window.clearInterval(id);
-  }, [active, fit, reduced, touched, onScreen, items.length]);
+    // Each card sets its own time on screen; a recent swipe pushes the next slide back to RESUME_MS after it.
+    if (fit || reduced || !onScreen || items.length < 2) return;
+    const wait = Math.max((items[active]?.seconds ?? 5) * 1000, heldAt + RESUME_MS - Date.now());
+    const id = window.setTimeout(() => goTo((active + 1) % items.length), wait);
+    return () => window.clearTimeout(id);
+  }, [active, fit, reduced, heldAt, onScreen, items]);
+
+  const hold = () => setHeldAt(Date.now());
 
   const onScroll = () => {
     const el = rail.current;
@@ -434,8 +443,8 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
       <div
         ref={rail}
         onScroll={onScroll}
-        onPointerDown={() => setTouched(true)}
-        onWheel={() => setTouched(true)}
+        onPointerDown={hold}
+        onWheel={hold}
         className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) =>
@@ -469,7 +478,7 @@ function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; 
               key={item.id}
               aria-label={`Show ${item.title}`}
               onClick={() => {
-                setTouched(true);
+                hold();
                 goTo(i);
               }}
               className={`h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -621,7 +630,8 @@ function VideoCard({
 
 function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
   return (
-    <section data-reveal className="mt-20 px-5 text-center">
+    // scroll-mt clears the sticky AI / FITNESS switch when the "Coaching" row jumps here
+    <section id={c.closing.id} data-reveal className="mt-20 scroll-mt-16 px-5 text-center">
       {fit ? null : (
         <div className="mb-2 flex items-end justify-center gap-1">
           <OrbitLoop clip="cheer" className="w-[156px]" />
@@ -637,16 +647,11 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnL
       >
         {c.closing.text}
       </p>
-      {fit ? (
-        <SmartLink
-          href={c.closing.href}
-          onClick={() => onLink("closing", "closing")}
-          className="press mt-6 inline-flex h-11 items-center rounded-full bg-[var(--l-fg)] px-6 text-[14px] font-semibold text-[var(--l-bg)] hover:scale-[1.03]"
-        >
-          {c.closing.cta}
-        </SmartLink>
+      <p className="mx-auto mt-2 max-w-[34ch] text-[14px] leading-[1.55] text-[var(--l-muted)]">{c.closing.note}</p>
+      {/* the form right here, so nobody has to leave the page (or open a DM) to write */}
+      {c.closing.form === "coaching" ? (
+        <LinksCoachingForm onSent={() => onLink("coaching_sent", "closing")} />
       ) : (
-        // the contact form right here, so nobody has to leave the page to write
         <LinksContactForm onSent={() => onLink("contact_sent", "closing")} />
       )}
     </section>
