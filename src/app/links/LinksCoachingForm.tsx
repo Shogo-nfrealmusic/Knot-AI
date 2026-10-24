@@ -50,7 +50,7 @@ export default function LinksCoachingForm({ onSent }: { onSent: () => void }) {
     return (
       <div className="mt-6 rounded-[22px] border border-[var(--l-line)] bg-[var(--l-card)] px-6 py-10 text-center">
         <p className="text-[20px] font-extrabold uppercase tracking-[-0.03em]">Application sent</p>
-        <p className="mt-2 text-[14px] text-[var(--l-muted)]">Thanks. I&apos;ll read it and email you back.</p>
+        <p className="mt-2 text-[14px] text-[var(--l-muted)]">Thanks. A confirmation is on its way to your inbox, and I&apos;ll email you back.</p>
       </div>
     );
   }

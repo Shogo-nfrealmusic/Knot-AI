@@ -49,7 +49,18 @@ export function buildEmail(heading: string, rows: [string, string][], messageLab
   return { text, html };
 }
 
-export async function sendToShogo(mail: { replyTo: string; subject: string; text: string; html: string }) {
+type Mail = { replyTo: string; subject: string; text: string; html: string };
+
+export async function sendToShogo(mail: Mail) {
+  await send({ to: process.env.CONTACT_TO, ...mail });
+}
+
+/** A fixed thank-you to whoever filled in a form. Replies to it go to Shogo's inbox (CONTACT_TO). */
+export async function sendReceipt(to: string, mail: Omit<Mail, "replyTo">) {
+  await send({ to, replyTo: process.env.CONTACT_TO ?? "", ...mail });
+}
+
+async function send(mail: Mail & { to: string | undefined }) {
   const port = Number(process.env.SMTP_PORT);
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -62,7 +73,6 @@ export async function sendToShogo(mail: { replyTo: string; subject: string; text
   });
   await transporter.sendMail({
     from: process.env.CONTACT_FROM ?? process.env.SMTP_USER,
-    to: process.env.CONTACT_TO,
     ...mail,
   });
 }

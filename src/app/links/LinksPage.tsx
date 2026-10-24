@@ -53,13 +53,28 @@ const useLinksMode = (serverMode: LinksMode) => useSyncExternalStore(subscribeMo
 
 const isExternal = (href: string) => /^(https?:|mailto:)/.test(href);
 
-/** External links open in a new tab; knot's own pages go through next/link. */
-function SmartLink({ href, ...rest }: React.ComponentProps<"a"> & { href: string }) {
-  if (href.startsWith("mailto:")) return <a href={href} {...rest} />;
+/** External links open in a new tab; knot's own pages go through next/link; "#id" scrolls within the page. */
+function SmartLink({ href, onClick, ...rest }: React.ComponentProps<"a"> & { href: string }) {
+  if (href.startsWith("#")) {
+    // Never hand a hash to next/link: after the side switch the router still thinks it is on the other
+    // route (/links vs /links/fit), so "#coach" became a navigation that tore down the switched page.
+    return (
+      <a
+        href={href}
+        onClick={(e) => {
+          onClick?.(e);
+          e.preventDefault();
+          document.getElementById(href.slice(1))?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }}
+        {...rest}
+      />
+    );
+  }
+  if (href.startsWith("mailto:")) return <a href={href} onClick={onClick} {...rest} />;
   return isExternal(href) ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" {...rest} />
+    <a href={href} target="_blank" rel="noopener noreferrer" onClick={onClick} {...rest} />
   ) : (
-    <Link href={href} {...rest} />
+    <Link href={href} onClick={onClick} {...rest} />
   );
 }
 
