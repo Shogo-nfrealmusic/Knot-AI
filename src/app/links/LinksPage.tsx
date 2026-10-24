@@ -23,6 +23,7 @@ import {
   type ModeContent,
   type SocialIcon,
 } from "@/lib/links";
+import { markJourney } from "@/lib/linksJourney";
 import LinksCoachingForm from "./LinksCoachingForm";
 import LinksContactForm from "./LinksContactForm";
 import "./links.css";
@@ -103,6 +104,8 @@ export default function LinksPage({
     source.current = parseSource(new URLSearchParams(window.location.search).get("src") ?? undefined);
     // One view per page load, tagged with the side it opened on and the bio link it came from.
     send({ kind: "view", mode: getMode(), src: source.current });
+    // Lets the rest of the site record which pages this visit goes on to (src/app/components/LinksJourney.tsx).
+    markJourney({ mode: getMode(), src: source.current });
 
     // Scroll reveal: one observer for the whole page; each element animates in once.
     const io = new IntersectionObserver(
@@ -136,6 +139,7 @@ export default function LinksPage({
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", next === "fit" ? "#0b0b0b" : "#fbfbfa");
     window.dispatchEvent(new Event("links-mode"));
     window.scrollTo({ top: 0 });
+    markJourney({ mode: next, src: source.current });
     send({ kind: "mode", mode: next, src: source.current, target: next });
     // Keep the choice in the URL so a shared or reloaded link opens the same side.
     const url = new URL(window.location.href);

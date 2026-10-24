@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import LinksJourney from "@/app/components/LinksJourney";
 import "./globals.css";
 
 const inter = Inter({
@@ -58,6 +59,7 @@ export default function RootLayout({
         {children}
         {/* Cookieless. Only collects in production, and only while the project's Analytics toggle is on. */}
         <Analytics />
+        <LinksJourney />
       </body>
     </html>
   );
