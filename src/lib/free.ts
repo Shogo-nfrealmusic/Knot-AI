@@ -129,6 +129,86 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 39,
+    slug: "39-claude-duet",
+    title: "Claude Duet: Claude now messages you first",
+    description:
+      "Anthropic opened a research preview of Claude Duet on Oct 21, 2026: a proactive agent app that sends you a morning brief from your connected apps, pings you only when something needs you, keeps working in its own cloud computer, and waits for your OK before it sends, pays, signs or deletes anything. What it does, who can join, and what to watch.",
+    date: "2026-10-24",
+    keyword: "DUET",
+    tools: [
+      {
+        name: "Claude Duet",
+        what: "The official page with the waitlist (research preview, Pro and Max plans in the US).",
+        href: "https://claude.com/product/claude-duet",
+        icon: "robot",
+      },
+    ],
+    breakdown: {
+      tldr: [
+        ["OpenAI has dots, Meta has Muse, xAI has Grok Bot. Claude Duet is Anthropic's own always-on agent."],
+        ["Every morning it sends a short brief from your connected apps, then only messages you when something needs your attention."],
+        ["It runs on its own virtual machine with a browser, so work keeps going after you close your laptop."],
+        ["Before it sends a message, makes a payment, signs a document or deletes anything, it shows you exactly what it will do and waits for your OK."],
+      ],
+      sections: [
+        {
+          title: "What it does",
+          unit: { one: "thing", many: "things" },
+          items: [
+            { name: "Morning brief", what: ["A short brief on the most important items across your connected apps (email, chat, your store and more)."] },
+            { name: "Pings only when needed", what: ["Throughout the day it keeps tabs on those apps and messages you only when something needs you. One tester's client call fell right before her flight; Duet noticed and offered to move it."] },
+            { name: "Bigger jobs", what: ["You can hand it work like building a dashboard, a financial or sales forecast, or preparing and running payroll in Gusto."] },
+            { name: "Its own computer", what: ["A virtual machine with its own browser, so it doesn't need your laptop or phone to be on."] },
+          ],
+        },
+        {
+          title: "Who can join",
+          unit: { one: "detail", many: "details" },
+          items: [
+            { name: "Access", what: ["Research preview through a waitlist, on Pro and Max plans in the US."] },
+            { name: "Model", what: ["Designed around Claude Opus 5.5."] },
+          ],
+        },
+        {
+          title: "What to watch",
+          unit: { one: "point", many: "points" },
+          items: [
+            {
+              name: "Approval before actions",
+              what: ["Sending, paying, signing and deleting always come back to you first. Anthropic says Duet never directly sees your passwords or sign-in tokens."],
+              whyLabel: "What to do",
+              why: ["Connect only the apps you want it to watch, and read each approval card before you tap OK."],
+            },
+            {
+              name: "It's a preview",
+              what: ["As a research preview it can still misjudge what's urgent, and background checks use your plan's limits."],
+            },
+          ],
+        },
+      ],
+      notes: ["Availability is as of Oct 24, 2026 and will change as the preview opens up."],
+      sources: [
+        { text: "Claude Duet product page", href: "https://claude.com/product/claude-duet" },
+        { text: "Anthropic: Introducing Claude Duet (video)", href: "https://www.youtube.com/watch?v=Fb-68zqcSVs" },
+        { text: "Claude on X (launch post)", href: "https://x.com/claudeai/status/2112984664256241837" },
+      ],
+    },
+    about: {
+      chapters: [
+        {
+          title: "What it looks like",
+          text: ["Two moments from Anthropic's own launch video."],
+          figures: [
+            { src: "/free/39/brief.jpg", alt: "Claude Duet's morning brief on a phone: Morning, Nicole! For today: Health permit. Hiring decisions. Northfield renewal.", caption: "The morning brief (Anthropic's video)", tall: true },
+            { src: "/free/39/approve.jpg", alt: "An email drafted by Claude Duet with Not now and Send buttons", caption: "It waits for your OK (Anthropic's video)", tall: true },
+          ],
+        },
+      ],
+      notes: ["An overview by @copilot_shogo. Not affiliated with Anthropic."],
+    },
+  },
+  {
     number: 37,
     slug: "37-1password-for-agents",
     title: "1Password for Agents: your AI agent can log in without seeing your password",
