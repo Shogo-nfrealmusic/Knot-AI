@@ -19,6 +19,7 @@ const PLACE: Record<string, string> = {
   social: "SNSアイコン",
   highlight: "カード",
   pages: "一覧",
+  // the fitness "On YouTube" list was removed on 2026-10-25; kept so its older clicks still read
   videos: "YouTube",
   closing: "最後のボタン",
   footer: "フッター",
@@ -36,7 +37,6 @@ function linkLabels(): Record<string, string> {
     side.socials.forEach((s) => (map[s.id] = s.label));
     side.highlights.forEach((h) => (map[h.id] = h.title));
     side.pages.forEach((p) => (map[p.id] = p.label));
-    side.videos?.items.forEach((v) => (map[`yt_${v.id}`] = `YouTube: ${v.title}`));
   }
   return map;
 }
