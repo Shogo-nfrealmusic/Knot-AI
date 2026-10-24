@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { buildEmail, getMissingEnv, isString, sendToShogo, validEmail } from "@/lib/mail";
+import { buildEmail, escapeHtml, getMissingEnv, isString, sendReceipt, sendToShogo, validEmail } from "@/lib/mail";
 import { COACHING_EXPERIENCE, COACHING_GOALS } from "@/lib/coaching";
 
 // Online 1:1 coaching applications from /links/fit. Same inbox as /api/contact (CONTACT_TO).
@@ -78,9 +78,36 @@ export async function POST(request: Request) {
       text: body,
       html,
     });
-    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Failed to send coaching email", error);
     return NextResponse.json({ error: "Failed to send. Please try again later." }, { status: 500 });
   }
+
+  // The applicant gets a fixed receipt. Nothing they typed goes into it, so the form can't be used to
+  // send someone else a message of the sender's choosing. A failure here doesn't fail the application.
+  try {
+    await sendReceipt(fields.email, RECEIPT);
+  } catch (error) {
+    console.error("Failed to send coaching receipt", error);
+  }
+  return NextResponse.json({ ok: true });
 }
+
+const RECEIPT_TEXT = [
+  "Hi,",
+  "",
+  "Thanks for applying for 1:1 online coaching. I've got your application and I'll read it myself.",
+  "",
+  "I'll reply to this email soon with the next step. If you want to add anything, just reply here.",
+  "",
+  "Shogo",
+  "instagram.com/imshogo.k",
+].join("\n");
+
+const RECEIPT = {
+  subject: "Got your coaching application",
+  text: RECEIPT_TEXT,
+  html: `<div style="font-family: Inter, Arial, sans-serif; color: #111827; line-height: 1.6; max-width: 560px;">${RECEIPT_TEXT.split("\n")
+    .map((line) => (line ? `<p style="margin: 0;">${escapeHtml(line)}</p>` : `<p style="margin: 0;">&nbsp;</p>`))
+    .join("")}</div>`,
+};
