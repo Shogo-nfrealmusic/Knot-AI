@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="640" viewBox="0 0 760 640" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t2 d2">
+<title id="t2">Logging one set, with and without signal</title>
+<desc id="d2">The phone makes the set's id. If nothing older is waiting, the set is sent at once; the server inserts it, and a repeat of the same id returns the stored row. With no reply, a server error or a 429, the set waits in IndexedDB and is retried oldest first, from 2 seconds doubling up to 5 minutes, and again when the phone comes back online. A change carries the version it started from; a database trigger refuses a stale one, the API answers 409 with the saved copy, and the phone keeps both until the person picks one.</desc>
+<style>
+.bg{fill:#fafafa;stroke:#e5e5e5}
+.box{fill:#ffffff;stroke:#d4d4d4}
+.hl{fill:#fdf1ec;stroke:#e0552f}
+.lane{stroke:#d4d4d4;stroke-dasharray:3 4}
+.t{fill:#171717}
+.s{fill:#525252}
+.m{fill:#737373}
+.w{fill:#c2441f}
+.ln{stroke:#8f8f8f;fill:none;stroke-width:1.25}
+.wl{stroke:#e0552f;fill:none;stroke-width:1.5}
+.ah{fill:#8f8f8f}
+.wa{fill:#e0552f}
+.mono{font-family:'JetBrains Mono', ui-monospace, Menlo, monospace}
+@media (prefers-color-scheme: dark){
+.bg{fill:#141414;stroke:#2a2a2a}
+.box{fill:#1c1c1c;stroke:#3a3a3a}
+.hl{fill:#2a1a14;stroke:#f07a55}
+.lane{stroke:#3a3a3a}
+.t{fill:#f5f5f5}
+.s{fill:#c4c4c4}
+.m{fill:#9a9a9a}
+.w{fill:#f39a7c}
+.ln{stroke:#7a7a7a}
+.wl{stroke:#f07a55}
+.ah{fill:#7a7a7a}
+.wa{fill:#f07a55}
+}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="759" height="639" rx="16"/>
+<text class="t" x="24" y="36" font-size="15" font-weight="600">Logging one set, with and without signal</text>
+
+<!-- lane headers -->
+<rect class="box" x="30" y="56" width="160" height="40" rx="8"/>
+<text class="t" x="110" y="81" font-size="12.5" font-weight="600" text-anchor="middle">Workout screen</text>
+<rect class="box" x="214" y="56" width="160" height="40" rx="8"/>
+<text class="t" x="294" y="74" font-size="12.5" font-weight="600" text-anchor="middle">Outbox</text>
+<text class="m" x="294" y="89" font-size="10.5" text-anchor="middle">IndexedDB on the phone</text>
+<rect class="box" x="398" y="56" width="160" height="40" rx="8"/>
+<text class="t mono" x="478" y="81" font-size="12" font-weight="600" text-anchor="middle">/api/v1</text>
+<rect class="box" x="582" y="56" width="150" height="40" rx="8"/>
+<text class="t" x="657" y="81" font-size="12.5" font-weight="600" text-anchor="middle">Postgres</text>
+
+<path class="lane" d="M110 96 V620 M294 96 V620 M478 96 V620 M657 96 V620"/>
+
+<!-- 1 tap -->
+<text class="w mono" x="24" y="128" font-size="11" font-weight="600">1</text>
+<rect class="box" x="38" y="112" width="232" height="48" rx="8"/>
+<text class="t" x="50" y="131" font-size="12">Tap the set circle</text>
+<text class="s" x="50" y="149" font-size="11.5">id = crypto.randomUUID() on the phone</text>
+
+<!-- 2 online -->
+<text class="w mono" x="24" y="190" font-size="11" font-weight="600">2</text>
+<path class="ln" d="M110 186 H470"/><path class="ah" d="M476 186 l-7 -4 v8 z"/>
+<text class="s mono" x="122" y="180" font-size="10.5">POST /workouts/:id/sets  { id, kg, reps }</text>
+<path class="ln" d="M478 206 H649"/><path class="ah" d="M655 206 l-7 -4 v8 z"/>
+<text class="s" x="490" y="200" font-size="10.5">insert, as the user</text>
+<rect class="box" x="560" y="216" width="186" height="48" rx="8"/>
+<text class="s" x="572" y="235" font-size="11.5">Same id again (23505)?</text>
+<text class="s" x="572" y="251" font-size="11.5">Return the stored row.</text>
+<path class="ln" d="M657 272 H118"/><path class="ah" d="M112 272 l7 -4 v8 z"/>
+<text class="s" x="300" y="266" font-size="10.5">set + any personal best it beat</text>
+
+<!-- 3 offline -->
+<text class="w mono" x="24" y="306" font-size="11" font-weight="600">3</text>
+<text class="t" x="38" y="306" font-size="12" font-weight="600">No reply, a 5xx or a 429</text>
+<path class="ln" d="M110 322 H286"/><path class="ah" d="M292 322 l-7 -4 v8 z"/>
+<rect class="hl" x="214" y="334" width="232" height="66" rx="8"/>
+<text class="s" x="226" y="353" font-size="11.5">Kept on the phone. Sent oldest first,</text>
+<text class="s" x="226" y="369" font-size="11.5">every 2 s doubling to 5 min, and at once</text>
+<text class="s" x="226" y="385" font-size="11.5">when the phone comes back online.</text>
+<path class="ln" d="M294 412 H470"/><path class="ah" d="M476 412 l-7 -4 v8 z"/>
+<text class="s" x="306" y="406" font-size="10.5">same request, same id</text>
+<text class="m" x="38" y="430" font-size="11">A new set never jumps ahead of an older one still waiting.</text>
+
+<!-- 4 edit -->
+<text class="w mono" x="24" y="466" font-size="11" font-weight="600">4</text>
+<text class="t" x="38" y="466" font-size="12" font-weight="600">Change a set</text>
+<path class="ln" d="M110 482 H470"/><path class="ah" d="M476 482 l-7 -4 v8 z"/>
+<text class="s mono" x="122" y="476" font-size="10.5">PATCH /sets/:id  { kg, reps, baseVersion: 2 }</text>
+<path class="ln" d="M478 502 H649"/><path class="ah" d="M655 502 l-7 -4 v8 z"/>
+<text class="s mono" x="490" y="496" font-size="10.5">server_version = 3</text>
+<rect class="hl" x="560" y="512" width="186" height="48" rx="8"/>
+<text class="s mono" x="572" y="531" font-size="10.5">bump_version trigger:</text>
+<text class="s" x="572" y="547" font-size="11.5">not old + 1? refuse (P0409)</text>
+<path class="wl" d="M657 572 H118"/><path class="wa" d="M112 572 l7 -4 v8 z"/>
+<text class="w" x="300" y="566" font-size="10.5" font-weight="600">409 + the saved copy</text>
+<rect class="box" x="38" y="584" width="300" height="44" rx="8"/>
+<text class="t" x="50" y="602" font-size="11.5">"On this phone" next to "Saved". Pick one.</text>
+<text class="m" x="50" y="619" font-size="11">Kept in IndexedDB until chosen, even after a reload.</text>
+</svg>

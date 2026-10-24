@@ -45,6 +45,9 @@ export async function generateMetadata({
   }
 
   const path = `/blog/${post.slug}`;
+  const image = post.ogImage
+    ? { url: post.ogImage.src, width: 1200, height: 630, alt: post.ogImage.alt, type: "image/png" }
+    : null;
 
   return {
     title: `${post.title} | Shogo Kikuchi`,
@@ -57,7 +60,12 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       authors: [post.author.name],
+      ...(image ? { images: [image] } : {}),
     },
+    // Posts with their own image also get their own card on X; the rest keep the site's.
+    ...(image
+      ? { twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [image] } }
+      : {}),
   };
 }
 

@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import {
+  IconBarbell,
   IconBottle,
   IconBriefcase,
   IconCreditCard,
@@ -216,6 +217,12 @@ const items = [
     title: "Iron & Code — A Free Tool Every Monday",
     icon: IconTool,
     visual: () => <ShipCadence />,
+  },
+  {
+    project: requireProject("lifters-club"),
+    title: "Lifters Club — A Training App",
+    icon: IconBarbell,
+    visual: (project: Project) => <SiteVisual project={project} />,
   },
 ];
 

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="560" viewBox="0 0 760 560" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t4 d4">
+<title id="t4">The order it was built in, October 2026</title>
+<desc id="d4">October 19: one static page with Blender mannequin clips. October 21: printable PDFs, and a spec for a rebuild in Next.js. October 22: the exercise library with 582 licensed clips, CI, the Supabase schema with row-level security, sign-in on the server, and the move to Cloudflare Workers. October 23: plan editor, coaching, progress charts and logging without signal. October 24: consent and privacy, rate limits, shared plan codes and email-code sign-in. October 25: share management and one-transaction deletes.</desc>
+<style>
+.bg{fill:#fafafa;stroke:#e5e5e5}
+.t{fill:#171717}
+.s{fill:#525252}
+.m{fill:#737373}
+.w{fill:#c2441f}
+.rail{stroke:#d4d4d4;stroke-width:2}
+.dot{fill:#ffffff;stroke:#a3a3a3;stroke-width:2}
+.dotw{fill:#e0552f}
+.mono{font-family:'JetBrains Mono', ui-monospace, Menlo, monospace}
+@media (prefers-color-scheme: dark){
+.bg{fill:#141414;stroke:#2a2a2a}
+.t{fill:#f5f5f5}
+.s{fill:#c4c4c4}
+.m{fill:#9a9a9a}
+.w{fill:#f39a7c}
+.rail{stroke:#3a3a3a}
+.dot{fill:#141414;stroke:#7a7a7a}
+.dotw{fill:#f07a55}
+}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="759" height="559" rx="16"/>
+<text class="t" x="24" y="36" font-size="15" font-weight="600">The order it was built in</text>
+<text class="m" x="24" y="56" font-size="11.5">Commit dates, Tokyo time, October 2026. 64 pull requests merged by the morning of the 25th.</text>
+
+<path class="rail" d="M118 88 V530"/>
+
+<text class="w mono" x="24" y="100" font-size="12" font-weight="600">Oct 19</text>
+<circle class="dot" cx="118" cy="96" r="6"/>
+<text class="t" x="140" y="100" font-size="12.5" font-weight="600">One static page</text>
+<text class="s" x="140" y="118" font-size="12">A weekly plan, form cards and a checklist. The moves are grey mannequins rendered in Blender.</text>
+
+<text class="w mono" x="24" y="170" font-size="12" font-weight="600">Oct 21</text>
+<circle class="dot" cx="118" cy="166" r="6"/>
+<text class="t" x="140" y="170" font-size="12.5" font-weight="600">Printable PDFs, then a spec for the rebuild</text>
+<text class="s" x="140" y="188" font-size="12">Paper plans to use in the gym while the real thing is written down first.</text>
+
+<text class="w mono" x="24" y="240" font-size="12" font-weight="600">Oct 22</text>
+<circle class="dotw" cx="118" cy="236" r="7"/>
+<text class="t" x="140" y="240" font-size="12.5" font-weight="600">Next.js, 582 licensed clips, Supabase, Workers</text>
+<text class="s" x="140" y="258" font-size="12">Exercise library and CI. Schema with RLS and database tests. Google sign-in on the server.</text>
+<text class="s" x="140" y="274" font-size="12">Moved from a static export to Cloudflare Workers. Onboarding, plan generator, logging API.</text>
+
+<text class="w mono" x="24" y="326" font-size="12" font-weight="600">Oct 23</text>
+<circle class="dot" cx="118" cy="322" r="6"/>
+<text class="t" x="140" y="326" font-size="12.5" font-weight="600">Coaching, progress, logging without signal</text>
+<text class="s" x="140" y="344" font-size="12">Plan editor, profile pictures, invite links, charts, the outbox and the service worker.</text>
+
+<text class="w mono" x="24" y="396" font-size="12" font-weight="600">Oct 24</text>
+<circle class="dot" cx="118" cy="392" r="6"/>
+<text class="t" x="140" y="396" font-size="12.5" font-weight="600">Privacy, limits, sharing, a second way to sign in</text>
+<text class="s" x="140" y="414" font-size="12">Consent and age check, rate limits and an audit log, plan share codes, 6-digit email codes.</text>
+<text class="s" x="140" y="430" font-size="12">Resume a workout, fix or delete past sets, swap an exercise when its machine isn't there.</text>
+
+<text class="w mono" x="24" y="482" font-size="12" font-weight="600">Oct 25</text>
+<circle class="dot" cx="118" cy="478" r="6"/>
+<text class="t" x="140" y="482" font-size="12.5" font-weight="600">Finishing what was half done</text>
+<text class="s" x="140" y="500" font-size="12">Stop every share from one list, count code tries per address, delete a workout in one transaction.</text>
+</svg>

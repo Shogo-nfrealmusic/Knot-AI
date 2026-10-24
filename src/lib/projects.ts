@@ -511,6 +511,57 @@ export const projects: Project[] = [
     images: [],
   },
   {
+    slug: "lifters-club",
+    name: "Lifters Club",
+    title: "Lifters Club — A Training Log That Sets the Next Session",
+    summary:
+      "A web app for gym training: a plan from your answers, sets logged on the phone even without signal, the next session's weight and reps worked out by rule, and a coach who can read but not rewrite.",
+    role: "Sole developer, building with Claude Code. Spec, decisions and review.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Cloudflare Workers (OpenNext)",
+      "Supabase (Auth, Postgres, Storage)",
+      "Zod",
+      "Vitest",
+      "Playwright",
+    ],
+    links: [
+      { label: "Live site", href: "https://lifters.club" },
+      { label: "How it works", href: "/blog/lifters-club" },
+    ],
+    metrics: [
+      { value: "582", label: "exercises, each with a licensed motion clip" },
+      { value: "1,079", label: "unit and component tests; 99.5% of lines in server code" },
+      { value: "21", label: "migrations, row-level security on every table" },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        paragraphs: [
+          "It started with coaching one person's training. A plan on paper says what to do but nothing comes back: which weight was used, whether a set hurt, and what next time should be.",
+        ],
+      },
+      {
+        heading: "What I built",
+        items: [
+          "Onboarding that writes a plan by rule from days a week, minutes, equipment, experience and painful areas",
+          "Gym logging on the phone, with the next session's weight and reps worked out by a fixed, tested list of rules",
+          "Logging without signal: an outbox in IndexedDB, ids made on the phone, and a choice shown when two devices disagree",
+          "Coaching by invite link, with read-only access to logged sets and opt-in sharing of personal details",
+          "An exercise library of 582 licensed clips, re-encoded by one import command",
+        ],
+      },
+      {
+        heading: "How it works",
+        paragraphs: [
+          "Next.js 16 on Cloudflare Workers through OpenNext. Every data call goes through one API gate that checks the token's signature, refuses cross-site writes, rate-limits and hides errors. Supabase is called with the user's own token, so row-level security decides every read and write.",
+        ],
+      },
+    ],
+    images: [],
+  },
+  {
     slug: "signal-ai-brief",
     name: "SIGNAL",
     title: "A Daily AI Brief That Ranks Stories by Consequence",
