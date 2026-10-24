@@ -3,7 +3,8 @@
 
 export type LinkEvent = {
   at: string;
-  kind: "view" | "click" | "mode";
+  /** page = another page of the site, opened after /links in the same tab (target is its path) */
+  kind: "view" | "click" | "mode" | "page";
   mode: "ai" | "fit";
   src: string;
   target: string | null;

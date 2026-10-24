@@ -80,6 +80,25 @@ function summarize(events: LinkEvent[]) {
   }
   const byLink = Array.from(linkCounts.values()).sort((a, b) => b.count - a.count);
 
+  // Pages of the site opened after /links in the same tab (Issue #62), with the side and bio link they came through.
+  const pages = events.filter((e) => e.kind === "page" && e.target);
+  const byPage = Array.from(new Set(pages.map((e) => e.target as string)))
+    .map((target) => {
+      const p = pages.filter((e) => e.target === target);
+      const srcCounts = new Map<string, number>();
+      p.forEach((e) => srcCounts.set(e.src, (srcCounts.get(e.src) ?? 0) + 1));
+      const topSrc = Array.from(srcCounts.entries()).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+      return {
+        target,
+        opens: p.length,
+        visitors: visitors(p),
+        ai: p.filter((e) => e.mode === "ai").length,
+        fit: p.filter((e) => e.mode === "fit").length,
+        topSrc,
+      };
+    })
+    .sort((a, b) => b.visitors - a.visitors || b.opens - a.opens);
+
   const days = new Map<string, { views: number; clicks: number }>();
   for (const e of events) {
     const d = tokyoDay(e.at);
@@ -103,6 +122,7 @@ function summarize(events: LinkEvent[]) {
     bySide,
     bySource,
     byLink,
+    byPage,
     byDay,
     recent: events.slice(-25).reverse(),
   };
@@ -209,6 +229,17 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
         )}
       </Card>
 
+      <Card title="リンクページから来た人が見たページ（同じタブで開いたもの）">
+        {s.byPage.length ? (
+          <Table
+            head={["ページ", "訪問者", "表示", "AI から", "FITNESS から", "多い src"]}
+            rows={s.byPage.map((r) => [r.target, r.visitors, r.opens, r.ai, r.fit, r.topSrc])}
+          />
+        ) : (
+          <Empty />
+        )}
+      </Card>
+
       <Card title="日ごと">
         {s.byDay.length ? (
           <ul className="space-y-1.5">
@@ -237,7 +268,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
             head={["時刻", "種類", "側", "src", "対象"]}
             rows={s.recent.map((e) => [
               new Date(e.at).toLocaleString("ja-JP", { timeZone: "Asia/Tokyo", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }),
-              e.kind === "view" ? "表示" : e.kind === "click" ? "クリック" : "切り替え",
+              { view: "表示", click: "クリック", mode: "切り替え", page: "ページ" }[e.kind],
               SIDE[e.mode],
               e.src,
               e.target ? (labels[e.target] ?? e.target) : "",
