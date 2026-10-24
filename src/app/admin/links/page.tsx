@@ -31,6 +31,7 @@ function linkLabels(): Record<string, string> {
     home: "shogo.build",
     closing: "最後のボタン",
     contact_sent: "お問い合わせフォームの送信",
+    coaching_sent: "コーチング申し込みの送信",
     youtube_all: "YouTube（すべての動画）",
   };
   for (const side of [linksContent.ai, linksContent.fit]) {

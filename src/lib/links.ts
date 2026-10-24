@@ -19,6 +19,8 @@ type CardBase = {
   kicker: string;
   title: string;
   href: string;
+  /** how long the AI rail stays on this card before sliding on by itself (default 5) */
+  seconds?: number;
 };
 
 /** Highlight cards, Apple-style: caption on top, one large visual below. */
@@ -43,7 +45,8 @@ export type ModeContent = {
   highlightsLabel: string;
   highlights: Highlight[];
   pages: PageTile[];
-  closing: { text: string; cta: string; href: string };
+  /** the last section: a heading, one line on what to send, and the form for this side */
+  closing: { id: string; text: string; note: string; form: "work" | "coaching" };
 };
 
 export const linksContent: Record<LinksMode, ModeContent> = {
@@ -69,6 +72,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         kicker: "Co-founder & CTO",
         title: "TPS Collective",
         href: "https://www.tps-collective.com/",
+        seconds: 6,
         image: "/images/work/tps-booking-mobile.png",
         stats: [
           ["$19.9k", "best month"],
@@ -81,6 +85,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         kicker: "Mercari Engineering",
         title: "An AI agent for PM work",
         href: "https://engineering.mercari.com/en/blog/entry/20260427-mercari-pm-agent-design-automating-the-pm-workflow-with-claude-code-skills-and-mcp/",
+        seconds: 7,
         source: "engineering.mercari.com",
         excerpt: "From a business problem to a PRD and UI mockups in one session, with evidence pulled from Notion, Slack, Looker and Figma.",
       },
@@ -106,6 +111,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
         kicker: "From the reels",
         title: "Free tools",
         href: "/free",
+        seconds: 6,
         // lines are filled from src/lib/free.ts in app/links/page.tsx
         lines: [],
       },
@@ -115,7 +121,13 @@ export const linksContent: Record<LinksMode, ModeContent> = {
       { id: "free", label: "Free tools", note: "Every tool from the reels", href: "/free" },
       { id: "blog", label: "Blog", note: "How they were built", href: "/blog" },
     ],
-    closing: { text: "Building something with AI?", cta: "Get in touch", href: "/contact" },
+    // For hire: client builds, not a newsletter or a chat (Shogo, 2026-10-25)
+    closing: {
+      id: "work-with-me",
+      text: "Work with me",
+      note: "Need an AI agent, an automation or a full web app built? Tell me what it should do.",
+      form: "work",
+    },
   },
   fit: {
     tab: "Fitness",
@@ -158,11 +170,16 @@ export const linksContent: Record<LinksMode, ModeContent> = {
       },
     ],
     pages: [
-      // Coaching is arranged in Instagram DMs (Shogo, 2026-10-19)
-      { id: "coaching", label: "Coaching", note: "1:1 training. DM me on Instagram", href: "https://ig.me/m/imshogo.k" },
+      // Coaching is online only and starts from the form at the bottom, not a DM (Shogo, 2026-10-25)
+      { id: "coaching", label: "Coaching", note: "1:1 online training. Apply below", href: "#coach" },
       { id: "edit_guide", label: "How I edit these", note: "Cinematic reels, cut by Claude", href: "/free/27-claude-video-edit" },
     ],
-    closing: { text: "Want me to coach you?", cta: "DM me on Instagram", href: "https://ig.me/m/imshogo.k" },
+    closing: {
+      id: "coach",
+      text: "Want me to coach you?",
+      note: "1:1 online coaching. Tell me where you are now and where you want to be.",
+      form: "coaching",
+    },
   },
 };
 
