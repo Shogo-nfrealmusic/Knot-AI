@@ -532,7 +532,7 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "582", label: "exercises, each with a licensed motion clip" },
-      { value: "1,079", label: "unit and component tests; 99.5% of lines in server and library code" },
+      { value: "1,086", label: "unit and component tests; 99.5% of lines in server and library code" },
       { value: "21", label: "migrations, row-level security on every table" },
     ],
     sections: [
@@ -559,7 +559,22 @@ export const projects: Project[] = [
         ],
       },
     ],
-    images: [],
+    // Taken by training-plan's "Work screenshots" workflow, signed in as a made-up user on a local
+    // Supabase (no real person's data).
+    images: [
+      {
+        src: "/images/work/lifters-club-desktop.png",
+        alt: "Lifters Club exercise library on desktop: a muscle map and 582 exercises, each with a 3D motion clip",
+        width: 2880,
+        height: 1800,
+      },
+      {
+        src: "/images/work/lifters-club-mobile.png",
+        alt: "Lifters Club on a phone during a workout, a set just logged and marked as a new personal best",
+        width: 780,
+        height: 1688,
+      },
+    ],
   },
   {
     slug: "signal-ai-brief",

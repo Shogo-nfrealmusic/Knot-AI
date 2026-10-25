@@ -113,7 +113,7 @@ const posts: BlogPost[] = [
         type: "stats",
         items: [
           { value: "582", label: "exercises, each with a licensed motion clip" },
-          { value: "1,079", label: "unit and component tests; 99.5% of lines in server and library code" },
+          { value: "1,086", label: "unit and component tests; 99.5% of lines in server and library code" },
           { value: "21", label: "database migrations, with row-level security on every table" },
         ],
       },
@@ -277,7 +277,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "On 25 October the unit and component suite was 1,079 tests in 92 files, with 99.5% of lines and 96.8% of branches covered in the code the gate measures. The SQL tests are another 22 files.",
+        text: "On 25 October the unit and component suite was 1,086 tests in 93 files, with 99.5% of lines and 96.8% of branches covered in the code the gate measures. The SQL tests are another 22 files.",
       },
       {
         type: "paragraph",

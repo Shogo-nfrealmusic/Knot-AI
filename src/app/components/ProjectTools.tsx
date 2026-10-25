@@ -18,6 +18,7 @@ import Beam from "@/app/components/ui/beam";
 import OpsAppMock from "@/app/components/OpsAppMock";
 import AgentFlow from "@/app/components/AgentFlow";
 import BookingEventFlow from "@/app/components/illustrations/BookingEventFlow";
+import SetSyncFlow from "@/app/components/illustrations/SetSyncFlow";
 import { getProject, type Project } from "@/lib/projects";
 
 function requireProject(slug: string) {
@@ -125,6 +126,26 @@ function BookingFlowPanel() {
   );
 }
 
+// How a set reaches the database in Lifters Club, with or without signal. Same panel as the booking
+// flow; on phones it stacks taller than 480px, so the height follows the flow there.
+function SetSyncPanel() {
+  return (
+    <div className="mt-6 overflow-hidden rounded-[20px] border border-neutral-200 bg-neutral-50/70">
+      <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-4 py-2.5">
+        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-500">
+          Every set
+        </p>
+        <p className="hidden font-mono text-[11px] text-neutral-400 sm:block">
+          logged on the phone, even offline
+        </p>
+      </div>
+      <div className="relative bg-[radial-gradient(circle,rgba(0,0,0,0.06)_1px,transparent_1px)] [background-size:16px_16px] md:h-[340px]">
+        <SetSyncFlow className="sm:px-0" />
+      </div>
+    </div>
+  );
+}
+
 function ProjectDetails({ project }: { project: Project }) {
   const metrics = project.metrics.slice(0, 3);
 
@@ -215,6 +236,7 @@ const items = [
     title: "Lifters Club — A Training App",
     icon: IconBarbell,
     visual: (project: Project) => <SiteVisual project={project} />,
+    extra: <SetSyncPanel />,
   },
 ];
 
