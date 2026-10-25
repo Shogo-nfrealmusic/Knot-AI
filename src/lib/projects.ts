@@ -532,7 +532,7 @@ export const projects: Project[] = [
     ],
     metrics: [
       { value: "582", label: "exercises, each with a licensed motion clip" },
-      { value: "1,079", label: "unit and component tests; 99.5% of lines in server code" },
+      { value: "1,079", label: "unit and component tests; 99.5% of lines in server and library code" },
       { value: "21", label: "migrations, row-level security on every table" },
     ],
     sections: [
@@ -555,7 +555,7 @@ export const projects: Project[] = [
       {
         heading: "How it works",
         paragraphs: [
-          "Next.js 16 on Cloudflare Workers through OpenNext. Every data call goes through one API gate that checks the token's signature, refuses cross-site writes, rate-limits and hides errors. Supabase is called with the user's own token, so row-level security decides every read and write.",
+          "Next.js 16 on Cloudflare Workers through OpenNext. Every data call goes through one API gate that checks the token's signature, refuses cross-site writes, rate-limits writes and hides errors. Supabase is called with the user's own token, so row-level security applies to every query; the few database functions that read across people check the caller themselves.",
         ],
       },
     ],

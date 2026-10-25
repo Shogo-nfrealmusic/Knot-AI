@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t3 d3">
 <title id="t3">Who can see what</title>
-<desc id="d3">The person reads and changes all of their own data. A coach with an active link reads the client's name and picture, plans and logged workouts, can save a new plan version marked as the coach's, and reads birth year, sex, height and body logs only if the client shares them. Logged sets are read-only for the coach. Anyone else sees nothing. Ending the link removes the coach's access.</desc>
+<desc id="d3">The person reads and changes all of their own data. A coach with an active link reads the client's name and picture, plans and logged workouts, can save a new plan version marked as the coach's, and reads birth year, sex, height and body logs only if the client shares them. Logged sets are read-only for the coach. Anyone else sees nothing. Ending the link removes the coach's access until a new invite is accepted.</desc>
 <style>
 .bg{fill:#fafafa;stroke:#e5e5e5}
 .head{fill:#f0f0f0}
@@ -84,7 +84,7 @@
 <rect class="grid" x="24" y="72" width="712" height="326" rx="6"/>
 
 <text class="t" x="24" y="432" font-size="12" font-weight="600">Ending the link</text>
-<text class="s" x="24" y="450" font-size="12">Either side can end it, and nobody can reopen it. The coach's read access goes with it.</text>
+<text class="s" x="24" y="450" font-size="12">Either side can end it, and the coach's access goes with it. Only a new invite starts it again.</text>
 <text class="t" x="24" y="482" font-size="12" font-weight="600">A shared plan code</text>
-<text class="s" x="24" y="500" font-size="12">Shows a copy of the plan taken when it was shared. Never a row of any table, and never the log.</text>
+<text class="s" x="24" y="500" font-size="12">Shows a copy of the plan made when it was shared. Never the owner's own rows, and never the log.</text>
 </svg>

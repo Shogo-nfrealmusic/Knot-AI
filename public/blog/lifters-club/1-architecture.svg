@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="560" viewBox="0 0 760 560" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t1 d1">
 <title id="t1">How a request moves through Lifters Club</title>
-<desc id="d1">The browser talks to Next.js on Cloudflare Workers, and to Supabase only to load a profile picture through a signed link. Prerendered pages and exercise clips are served as static files. Sign-in and every data call go through the Worker, which calls Supabase Auth, Postgres with row-level security on every table, and private Storage as the signed-in user.</desc>
+<desc id="d1">The browser talks to Next.js on Cloudflare Workers, and to Supabase only to load a profile picture through a signed link. Prerendered pages and exercise clips are served as static files. Sign-in goes through the Worker to Supabase Auth. Every data call goes through /api/v1, which calls Postgres with row-level security on every table, and private Storage, as the signed-in user.</desc>
 <style>
 .bg{fill:#fafafa;stroke:#e5e5e5}
 .box{fill:#ffffff;stroke:#d4d4d4}

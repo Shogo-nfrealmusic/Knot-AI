@@ -131,7 +131,7 @@ const posts: BlogPost[] = [
         type: "image",
         src: "/blog/lifters-club/4-timeline.svg",
         alt: "Timeline from 19 to 25 October 2026: a static page, printable PDFs and a spec, then Next.js with 582 clips, Supabase and Workers, then coaching and offline logging, then privacy, limits and sharing, then finishing work.",
-        caption: "From the commit history. Each step after 21 October was a pull request linked to an issue.",
+        caption: "From the commit history. From 22 October every step went in as a pull request.",
         bare: true,
       },
       {
@@ -149,7 +149,7 @@ const posts: BlogPost[] = [
       { type: "heading", text: "How it was built" },
       {
         type: "paragraph",
-        text: "The code was written with Claude Code, often with several agents working at once, each in its own git worktree. My part was the spec, the decisions and the review. Every change started as a GitHub issue, went up as a pull request that says which issue it closes, and was merged only after CI passed. By the morning of 25 October that was 70 issues and 64 merged pull requests.",
+        text: "The code was written with Claude Code, often with several agents working at once, each in its own git worktree. My part was the spec, the decisions and the review. Work was tracked as GitHub issues, and every change went in as a pull request that was merged only after CI passed. All but one of those pull requests named its issue, most of them as the issue they close. By the morning of 25 October that was 70 issues and 64 merged pull requests.",
       },
       {
         type: "paragraph",
@@ -167,16 +167,16 @@ const posts: BlogPost[] = [
       {
         type: "list",
         items: [
-          "Clips: 1280 pixels wide, H.264, no audio, with the index at the front of the file so playback starts before the download ends. 205 MB for all of them",
+          "Clips: 1280 pixels wide, H.264, no audio, with the index at the front of the file so playback starts before the download ends. About 180 MB of clips, 205 MB with the posters and thumbnails",
           "Posters are taken from the encoded clip, not from the pack's PNG. The PNG's background was #eeeeed and the video's #e9ebe6, and the page has to match both for the figure to blend in",
-          "Grid thumbnails are cut 4:3 from the centre, because a square cut off feet and benches. The library page ships only the fields the grid needs, which took its HTML from 895 KB to 186 KB",
+          "Grid thumbnails are cut 4:3 from the centre, because a square cut off feet and benches. The library page ships only the fields the grid needs and draws 40 tiles at a time, which took its HTML from 662 KB to 240 KB",
         ],
       },
       { type: "heading", text: "How it works" },
       {
         type: "image",
         src: "/blog/lifters-club/1-architecture.svg",
-        alt: "Architecture: the browser calls Next.js on Cloudflare Workers. Static pages and clips are served as files. /api/v1 and /auth go through the Worker to Supabase Auth, Postgres with RLS, and private Storage, always as the signed-in user.",
+        alt: "Architecture: the browser calls Next.js on Cloudflare Workers. Static pages and clips are served as files. Sign-in goes through /auth on the Worker to Supabase Auth; every /api/v1 call goes to Postgres with RLS and private Storage as the signed-in user.",
         caption: "One Worker in front of Supabase. The browser never holds a Supabase client.",
         bare: true,
       },
@@ -186,11 +186,11 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Everything personal goes through one place: /api/v1. Every handler there is wrapped in a single function, apiRoute. It checks the session token's signature with Supabase's getClaims(), refuses a write that carries a cookie but comes from another site, counts the call against a per-user rate limit, and turns any error into a short message that reveals nothing about the database. A new endpoint cannot forget any of that, because it cannot exist without the wrapper. Every input is then parsed with Zod, and the database has the same ranges as CHECK constraints.",
+        text: "Everything personal goes through one place: /api/v1. Every handler there is wrapped in a single function, apiRoute. It checks the session token's signature with Supabase's getClaims(), refuses a write that carries a cookie but comes from another site, counts every write against a per-user rate limit, and turns any error into a short message that reveals nothing about the database. Every endpoint is written inside that wrapper, so none of it has to be remembered per endpoint. Every input is then parsed with Zod, and the database has the same ranges as CHECK constraints.",
       },
       {
         type: "paragraph",
-        text: "The API never uses Supabase's secret key. It calls Supabase with the signed-in person's own token, so every query goes through row-level security exactly as if that person had made it. A database test walks every table in the public schema and fails if any has row-level security off or gives anonymous users any access at all.",
+        text: "The API never uses Supabase's secret key. It calls Supabase with the signed-in person's own token, so every query goes through row-level security exactly as if that person had made it. The exceptions are a handful of database functions, such as accepting an invite, that have to read another person's row; each checks the caller itself, and a test lists them. A database test walks every table in the public schema and fails if any has row-level security off or gives anonymous users any access at all.",
       },
       { type: "heading", text: "Signing in", level: 3 },
       {
@@ -240,7 +240,7 @@ const posts: BlogPost[] = [
       { type: "heading", text: "The next session" },
       {
         type: "paragraph",
-        text: "The next target is not a guess from a model. It is a fixed list of rules in one module, checked in order, and the first that matches wins: pain on any set means no increase; a break of 14 days or more means coming back at about 90%; missing the bottom of the rep range twice in a row at the same weight means dropping a step; reaching the top of the range on every planned set means adding a step; anything else means the same weight and one more rep. Steps depend on the equipment: 5 kg for lower-body barbell lifts, 2.5 kg for upper-body ones, 2 kg for dumbbells. Machines and cables move by 5 kg. The suggestion is only a suggestion: the person can change it before logging.",
+        text: "The next target is not a guess from a model. It is a fixed list of rules in one module, checked in order, and the first that matches wins: pain on any set means one step lighter; a break of 14 days or more means coming back at about 90%; missing the bottom of the rep range twice in a row at the same weight means dropping about 7.5%, at least one step; reaching the top of the range on every planned set means adding a step; anything else means the same weight and one more rep. Steps depend on the equipment: 5 kg for lower-body barbell lifts, 2.5 kg for upper-body ones, 2 kg for dumbbells. Machines and cables move by 5 kg. The suggestion is only a suggestion: the person can change it before logging.",
       },
       {
         type: "paragraph",
@@ -256,7 +256,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "A coach sends an invite link. Only the token's SHA-256 is stored, and nothing is shared until the other person accepts. From then on the coach can read the client's plans and logged workouts and save a new version of the client's plan, which is recorded as the coach's. The coach can never change a logged set. Birth year, sex, height and body logs stay hidden unless the client turns sharing on for that coach. Either side can end the link, and once it ends the coach can read nothing.",
+        text: "A coach sends an invite link. Only the token's SHA-256 is stored, and nothing is shared until the other person accepts. From then on the coach can read the client's plans and logged workouts and save a new version of the client's plan, which is recorded as the coach's. The coach can never change a logged set. Birth year, sex, height and body logs stay hidden unless the client turns sharing on for that coach. Either side can end the link, and once it ends the coach can read nothing until a new invite is accepted.",
       },
       {
         type: "paragraph",
@@ -264,7 +264,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Sharing a plan with someone outside coaching works by code. The code opens a copy of the plan taken when it was shared, never a row from the owner's tables, and every open code can be stopped from one list.",
+        text: "Sharing a plan with someone outside coaching works by code. The code opens a copy of the plan taken when it was shared (or shared again after an edit), never a row from the owner's tables, and every open code can be stopped from one list.",
       },
       { type: "heading", text: "CI and what reaches production" },
       {
@@ -281,7 +281,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Merging into the main branch deploys the Worker through Cloudflare's Git integration. Migrations are not applied by the merge. Each pull request with a migration says so, and says which comes first, the migration or the code: a new function with default arguments can go first, while code that calls a function the database does not have yet cannot. I apply production migrations myself, in that order.",
+        text: "Merging into mvp, the production branch, deploys the Worker through Cloudflare's Git integration. The database moves separately. In the first days, Supabase's GitHub integration applied a migration when its pull request merged. Since 24 October production migrations have been applied by hand after review, and a pull request that adds one says which has to go first: code that calls a function the database does not have yet cannot go before its migration, while a function with defaults that old code ignores can go ahead of the code.",
       },
       { type: "heading", text: "What comes next" },
       {
