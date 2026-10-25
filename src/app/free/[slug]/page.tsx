@@ -9,6 +9,7 @@ import { DropAboutBlock, DropBreakdownBlock, DropTip, FollowBlock, ToolRow } fro
 import { GuideSignup } from "@/app/free/GuideSignup";
 import { KitSales } from "@/app/free/KitSales";
 import { dropKind, formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
+import { siteOgImage, twitterCard } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -23,11 +24,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!drop) return {};
   const path = `/free/${drop.slug}`;
   const title = `${drop.title} | Shogo Kikuchi`;
+  // A kit page keeps its own image; every other drop names the site's (its openGraph would drop it).
+  const images = drop.kit ? ["/free/05/og.png"] : [siteOgImage];
   return {
     title,
     description: drop.description,
     alternates: { canonical: path },
-    openGraph: { title: drop.title, description: drop.description, url: path, type: "website", ...(drop.kit ? { images: ["/free/05/og.png"] } : {}) },
+    openGraph: { title: drop.title, description: drop.description, url: path, type: "website", images },
+    twitter: twitterCard(drop.title, drop.description, images),
   };
 }
 

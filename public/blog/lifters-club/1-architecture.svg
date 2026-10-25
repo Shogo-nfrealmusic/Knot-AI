@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="560" viewBox="0 0 760 560" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t1 d1">
+<title id="t1">How a request moves through Lifters Club</title>
+<desc id="d1">The browser talks to Next.js on Cloudflare Workers, and to Supabase only to load a profile picture through a signed link. Prerendered pages and exercise clips are served as static files. Sign-in goes through the Worker to Supabase Auth. Every data call goes through /api/v1, which calls Postgres with row-level security on every table, and private Storage, as the signed-in user.</desc>
+<style>
+.bg{fill:#fafafa;stroke:#e5e5e5}
+.box{fill:#ffffff;stroke:#d4d4d4}
+.hl{fill:#fdf1ec;stroke:#e0552f}
+.dash{fill:none;stroke:#a3a3a3;stroke-dasharray:4 4}
+.t{fill:#171717}
+.s{fill:#525252}
+.m{fill:#737373}
+.w{fill:#c2441f}
+.ln{stroke:#8f8f8f;fill:none;stroke-width:1.25}
+.ah{fill:#8f8f8f}
+.mono{font-family:'JetBrains Mono', ui-monospace, Menlo, monospace}
+@media (prefers-color-scheme: dark){
+.bg{fill:#141414;stroke:#2a2a2a}
+.box{fill:#1c1c1c;stroke:#3a3a3a}
+.hl{fill:#2a1a14;stroke:#f07a55}
+.dash{stroke:#6b6b6b}
+.t{fill:#f5f5f5}
+.s{fill:#c4c4c4}
+.m{fill:#9a9a9a}
+.w{fill:#f39a7c}
+.ln{stroke:#7a7a7a}
+.ah{fill:#7a7a7a}
+}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="759" height="559" rx="16"/>
+<text class="t" x="24" y="36" font-size="15" font-weight="600">How a request moves through Lifters Club</text>
+
+<!-- Browser -->
+<rect class="box" x="20" y="64" width="200" height="252" rx="12"/>
+<text class="t" x="36" y="90" font-size="13" font-weight="600">Browser</text>
+<text class="m" x="36" y="108" font-size="11.5">phone at the gym, or desktop</text>
+<text class="s" x="36" y="140" font-size="12">Installable web app (PWA)</text>
+<text class="s" x="36" y="172" font-size="12">Service worker keeps app</text>
+<text class="s" x="36" y="188" font-size="12">files, fonts and clips</text>
+<text class="s" x="36" y="220" font-size="12">IndexedDB holds sets still</text>
+<text class="s" x="36" y="236" font-size="12">waiting to send, and 409s</text>
+<text class="s" x="36" y="252" font-size="12">waiting for a choice</text>
+<text class="w" x="36" y="288" font-size="11.5">No Supabase client here.</text>
+<text class="w" x="36" y="303" font-size="11.5">Tokens stay in HttpOnly cookies.</text>
+
+<!-- Workers -->
+<rect class="box" x="260" y="64" width="250" height="376" rx="12"/>
+<text class="t" x="276" y="90" font-size="13" font-weight="600">Cloudflare Workers</text>
+<text class="m mono" x="276" y="108" font-size="11">Next.js 16 through OpenNext</text>
+
+<rect class="box" x="272" y="122" width="226" height="62" rx="8"/>
+<text class="t" x="284" y="142" font-size="12" font-weight="600">Static assets</text>
+<text class="s" x="284" y="158" font-size="11.5">prerendered library and legal pages,</text>
+<text class="s" x="284" y="173" font-size="11.5">582 exercise clips, served as files</text>
+
+<rect class="box" x="272" y="194" width="226" height="44" rx="8"/>
+<text class="t" x="284" y="213" font-size="12" font-weight="600">Proxy</text>
+<text class="s" x="284" y="229" font-size="11.5">refreshes the session cookie</text>
+
+<rect class="hl" x="272" y="248" width="226" height="98" rx="8"/>
+<text class="t mono" x="284" y="268" font-size="11.5" font-weight="600">/api/v1 → apiRoute()</text>
+<text class="s" x="284" y="286" font-size="11.5">getClaims() checks the signature</text>
+<text class="s" x="284" y="302" font-size="11.5">writes by cookie: same site only</text>
+<text class="s" x="284" y="318" font-size="11.5">rate limit per user</text>
+<text class="s" x="284" y="334" font-size="11.5">every input parsed with Zod</text>
+
+<rect class="box" x="272" y="356" width="226" height="72" rx="8"/>
+<text class="t mono" x="284" y="376" font-size="11.5" font-weight="600">/auth/*</text>
+<text class="s" x="284" y="394" font-size="11.5">Google (PKCE) or a 6-digit code</text>
+<text class="s" x="284" y="410" font-size="11.5">by email, started on the server</text>
+
+<!-- Supabase -->
+<rect class="box" x="550" y="64" width="190" height="376" rx="12"/>
+<text class="t" x="566" y="90" font-size="13" font-weight="600">Supabase</text>
+<text class="m" x="566" y="108" font-size="11.5">Tokyo region</text>
+
+<rect class="box" x="562" y="122" width="166" height="62" rx="8"/>
+<text class="t" x="574" y="142" font-size="12" font-weight="600">Storage</text>
+<text class="s" x="574" y="158" font-size="11.5">private avatar bucket,</text>
+<text class="s" x="574" y="173" font-size="11.5">signed links from the API</text>
+
+<rect class="hl" x="562" y="230" width="166" height="116" rx="8"/>
+<text class="t" x="574" y="250" font-size="12" font-weight="600">Postgres</text>
+<text class="s" x="574" y="268" font-size="11.5">RLS on every table</text>
+<text class="s" x="574" y="284" font-size="11.5">21 migrations</text>
+<text class="s" x="574" y="300" font-size="11.5">versions checked by</text>
+<text class="s" x="574" y="316" font-size="11.5">a trigger (409 on a</text>
+<text class="s" x="574" y="332" font-size="11.5">stale write)</text>
+
+<rect class="box" x="562" y="356" width="166" height="72" rx="8"/>
+<text class="t" x="574" y="376" font-size="12" font-weight="600">Auth</text>
+<text class="s" x="574" y="394" font-size="11.5">Google, email codes</text>
+<text class="s" x="574" y="410" font-size="11.5">sent through Resend</text>
+
+<!-- arrows -->
+<path class="ln" d="M220 153 H266"/><path class="ah" d="M272 153 l-7 -4 v8 z"/>
+<text class="m" x="226" y="146" font-size="10.5">pages</text>
+<path class="ln" d="M220 297 H266"/><path class="ah" d="M272 297 l-7 -4 v8 z"/>
+<text class="m" x="226" y="290" font-size="10.5">fetch</text>
+<path class="ln" d="M498 297 H556"/><path class="ah" d="M562 297 l-7 -4 v8 z"/>
+<text class="m" x="504" y="290" font-size="10.5">as the user</text>
+<path class="ln" d="M498 392 H556"/><path class="ah" d="M562 392 l-7 -4 v8 z"/>
+
+<!-- footer -->
+<rect class="dash" x="20" y="460" width="720" height="78" rx="10"/>
+<text class="t" x="36" y="484" font-size="12" font-weight="600">No secret key in the app.</text>
+<text class="s" x="36" y="502" font-size="12">Every query carries the signed-in person's own token, so Postgres decides what they can read or write.</text>
+<text class="m" x="36" y="524" font-size="11.5">Later, a mobile app calls the same /api/v1 with Authorization: Bearer instead of the cookie.</text>
+</svg>

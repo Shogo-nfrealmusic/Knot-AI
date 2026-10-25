@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import { GridSection } from "@/app/components/ui/grid-section";
-import { site, socialLinks } from "@/lib/site";
+import { site, siteOgImage, socialLinks, twitterCard } from "@/lib/site";
 import ContactForm from "./ContactForm";
 
 const title = "Contact | Shogo Kikuchi";
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/contact" },
-  openGraph: { title, description, url: "/contact", type: "website" },
+  openGraph: { title, description, url: "/contact", type: "website", images: [siteOgImage] },
+  twitter: twitterCard(title, description, [siteOgImage]),
 };
 
 const upwork = socialLinks.find((link) => link.label === "Upwork");

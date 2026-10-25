@@ -78,6 +78,8 @@ export type BlogPost = {
   /** Posts published elsewhere: cards link out and there is no local page. */
   externalUrl?: string;
   cover: { icon: CoverIcon; label: string };
+  /** A 1200×630 PNG under public/ for link previews. Without it the post names the site's image. */
+  ogImage?: { src: string; alt: string };
   body: BlogBlock[];
 };
 
@@ -87,6 +89,207 @@ const shogo: BlogAuthor = {
 };
 
 const posts: BlogPost[] = [
+  {
+    slug: "lifters-club",
+    title: "Lifters Club: a training log that sets your next session",
+    description:
+      "A web app for gym training that started with coaching one person. Why it exists, the order it was built in, and how it works: Next.js on Cloudflare Workers, one API gate, Postgres with row-level security on every table, logging that survives no signal, and a coach who can read but not rewrite.",
+    category: "engineering",
+    date: "2026-10-25",
+    author: shogo,
+    status: "published",
+    ogImage: { src: "/blog/lifters-club/og.png", alt: "Lifters Club: a training log that sets your next session" },
+    cover: { icon: "barbell", label: "lifters.club" },
+    body: [
+      {
+        type: "paragraph",
+        text: "[Lifters Club](https://lifters.club) is a web app for training in a gym. You answer a few questions, it writes you a plan, you log each set on your phone between sets, and after every session it works out the weight and reps for the next one. A coach can be connected to you, write your plan, and read what you logged.",
+      },
+      {
+        type: "paragraph",
+        text: "It started with coaching one person I know through their training. This post is about why that turned into an app, the order it was built in, and how it works. Every number here comes from the repository on 25 October 2026.",
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "582", label: "exercises, each with a licensed motion clip" },
+          { value: "1,079", label: "unit and component tests; 99.5% of lines in server and library code" },
+          { value: "21", label: "database migrations, with row-level security on every table" },
+        ],
+      },
+      { type: "heading", text: "Why it exists" },
+      {
+        type: "paragraph",
+        text: "Coaching someone means writing the plan, and then finding out what they actually did. A plan on paper gets the first half right. It says nothing back: which weight they used, whether a set hurt, whether they came at all. And it cannot do the one thing a coach does between sessions, which is decide what next time should be.",
+      },
+      {
+        type: "paragraph",
+        text: "So the product is built around that decision. The written spec puts it in one sentence: every time you train, the next session's weight and reps update by themselves. Logging is the input to that, not the point.",
+      },
+      { type: "heading", text: "The order it was built in" },
+      {
+        type: "image",
+        src: "/blog/lifters-club/4-timeline.svg",
+        alt: "Timeline from 19 to 25 October 2026: a static page, printable PDFs and a spec, then Next.js with 582 clips, Supabase and Workers, then coaching and offline logging, then privacy, limits and sharing, then finishing work.",
+        caption: "From the commit history. From 22 October every step went in as a pull request.",
+        bare: true,
+      },
+      {
+        type: "paragraph",
+        text: "The first version, on 19 October, was one static page: a weekly plan, a card per exercise showing the movement, a checklist and a weight log. Two days later came two printable PDFs, so there was something to train from while the real version was written down. That was the stopgap. The next step was a spec, not code.",
+      },
+      {
+        type: "paragraph",
+        text: "Version 3 rebuilt it in Next.js 16 as an exercise library with a body map, still a static export on Cloudflare Pages. Version 4 turned it into an app with accounts: the spec chose Supabase for sign-in, Postgres and file storage, row-level security on every table, an API that a future mobile app could share, and rules instead of AI for the plan and for progression. The same day the site moved from a static export to Cloudflare Workers, because sign-in needs a server.",
+      },
+      {
+        type: "paragraph",
+        text: "After that the work went in priority order: onboarding and the plan generator, gym logging, next-session targets and personal records, the profile and account deletion, then progress charts, logging without signal, and coaching. Then the parts a public product needs before strangers use it: consent and an age check, rate limits, an audit log of sign-ins and permission changes, sharing a plan by code, and a second way to sign in for people who do not want to use Google.",
+      },
+      { type: "heading", text: "How it was built" },
+      {
+        type: "paragraph",
+        text: "The code was written with Claude Code, often with several agents working at once, each in its own git worktree. My part was the spec, the decisions and the review. Work was tracked as GitHub issues, and every change went in as a pull request that was merged only after CI passed. All but one of those pull requests named its issue, most of them as the issue they close. By the morning of 25 October that was 70 issues and 64 merged pull requests.",
+      },
+      {
+        type: "paragraph",
+        text: "Two rules kept it from drifting. The spec is the source of truth: when the code needed to do something the spec did not say, the spec changed first. And tests come first: the spec lists the tests every feature must have, including one for every cell of the permission table further down.",
+      },
+      { type: "heading", text: "The movement clips" },
+      {
+        type: "paragraph",
+        text: "Before I bought anything, the clips were mine. A Python script drives Blender to build one grey mannequin, pose it by joint angles, and colour the target muscles red. Every clip uses the same body, lights, camera and timing: 24 frames a second, a one-second lift, a one-and-a-half-second lowering and a short hold, 66 frames that loop without a seam. Frames render on a transparent background over a shadow catcher, and ffmpeg lays them on the page colour, so the figure seems to stand on the page rather than sit in a box. That gave the first versions 23 exercises.",
+      },
+      {
+        type: "paragraph",
+        text: "The real set is the MoveKit Complete Pack, licensed in the name of TPS Collective. One command reads the pack's metadata and re-encodes what the site uses. It stops and names the exercise if anything the plans refer to is missing from the pack, and exercises that already existed keep their old URL, so saved plans do not break when a placeholder becomes a real clip.",
+      },
+      {
+        type: "list",
+        items: [
+          "Clips: 1280 pixels wide, H.264, no audio, with the index at the front of the file so playback starts before the download ends. About 180 MB of clips, 205 MB with the posters and thumbnails",
+          "Posters are taken from the encoded clip, not from the pack's PNG. The PNG's background was #eeeeed and the video's #e9ebe6, and the page has to match both for the figure to blend in",
+          "Grid thumbnails are cut 4:3 from the centre, because a square cut off feet and benches. The library page ships only the fields the grid needs and draws 40 tiles at a time, which took its HTML from 662 KB to 240 KB",
+        ],
+      },
+      { type: "heading", text: "How it works" },
+      {
+        type: "image",
+        src: "/blog/lifters-club/1-architecture.svg",
+        alt: "Architecture: the browser calls Next.js on Cloudflare Workers. Static pages and clips are served as files. Sign-in goes through /auth on the Worker to Supabase Auth; every /api/v1 call goes to Postgres with RLS and private Storage as the signed-in user.",
+        caption: "One Worker in front of Supabase. The browser never holds a Supabase client.",
+        bare: true,
+      },
+      {
+        type: "paragraph",
+        text: "Next.js runs on Cloudflare Workers through OpenNext. Most visitors only see public pages: the exercise library, an exercise, the legal pages. Those are prerendered, and the OpenNext routing layer answers them from static assets before the Next.js server is even loaded. Before that change, every new Worker instance evaluated a 6.5 MB server bundle just to return a page that never changes.",
+      },
+      {
+        type: "paragraph",
+        text: "Everything personal goes through one place: /api/v1. Every handler there is wrapped in a single function, apiRoute. It checks the session token's signature with Supabase's getClaims(), refuses a write that carries a cookie but comes from another site, counts every write against a per-user rate limit, and turns any error into a short message that reveals nothing about the database. Every endpoint is written inside that wrapper, so none of it has to be remembered per endpoint. Every input is then parsed with Zod, and the database has the same ranges as CHECK constraints.",
+      },
+      {
+        type: "paragraph",
+        text: "The API never uses Supabase's secret key. It calls Supabase with the signed-in person's own token, so every query goes through row-level security exactly as if that person had made it. The exceptions are a handful of database functions, such as accepting an invite, that have to read another person's row; each checks the caller itself, and a test lists them. A database test walks every table in the public schema and fails if any has row-level security off or gives anonymous users any access at all.",
+      },
+      { type: "heading", text: "Signing in", level: 3 },
+      {
+        type: "list",
+        items: [
+          "Google sign-in starts on the server (OAuth with PKCE). The browser is redirected to Google and back, and the server trades the code for a session",
+          "The other way in is a 6-digit code sent by email, through Resend. The form gives the same answer whether or not an account exists, and the address is never put in a URL, because Workers logs record URLs. Between the two screens it sits in an HttpOnly cookie that lasts ten minutes",
+          "The session lives in HttpOnly, Secure, SameSite cookies, so no script on the page can read the token. 'Keep me signed in' is off by default: the cookies then end with the browser session. Ticked, they last 400 days",
+          "Attempts are limited per IP address and per email address. Tries at a code are also counted in the database over 15 minutes, under an HMAC of the address with a secret only the Worker holds, so nobody can work out another person's key and lock them out",
+        ],
+      },
+      { type: "heading", text: "Logging a set with no signal" },
+      {
+        type: "paragraph",
+        text: "Gyms are often in basements. If logging needs a connection, the app fails at exactly the moment it is used. So every write goes through an outbox on the phone.",
+      },
+      {
+        type: "image",
+        src: "/blog/lifters-club/2-logging-a-set.svg",
+        alt: "Sequence: the phone makes a UUID for the set and sends it. A repeat of the same id returns the stored row. Without signal the set waits in IndexedDB and is retried oldest first with backoff. An edit carries its base version; a stale one gets a 409 and the phone shows both copies to choose from.",
+        caption: "The id is made on the phone, so sending the same set twice still makes one row.",
+        bare: true,
+      },
+      {
+        type: "list",
+        items: [
+          "Each workout and each set gets its id on the phone. If the server already has that id, it returns what it has instead of creating a second row, so a request that is sent twice because the first reply was lost does no harm",
+          "If something older is still waiting, a new set goes behind it, so the server sees them in the order they happened",
+          "No reply, a server error or a rate limit keeps the change in IndexedDB. It is retried oldest first, starting after 2 seconds and doubling up to 5 minutes, and straight away when the phone comes back online. Any other refusal is dropped and counted as not saved",
+          "A service worker keeps the app's files, the fonts and the exercise clips, and the last copy of each page, so a workout started at home still opens in the gym. API responses are never cached, and signing out clears the saved pages",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Changing or deleting a set is where two devices can disagree. Each row has a version number. A change sends the version it started from, and a trigger in Postgres refuses anything that is not exactly one step newer:",
+      },
+      {
+        type: "code",
+        filename: "supabase/migrations/20261022000000_p0_core.sql",
+        language: "sql",
+        code: "create function public.bump_version() returns trigger language plpgsql set search_path = '' as $$\nbegin\n  if new.server_version is distinct from old.server_version + 1 then\n    raise exception 'version conflict: current version is %', old.server_version using errcode = 'P0409';\n  end if;\n  new.updated_at := now();\n  return new;\nend $$;",
+      },
+      {
+        type: "paragraph",
+        text: "The API turns that error into a 409 and sends back the copy the server holds. The phone does not overwrite either one. It shows 'On this phone' next to 'Saved' and lets the person pick, and it keeps that choice in its own IndexedDB database, so closing the tab before choosing does not quietly hand the win to the server. Once a change to a row has conflicted, later queued changes to the same row are folded into that conflict rather than sent, because they would pass the version check and overwrite the other device before anyone chose.",
+      },
+      { type: "heading", text: "The next session" },
+      {
+        type: "paragraph",
+        text: "The next target is not a guess from a model. It is a fixed list of rules in one module, checked in order, and the first that matches wins: pain on any set means one step lighter; a break of 14 days or more means coming back at about 90%; missing the bottom of the rep range twice in a row at the same weight means dropping about 7.5%, at least one step; reaching the top of the range on every planned set means adding a step; anything else means the same weight and one more rep. Steps depend on the equipment: 5 kg for lower-body barbell lifts, 2.5 kg for upper-body ones, 2 kg for dumbbells. Machines and cables move by 5 kg. The suggestion is only a suggestion: the person can change it before logging.",
+      },
+      {
+        type: "paragraph",
+        text: "The plan generator works the same way. Days a week decide the split, minutes per session decide how many exercises, equipment and painful areas decide which exercises are allowed, and experience decides the number of sets. Rules give the same plan for the same answers, can be tested for every combination, and cost nothing to run.",
+      },
+      { type: "heading", text: "A coach who can read but not rewrite" },
+      {
+        type: "image",
+        src: "/blog/lifters-club/3-who-can-see-what.svg",
+        alt: "Permission table: you can read and change everything of yours. A coach with an active link reads your name and picture, plans and logged workouts, can save a new plan version, and reads birth year, sex, height and body logs only if you share them. Logged sets are read-only for the coach. Anyone else sees nothing.",
+        caption: "Each cell is decided per action, not by a rule like 'the owner or their coach'.",
+        bare: true,
+      },
+      {
+        type: "paragraph",
+        text: "A coach sends an invite link. Only the token's SHA-256 is stored, and nothing is shared until the other person accepts. From then on the coach can read the client's plans and logged workouts and save a new version of the client's plan, which is recorded as the coach's. The coach can never change a logged set. Birth year, sex, height and body logs stay hidden unless the client turns sharing on for that coach. Either side can end the link, and once it ends the coach can read nothing until a new invite is accepted.",
+      },
+      {
+        type: "paragraph",
+        text: "The rules live in the database, and the API asks it as the user. One detail took a second attempt. Row-level security decides which rows you may read, not which columns, so the first coaching policies let each side read the other's whole profile row, birth year included, whatever the client had chosen. The fix took those policies away and replaced them with one function that returns, for each linked person, the name and picture always and the details only when the client has shared them.",
+      },
+      {
+        type: "paragraph",
+        text: "Sharing a plan with someone outside coaching works by code. The code opens a copy of the plan taken when it was shared (or shared again after an edit), never a row from the owner's tables, and every open code can be stopped from one list.",
+      },
+      { type: "heading", text: "CI and what reaches production" },
+      {
+        type: "list",
+        items: [
+          "check: an audit of production dependencies, lint, typecheck, unit and component tests with a coverage gate (90% of lines and 85% of branches in server and library code, or the run fails), the build, and Playwright against the app running in its Worker form",
+          "database: starts a throwaway local Supabase, applies every migration from scratch, and runs the SQL tests for row-level security, constraints, triggers and functions. No production credentials exist in CI",
+          "e2e-signed-in: builds the app against that local stack and goes through it as a signed-in user: onboarding, a logged workout, the calendar, progress, sharing, the email code. The test helper refuses any database address that is not on the machine itself",
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "On 25 October the unit and component suite was 1,079 tests in 92 files, with 99.5% of lines and 96.8% of branches covered in the code the gate measures. The SQL tests are another 22 files.",
+      },
+      {
+        type: "paragraph",
+        text: "Merging into mvp, the production branch, deploys the Worker through Cloudflare's Git integration. The same merge moves the database: Supabase's GitHub integration applies any new migration to production. Because the Worker and the database update at about the same moment, a migration that the old code would trip over goes in its own pull request first, ahead of the code that needs it.",
+      },
+      { type: "heading", text: "What comes next" },
+      {
+        type: "paragraph",
+        text: "The order is set: people using the web app first, then a mobile app once enough of them keep using it, AI features together with the app, and paid plans last. The API was shaped for that from the start: the mobile app will call the same /api/v1 with a bearer token instead of a cookie, under the same rules.",
+      },
+    ],
+  },
   {
     slug: "a-second-account-with-a-clone-of-me",
     title: "A second Instagram, fronted by a clone of me",
