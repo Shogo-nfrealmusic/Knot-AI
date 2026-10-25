@@ -1,28 +1,11 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-  type CSSProperties,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { FiArrowUpRight, FiMail } from "react-icons/fi";
-import {
-  HERO_SIZES,
-  heroSrcSet,
-  parseSource,
-  type Highlight,
-  type LinksMode,
-  type ModeContent,
-  type SocialIcon,
-} from "@/lib/links";
+import { FiBriefcase, FiGrid, FiMail, FiTool } from "react-icons/fi";
+import { parseSource, type ButtonIcon, type LinksMode, type ModeContent, type SocialIcon } from "@/lib/links";
 import { markJourney } from "@/lib/linksJourney";
 import LinksCoachingForm from "./LinksCoachingForm";
 import LinksContactForm from "./LinksContactForm";
@@ -31,6 +14,7 @@ import "./links.css";
 // Speed first: the page is static, both sides are in the HTML, and switching sides only flips
 // html[data-links] (set before first paint by the script in page.tsx). No re-render, no refetch.
 // Motion is CSS only (links.css), so no animation library ships with the page.
+// Layout follows Linktree (Shogo, 2026-10-25): round avatar, name, icons, then buttons or the form.
 
 type OnLink = (id: string, place: string) => void;
 
@@ -79,8 +63,6 @@ function SmartLink({ href, onClick, ...rest }: React.ComponentProps<"a"> & { hre
   );
 }
 
-const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
-
 /** false while this side has never been shown: its media stays out of the page entirely */
 const LoadMedia = createContext(true);
 
@@ -94,7 +76,7 @@ export default function LinksPage({
 }) {
   const mode = useLinksMode(defaultMode);
   const source = useRef("direct");
-  // A side's images, videos and Orbits are only put in the page once that side has been shown,
+  // A side's images and Orbits are only put in the page once that side has been shown,
   // so opening one side never downloads the other side's media.
   const [seen, setSeen] = useState<LinksMode[]>([defaultMode]);
   const shows = (pane: LinksMode) => mode === pane || seen.includes(pane);
@@ -172,57 +154,9 @@ export default function LinksPage({
 function Side({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
   return (
     <>
-      {fit ? <FitHero c={c} onLink={onLink} /> : <AiHero c={c} onLink={onLink} />}
+      <Hero c={c} fit={fit} onLink={onLink} />
 
-      <section className="mt-16">
-        <div data-reveal className="mb-4 flex items-end justify-between px-5">
-          <SectionTitle fit={fit}>{c.highlightsLabel}</SectionTitle>
-          {fit ? null : <OrbitStill name="yellow-think" className="-mb-3 -mr-2 w-[72px]" delay={0.6} />}
-        </div>
-        <div data-reveal style={delay(80)}>
-          <Highlights items={c.highlights} fit={fit} onOpen={(id) => onLink(id, "highlight")} />
-        </div>
-      </section>
-
-      {c.pages.length ? (
-        <section className="mt-16 px-5">
-          <div data-reveal className="relative">
-            {fit ? null : (
-              <OrbitStill name="purple-happy" className="absolute -top-[62px] right-3 w-[84px]" delay={1.1} />
-            )}
-            <ul className="relative overflow-hidden rounded-[18px] border border-[var(--l-line)] bg-[var(--l-card)]">
-              {c.pages.map((page, i) => (
-                <li key={page.id} className={i ? "border-t border-[var(--l-line)]" : ""}>
-                  <SmartLink
-                    href={page.href}
-                    onClick={() => onLink(page.id, "pages")}
-                    className="group flex items-center justify-between gap-4 px-4 py-3.5 transition-colors duration-300 hover:bg-[var(--l-well)]"
-                  >
-                    <span className="min-w-0">
-                      <span
-                        className={
-                          fit
-                            ? "block text-[14px] font-bold uppercase tracking-[0.04em]"
-                            : "block text-[15px] font-medium tracking-[-0.01em]"
-                        }
-                      >
-                        {page.label}
-                      </span>
-                      <span className="block truncate text-[13px] text-[var(--l-muted)]">{page.note}</span>
-                    </span>
-                    <span
-                      aria-hidden
-                      className="text-[var(--l-muted)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
-                    >
-                      →
-                    </span>
-                  </SmartLink>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
+      {c.buttons.length ? <Buttons c={c} fit={fit} onLink={onLink} /> : null}
 
       <Closing c={c} fit={fit} onLink={onLink} />
 
@@ -280,71 +214,46 @@ function Line({ c, className }: { c: ModeContent; className: string }) {
   );
 }
 
-function HeroPhoto({ c, className }: { c: ModeContent; className: string }) {
-  // render.tsx preloads this exact srcset in <head> for the URL's side, so the photo downloads
-  // alongside the CSS. The other side's photo is not in the page until that side is opened.
+function Avatar({ c, fit }: { c: ModeContent; fit: boolean }) {
+  // render.tsx preloads the URL's side; the other side's avatar is not in the page until it is opened.
   const load = useContext(LoadMedia);
-  if (!load) return <span className="block aspect-[4/5] w-full" />;
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- pre-sized files, preloaded by name before paint
-    <img
-      src={`${c.photo.base}-640.jpg`}
-      srcSet={heroSrcSet(c.photo.base)}
-      sizes={HERO_SIZES}
-      alt={c.photo.alt}
-      width={c.photo.width}
-      height={c.photo.height}
-      loading="lazy"
-      decoding="async"
-      fetchPriority="high"
-      className={`links-hero-photo aspect-[4/5] w-full object-cover ${className}`}
-    />
+    <span
+      className={`block h-[88px] w-[88px] overflow-hidden rounded-full bg-[var(--l-well)] ${
+        fit ? "ring-1 ring-white/15" : "shadow-[0_1px_2px_rgba(0,0,0,0.05),0_12px_28px_-14px_rgba(0,0,0,0.45)] ring-1 ring-black/[0.06]"
+      }`}
+    >
+      {load ? (
+        // eslint-disable-next-line @next/next/no-img-element -- a 320px square crop, preloaded by name before paint
+        <img src={c.avatar.src} alt={c.avatar.alt} width={320} height={320} decoding="async" className="h-full w-full object-cover" />
+      ) : null}
+    </span>
   );
 }
 
-function AiHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
+function Hero({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
   return (
-    <section className="-mt-[62px] px-3">
-      {/* the glass switch floats over the top of the photo */}
-      <div className="relative">
-        <div className="relative z-10 overflow-hidden rounded-[28px] bg-[var(--l-well)] shadow-[0_1px_2px_rgba(0,0,0,0.05),0_24px_48px_-24px_rgba(0,0,0,0.4)]">
-          <HeroPhoto c={c} className="object-[50%_42%]" />
-        </div>
-        <OrbitLoop clip="type" className="absolute -bottom-14 -left-4 z-20 w-[184px]" />
-      </div>
-
-      <div className="relative mt-16 px-2">
-        <OrbitStill name="pink-curious" className="absolute -right-1 -top-6 w-[92px]" delay={0.3} />
-        <h1 className="text-[30px] font-semibold leading-tight tracking-[-0.035em]">
-          {c.name}
-        </h1>
-        <div>
-          <Line c={c} className="mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]" />
-        </div>
-        <Socials c={c} onLink={onLink} />
-      </div>
-    </section>
-  );
-}
-
-function FitHero({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
-  return (
-    // full-bleed on a phone; on wider screens the photo becomes a rounded card so it doesn't read as a box on black
-    <section className="relative -mt-[62px] sm:mt-0">
-      <div className="relative overflow-hidden sm:mx-3 sm:rounded-[28px]">
-        <HeroPhoto c={c} className="object-[50%_40%]" />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent to-[#0b0b0b]" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0b0b0b]/45 to-transparent" />
-      </div>
-      <div className="relative -mt-20 px-5">
-        <h1 className="text-[72px] font-extrabold uppercase leading-[0.82] tracking-[-0.055em]">
-          {c.name}
-        </h1>
-        <div>
-          <Line c={c} className="mt-4 max-w-[30ch] text-[15px] leading-[1.55] text-[var(--l-muted)]" />
-        </div>
-        <Socials c={c} onLink={onLink} />
-      </div>
+    <section className="relative mt-6 px-5">
+      {fit ? null : <OrbitStill name="pink-curious" className="absolute right-3 top-0 w-[92px]" delay={0.3} />}
+      <Avatar c={c} fit={fit} />
+      <h1
+        className={
+          fit
+            ? "mt-5 text-[56px] font-extrabold uppercase leading-[0.85] tracking-[-0.055em]"
+            : "mt-5 text-[30px] font-semibold leading-tight tracking-[-0.035em]"
+        }
+      >
+        {c.name}
+      </h1>
+      <Line
+        c={c}
+        className={
+          fit
+            ? "mt-3 max-w-[30ch] text-[15px] leading-[1.55] text-[var(--l-muted)]"
+            : "mt-2 max-w-[28ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-[var(--l-muted)]"
+        }
+      />
+      <Socials c={c} onLink={onLink} />
     </section>
   );
 }
@@ -379,278 +288,43 @@ function Socials({ c, onLink }: { c: ModeContent; onLink: OnLink }) {
   );
 }
 
-function SectionTitle({ children, fit }: { children: ReactNode; fit: boolean }) {
-  return fit ? (
-    <h2 className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[var(--l-muted)]">{children}</h2>
-  ) : (
-    <h2 className="text-[14px] font-medium tracking-[-0.01em] text-[var(--l-muted)]">{children}</h2>
-  );
-}
-
-const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
-const subscribeReducedMotion = (cb: () => void) => {
-  const mq = window.matchMedia(reducedMotionQuery);
-  mq.addEventListener("change", cb);
-  return () => mq.removeEventListener("change", cb);
+/** Thin line icons (Feather), one per button, so the rows read at a glance without competing with the label. */
+const BUTTON_ICONS: Record<ButtonIcon, ReactNode> = {
+  tools: <FiTool />,
+  portfolio: <FiGrid />,
+  company: <FiBriefcase />,
 };
-const useReducedMotion = () =>
-  useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(reducedMotionQuery).matches,
-    () => true,
-  );
 
-/** after a swipe, a dot or a wheel, autoplay waits this long before it moves the rail again */
-const RESUME_MS = 8000;
-
-/** Apple-style swipe cards: snap, dots, and autoplay that pauses while the visitor is using it and then carries on. */
-function Highlights({ items, fit, onOpen }: { items: Highlight[]; fit: boolean; onOpen: (id: string) => void }) {
-  const rail = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-  // when the visitor last moved the rail themselves (0 = not yet)
-  const [heldAt, setHeldAt] = useState(0);
-  const [onScreen, setOnScreen] = useState(false);
-  const reduced = useReducedMotion();
-
-  // Only advance while the rail is actually visible (the hidden side never ticks).
-  useEffect(() => {
-    const el = rail.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), { threshold: 0.5 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const goTo = (i: number) => {
-    const el = rail.current;
-    const card = el?.children[i] as HTMLElement | undefined;
-    if (el && card) el.scrollTo({ left: card.offsetLeft - el.offsetLeft - 20, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    // Videos carry their own motion; only the AI cards advance by themselves.
-    // Each card sets its own time on screen; a recent swipe pushes the next slide back to RESUME_MS after it.
-    if (fit || reduced || !onScreen || items.length < 2) return;
-    const wait = Math.max((items[active]?.seconds ?? 5) * 1000, heldAt + RESUME_MS - Date.now());
-    const id = window.setTimeout(() => goTo((active + 1) % items.length), wait);
-    return () => window.clearTimeout(id);
-  }, [active, fit, reduced, heldAt, onScreen, items]);
-
-  const hold = () => setHeldAt(Date.now());
-
-  const onScroll = () => {
-    const el = rail.current;
-    if (!el) return;
-    const left = el.scrollLeft;
-    let best = 0;
-    let bestDist = Infinity;
-    Array.from(el.children).forEach((child, i) => {
-      const dist = Math.abs((child as HTMLElement).offsetLeft - el.offsetLeft - 20 - left);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = i;
-      }
-    });
-    // The last card can never line up with the left edge (the rail stops at its end), so reaching
-    // the end of the rail means the last card is the one being looked at.
-    if (left >= el.scrollWidth - el.clientWidth - 8) best = el.children.length - 1;
-    if (best !== active) setActive(best);
-  };
-
+/** Linktree-style buttons: full width, icon on the left, label centred, all visible on the first screen. */
+function Buttons({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
   return (
-    <div>
-      <div
-        ref={rail}
-        onScroll={onScroll}
-        onPointerDown={hold}
-        onWheel={hold}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-px-5 px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {items.map((item) =>
-          item.kind === "video" ? (
-            <VideoCard key={item.id} item={item} reduced={reduced} onOpen={onOpen} />
-          ) : (
+    <section className="relative mt-10 px-5">
+      {fit ? null : <OrbitStill name="purple-happy" className="absolute -top-[58px] right-4 w-[80px]" delay={1.1} />}
+      <ul className="relative grid gap-3">
+        {c.buttons.map((b) => (
+          <li key={b.id}>
             <SmartLink
-              key={item.id}
-              href={item.href}
-              onClick={() => onOpen(item.id)}
-              className="press group flex w-[80%] shrink-0 snap-start flex-col rounded-[22px] bg-[var(--l-card)] p-[18px] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/[0.06]"
+              href={b.href}
+              onClick={() => onLink(b.id, "button")}
+              className="press grid h-14 grid-cols-[24px_1fr_24px] items-center gap-3 rounded-[16px] border border-[var(--l-line)] bg-[var(--l-card)] px-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-colors duration-300 hover:bg-[var(--l-well)]"
             >
-              <span className="text-[12px] text-[var(--l-muted)]">{item.kicker}</span>
-              <span className="mt-0.5 flex items-center gap-1.5 text-[19px] font-semibold tracking-[-0.03em]">
-                {item.title}
-                <FiArrowUpRight className="text-[15px] text-[var(--l-muted)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              <span aria-hidden className="flex justify-center text-[18px] text-[var(--l-muted)]">
+                {BUTTON_ICONS[b.icon]}
               </span>
-              <span className="relative mt-4 block h-[300px] overflow-hidden rounded-[14px] bg-[var(--l-well)]">
-                <span className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]">
-                  <CardVisual item={item} />
-                </span>
-              </span>
+              <span className="text-center text-[15px] font-medium tracking-[-0.01em]">{b.label}</span>
+              <span aria-hidden />
             </SmartLink>
-          ),
-        )}
-      </div>
-      {items.length > 1 ? (
-        <div className="mt-4 flex justify-center gap-1.5">
-          {items.map((item, i) => (
-            <button
-              key={item.id}
-              aria-label={`Show ${item.title}`}
-              onClick={() => {
-                hold();
-                goTo(i);
-              }}
-              className={`h-1.5 rounded-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                i === active ? "w-5 bg-[var(--l-fg)]" : "w-1.5 bg-[var(--l-fg)]/20"
-              }`}
-            />
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function CardVisual({ item }: { item: Exclude<Highlight, { kind: "video" }> }) {
-  const load = useContext(LoadMedia);
-  if (!load && (item.kind === "phone" || item.kind === "screenshot")) return null;
-  switch (item.kind) {
-    case "phone":
-      return (
-        <>
-          <span className="absolute left-3.5 top-3.5 z-10 flex flex-col gap-1.5">
-            {item.stats.map(([value, label]) => (
-              <span key={label} className="lg rounded-[12px] px-2.5 py-1.5">
-                <span className="block text-[15px] font-semibold leading-tight tracking-[-0.02em]">{value}</span>
-                <span className="block text-[11px] leading-tight text-[var(--l-muted)]">{label}</span>
-              </span>
-            ))}
-          </span>
-          <span className="absolute -bottom-10 right-5 w-[52%] overflow-hidden rounded-[26px] border-[5px] border-[#1d1d1f] bg-black shadow-[0_20px_40px_-18px_rgba(0,0,0,0.5)]">
-            <Image src={item.image} alt="" width={780} height={1688} sizes="180px" className="w-full" />
-          </span>
-        </>
-      );
-    case "screenshot":
-      return (
-        <span className="absolute left-5 top-6 w-[170%] overflow-hidden rounded-tl-[10px] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.35)] ring-1 ring-black/[0.06]">
-          <Image src={item.image} alt="" width={2880} height={1800} sizes="560px" className="w-full" />
-        </span>
-      );
-    case "article":
-      return (
-        <span className="absolute inset-x-4 top-5 bottom-0 rounded-t-[12px] bg-white px-5 pt-5 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)] ring-1 ring-black/[0.05]">
-          <span className="flex items-center gap-2 text-[11px] text-[var(--l-muted)]">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff333f] text-[10px] font-bold text-white">
-              m
-            </span>
-            {item.source}
-          </span>
-          <span className="mt-4 block font-serif text-[23px] leading-[1.1] tracking-[-0.01em]">
-            Automating the PM workflow with Claude Code Skills and MCP
-          </span>
-          <span className="mt-3 block text-[12.5px] leading-[1.55] text-[var(--l-muted)]">{item.excerpt}</span>
-          <span className="mt-4 block space-y-2">
-            <span className="block h-2 w-full rounded-full bg-[#f1f1ef]" />
-            <span className="block h-2 w-[86%] rounded-full bg-[#f1f1ef]" />
-            <span className="block h-2 w-[64%] rounded-full bg-[#f1f1ef]" />
-          </span>
-        </span>
-      );
-    case "terminal":
-      return <MacTerminal lines={item.lines} />;
-  }
-}
-
-/** A plain macOS Terminal window (Basic profile): light title bar, traffic lights, white body, SF-style mono. */
-function MacTerminal({ lines }: { lines: string[] }) {
-  return (
-    <span className="absolute inset-x-4 top-6 bottom-0 flex flex-col overflow-hidden rounded-t-[10px] bg-white shadow-[0_0_0_0.5px_rgba(0,0,0,0.18),0_14px_30px_-14px_rgba(0,0,0,0.4)]">
-      <span className="relative flex h-[28px] shrink-0 items-center border-b border-black/[0.08] bg-[#ececec] px-3">
-        <span className="flex gap-[7px]">
-          <span className="h-[11px] w-[11px] rounded-full bg-[#ff5f57] ring-[0.5px] ring-black/10" />
-          <span className="h-[11px] w-[11px] rounded-full bg-[#febc2e] ring-[0.5px] ring-black/10" />
-          <span className="h-[11px] w-[11px] rounded-full bg-[#28c840] ring-[0.5px] ring-black/10" />
-        </span>
-        <span className="absolute inset-x-0 text-center text-[11px] font-medium text-[#4d4d4d]">free — -zsh — 80×24</span>
-      </span>
-      <span className="block flex-1 px-3 py-2.5 font-mono text-[11.5px] leading-[1.65] text-[#1d1d1f]">
-        {lines.map((line, i) =>
-          line.startsWith("% ") ? (
-            <span key={i} className="block truncate">
-              <span className="text-[#8a8a8a]">shogo@mac free </span>
-              {line}
-            </span>
-          ) : (
-            <span key={i} className="block truncate">
-              {line}
-            </span>
-          ),
-        )}
-        <span className="block">
-          <span className="text-[#8a8a8a]">shogo@mac free % </span>
-          <span className="inline-block h-[13px] w-[7px] translate-y-[2px] animate-pulse bg-[#1d1d1f]" />
-        </span>
-      </span>
-    </span>
-  );
-}
-
-/** A vertical edit: nothing downloads until it is on screen, then it plays silently while visible. */
-function VideoCard({
-  item,
-  reduced,
-  onOpen,
-}: {
-  item: Extract<Highlight, { kind: "video" }>;
-  reduced: boolean;
-  onOpen: (id: string) => void;
-}) {
-  const ref = useRef<HTMLVideoElement>(null);
-  const load = useContext(LoadMedia);
-
-  useEffect(() => {
-    const video = ref.current;
-    if (!video || reduced || !load) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
-      },
-      { threshold: 0.6 },
-    );
-    io.observe(video);
-    return () => io.disconnect();
-  }, [reduced, load]);
-
-  return (
-    <SmartLink
-      href={item.href}
-      onClick={() => onOpen(item.id)}
-      className="press relative block w-[64%] shrink-0 snap-start overflow-hidden rounded-[22px] bg-[#141414] ring-1 ring-white/10"
-    >
-      <video
-        ref={ref}
-        src={load ? item.video : undefined}
-        poster={load ? item.poster : undefined}
-        muted
-        loop
-        playsInline
-        preload="none"
-        className="aspect-[9/16] w-full object-cover"
-      />
-      <span className="lg absolute inset-x-2.5 bottom-2.5 rounded-[16px] px-3.5 py-3">
-        <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">{item.kicker}</span>
-        <span className="mt-0.5 block text-[15px] font-semibold leading-tight tracking-[-0.02em] text-white">{item.title}</span>
-      </span>
-    </SmartLink>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
 function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnLink }) {
   return (
-    // scroll-mt clears the sticky AI / FITNESS switch when the "Coaching" row jumps here
-    <section id={c.closing.id} data-reveal className="mt-20 scroll-mt-16 px-5 text-center">
+    // scroll-mt clears the sticky AI / FITNESS switch when a "#coach" style link jumps here
+    <section id={c.closing.id} data-reveal className={`${fit ? "mt-12" : "mt-20"} scroll-mt-16 px-5 text-center`}>
       {fit ? null : (
         <div className="mb-2 flex items-end justify-center gap-1">
           <OrbitLoop clip="cheer" className="w-[156px]" />
@@ -676,6 +350,19 @@ function Closing({ c, fit, onLink }: { c: ModeContent; fit: boolean; onLink: OnL
     </section>
   );
 }
+
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+const subscribeReducedMotion = (cb: () => void) => {
+  const mq = window.matchMedia(reducedMotionQuery);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+};
+const useReducedMotion = () =>
+  useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(reducedMotionQuery).matches,
+    () => true,
+  );
 
 // ---- Orbit ----
 // Every Orbit here is the Blender render from shorts-studio (scripts/orbit/orbit.py), never redrawn.
