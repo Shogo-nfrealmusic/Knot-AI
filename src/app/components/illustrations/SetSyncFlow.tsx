@@ -150,7 +150,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
             <IconStack2 className="size-4" stroke={1.75} />
           </span>
           <span className="leading-tight">
-            <span className="block text-[13px] font-medium text-neutral-800">Kept on the phone</span>
+            <span className="block text-[13px] font-medium text-neutral-800">On the phone</span>
             <span className="block font-mono text-[10px] text-neutral-400">IndexedDB outbox</span>
           </span>
         </div>
@@ -217,7 +217,11 @@ export default function SetSyncFlow({ className }: { className?: string }) {
             </span>
             <span className="leading-tight">
               <span className="block font-mono text-[13px] font-medium text-neutral-800">/api/v1</span>
-              <span className="block font-mono text-[10px] text-neutral-400">one gate</span>
+              <span className="block font-mono text-[10px] text-neutral-400">
+                {/* Phones have no caption under the checks, so the card names them. */}
+                <span className="md:hidden">signed, same site, rate limit</span>
+                <span className="hidden md:inline">one gate</span>
+              </span>
             </span>
           </div>
         </Card>
