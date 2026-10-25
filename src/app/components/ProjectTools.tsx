@@ -10,7 +10,6 @@ import {
   IconDeviceMobile,
   IconNews,
   IconRobot,
-  IconTool,
 } from "@tabler/icons-react";
 import { StickyScroll } from "@/app/components/ui/sticky-scroll";
 import { FeatureIconContainer } from "@/app/components/ui/feature-icon-container";
@@ -18,7 +17,6 @@ import { BlurImage } from "@/app/components/ui/blur-image";
 import Beam from "@/app/components/ui/beam";
 import OpsAppMock from "@/app/components/OpsAppMock";
 import AgentFlow from "@/app/components/AgentFlow";
-import ShipCadence from "@/app/components/ShipCadence";
 import BookingEventFlow from "@/app/components/illustrations/BookingEventFlow";
 import { getProject, type Project } from "@/lib/projects";
 
@@ -211,12 +209,6 @@ const items = [
     title: "SIGNAL — A Daily AI Brief",
     icon: IconNews,
     visual: (project: Project) => <SiteVisual project={project} />,
-  },
-  {
-    project: requireProject("iron-and-code"),
-    title: "Iron & Code — A Free Tool Every Monday",
-    icon: IconTool,
-    visual: () => <ShipCadence />,
   },
   {
     project: requireProject("lifters-club"),
