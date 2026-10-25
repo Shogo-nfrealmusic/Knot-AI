@@ -17,9 +17,11 @@ const RANGES = [1, 7, 30, 90] as const;
 const SIDE: Record<LinksMode, string> = { ai: "AI", fit: "FITNESS" };
 const PLACE: Record<string, string> = {
   social: "SNSアイコン",
+  button: "ボタン",
+  // the cards, the page list and the fitness "On YouTube" list were removed on 2026-10-25;
+  // kept so their older clicks still read
   highlight: "カード",
   pages: "一覧",
-  // the fitness "On YouTube" list was removed on 2026-10-25; kept so its older clicks still read
   videos: "YouTube",
   closing: "最後のボタン",
   footer: "フッター",
@@ -33,11 +35,21 @@ function linkLabels(): Record<string, string> {
     contact_sent: "お問い合わせフォームの送信",
     coaching_sent: "コーチング申し込みの送信",
     youtube_all: "YouTube（すべての動画）",
+    // ids of the removed cards and page list, for older clicks
+    mercari: "An AI agent for PM work",
+    signal: "SIGNAL",
+    toni: "TONI",
+    work: "Work",
+    blog: "Blog",
+    coaching: "Coaching",
+    edit_guide: "How I edit these",
+    while_they_sleep: "6:00 am, while they sleep",
+    honest_reaction: "My honest reaction",
+    monolith: "Monolith",
   };
   for (const side of [linksContent.ai, linksContent.fit]) {
     side.socials.forEach((s) => (map[s.id] = s.label));
-    side.highlights.forEach((h) => (map[h.id] = h.title));
-    side.pages.forEach((p) => (map[p.id] = p.label));
+    side.buttons.forEach((b) => (map[b.id] = b.label));
   }
   return map;
 }
