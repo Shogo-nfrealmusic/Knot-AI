@@ -281,7 +281,7 @@ const posts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Merging into mvp, the production branch, deploys the Worker through Cloudflare's Git integration. The database moves separately. In the first days, Supabase's GitHub integration applied a migration when its pull request merged. Since 24 October production migrations have been applied by hand after review, and a pull request that adds one says which has to go first: code that calls a function the database does not have yet cannot go before its migration, while a function with defaults that old code ignores can go ahead of the code.",
+        text: "Merging into mvp, the production branch, deploys the Worker through Cloudflare's Git integration. The same merge moves the database: Supabase's GitHub integration applies any new migration to production. Because the Worker and the database update at about the same moment, a migration that the old code would trip over goes in its own pull request first, ahead of the code that needs it.",
       },
       { type: "heading", text: "What comes next" },
       {
