@@ -219,7 +219,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
               <span className="block font-mono text-[13px] font-medium text-neutral-800">/api/v1</span>
               <span className="block font-mono text-[10px] text-neutral-400">
                 {/* Phones have no caption under the checks, so the card names them. */}
-                <span className="md:hidden">signed, same site, rate limit</span>
+                <span className="block max-w-[120px] md:hidden">signed, same site, rate limit</span>
                 <span className="hidden md:inline">one gate</span>
               </span>
             </span>
