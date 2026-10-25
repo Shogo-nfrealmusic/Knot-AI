@@ -105,7 +105,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
     <div
       ref={ref}
       className={cn(
-        "relative flex size-full flex-col items-center justify-center overflow-x-clip py-8 sm:px-16 md:flex-row md:py-6",
+        "relative flex size-full flex-col items-center justify-center overflow-x-clip pb-16 pt-8 sm:px-16 md:flex-row md:py-6",
         className,
       )}
     >
@@ -144,7 +144,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
       <Connector travelKey={travel(0) ?? travel(2)} duration={LEG_MS} className="md:min-w-8" />
 
       {/* Outbox on the phone */}
-      <Card className="w-[176px] md:w-[148px]">
+      <Card className="w-[196px] md:w-[148px]">
         <div className="flex items-center gap-2">
           <span className="rounded-[10px] border border-neutral-200 bg-neutral-50 p-1.5 text-neutral-700">
             <IconStack2 className="size-4" stroke={1.75} />
@@ -191,7 +191,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
           )}
         >
           {online ? <IconWifi className="size-3.5" stroke={1.75} /> : <IconWifiOff className="size-3.5" stroke={1.75} />}
-          {online ? "online, sending in order" : "no signal, waiting"}
+          {!online ? "no signal, waiting" : queue.length > 0 ? "online, sending in order" : "online, all sent"}
         </div>
       </Card>
 
@@ -203,8 +203,9 @@ export default function SetSyncFlow({ className }: { className?: string }) {
       />
 
       {/* The API gate, with the checks every write passes */}
-      <div className="relative">
-        <Card className="min-[360px]:-ml-14 md:ml-0">
+      {/* Phones: the gate sits a little left of the wire so its checks fit on the right. */}
+      <div className="relative min-[360px]:max-md:-translate-x-9">
+        <Card>
           <div className="flex items-center gap-2">
             <span
               className={cn(
@@ -221,7 +222,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
           </div>
         </Card>
 
-        <div className="absolute left-full top-1/2 hidden -translate-y-1/2 min-[360px]:block max-md:-ml-14 md:left-1/2 md:top-full md:-translate-x-1/2 md:translate-y-0">
+        <div className="absolute left-full top-1/2 hidden -translate-y-1/2 min-[360px]:block md:left-1/2 md:top-full md:-translate-x-1/2 md:translate-y-0">
           <div className="flex items-center text-neutral-400 md:flex-col">
             <div className="flex h-full pl-1.5 md:hidden">
               <div className="w-3 border-t border-dashed border-current" />
