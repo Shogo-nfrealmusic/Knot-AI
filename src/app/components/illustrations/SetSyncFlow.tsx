@@ -36,8 +36,8 @@ const STEP_MS = [700, 500, 700, 1000, 650, 650, 650, 1700, 1700] as const;
 const SETTLED = 7;
 
 const sets = [
-  { id: "s1", weight: "37.5", reps: 9 },
-  { id: "s2", weight: "40", reps: 9 },
+  { id: "s1", no: 1, weight: "37.5", reps: 9 },
+  { id: "s2", no: 2, weight: "40", reps: 9 },
 ] as const;
 
 const checks = [
@@ -113,16 +113,16 @@ export default function SetSyncFlow({ className }: { className?: string }) {
       <div className="relative">
         <div className="relative rounded-[20px] border border-neutral-200 bg-white p-2 shadow-sm">
           <div className="rounded-[12px] bg-gradient-to-b from-neutral-500 to-neutral-800 p-px">
-            <div className="flex w-[112px] flex-col gap-2 rounded-[11px] bg-gradient-to-b from-neutral-600 to-neutral-900 px-3 py-3 text-white">
+            <div className="flex w-[108px] flex-col gap-2 rounded-[11px] bg-gradient-to-b from-neutral-600 to-neutral-900 px-3 py-3 text-white">
               <span className="flex items-center gap-1.5">
                 <LiftersMark className="h-4 w-auto text-white" />
-                <span className="text-[11px] font-medium text-white/70">Barbell squat</span>
+                <span className="whitespace-nowrap text-[11px] font-medium text-white/70">Squat, set {shown.no}</span>
               </span>
               <span className="relative h-7">
                 <AnimatePresence initial={false} mode="popLayout">
                   <motion.span
                     key={shown.id}
-                    className="absolute inset-0 flex items-center justify-center rounded-full text-[13px] font-semibold tracking-[-0.01em]"
+                    className="absolute inset-0 flex items-center justify-center whitespace-nowrap rounded-full text-[12px] font-semibold tracking-[-0.01em]"
                     style={{ background: BRAND_RED }}
                     initial={{ opacity: 0, scale: 0.9, filter: "blur(4px)" }}
                     animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
@@ -141,10 +141,10 @@ export default function SetSyncFlow({ className }: { className?: string }) {
         </p>
       </div>
 
-      <Connector travelKey={travel(0) ?? travel(2)} duration={LEG_MS} className="md:min-w-8" />
+      <Connector travelKey={travel(0) ?? travel(2)} duration={LEG_MS} className="md:min-w-6" />
 
       {/* Outbox on the phone */}
-      <Card className="w-[196px] md:w-[148px]">
+      <Card className="w-[196px] md:w-[132px]">
         <div className="flex items-center gap-2">
           <span className="rounded-[10px] border border-neutral-200 bg-neutral-50 p-1.5 text-neutral-700">
             <IconStack2 className="size-4" stroke={1.75} />
@@ -199,7 +199,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
         travelKey={travel(4)}
         duration={LEG_MS}
         dashed={!online}
-        className={cn("md:min-w-8 transition-colors duration-500", !online && "text-neutral-300")}
+        className={cn("md:min-w-6 transition-colors duration-500", !online && "text-neutral-300")}
       />
 
       {/* The API gate, with the checks every write passes */}
@@ -272,7 +272,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
         </div>
       </div>
 
-      <Connector travelKey={travel(6)} duration={LEG_MS} className="md:min-w-8" />
+      <Connector travelKey={travel(6)} duration={LEG_MS} className="md:min-w-6" />
 
       {/* Supabase, behind row-level security, and what the reply brings back */}
       <div className="relative">
@@ -283,7 +283,7 @@ export default function SetSyncFlow({ className }: { className?: string }) {
             </span>
             <span className="leading-tight">
               <span className="block text-[13px] font-medium text-neutral-800">Supabase</span>
-              <span className="block font-mono text-[10px] text-neutral-400">RLS on every row</span>
+              <span className="block whitespace-nowrap font-mono text-[10px] text-neutral-400">RLS enforced</span>
             </span>
           </div>
         </Card>
