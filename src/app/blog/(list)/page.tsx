@@ -3,7 +3,7 @@ import JsonLd, { SITE_URL } from "@/app/components/JsonLd";
 import PostGrid from "@/app/components/blog/PostGrid";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { getPublishedPosts, postHref, toCard } from "@/lib/blog";
-import { site } from "@/lib/site";
+import { site, twitterCard } from "@/lib/site";
 
 const title = "Blog — Notes on building and measuring | Shogo Kikuchi";
 const description =
@@ -14,6 +14,8 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/blog" },
   openGraph: { title, description, url: "/blog", type: "website" },
+  // The image is this folder's opengraph-image.tsx / twitter-image.tsx.
+  twitter: twitterCard(title, description),
 };
 
 export default function BlogPage() {

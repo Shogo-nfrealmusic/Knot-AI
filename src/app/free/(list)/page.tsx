@@ -5,6 +5,7 @@ import InnerHero from "@/app/components/InnerHero";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { DropCover, FollowBlock } from "@/app/free/FreeParts";
 import { formatDropDate, getDrops, pad } from "@/lib/free";
+import { twitterCard } from "@/lib/site";
 
 const title = "From the reels: tools, guides and kits | Shogo Kikuchi";
 const description =
@@ -15,6 +16,8 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/free" },
   openGraph: { title, description, url: "/free", type: "website" },
+  // The image is this folder's opengraph-image.tsx / twitter-image.tsx.
+  twitter: twitterCard(title, description),
 };
 
 // Not in the main nav on purpose: Work stays the curated seven. This page is where the reels and the bio link land.

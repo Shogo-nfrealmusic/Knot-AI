@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import InnerHero from "@/app/components/InnerHero";
+import { siteOgImage, twitterCard } from "@/lib/site";
 import PrivacyArticle from "./PrivacyArticle";
 
 const title = "Privacy Policy | Shogo Kikuchi";
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/privacy" },
-  openGraph: { title, description, url: "/privacy", type: "website" },
+  openGraph: { title, description, url: "/privacy", type: "website", images: [siteOgImage] },
+  twitter: twitterCard(title, description, [siteOgImage]),
 };
 
 export default function PrivacyPage() {

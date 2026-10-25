@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { preload } from "react-dom";
 import { getDrops, pad } from "@/lib/free";
 import { HERO_SIZES, heroSrcSet, linksContent, type LinksMode, type ModeContent } from "@/lib/links";
+import { twitterCard } from "@/lib/site";
 import LinksPage from "./LinksPage";
 
 // Shared by /links (AI) and /links/fit (Fitness). Each route is static, served from the CDN, and puts
@@ -13,7 +14,14 @@ const description = "AI and fitness: my accounts, free tools, and projects in on
 
 export const linksMetadata = (mode: LinksMode): Metadata => {
   const url = mode === "fit" ? "/links/fit" : "/links";
-  return { title, description, alternates: { canonical: url }, openGraph: { title, description, url, type: "website" } };
+  // The image is opengraph-image.tsx / twitter-image.tsx in /links and /links/fit.
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, type: "website" },
+    twitter: twitterCard(title, description),
+  };
 };
 
 export const linksViewport = (mode: LinksMode): Viewport => ({

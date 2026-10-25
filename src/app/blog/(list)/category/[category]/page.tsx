@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PostGrid from "@/app/components/blog/PostGrid";
 import { GridSection } from "@/app/components/ui/grid-section";
+import { twitterCard } from "@/lib/site";
 import {
   categoryLabels,
   getCategoriesWithPosts,
@@ -33,6 +34,8 @@ export async function generateMetadata({
     description,
     alternates: { canonical: path },
     openGraph: { title, description, url: path, type: "website" },
+    // The image is this folder's opengraph-image.tsx / twitter-image.tsx.
+    twitter: twitterCard(title, description),
   };
 }
 
