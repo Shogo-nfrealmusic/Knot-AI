@@ -7,6 +7,7 @@ import AudienceDashboard from "@/app/components/audience/AudienceDashboard";
 import CTA from "@/app/components/CTA";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { getProject } from "@/lib/projects";
+import { twitterCard } from "@/lib/site";
 
 const title = "Work — Systems I built and run | Shogo Kikuchi";
 const description =
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/work" },
   openGraph: { title, description, url: "/work", type: "website" },
+  // The image is this folder's opengraph-image.tsx / twitter-image.tsx.
+  twitter: twitterCard(title, description),
 };
 
 export default function WorkPage() {

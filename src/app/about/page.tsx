@@ -9,6 +9,7 @@ import PilotTimeline from "@/app/components/howitworks/PilotTimeline";
 import StackTabs from "@/app/components/illustrations/StackTabs";
 import CTA from "@/app/components/CTA";
 import { GridSection } from "@/app/components/ui/grid-section";
+import { siteOgImage, twitterCard } from "@/lib/site";
 
 const title = "About — Engineer, PM, and co-founder | Shogo Kikuchi";
 const description =
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/about" },
-  openGraph: { title, description, url: "/about", type: "website" },
+  openGraph: { title, description, url: "/about", type: "website", images: [siteOgImage] },
+  twitter: twitterCard(title, description, [siteOgImage]),
 };
 
 const story = [
