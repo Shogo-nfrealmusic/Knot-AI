@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" role="img" aria-labelledby="t3 d3">
+<title id="t3">Who can see what</title>
+<desc id="d3">The person reads and changes all of their own data. A coach with an active link reads the client's name and picture, plans and logged workouts, can save a new plan version marked as the coach's, and reads birth year, sex, height and body logs only if the client shares them. Logged sets are read-only for the coach. Anyone else sees nothing. Ending the link removes the coach's access until a new invite is accepted.</desc>
+<style>
+.bg{fill:#fafafa;stroke:#e5e5e5}
+.head{fill:#f0f0f0}
+.row{fill:#ffffff}
+.grid{stroke:#e5e5e5;fill:none}
+.t{fill:#171717}
+.s{fill:#525252}
+.m{fill:#737373}
+.w{fill:#c2441f}
+.yes{fill:#171717}
+.no{fill:#a3a3a3}
+.dotw{fill:#e0552f}
+.doty{fill:#171717}
+.dotn{fill:none;stroke:#a3a3a3;stroke-width:1.25}
+@media (prefers-color-scheme: dark){
+.bg{fill:#141414;stroke:#2a2a2a}
+.head{fill:#202020}
+.row{fill:#1a1a1a}
+.grid{stroke:#2e2e2e}
+.t{fill:#f5f5f5}
+.s{fill:#c4c4c4}
+.m{fill:#9a9a9a}
+.w{fill:#f39a7c}
+.yes{fill:#f5f5f5}
+.no{fill:#6b6b6b}
+.dotw{fill:#f07a55}
+.doty{fill:#f5f5f5}
+.dotn{stroke:#6b6b6b}
+}
+</style>
+<rect class="bg" x="0.5" y="0.5" width="759" height="519" rx="16"/>
+<text class="t" x="24" y="36" font-size="15" font-weight="600">Who can see what</text>
+<text class="m" x="24" y="56" font-size="11.5">Enforced twice: row-level security in Postgres, and API calls that run as the signed-in person.</text>
+
+<rect class="head" x="24" y="72" width="712" height="40" rx="6"/>
+<text class="t" x="40" y="97" font-size="12" font-weight="600">Data</text>
+<text class="t" x="284" y="97" font-size="12" font-weight="600">You</text>
+<text class="t" x="430" y="97" font-size="12" font-weight="600">Your coach (active link)</text>
+<text class="t" x="640" y="97" font-size="12" font-weight="600">Anyone else</text>
+
+<g class="row-group">
+<rect class="row" x="24" y="112" width="712" height="46"/>
+<text class="t" x="40" y="140" font-size="12">Name and picture</text>
+<circle class="doty" cx="288" cy="136" r="4"/><text class="yes" x="298" y="140" font-size="12">read, change</text>
+<circle class="doty" cx="434" cy="136" r="4"/><text class="yes" x="444" y="140" font-size="12">read</text>
+<circle class="dotn" cx="644" cy="136" r="4"/><text class="no" x="654" y="140" font-size="12">nothing</text>
+
+<rect class="row" x="24" y="158" width="712" height="46"/>
+<text class="t" x="40" y="186" font-size="12">Birth year, sex, height</text>
+<circle class="doty" cx="288" cy="182" r="4"/><text class="yes" x="298" y="186" font-size="12">read, change</text>
+<circle class="dotw" cx="434" cy="182" r="4"/><text class="w" x="444" y="186" font-size="12">read, only if you share them</text>
+<circle class="dotn" cx="644" cy="182" r="4"/><text class="no" x="654" y="186" font-size="12">nothing</text>
+
+<rect class="row" x="24" y="204" width="712" height="46"/>
+<text class="t" x="40" y="232" font-size="12">Body logs (weight, body fat)</text>
+<circle class="doty" cx="288" cy="228" r="4"/><text class="yes" x="298" y="232" font-size="12">read, write, delete</text>
+<circle class="dotw" cx="434" cy="228" r="4"/><text class="w" x="444" y="232" font-size="12">read, only if you share them</text>
+<circle class="dotn" cx="644" cy="228" r="4"/><text class="no" x="654" y="232" font-size="12">nothing</text>
+
+<rect class="row" x="24" y="250" width="712" height="56"/>
+<text class="t" x="40" y="276" font-size="12">Plans and their versions</text>
+<circle class="doty" cx="288" cy="272" r="4"/><text class="yes" x="298" y="276" font-size="12">read, create, edit</text>
+<circle class="doty" cx="434" cy="272" r="4"/><text class="yes" x="444" y="276" font-size="12">read; save a new version</text>
+<text class="m" x="444" y="292" font-size="11">marked as the coach's</text>
+<circle class="dotn" cx="644" cy="272" r="4"/><text class="no" x="654" y="276" font-size="12">nothing</text>
+
+<rect class="row" x="24" y="306" width="712" height="46"/>
+<text class="t" x="40" y="334" font-size="12">Workouts and logged sets</text>
+<circle class="doty" cx="288" cy="330" r="4"/><text class="yes" x="298" y="334" font-size="12">read, log, change, delete</text>
+<circle class="doty" cx="434" cy="330" r="4"/><text class="yes" x="444" y="334" font-size="12">read only</text>
+<circle class="dotn" cx="644" cy="330" r="4"/><text class="no" x="654" y="334" font-size="12">nothing</text>
+
+<rect class="row" x="24" y="352" width="712" height="46"/>
+<text class="t" x="40" y="380" font-size="12">Sign-in, export, delete account</text>
+<circle class="doty" cx="288" cy="376" r="4"/><text class="yes" x="298" y="380" font-size="12">only you</text>
+<circle class="dotn" cx="434" cy="376" r="4"/><text class="no" x="444" y="380" font-size="12">nothing</text>
+<circle class="dotn" cx="644" cy="376" r="4"/><text class="no" x="654" y="380" font-size="12">nothing</text>
+</g>
+
+<path class="grid" d="M24 112 H736 M24 158 H736 M24 204 H736 M24 250 H736 M24 306 H736 M24 352 H736 M24 398 H736 M272 72 V398 M418 72 V398 M628 72 V398"/>
+<rect class="grid" x="24" y="72" width="712" height="326" rx="6"/>
+
+<text class="t" x="24" y="432" font-size="12" font-weight="600">Ending the link</text>
+<text class="s" x="24" y="450" font-size="12">Either side can end it, and the coach's access goes with it. Only a new invite starts it again.</text>
+<text class="t" x="24" y="482" font-size="12" font-weight="600">A shared plan code</text>
+<text class="s" x="24" y="500" font-size="12">Shows a copy of the plan made when it was shared. Never the owner's own rows, and never the log.</text>
+</svg>
