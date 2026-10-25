@@ -144,13 +144,13 @@ export default function SetSyncFlow({ className }: { className?: string }) {
       <Connector travelKey={travel(0) ?? travel(2)} duration={LEG_MS} className="md:min-w-6" />
 
       {/* Outbox on the phone */}
-      <Card className="w-[196px] md:w-[132px]">
+      <Card className="w-[196px] md:w-[144px]">
         <div className="flex items-center gap-2">
           <span className="rounded-[10px] border border-neutral-200 bg-neutral-50 p-1.5 text-neutral-700">
             <IconStack2 className="size-4" stroke={1.75} />
           </span>
           <span className="leading-tight">
-            <span className="block text-[13px] font-medium text-neutral-800">On the phone</span>
+            <span className="block whitespace-nowrap text-[13px] font-medium text-neutral-800">On the phone</span>
             <span className="block font-mono text-[10px] text-neutral-400">IndexedDB outbox</span>
           </span>
         </div>
