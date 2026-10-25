@@ -78,7 +78,7 @@ export type BlogPost = {
   /** Posts published elsewhere: cards link out and there is no local page. */
   externalUrl?: string;
   cover: { icon: CoverIcon; label: string };
-  /** A 1200×630 PNG under public/ for link previews. Without it the post uses the site's image. */
+  /** A 1200×630 PNG under public/ for link previews. Without it the post names the site's image. */
   ogImage?: { src: string; alt: string };
   body: BlogBlock[];
 };

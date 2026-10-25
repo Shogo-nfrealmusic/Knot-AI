@@ -45,9 +45,11 @@ export async function generateMetadata({
   }
 
   const path = `/blog/${post.slug}`;
+  // A page that sets its own openGraph drops the root opengraph-image.png (metadata merges shallowly),
+  // so a post without its own image names the site's one explicitly.
   const image = post.ogImage
     ? { url: post.ogImage.src, width: 1200, height: 630, alt: post.ogImage.alt, type: "image/png" }
-    : null;
+    : { url: "/opengraph-image.png", width: 1200, height: 630, alt: post.title, type: "image/png" };
 
   return {
     title: `${post.title} | Shogo Kikuchi`,
@@ -60,12 +62,10 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       authors: [post.author.name],
-      ...(image ? { images: [image] } : {}),
+      images: [image],
     },
-    // Posts with their own image also get their own card on X; the rest keep the site's.
-    ...(image
-      ? { twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [image] } }
-      : {}),
+    // Without this, X shows the site's title from the root layout instead of the post's.
+    twitter: { card: "summary_large_image", title: post.title, description: post.description, images: [image] },
   };
 }
 
