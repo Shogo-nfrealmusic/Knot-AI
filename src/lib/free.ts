@@ -129,6 +129,62 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 41,
+    slug: "41-sao-paulo",
+    title: "São Paulo: Apple's liquid glass, rebuilt in code",
+    description:
+      "A lyric video for The Weeknd and Anitta's São Paulo, made with Claude Opus 5.5 in Claude Code: real-looking iPhone screens, a liquid-glass Control Center, and colour that drifts from scene to scene instead of cutting. No After Effects. Here are the screens. The full prompt and source are coming as a kit.",
+    date: "2026-10-26",
+    keyword: "GLASS",
+    tools: [
+      {
+        name: "Claude Code",
+        what: "Where Claude Opus 5.5 wrote every screen, word and transition.",
+        href: "https://claude.com/claude-code",
+        icon: "wand",
+      },
+      {
+        name: "Remotion",
+        what: "React for video: every frame is rendered from code. Free for individuals and companies up to 3 people; larger companies need a license.",
+        href: "https://www.remotion.dev",
+        icon: "cube",
+      },
+    ],
+    about: {
+      intro: [
+        "20 s · 9:16 · 60 fps. Every frame rendered by code: no After Effects, no timeline, no AI video generation. 26 versions until it flowed.",
+      ],
+      chapters: [
+        {
+          title: "The screens",
+          text: ["Each lyric lands inside a real-looking iPhone screen, and the colour flows from one to the next. Stills from the finished video:"],
+          figures: [
+            { src: "/free/41/card.jpg", alt: "Apple Music mini player card", caption: "Now Playing", tall: true },
+            { src: "/free/41/store.jpg", alt: "App Store search rows", caption: "App Store", tall: true },
+            { src: "/free/41/starboy.jpg", alt: "Search field and glass tab bar", caption: "Search", tall: true },
+            { src: "/free/41/player.jpg", alt: "Apple Music player", caption: "Player", tall: true },
+            { src: "/free/41/grid.jpg", alt: "Album grid", caption: "Library", tall: true },
+            { src: "/free/41/idol.jpg", alt: "The Idol player on a blue wallpaper", caption: "The Idol", tall: true },
+            { src: "/free/41/cc.jpg", alt: "Liquid-glass Control Center", caption: "Control Center", tall: true },
+            { src: "/free/41/list.jpg", alt: "Song list", caption: "Song list", tall: true },
+            { src: "/free/41/page.jpg", alt: "Single page opening inside the list", caption: "Single page", tall: true },
+            { src: "/free/41/lyrics.jpg", alt: "Lyrics view", caption: "Lyrics", tall: true },
+          ],
+        },
+        {
+          title: "Want to make your own?",
+          text: [
+            "The full prompt, the beat sheet and the source are being packaged as a kit. DM \"KIT\" to @copilot_shogo on Instagram and you'll hear first when it's out.",
+          ],
+        },
+      ],
+      notes: [
+        "A fan edit for portfolio purposes. The song, album art and photos belong to their owners. Not affiliated with The Weeknd, Anitta, Apple or any app shown.",
+        "By @copilot_shogo. Not affiliated with Remotion or Anthropic.",
+      ],
+    },
+  },
+  {
     number: 39,
     slug: "39-claude-duet",
     title: "Claude Duet: Claude now messages you first",
