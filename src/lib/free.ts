@@ -133,7 +133,7 @@ const drops: FreeDrop[] = [
     slug: "41-sao-paulo",
     title: "São Paulo: Apple's liquid glass, rebuilt in code",
     description:
-      "A lyric video for The Weeknd and Anitta's São Paulo, made with Claude Opus 5.5 in Claude Code: real-looking iPhone screens, a liquid-glass Control Center, and colour that drifts from scene to scene instead of cutting. No After Effects. Here are the screens. The full prompt and source are coming as a kit.",
+      "A lyric video for The Weeknd and Anitta's São Paulo, made with Claude Opus 5.5 in Claude Code: real-looking iPhone screens, a liquid-glass Control Center, and colour that drifts from scene to scene instead of cutting. No After Effects. Here are the screens and how it was made. The full method is coming soon.",
     date: "2026-10-26",
     keyword: "GLASS",
     tools: [
@@ -172,9 +172,22 @@ const drops: FreeDrop[] = [
           ],
         },
         {
+          title: "How it was made",
+          text: ["The short version, in the order it was built:"],
+          bullets: [
+            "It's a Remotion project. Every screen is a React component, rendered at 60 fps. Claude Opus 5.5 wrote all of it in Claude Code.",
+            "The lyrics come first. Every word gets a start time from the song, and every element on screen is tied to a word: a row types in, a tile lights up, a slider fills as that word is sung.",
+            "No hard cuts. Instead of sliding the next screen in, the background colour drifts into the next scene while the content moves out, so the song carries the change.",
+            "Liquid glass is plain CSS: an almost clear fill, a backdrop blur with a little extra brightness, and a thin rim that only shines where light would hit.",
+            "The Control Center doesn't arrive in one piece. Its rows come in slightly apart and settle together, the lower ones a beat later, the way iOS does it.",
+            "Each version is checked by measurement, not by eye. It's rendered, cut into frame grids, and scored by a fresh AI reviewer that has never seen the earlier versions. Scroll speed and brightness are plotted as curves to find where the motion stutters.",
+            "26 versions. The last one scored 83 to 84 out of 100 from two independent reviewers.",
+          ],
+        },
+        {
           title: "Want to make your own?",
           text: [
-            "The full prompt, the beat sheet and the source are being packaged as a kit. DM \"KIT\" to @copilot_shogo on Instagram and you'll hear first when it's out.",
+            "I'm putting the full method together (the prompts, the beat sheet and the source) and plan to sell it soon. Follow @copilot_shogo on Instagram to see when it's out.",
           ],
         },
       ],
