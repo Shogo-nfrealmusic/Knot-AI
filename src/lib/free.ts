@@ -129,6 +129,75 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 const drops: FreeDrop[] = [
   {
+    number: 42,
+    slug: "42-dessa",
+    title: "Dessa: Block's voice AI that acts human",
+    description:
+      "Jack Dorsey's company Block showed Dessa on Oct 23, 2026: a speech-to-speech model trained only on human conversation. It laughs, pauses, says \"yeah\" while you talk, and can jump in before you finish. What it does, what it can't do yet, and the waitlist.",
+    date: "2026-10-27",
+    keyword: "DESSA",
+    tools: [
+      {
+        name: "Dessa waitlist",
+        what: "Block's official page for Dessa, with the waitlist. Not open to the public yet.",
+        href: "https://block.xyz/dessa",
+        icon: "robot",
+      },
+    ],
+    breakdown: {
+      tldr: [
+        ["Dessa is a voice AI from a small research lab at Block, the company behind Square and Cash App. The lab reports to Jack Dorsey."],
+        ["Most voice AI turns your speech into text, thinks in text, then reads the answer back. Dessa never uses text. It was trained from scratch on human conversation."],
+        ["That's why it laughs, pauses and talks over you the way people do. It's full-duplex: it listens while it talks."],
+        ["You can't use it yet. It's waitlist only."],
+      ],
+      sections: [
+        {
+          title: "What it does",
+          unit: { one: "thing", many: "things" },
+          items: [
+            { name: "Speech in, speech out", what: ["A speech-to-speech model trained \"from scratch on nothing but human conversation.\" No text, no pretrained models."] },
+            { name: "Listens while it talks", what: ["Full-duplex, so it can say \"yeah\" while you're still talking, or finish your sentence before you do. In Block's film it says \"Rises?\" before the person gets to it."] },
+            { name: "Makes up its own voice", what: ["In Block's demos, each conversation starts with a voice and a character Dessa makes up on the spot."] },
+          ],
+        },
+        {
+          title: "How it was built",
+          unit: { one: "detail", many: "details" },
+          items: [
+            { name: "Training", what: ["Block says it trained Dessa on one NVIDIA GB200 NVL72 (a single rack)."] },
+            { name: "Runs locally", what: ["Block says it runs locally on a MacBook Pro M4 Max or better."] },
+            { name: "The team", what: ["The lab was founded by former members of Dessa, the Toronto deep-learning startup Square bought in 2020. That startup made the fake Joe Rogan voice in 2019. Square renamed itself Block in 2021."] },
+          ],
+        },
+        {
+          title: "What to watch",
+          unit: { one: "point", many: "points" },
+          items: [
+            {
+              name: "Not open yet",
+              what: ["Only a small group of AI safety researchers has early access. Everyone else joins the waitlist."],
+              whyLabel: "What to do",
+              why: ["Join the waitlist on the official page below."],
+            },
+            {
+              name: "Not very smart yet",
+              what: ["Block's own team says in the launch film that it's \"not very intelligent\" at the moment. It's built to sound and act human, not to answer hard questions."],
+            },
+          ],
+        },
+      ],
+      notes: ["Availability is as of Oct 27, 2026 and may change."],
+      sources: [
+        { text: "Block: Dessa (official page and waitlist)", href: "https://block.xyz/dessa" },
+        { text: "Jack Dorsey on X", href: "https://x.com/jack/status/2113697902916751661" },
+        { text: "Ragavan Thurairatnam on X (launch post)", href: "https://x.com/RagavanThurair/status/2113671324400861645" },
+        { text: "VentureBeat: Square acquires Dessa (2020)", href: "https://venturebeat.com/ai/square-acquires-deepfakes-research-firm-dessa-labs-for-an-undisclosed-sum" },
+        { text: "The Register: the fake Joe Rogan voice (2019)", href: "https://www.theregister.com/2019/05/17/joe_rogan_ai/" },
+      ],
+    },
+  },
+  {
     number: 41,
     slug: "41-sao-paulo",
     title: "São Paulo: Apple's liquid glass, rebuilt in code",
