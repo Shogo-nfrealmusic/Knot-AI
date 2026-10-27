@@ -200,6 +200,149 @@ if __name__ == "__main__":
 
 const drops: FreeDrop[] = [
   {
+    number: 44,
+    slug: "44-downloads-guard",
+    title: "Downloads guard: 6 checks so a file a website drops can't steer your coding agent",
+    description:
+      "A web page can save a Markdown file into ~/Downloads. If you start Claude Code or Codex there, the agent reads it as instructions. Here's how to close that gap: what to check, why, and the exact settings and commands.",
+    date: "2026-10-28",
+    keyword: "GUARD",
+    tools: [],
+    icon: "shield",
+    about: {
+      intro: [
+        "On Oct 22, 2026, ",
+        { text: "Forever Security", href: "https://forever.security/blog/hijacking-ai-agents-via-downloads-folder" },
+        " reported live malware on a real customer's machine: an AGENTS.md in the Downloads folder had turned the customer's own coding agent against them. In their tests Codex followed a planted file in more than 90% of attempts, and Claude Code about 50% (Claude needs a human to approve the settings change). They also found that about half of their customers run a coding agent inside Downloads. Their view: there is nothing for OpenAI or Anthropic to patch, so the fix is on your side.",
+      ],
+      checks: [
+        {
+          title: "Never start an agent in Downloads, or in any folder inside it",
+          why: [
+            "Claude Code reads CLAUDE.md files from the folder you start in ",
+            { text: "and every folder above it", href: "https://code.claude.com/docs/en/memory" },
+            ". So a project folder that lives inside Downloads still loads a CLAUDE.md sitting in Downloads itself. Since v2.1.277 it also reads AGENTS.md when no CLAUDE.md is found. Forever's own advice: don't start Codex, Claude Code or any agent in Downloads.",
+          ],
+          how: [
+            "Move projects out of Downloads (for example to ~/code). Then check Downloads for instruction files you didn't put there. No output means none were found. If something turns up, open it in a text editor and read it before you run any agent nearby.",
+          ],
+          commands: ["find -E ~/Downloads -maxdepth 2 -iregex '.*/(agents|claude)(\\.local)?\\.md'"],
+        },
+        {
+          title: "Tell Claude Code to skip instruction files in Downloads",
+          why: [
+            { code: "claudeMdExcludes" },
+            " skips CLAUDE.md files that match a path pattern (",
+            { text: "docs", href: "https://code.claude.com/docs/en/memory" },
+            "). Put it in your user settings so it applies to every project. A belt to go with the braces above, not a replacement for them.",
+          ],
+          how: [
+            "Add this to ",
+            { code: "~/.claude/settings.json" },
+            ". Patterns match absolute paths with glob syntax. The docs describe this setting for CLAUDE.md files; whether it also skips AGENTS.md isn't clearly stated, so don't rely on it for that. It does nothing for Codex.",
+          ],
+          commands: ['"claudeMdExcludes": ["**/Downloads/CLAUDE.md", "**/Downloads/CLAUDE.local.md", "**/Downloads/.claude/CLAUDE.md", "**/Downloads/AGENTS.md"]'],
+        },
+        {
+          title: "Say no to settings changes you didn't ask for",
+          why: [
+            "In Forever's Claude Code test, the planted file asked Claude to write a ",
+            { code: ".claude/settings.json" },
+            " that sent its API traffic to another server, which exposes your login token. Writes to ",
+            { code: ".claude" },
+            " are ",
+            { text: "protected paths", href: "https://code.claude.com/docs/en/permission-modes" },
+            ": Claude Code asks you first in the default and acceptEdits modes, auto mode sends them to its classifier, and bypassPermissions allows them silently.",
+          ],
+          how: [
+            "If Claude asks to edit its own settings and you didn't ask for that, choose No. Be most suspicious of an ",
+            { code: "ANTHROPIC_BASE_URL" },
+            " or proxy setting you didn't add. To make Claude always ask, even in auto mode, add an ask rule (explicit ask rules are never auto-approved) to ",
+            { code: "~/.claude/settings.json" },
+            ".",
+          ],
+          commands: ['"permissions": { "ask": ["Edit(**/.claude/settings.json)", "Edit(**/.claude/settings.local.json)", "Edit(**/.mcp.json)"] }'],
+        },
+        {
+          title: "Turn off bypass mode for yourself",
+          why: [
+            "bypassPermissions skips the prompts that would have stopped the settings change. ",
+            { code: "disableBypassPermissionsMode" },
+            " works from any settings file, so you can ",
+            { text: "lock yourself out of it", href: "https://code.claude.com/docs/en/permissions" },
+            ". For Codex, don't run it with ",
+            { code: "--dangerously-bypass-approvals-and-sandbox" },
+            ": in Forever's test the planted file got Codex to start a second copy of itself with that flag.",
+          ],
+          how: ["Add this to ~/.claude/settings.json."],
+          commands: ['"permissions": { "disableBypassPermissionsMode": "disable" }'],
+        },
+        {
+          title: "Turn on the sandbox and switch off its escape hatch",
+          why: [
+            "The ",
+            { text: "sandbox", href: "https://code.claude.com/docs/en/sandboxing" },
+            " is off by default. When a command fails inside it, Claude can retry it outside with ",
+            { code: "dangerouslyDisableSandbox" },
+            ". With ",
+            { code: "allowUnsandboxedCommands" },
+            " set to false, Claude Code ignores that parameter. ",
+            { code: "failIfUnavailable" },
+            " stops Claude Code from quietly running without the sandbox when it can't start.",
+          ],
+          how: [
+            "Run /sandbox once inside Claude Code, or add this to ~/.claude/settings.json. macOS needs nothing extra. Linux and WSL2 need bubblewrap and socat. Native Windows has no sandbox; use WSL2.",
+          ],
+          commands: ['"sandbox": { "enabled": true, "allowUnsandboxedCommands": false, "failIfUnavailable": true }', "sudo apt-get install bubblewrap socat"],
+        },
+        {
+          title: "Check what your agents already have",
+          why: [
+            "If a planted file already ran, it may have left changes behind. Forever's detection tips: a project ",
+            { code: ".claude/settings.json" },
+            " with an ",
+            { code: "ANTHROPIC_BASE_URL" },
+            " or proxy you didn't set; in ",
+            { code: "~/.codex/config.toml" },
+            ", an unexpected ",
+            { code: "[mcp_servers.*]" },
+            " block or a changed ",
+            { code: "chatgpt_base_url" },
+            "; and the npm package ",
+            { code: "function-color" },
+            " in your installs.",
+          ],
+          how: [
+            "The first command lists Claude settings files under your home folder that set an API endpoint or proxy (no output = none). The second shows the Codex lines worth reading. In Codex, ",
+            { text: "untrusted projects", href: "https://learn.chatgpt.com/docs/config-file/config-reference" },
+            " skip project-scoped .codex/ config, so keep Downloads off your trusted list. If anything looks wrong, rotate your logins and tokens from a clean device; a stolen token is a live session.",
+          ],
+          commands: [
+            "find ~ -maxdepth 6 -path \"*/.claude/settings*.json\" -not -path \"*/node_modules/*\" -exec grep -l -E \"ANTHROPIC_BASE_URL|HTTPS?_PROXY\" {} + 2>/dev/null",
+            "grep -n -E \"mcp_servers|base_url|trust_level|approval_policy|sandbox_mode\" ~/.codex/config.toml",
+          ],
+        },
+      ],
+      runAll: {
+        title: "Bonus: make your browser ask first",
+        items: [
+          {
+            text: [
+              "The attack starts with a file saved to Downloads without a click. In Chrome: Settings → Downloads → turn on ",
+              { text: "\"Ask where to save each file before downloading\"", href: "https://support.google.com/chrome/answer/95759" },
+              ". A surprise save dialog is your warning.",
+            ],
+          },
+        ],
+      },
+      notes: [
+        "This is a defensive checklist, not a security audit. It covers the gap Forever Security described; it doesn't make your machine safe from everything.",
+        "Merge the settings snippets into one ~/.claude/settings.json (keys like \"permissions\" combine). Run /status in Claude Code afterwards to confirm the file loaded.",
+        "Facts as of Oct 28, 2026, from the Forever Security post and the Claude Code, Codex and Chrome docs linked above. An overview by @copilot_shogo; not affiliated with Anthropic, OpenAI, Google or Forever Security.",
+      ],
+    },
+  },
+  {
     number: 43,
     slug: "43-keyboard-ears",
     title: "Keyboard ears: build an AI that hears which key you pressed",
