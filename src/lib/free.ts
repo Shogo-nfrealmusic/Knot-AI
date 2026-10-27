@@ -202,7 +202,7 @@ const drops: FreeDrop[] = [
   {
     number: 44,
     slug: "44-downloads-guard",
-    title: "Downloads guard: 6 checks so a file a website drops can't steer your coding agent",
+    title: "Downloads guard: 3 checks to run tonight (+3 more) so a file a website drops can't steer your coding agent",
     description:
       "A web page can save a Markdown file into ~/Downloads. If you start Claude Code or Codex there, the agent reads it as instructions. Here's how to close that gap: what to check, why, and the exact settings and commands.",
     date: "2026-10-28",
@@ -229,21 +229,6 @@ const drops: FreeDrop[] = [
           commands: ["find -E ~/Downloads -maxdepth 2 -iregex '.*/(agents|claude)(\\.local)?\\.md'"],
         },
         {
-          title: "Tell Claude Code to skip instruction files in Downloads",
-          why: [
-            { code: "claudeMdExcludes" },
-            " skips CLAUDE.md files that match a path pattern (",
-            { text: "docs", href: "https://code.claude.com/docs/en/memory" },
-            "). Put it in your user settings so it applies to every project. A belt to go with the braces above, not a replacement for them.",
-          ],
-          how: [
-            "Add this to ",
-            { code: "~/.claude/settings.json" },
-            ". Patterns match absolute paths with glob syntax. The docs describe this setting for CLAUDE.md files; whether it also skips AGENTS.md isn't clearly stated, so don't rely on it for that. It does nothing for Codex.",
-          ],
-          commands: ['"claudeMdExcludes": ["**/Downloads/CLAUDE.md", "**/Downloads/CLAUDE.local.md", "**/Downloads/.claude/CLAUDE.md", "**/Downloads/AGENTS.md"]'],
-        },
-        {
           title: "Say no to settings changes you didn't ask for",
           why: [
             "In Forever's Claude Code test, the planted file asked Claude to write a ",
@@ -264,20 +249,6 @@ const drops: FreeDrop[] = [
           commands: ['"permissions": { "ask": ["Edit(**/.claude/settings.json)", "Edit(**/.claude/settings.local.json)", "Edit(**/.mcp.json)"] }'],
         },
         {
-          title: "Turn off bypass mode for yourself",
-          why: [
-            "bypassPermissions skips the prompts that would have stopped the settings change. ",
-            { code: "disableBypassPermissionsMode" },
-            " works from any settings file, so you can ",
-            { text: "lock yourself out of it", href: "https://code.claude.com/docs/en/permissions" },
-            ". For Codex, don't run it with ",
-            { code: "--dangerously-bypass-approvals-and-sandbox" },
-            ": in Forever's test the planted file got Codex to start a second copy of itself with that flag.",
-          ],
-          how: ["Add this to ~/.claude/settings.json."],
-          commands: ['"permissions": { "disableBypassPermissionsMode": "disable" }'],
-        },
-        {
           title: "Turn on the sandbox and switch off its escape hatch",
           why: [
             "The ",
@@ -294,6 +265,35 @@ const drops: FreeDrop[] = [
             "Run /sandbox once inside Claude Code, or add this to ~/.claude/settings.json. macOS needs nothing extra. Linux and WSL2 need bubblewrap and socat. Native Windows has no sandbox; use WSL2.",
           ],
           commands: ['"sandbox": { "enabled": true, "allowUnsandboxedCommands": false, "failIfUnavailable": true }', "sudo apt-get install bubblewrap socat"],
+        },
+        {
+          title: "Tell Claude Code to skip instruction files in Downloads",
+          why: [
+            { code: "claudeMdExcludes" },
+            " skips CLAUDE.md files that match a path pattern (",
+            { text: "docs", href: "https://code.claude.com/docs/en/memory" },
+            "). Put it in your user settings so it applies to every project. A belt to go with the braces above, not a replacement for them.",
+          ],
+          how: [
+            "Add this to ",
+            { code: "~/.claude/settings.json" },
+            ". Patterns match absolute paths with glob syntax. The docs describe this setting for CLAUDE.md files; whether it also skips AGENTS.md isn't clearly stated, so don't rely on it for that. It does nothing for Codex.",
+          ],
+          commands: ['"claudeMdExcludes": ["**/Downloads/CLAUDE.md", "**/Downloads/CLAUDE.local.md", "**/Downloads/.claude/CLAUDE.md", "**/Downloads/AGENTS.md"]'],
+        },
+        {
+          title: "Turn off bypass mode for yourself",
+          why: [
+            "bypassPermissions skips the prompts that would have stopped the settings change. ",
+            { code: "disableBypassPermissionsMode" },
+            " works from any settings file, so you can ",
+            { text: "lock yourself out of it", href: "https://code.claude.com/docs/en/permissions" },
+            ". For Codex, don't run it with ",
+            { code: "--dangerously-bypass-approvals-and-sandbox" },
+            ": in Forever's test the planted file got Codex to start a second copy of itself with that flag.",
+          ],
+          how: ["Add this to ~/.claude/settings.json."],
+          commands: ['"permissions": { "disableBypassPermissionsMode": "disable" }'],
         },
         {
           title: "Check what your agents already have",
