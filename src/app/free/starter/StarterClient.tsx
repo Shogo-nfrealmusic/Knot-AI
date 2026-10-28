@@ -32,7 +32,6 @@ const HEADLINE = ["Your", "Claude", "Code", "setup", "is", "ready."];
 
 function Hero({ figure, files }: { figure: string; files: StarterFile[] }) {
   const reduce = useReducedMotion();
-  const bytes = files.reduce((sum, file) => sum + file.body.length, 0);
   return (
     <section className="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-12 px-5 pb-20 sm:px-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-10">
       <div>
@@ -73,7 +72,7 @@ function Hero({ figure, files }: { figure: string; files: StarterFile[] }) {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href={ZIP} download className="press inline-flex h-12 items-center gap-3 rounded-full bg-[var(--ink)] pl-5 pr-2 text-[15px] font-medium text-white">
               Download the starter
-              <span className="rounded-full bg-white/12 px-2.5 py-1 font-mono text-[12px] text-white/75">.zip · {Math.round(bytes / 1000)} KB</span>
+              <span className="rounded-full bg-white/12 px-2.5 py-1 font-mono text-[12px] text-white/75">.zip · {files.length} files</span>
             </a>
             <a href="#files" className="press inline-flex h-12 items-center rounded-full px-5 text-[15px] font-medium text-[var(--ink)] ring-1 ring-[var(--rule)] hover:bg-white">
               Read the files here
@@ -358,7 +357,7 @@ function Setup() {
 
 function Step({ step }: { step: (typeof STEPS)[number] }) {
   const ref = useRef<HTMLLIElement>(null);
-  const seen = useInView(ref, { once: true, margin: "0px 0px -25% 0px" });
+  const seen = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
   const reduce = useReducedMotion();
   return (
     <li ref={ref} className="relative pb-12 last:pb-0">
@@ -648,7 +647,7 @@ const STARTER_CSS = `
   background-size:28px 28px}
 .starter .press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),background-color .2s}
 .starter .press:active{transform:scale(.96)}
-.starter-plate{--anatomy-card:#fbfbfa;border-radius:18px;box-shadow:0 0 0 1px var(--rule),0 30px 70px -40px rgba(21,23,26,.45)}
+.starter-plate{--anatomy-card:#fbfbfa;border-radius:18px;padding:44px 8px 52px;box-shadow:0 0 0 1px var(--rule),0 30px 70px -40px rgba(21,23,26,.45)}
 .starter-stage:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:8px}
 .starter-stage [data-part="lamp"] .iso-top,.starter-stage [data-part="lamp"] .iso-fill{transition:fill .35s ease}
 .starter-stage[data-verdict="pass"] [data-part="lamp"] .iso-top{fill:#43c48a}

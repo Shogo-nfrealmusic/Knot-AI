@@ -39,10 +39,11 @@ export const TIP_R = 2.6;
 const CENTRE = -24 + BLOCK_W / 2;
 export const STOPS = BLOCKS.map((_, index) => DIAL[0] - CENTRE - STEP * index);
 
-const CARD_BASE = { x: -84, y: 32, w: 40, d: 11, r: 2 };
-const CARD = { x: -81, y: 36.6, w: 34, d: 1.8, r: 0.4 };
+// Front-left corner, clear of the magnetic base and the ruler strip on screen.
+const CARD_BASE = { x: -112, y: 44, w: 40, d: 11, r: 2 };
+const CARD = { x: -109, y: 48.6, w: 34, d: 1.8, r: 0.4 };
 const CARD_BASE_H = 5;
-const CARD_H = 30;
+const CARD_H = 26;
 
 export const LAMP: k.Plane = [110, 40];
 
@@ -50,7 +51,7 @@ export const P = k.fitProjection(
   [...k.boxCorners(PLATE, -PLATE_H - FOOT_H, 0), [POST[0], POST[1], POST_TOP + 2], [DIAL[0] + DIAL_R, 0, DIAL_TOP]],
   WIDTH,
   HEIGHT,
-  { pad: 26, azimuth: 42 },
+  { pad: 14, azimuth: 42 },
 );
 
 const at = (point: k.Point3) => k.iso(point, P);
@@ -175,7 +176,7 @@ function card() {
   out.push(k.faceTextSvg(k.sideMatrix([CARD.x + 3, face], top - 5, P, "left"), "CLAUDE.md", { size: 3.4, tone: "hi" }));
   // Three spec lines, one per block: a short rule for the label and the target height in print.
   SPEC.forEach((value, index) => {
-    const z = top - 11 - index * 5.6;
+    const z = top - 10.5 - index * 4.8;
     out.push(k.faceTextSvg(k.sideMatrix([CARD.x + 3, face], z + 1.1, P, "left"), `check ${index + 1}`, { size: 2.2, tone: "mid" }));
     out.push(k.faceTextSvg(k.sideMatrix([CARD.x + CARD.w - 3, face], z + 1.1, P, "left"), String(value), { size: 2.4, tone: "hi", anchor: "end" }));
   });
