@@ -8,6 +8,7 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { DropAboutBlock, DropBreakdownBlock, DropTip, FollowBlock, ToolRow } from "@/app/free/FreeParts";
 import { GuideSignup } from "@/app/free/GuideSignup";
 import { KitSales } from "@/app/free/KitSales";
+import { StarterSignup } from "@/app/free/StarterSignup";
 import { dropKind, formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
 import { siteOgImage, twitterCard } from "@/lib/site";
 
@@ -102,6 +103,12 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
           </>
         )}
       </GridSection>
+
+      {drop.kit || drop.guide ? null : (
+        <GridSection>
+          <StarterSignup />
+        </GridSection>
+      )}
 
       <GridSection className="bg-neutral-50">
         <FollowBlock />
