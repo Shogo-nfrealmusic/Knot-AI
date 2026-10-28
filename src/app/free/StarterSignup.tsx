@@ -50,7 +50,7 @@ function InterviewDemo() {
   const [phase, setPhase] = useState<"ask" | "answer" | "write">("ask");
   const done = reduce || step >= steps.length;
   const current = steps[Math.min(step, steps.length - 1)];
-  const ask = useTyped(current.ask, inView && !done && phase !== "write" ? true : false, 18);
+  const ask = useTyped(current.ask, inView && !done, 18);
   const answer = useTyped(current.answer, inView && !done && phase !== "ask", 26);
 
   useEffect(() => {
@@ -80,9 +80,13 @@ function InterviewDemo() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2">
-        <div className="min-h-[188px] border-b border-neutral-200 p-5 font-mono text-[13px] leading-relaxed sm:border-b-0 sm:border-r">
+        {/* Fixed heights so the window doesn't grow, and the page doesn't shift, while the file fills in. */}
+        <div className="h-[168px] border-b border-neutral-200 p-5 font-mono text-[13px] leading-relaxed sm:h-[300px] sm:border-b-0 sm:border-r">
           {done ? (
-            <p className="text-neutral-500">Interview finished. 3 sections written.</p>
+            <>
+              <p className="text-warm">✻ CLAUDE.md is ready.</p>
+              <p className="mt-3 text-neutral-600">Every new session now starts knowing your goal, when to push back, and how to check its work.</p>
+            </>
           ) : (
             <>
               <p className="text-warm">✻ {ask}</p>
@@ -97,7 +101,7 @@ function InterviewDemo() {
           )}
         </div>
 
-        <div className="min-h-[188px] bg-neutral-50 p-5 font-mono text-[12.5px] leading-relaxed">
+        <div className="h-[300px] bg-neutral-50 p-5 font-mono text-[12.5px] leading-relaxed">
           <p className="text-neutral-400">CLAUDE.md</p>
           <div className="mt-2 space-y-2.5">
             {steps.slice(0, written).map((s) => (
@@ -127,7 +131,7 @@ export function StarterSignup() {
         <div className="md:col-start-1 md:row-start-1">
           <p className="text-[15px] text-white/80">Free for people building with Claude Code</p>
           <h2 className="mt-4 font-serif text-[40px] leading-[1.02] tracking-[-0.01em] sm:text-[52px]">
-            Two of us run a six-figure business on this Claude Code setup.
+            Two of us run a six‑figure business on this Claude Code setup.
           </h2>
           <p className="mt-5 max-w-md text-[16px] leading-relaxed text-white/90">
             Most setups forget who you are every session. This one knows your goal, pushes back when you drift, and
