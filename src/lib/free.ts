@@ -128,7 +128,7 @@ export const INSTAGRAM_HANDLE = "copilot_shogo";
 export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 /** One Kit form shared by every tool page: the email gets the Copilot OS Starter (Kit's incentive email holds the link). */
-export const STARTER_FORM = { uid: "661d78457a", script: "https://hustling-builder-9442.kit.com/661d78457a/index.js" };
+export const STARTER_FORM = { uid: "b0e7d6be13", script: "https://hustling-builder-9442.kit.com/b0e7d6be13/index.js" };
 
 // free/43: the build script exactly as it was run before publishing (smoke-tested end to end, 2026-10-27)
 const KEYBOARD_EARS_PY = String.raw`"""Keyboard ears — hear which key was pressed (a small version of the 2023 acoustic side-channel study).
