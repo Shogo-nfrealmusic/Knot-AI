@@ -7,8 +7,8 @@ function CardShell({ label, text, children, wide }: { label: string; text: strin
   return (
     <li className={`su-card ${wide ? "lg:col-span-2" : ""}`}>
       <div className="relative z-10 p-7 pb-0">
-        <p className="text-[15px] font-medium text-white">{label}</p>
-        <p className="mt-1.5 max-w-[34ch] text-pretty text-[14px] leading-relaxed text-white/50">{text}</p>
+        <p className="text-[15px] font-medium text-neutral-900">{label}</p>
+        <p className="mt-1.5 max-w-[34ch] text-pretty text-[14px] leading-relaxed text-neutral-500">{text}</p>
       </div>
       <div className="relative mt-6 h-[230px] overflow-hidden">{children}</div>
     </li>
@@ -26,19 +26,21 @@ const RULES: [string, string][] = [
 
 function ClaudeMd() {
   return (
-    <div className="su-panel absolute inset-x-7 top-0 bottom-[-20px]">
+    <div className="absolute inset-x-7 top-0 bottom-[-20px]">
+      <div className="su-panel h-full">
       <span className="su-beam" aria-hidden />
-      <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-2.5 font-mono text-[11px] text-white/40">
+      <div className="flex items-center gap-2 border-b border-neutral-200 px-4 py-2.5 font-mono text-[11px] text-neutral-400">
         <span className="size-1.5 rounded-full bg-[#ff6b3d]" />
         CLAUDE.md
       </div>
       <div className="space-y-2 px-4 py-3 font-mono text-[12px] leading-snug">
         {RULES.map(([key, value], i) => (
           <div key={key} className="su-row flex gap-3" style={{ "--i": i } as React.CSSProperties}>
-            <span className="w-[110px] shrink-0 text-white/35">{key}</span>
-            <span className="truncate text-white/85">{value}</span>
+            <span className="w-[110px] shrink-0 text-neutral-400">{key}</span>
+            <span className="truncate text-neutral-700">{value}</span>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
@@ -54,13 +56,13 @@ const JOBS: [string, string][] = [
 function Schedule() {
   return (
     <div className="absolute inset-x-7 top-0">
-      <p className="mb-3 text-[12px] text-white/40">Running on schedule</p>
+      <p className="mb-3 text-[12px] text-neutral-400">Running on schedule</p>
       <div className="relative">
         <span className="su-select" aria-hidden />
         {JOBS.map(([when, job]) => (
           <div key={when} className="relative z-10 flex h-11 items-center gap-4 px-3 text-[13px]">
-            <span className="w-11 font-mono text-[12px] text-white/40">{when}</span>
-            <span className="text-white/85">{job}</span>
+            <span className="w-11 font-mono text-[12px] text-neutral-400">{when}</span>
+            <span className="text-neutral-700">{job}</span>
           </div>
         ))}
       </div>
@@ -74,19 +76,19 @@ function Verifier() {
       <div className="su-glow-orange" aria-hidden />
       <div className="su-panel relative w-[min(300px,85%)] p-4">
         <div className="flex items-center justify-between">
-          <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[11px] font-medium text-emerald-300">
+          <span className="rounded-full border border-emerald-500/30 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-600">
             Verifier
           </span>
-          <span className="font-mono text-[11px] text-white/35">agent 2 of 2</span>
+          <span className="font-mono text-[11px] text-neutral-400">agent 2 of 2</span>
         </div>
         <div className="relative mt-4 h-10 text-[13px]">
           <p className="su-swap su-swap-a absolute inset-0">
-            <span className="text-white/40">Checking: </span>
-            <span className="text-white/85">October books vs. the bank</span>
+            <span className="text-neutral-400">Checking: </span>
+            <span className="text-neutral-700">October books vs. the bank</span>
           </p>
           <p className="su-swap su-swap-b absolute inset-0">
-            <span className="text-emerald-300">Checked. </span>
-            <span className="text-white/85">3 entries sent back to fix</span>
+            <span className="text-emerald-600">Checked. </span>
+            <span className="text-neutral-700">3 entries sent back to fix</span>
           </p>
         </div>
       </div>
@@ -117,13 +119,13 @@ function Tools() {
       </svg>
       {TOOLS.map((tool) => (
         <span key={tool.src} className={`su-chip absolute ${tool.pos}`}>
-          <Image src={tool.src} alt="" width={22} height={22} className={tool.invert ? "invert" : ""} />
+          <Image src={tool.src} alt="" width={22} height={22}  />
         </span>
       ))}
       <span className="su-core absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <Image src="/setup/logos/claude.svg" alt="" width={34} height={34} />
       </span>
-      <span className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/10 bg-black/60 px-3 py-1 text-[11px] text-white/70">
+      <span className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1 text-[11px] text-neutral-600">
         <span className="size-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
         MCP online
       </span>
@@ -135,14 +137,14 @@ function WhileYouSleep() {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="su-pill relative flex w-[min(420px,88%)] items-center gap-4 rounded-full px-3 py-3">
-        <span className="relative flex size-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04]">
-          <Image src="/links/orbit/yellow-think.png" alt="" width={44} height={40} className="translate-y-0.5" />
+        <span className="relative flex size-12 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-neutral-50">
+          <Image src="/setup/orbit-type.png" alt="" width={44} height={40} className="translate-y-0.5" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[13px] text-white/60">
+          <p className="truncate text-[13px] text-neutral-500">
             Drafting this month&apos;s books<span className="su-dots" />
           </p>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-200">
             <div className="su-progress h-full rounded-full bg-gradient-to-r from-[#ff6b3d] to-[#ffb38a]" />
           </div>
         </div>
@@ -153,17 +155,18 @@ function WhileYouSleep() {
 
 function Brief() {
   return (
-    <div className="absolute inset-x-7 top-0 bottom-0">
-      <div className="su-panel p-4 text-[13px] leading-relaxed">
-        <p className="text-[11px] text-white/35">Morning brief, 07:30</p>
-        <p className="mt-2 text-white/85">
-          <span className="text-white">4 new bookings</span>, 2 for next week. Revenue is 12% ahead of last month.
+    <div className="absolute inset-x-7 top-4 bottom-0">
+      <div className="su-panel p-5 text-[14px] leading-relaxed">
+        <p className="text-[11px] text-neutral-400">Morning brief, 07:30</p>
+        <p className="mt-2 text-neutral-700">
+          <span className="text-neutral-900">4 new bookings</span>, 2 for next week. Revenue is 12% ahead of last month.
         </p>
-        <p className="mt-2 text-white/85">
-          <span className="text-[#ffb38a]">Needs you:</span> approve the refund for one booking.
+        <p className="mt-2 text-neutral-700">
+          <span className="text-[var(--warm)]">Needs you:</span> approve the refund for one booking.
         </p>
+        <p className="mt-2 text-neutral-400">Done overnight: books drafted, 3 reviews answered, Friday&apos;s report queued.</p>
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0b0b0c] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
     </div>
   );
 }
