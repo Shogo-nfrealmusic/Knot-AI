@@ -6,11 +6,9 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { FOUNDING } from "@/lib/setup";
 import { cn } from "@/lib/utils";
 import Cards from "./Cards";
-import HeroStage from "./HeroStage";
+import Constellation from "./Constellation";
 import JobWall from "./JobWall";
 import Pricing from "./Pricing";
-import ReelProof from "./ReelProof";
-import Sprawl from "./Sprawl";
 
 export const metadata: Metadata = {
   title: "Copilot OS Setup | Shogo Kikuchi",
@@ -41,8 +39,9 @@ const SETUP_CSS = `
 .su-grid{position:absolute;inset:0;background-image:linear-gradient(#ececec 1px,transparent 1px),linear-gradient(90deg,#ececec 1px,transparent 1px);background-size:24px 24px;mask-image:radial-gradient(closest-side,black,transparent)}
 .su-wire{fill:none;stroke:#d4d4d4;stroke-width:1;stroke-dasharray:3 5;animation:su-wire 1.6s linear infinite;animation-delay:calc(var(--i) * -.4s)}
 @keyframes su-wire{to{stroke-dashoffset:-16}}
-.su-chip,.su-node{display:flex;align-items:center;justify-content:center;min-width:46px;height:46px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px #e5e5e5,0 6px 16px -8px rgba(0,0,0,.2)}
-.su-node{transition:left .9s cubic-bezier(.34,1.2,.64,1),top .9s cubic-bezier(.34,1.2,.64,1)}
+.su-chip{display:flex;align-items:center;justify-content:center;min-width:46px;height:46px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px #e5e5e5,0 6px 16px -8px rgba(0,0,0,.2)}
+.su-node{border-radius:28%;background:#fff;box-shadow:0 0 0 1px #e5e5e5,0 10px 24px -12px rgba(0,0,0,.28);will-change:left,top}
+.su-ring{fill:none;stroke:#e5e5e5;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 6}
 .su-core,.su-hub{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px rgba(224,85,47,.35),0 0 0 6px rgba(224,85,47,.06),0 18px 40px -14px rgba(224,85,47,.45)}
 .su-tangle{fill:none;stroke:#d4d4d4;stroke-width:1;stroke-dasharray:2 4}
 .su-spoke{fill:none;stroke:var(--warm);stroke-opacity:.45;stroke-width:1.2;stroke-dasharray:4 6;animation:su-wire 1.2s linear infinite}
@@ -114,20 +113,21 @@ export default function SetupPage() {
             </a>
           </div>
         </div>
-        <div className={cn(entrance, "relative mt-6 px-4 pb-10 sm:px-10")} style={stagger(350, 24)}>
-          <HeroStage />
+        <div className="relative mt-4 px-2 pb-12 sm:px-6">
+          <Constellation />
         </div>
       </GridSection>
 
-      <GridSection innerClassName="py-20 sm:py-28">
-        <Heading
-          eyebrow="The problem"
-          title="Your business lives in a dozen tabs."
-          accent="Claude can't see any of them."
-          text="So every request starts from zero, and you end up copying between tools by hand. A setup gives Claude the context once, and wires it into the tools you already use."
-        />
-        <div className="mt-12 px-4 sm:px-10">
-          <Sprawl />
+      <GridSection>
+        <div className="flex flex-col items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-center text-[13px] text-neutral-500 sm:flex-row sm:px-10">
+          <span className="text-neutral-800">Built on the system behind a six-figure business I co-founded.</span>
+          <span className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
+            <span>Videos made overnight</span>
+            <span className="text-neutral-300">/</span>
+            <span>Books drafted monthly</span>
+            <span className="text-neutral-300">/</span>
+            <span>Every decision logged</span>
+          </span>
         </div>
       </GridSection>
 
@@ -141,10 +141,6 @@ export default function SetupPage() {
         <div className="mt-12 px-3 sm:px-6">
           <Cards />
         </div>
-      </GridSection>
-
-      <GridSection innerClassName="px-4 py-20 sm:px-10 sm:py-28">
-        <ReelProof />
       </GridSection>
 
       <GridSection innerClassName="py-20 sm:py-28">

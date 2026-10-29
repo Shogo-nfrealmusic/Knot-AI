@@ -69,11 +69,14 @@ export default function JobWall() {
           </div>
         ))}
 
-        <div className="su-tile-big col-span-3 row-span-2 sm:col-span-2">
-          <Image src="/setup/reel-machine.jpg" alt="" width={720} height={1280} className="absolute inset-0 size-full object-cover object-top opacity-90" />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-12">
-            <p className="text-[15px] font-medium text-white">Nightly reels</p>
-            <p className="text-[12px] text-white/70">Running at our studio</p>
+        <div className="su-tile-big col-span-3 row-span-2 bg-white sm:col-span-2">
+          <div className="su-grid" aria-hidden />
+          <span className="su-hub absolute left-1/2 top-[54%] size-[84px] -translate-x-1/2 -translate-y-1/2">
+            <Image src="/setup/logos/claude.svg" alt="" width={40} height={40} />
+          </span>
+          <div className="absolute left-4 top-4">
+            <p className="text-[15px] font-medium text-neutral-900">Runs on Claude Code</p>
+            <p className="text-[12px] text-neutral-500">On your machine, in your tools</p>
           </div>
         </div>
 
