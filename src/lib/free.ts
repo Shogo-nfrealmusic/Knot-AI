@@ -68,9 +68,18 @@ export type BreakdownItem = {
   why?: RichText;
   /** replaces "Why it matters" (e.g. "Watch out") */
   whyLabel?: string;
+  /** footage or stills under the text; with an odd count the first one spans the full width */
+  media?: BreakdownMedia[];
+  /** an animated explainer under the media */
+  demo?: "oled";
 };
 
+/** A muted looping clip (`video`, with `src` as its poster) or a still. Paths are 4:3 unless `wide`. */
+export type BreakdownMedia = { src: string; video?: string; alt: string; caption: string; wide?: boolean };
+
 export type DropBreakdown = {
+  /** a wide clip above the 60-second version */
+  hero?: BreakdownMedia;
   /** "The 60-second version": one line per bullet */
   tldr: RichText[];
   /** `unit` names the items in the section label; default "launch" / "launches" */
@@ -213,6 +222,13 @@ const drops: FreeDrop[] = [
     tools: [],
     icon: "cpu",
     breakdown: {
+      hero: {
+        src: "/free/45/hero.jpg",
+        video: "/free/45/hero.mp4",
+        alt: "The new MacBook Pro seen from above in the dark, its OLED screen glowing with colourful artwork",
+        caption: "From Apple's film for the MacBook Pro with PROLED XDR Display",
+        wide: true,
+      },
       tldr: [
         ["MacBook Pro gets an OLED touchscreen and the Dynamic Island. From $2,899, available Nov 6."],
         ["Don't need touch? The 14-inch MacBook Pro with the new M6 chip starts at $1,999."],
@@ -229,18 +245,26 @@ const drops: FreeDrop[] = [
               whoLabel: "Price & availability (U.S.)",
               who: ["From $2,899 (14-inch) and $3,399 (16-inch). Pre-order Oct 28, available Nov 6."],
               more: { label: "Reported", text: ["Outlets report that the Apple logo on the lid glows again. Apple's announcement doesn't mention it."] },
+              media: [
+                { src: "/free/45/touch.jpg", video: "/free/45/touch.mp4", alt: "A finger drags a 3D model directly on the MacBook Pro screen", caption: "Touch on a Mac (Apple's film)" },
+                { src: "/free/45/island.jpg", alt: "The Dynamic Island at the top of the Mac screen, showing a song with play controls", caption: "The Dynamic Island on the Mac (Apple)" },
+                { src: "/free/45/logo.jpg", alt: "The Apple logo on the closed lid, lit up in the dark", caption: "The lit logo, in Apple's own film" },
+              ],
+              demo: "oled",
             },
             {
               name: "14-inch MacBook Pro with M6",
               what: ["The new M6 chip in the 14-inch. Same Liquid Retina XDR (mini-LED) screen: no touch, no OLED. Up to 24 hours of battery."],
               whoLabel: "Price & availability (U.S.)",
               who: ["From $1,999 ($1,899 education). Pre-order Oct 28, available Nov 6."],
+              media: [{ src: "/free/45/m6.jpg", video: "/free/45/m6.mp4", alt: "The 14-inch MacBook Pro opening behind a large M6", caption: "From Apple's video" }],
             },
             {
               name: "iMac with M6",
               what: ["M6 in the same 24-inch 4.5K design, in seven colours. Apple says up to 5x faster on-device AI than M4."],
               whoLabel: "Price & availability (U.S.)",
               who: ["From $1,499 with a 10-core CPU and GPU ($1,449 education). Pre-order Oct 28, available Nov 6."],
+              media: [{ src: "/free/45/imac.jpg", video: "/free/45/imac.mp4", alt: "The iMac turning to show its seven colours side by side", caption: "The seven colours (Apple's video)" }],
             },
           ],
         },
@@ -252,6 +276,7 @@ const drops: FreeDrop[] = [
               what: ["Apple's biggest iPad mini update: an 8.5-inch OLED screen in the same footprint, A20 Pro, IP67 water and dust resistance, 5.4 mm thin. Ships with iPadOS 27 and Siri AI."],
               whoLabel: "Price & availability (U.S.)",
               who: ["From $699 (Wi-Fi), $849 (Wi-Fi + Cellular). Pre-order Oct 28, available Nov 6."],
+              media: [{ src: "/free/45/ipadmini.jpg", video: "/free/45/ipadmini.mp4", alt: "A hand turns the thin iPad mini to show its OLED screen", caption: "5.4 mm thin (Apple's video)" }],
             },
           ],
         },
@@ -264,12 +289,17 @@ const drops: FreeDrop[] = [
               what: ["Final Cut Pro for Mac now includes MotionVFX built in. Logic Pro gets a new intelligent assistant (beta)."],
               whoLabel: "Price & availability",
               who: ["A free update for existing subscribers this November. New: $12.99/month or $129/year."],
+              media: [
+                { src: "/free/45/fcp.jpg", alt: "Final Cut Pro on a MacBook Pro with a MotionVFX title on the video", caption: "MotionVFX in Final Cut Pro (Apple)" },
+                { src: "/free/45/logic.jpg", alt: "Logic Pro with the new assistant panel open on the right", caption: "The assistant in Logic Pro (Apple)" },
+              ],
             },
             {
               name: "Siri AI in more languages",
               what: ["Siri AI (beta) now works in Japanese, French, Korean, Portuguese and Spanish, with the 27.2 updates."],
               whoLabel: "Availability",
               who: ["Free, in beta, with daily limits on some features. Apple says expanded access will cost a fee in the future. Not in the EU on iOS, iPadOS or watchOS."],
+              media: [{ src: "/free/45/siri.jpg", alt: "Two iPad minis, one showing Siri AI answering a question over an article", caption: "Siri AI on the new iPad mini (Apple)" }],
             },
           ],
         },
