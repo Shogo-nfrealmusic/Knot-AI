@@ -203,6 +203,90 @@ if __name__ == "__main__":
 
 const drops: FreeDrop[] = [
   {
+    number: 45,
+    slug: "45-apple-week",
+    title: "Apple's week on one page: touch MacBook Pro, M6, OLED iPad mini, iMac, Creator Studio, Siri AI",
+    description:
+      "Six announcements in three days (Oct 26–28, 2026): the first Mac with a touchscreen, a 14-inch MacBook Pro with M6, an OLED iPad mini, iMac with M6, new tools in Final Cut Pro and Logic Pro, and Siri AI in Japanese and four more languages. Every price and date, from Apple's own announcements.",
+    date: "2026-10-29",
+    keyword: "MAC",
+    tools: [],
+    icon: "cpu",
+    breakdown: {
+      tldr: [
+        ["MacBook Pro gets an OLED touchscreen and the Dynamic Island. From $2,899, available Nov 6."],
+        ["Don't need touch? The 14-inch MacBook Pro with the new M6 chip starts at $1,999."],
+        ["iPad mini goes OLED: 8.5 inches in the same footprint, A20 Pro, IP67. From $699, Nov 6."],
+        ["iMac gets M6 in the same seven colours, from $1,499. Final Cut Pro and Logic Pro get new tools, and Siri AI now speaks Japanese (beta)."],
+      ],
+      sections: [
+        {
+          title: "Macs",
+          items: [
+            {
+              name: "MacBook Pro with PROLED XDR Display (14\" and 16\")",
+              what: ["Touch for the first time on a Mac. A tandem OLED screen Apple calls PROLED XDR (each pixel makes its own light, so black is truly black), and the Dynamic Island on the Mac. M5 Pro or M5 Max."],
+              whoLabel: "Price & availability (U.S.)",
+              who: ["From $2,899 (14-inch) and $3,399 (16-inch). Pre-order Oct 28, available Nov 6."],
+              more: { label: "Reported", text: ["Outlets report that the Apple logo on the lid glows again. Apple's announcement doesn't mention it."] },
+            },
+            {
+              name: "14-inch MacBook Pro with M6",
+              what: ["The new M6 chip in the 14-inch. Same Liquid Retina XDR (mini-LED) screen: no touch, no OLED. Up to 24 hours of battery."],
+              whoLabel: "Price & availability (U.S.)",
+              who: ["From $1,999 ($1,899 education). Pre-order Oct 28, available Nov 6."],
+            },
+            {
+              name: "iMac with M6",
+              what: ["M6 in the same 24-inch 4.5K design, in seven colours. Apple says up to 5x faster on-device AI than M4."],
+              whoLabel: "Price & availability (U.S.)",
+              who: ["From $1,499 with a 10-core CPU and GPU ($1,449 education). Pre-order Oct 28, available Nov 6."],
+            },
+          ],
+        },
+        {
+          title: "iPad",
+          items: [
+            {
+              name: "iPad mini",
+              what: ["Apple's biggest iPad mini update: an 8.5-inch OLED screen in the same footprint, A20 Pro, IP67 water and dust resistance, 5.4 mm thin. Ships with iPadOS 27 and Siri AI."],
+              whoLabel: "Price & availability (U.S.)",
+              who: ["From $699 (Wi-Fi), $849 (Wi-Fi + Cellular). Pre-order Oct 28, available Nov 6."],
+            },
+          ],
+        },
+        {
+          title: "Software",
+          unit: { one: "update", many: "updates" },
+          items: [
+            {
+              name: "Apple Creator Studio",
+              what: ["Final Cut Pro for Mac now includes MotionVFX built in. Logic Pro gets a new intelligent assistant (beta)."],
+              whoLabel: "Price & availability",
+              who: ["A free update for existing subscribers this November. New: $12.99/month or $129/year."],
+            },
+            {
+              name: "Siri AI in more languages",
+              what: ["Siri AI (beta) now works in Japanese, French, Korean, Portuguese and Spanish, with the 27.2 updates."],
+              whoLabel: "Availability",
+              who: ["Free, in beta, with daily limits on some features. Apple says expanded access will cost a fee in the future. Not in the EU on iOS, iPadOS or watchOS."],
+            },
+          ],
+        },
+      ],
+      notes: ["Prices and dates are U.S., from Apple's announcements of Oct 26–28, 2026, as of Oct 29."],
+      sources: [
+        { text: "Apple: MacBook Pro with PROLED XDR Display", href: "https://www.apple.com/newsroom/2026/10/apple-unveils-groundbreaking-macbook-pro-with-proled-xdr-display/" },
+        { text: "Apple: 14-inch MacBook Pro with M6", href: "https://www.apple.com/newsroom/2026/10/apple-introduces-the-new-14-inch-macbook-pro-with-m6/" },
+        { text: "Apple: iMac with M6", href: "https://www.apple.com/newsroom/2026/10/apple-unveils-new-imac-with-m6/" },
+        { text: "Apple: iPad mini", href: "https://www.apple.com/newsroom/2026/10/apple-gives-ipad-mini-its-biggest-update-ever/" },
+        { text: "Apple: Apple Creator Studio update", href: "https://www.apple.com/newsroom/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/" },
+        { text: "Apple: Siri AI in more languages", href: "https://www.apple.com/newsroom/2026/10/siri-ai-is-available-in-more-languages-starting-today/" },
+        { text: "MacRumors (the glowing logo report)", note: "secondary" },
+      ],
+    },
+  },
+  {
     number: 44,
     slug: "44-downloads-guard",
     title: "Downloads guard: 3 checks to run tonight (+3 more) so a file a website drops can't steer your coding agent",
