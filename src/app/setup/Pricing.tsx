@@ -34,7 +34,7 @@ export default function Pricing() {
               onClick={() => setBilling(b.id)}
               className={cn(
                 "relative z-10 flex h-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 text-[13px] font-medium transition-colors active:scale-[0.96] sm:px-6",
-                billing === b.id ? "text-neutral-900" : "text-neutral-600 hover:text-neutral-900",
+                billing === b.id ? "text-white" : "text-neutral-600 hover:text-neutral-900",
               )}
             >
               {b.label}

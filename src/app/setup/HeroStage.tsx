@@ -19,7 +19,7 @@ export default function HeroStage() {
     <div className="relative mx-auto w-full max-w-[1000px]" style={{ aspectRatio: `${W} / ${H}` }}>
       <div aria-hidden className="absolute left-1/2 top-[46%] h-[70%] w-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ff6b3d] opacity-[0.16] blur-[90px]" />
       <div className="su-float absolute left-[24%] top-0 w-[52%]">
-        <Image src="/setup/orbit-type.png" alt="Orbit, the copilot_shogo mascot, working at a laptop" width={1200} height={1100} priority sizes="(min-width: 1024px) 520px, 60vw" className="h-auto w-full" />
+        <Image src="/setup/orbit-type.png" alt="Orbit, the copilot_shogo mascot, working at a laptop" width={1200} height={1100} priority sizes="(min-width: 1024px) 520px, 60vw" className="h-auto w-full [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black_84%,transparent_100%)]" />
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="su-pins pointer-events-none absolute inset-0 hidden size-full md:block" aria-hidden>
         {PINS.map((pin, i) => (

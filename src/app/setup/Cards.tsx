@@ -33,10 +33,10 @@ function ClaudeMd() {
         <span className="size-1.5 rounded-full bg-[#ff6b3d]" />
         CLAUDE.md
       </div>
-      <div className="space-y-2 px-4 py-3 font-mono text-[12px] leading-snug">
+      <div className="space-y-2 px-4 py-3 font-mono text-[11px] leading-snug">
         {RULES.map(([key, value], i) => (
           <div key={key} className="su-row flex gap-3" style={{ "--i": i } as React.CSSProperties}>
-            <span className="w-[110px] shrink-0 text-neutral-400">{key}</span>
+            <span className="w-[88px] shrink-0 text-neutral-400">{key}</span>
             <span className="truncate text-neutral-700">{value}</span>
           </div>
         ))}
