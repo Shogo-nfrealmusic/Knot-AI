@@ -82,7 +82,7 @@ function Interview({ t }: { t: number }) {
           </div>
         ))}
       </div>
-      <div className="su-panel overflow-hidden bg-[#141413] p-0">
+      <div className="su-panel overflow-hidden p-0" style={{ background: "#141413" }}>
         <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5 font-mono text-[11px] text-white/50">
           <span className="text-[#D97757]">✻</span> CLAUDE.md
         </div>
@@ -160,7 +160,7 @@ function Clock({ t }: { t: number }) {
   const R = 130;
   return (
     <div className="su-panel flex items-center justify-center p-6">
-      <svg viewBox="-190 -190 380 380" className="w-full max-w-[380px]">
+      <svg viewBox="-250 -190 500 380" className="w-full max-w-[480px]">
         <circle r={R} fill="none" stroke="#e5e5e5" strokeWidth="1" />
         {Array.from({ length: 24 }, (_, i) => (
           <line key={i} x1={Math.cos(a(i)) * (R - (i % 6 ? 6 : 12))} y1={Math.sin(a(i)) * (R - (i % 6 ? 6 : 12))} x2={Math.cos(a(i)) * R} y2={Math.sin(a(i)) * R} stroke={i % 6 ? "#d4d4d4" : "#a3a3a3"} strokeWidth="1" />
