@@ -7,6 +7,7 @@ import { FOUNDING } from "@/lib/setup";
 import { cn } from "@/lib/utils";
 import Cards from "./Cards";
 import Constellation from "./Constellation";
+import DuoHero from "./DuoHero";
 import JobWall from "./JobWall";
 import Pricing from "./Pricing";
 
@@ -113,8 +114,8 @@ export default function SetupPage() {
             </a>
           </div>
         </div>
-        <div className="relative -mt-2 px-2 pb-10 sm:px-6">
-          <Constellation />
+        <div className="relative -mt-4 px-0 pb-6 sm:-mt-10">
+          <DuoHero />
         </div>
       </GridSection>
 
@@ -128,6 +129,18 @@ export default function SetupPage() {
             <span className="text-neutral-300">/</span>
             <span>Every decision logged</span>
           </span>
+        </div>
+      </GridSection>
+
+      <GridSection innerClassName="py-20 sm:py-28">
+        <Heading
+          eyebrow="The problem"
+          title="Your business lives in a dozen tools."
+          accent="Claude sees all of them."
+          text="Today every request starts from zero and you copy between tabs by hand. A setup gives Claude your context once and wires it into the tools you already use."
+        />
+        <div className="mt-6 px-2 sm:px-6">
+          <Constellation />
         </div>
       </GridSection>
 
