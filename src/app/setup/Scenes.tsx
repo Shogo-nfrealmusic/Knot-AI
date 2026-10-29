@@ -90,7 +90,7 @@ const QA = [
 function Interview({ p }: { p: number }) {
   const at = (i: number) => 0.06 + i * 0.2;
   return (
-    <div className="flex size-full flex-col bg-[#141413] font-mono text-[1.45cqw] leading-[1.5] text-[#ECEAE4]">
+    <div className="flex size-full flex-col bg-[#141413] font-mono text-[1.75cqw] leading-[1.5] text-[#ECEAE4]">
       <div className="relative flex h-[5.2cqw] shrink-0 items-center gap-[0.8cqw] border-b border-white/10 bg-[#1F1E1D] px-[1.6cqw] text-[1.25cqw] text-white/45">
         <span className="size-[0.95cqw] rounded-full bg-[#ff5f57]" />
         <span className="size-[0.95cqw] rounded-full bg-[#febc2e]" />
@@ -231,12 +231,12 @@ function WatchFace({ p }: { p: number }) {
   );
 }
 
-function Scene({ flip, device, copy, track = "h-[220vh]" }: { flip?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
+function Scene({ flip, stack, device, copy, track = "h-[220vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
   const [ref, p] = useTrack<HTMLDivElement>();
   return (
     <div ref={ref} className={cn("relative", track)}>
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <div className="grid w-full items-center gap-6 px-4 sm:px-10 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+        <div className={cn("grid w-full items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 pt-14 text-center [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
           <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
             {copy}
           </div>
@@ -253,8 +253,9 @@ export default function Scenes() {
   return (
     <div>
       <Scene
+        stack
         device={(p) => (
-          <Device kind="mac" className="w-full max-w-[min(720px,100%,95vh)]">
+          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh-320px)*1.68))]">
             <Interview p={p} />
           </Device>
         )}
