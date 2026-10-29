@@ -5,11 +5,13 @@ import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import { GridSection } from "@/app/components/ui/grid-section";
 import { FOUNDING } from "@/lib/setup";
 import { cn } from "@/lib/utils";
-import Cards from "./Cards";
+import Apply from "./Apply";
+import Compound from "./Compound";
 import Constellation from "./Constellation";
-import DuoHero from "./DuoHero";
+import DuoScroll from "./DuoScroll";
 import JobWall from "./JobWall";
 import Pricing from "./Pricing";
+import Scenes from "./Scenes";
 
 export const metadata: Metadata = {
   title: "Copilot OS Setup | Shogo Kikuchi",
@@ -44,7 +46,7 @@ const SETUP_CSS = `
 .su-node{border-radius:28%;background:#fff;box-shadow:0 0 0 1px #e5e5e5,0 10px 24px -12px rgba(0,0,0,.28);will-change:left,top}
 .su-ring{fill:none;stroke:#e5e5e5;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:2 6}
 .su-core,.su-hub{display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:22px;background:#fff;box-shadow:0 0 0 1px rgba(224,85,47,.35),0 0 0 6px rgba(224,85,47,.06),0 18px 40px -14px rgba(224,85,47,.45)}
-.su-tangle{fill:none;stroke:#d4d4d4;stroke-width:1;stroke-dasharray:2 4}
+.su-tangle{fill:none;stroke:#e8a08a;stroke-width:1.2;stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
 .su-spoke{fill:none;stroke:var(--warm);stroke-opacity:.45;stroke-width:1.2;stroke-dasharray:4 6;animation:su-wire 1.2s linear infinite}
 .su-pill{background:#fff;box-shadow:0 0 0 1px #e5e5e5,0 24px 48px -24px rgba(224,85,47,.45)}
 .su-progress{animation:su-progress 6s cubic-bezier(.4,0,.2,1) infinite}
@@ -114,10 +116,10 @@ export default function SetupPage() {
             </a>
           </div>
         </div>
-        <div className="relative -mt-4 px-0 pb-6 sm:-mt-10">
-          <DuoHero />
-        </div>
+        <div className="h-10 sm:h-14" />
       </GridSection>
+
+      <DuoScroll />
 
       <GridSection>
         <div className="flex flex-col items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-center text-[13px] text-neutral-500 sm:flex-row sm:px-10">
@@ -144,16 +146,20 @@ export default function SetupPage() {
         </div>
       </GridSection>
 
-      <GridSection innerClassName="py-20 sm:py-28">
+      <GridSection innerClassName="pt-20 sm:pt-28">
         <Heading
           eyebrow="What you get"
-          title="Six parts, set up"
-          accent="for your business."
-          text="Built in the first month, then kept sharp. Each part is a real file or job on your machine, not a dashboard you log in to."
+          title="A setup that thinks like you,"
+          accent="checks itself, and never sleeps."
+          text="Built in the first month, then kept sharp. Everything lives on your machine as real files and jobs, not a dashboard you log in to."
         />
-        <div className="mt-12 px-3 sm:px-6">
-          <Cards />
+        <div className="mt-6">
+          <Scenes />
         </div>
+      </GridSection>
+
+      <GridSection innerClassName="py-20 sm:py-28">
+        <Compound />
       </GridSection>
 
       <GridSection innerClassName="py-20 sm:py-28">
@@ -184,6 +190,12 @@ export default function SetupPage() {
           I never log in to your computer or your accounts. I send the files and the steps; you run them. Your data stays
           with you.
         </p>
+      </GridSection>
+
+      <GridSection innerClassName="py-20 sm:py-28">
+        <div id="apply" className="scroll-mt-20">
+          <Apply />
+        </div>
       </GridSection>
     </SitePageLayout>
   );

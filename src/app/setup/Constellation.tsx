@@ -54,21 +54,31 @@ export default function Constellation() {
     const spokes = Array.from(host.querySelectorAll<SVGLineElement>("[data-spoke]"));
     const tangle = host.querySelector<SVGGElement>("[data-tangle]");
     const core = host.querySelector<HTMLElement>("[data-core]");
+    const status = host.querySelector<HTMLElement>("[data-status]");
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const start = performance.now();
     let frame = 0;
     let visible = true;
 
+    let eased = 0;
     const place = (now: number) => {
-      const elapsed = still ? 99999 : now - start;
-      const t = elapsed / 1000;
+      // Scroll drives the story: chaos while the stage enters the screen, order by the time it is centred.
+      const box = host.getBoundingClientRect();
+      const scrolled = Math.min(1, Math.max(0, (innerHeight * 0.95 - box.top) / (innerHeight * 0.75)));
+      eased += (scrolled - eased) * 0.12;
+      const elapsed = still ? 99999 : 650 + eased * 2100;
+      const t = (now - start) / 1000;
       let settle = 0;
       NODES.forEach((node, i) => {
         const p = Math.min(1, Math.max(0, (elapsed - 650 - node.delay) / 1300));
         const k = still ? 1 : spring(p);
         const to = orbitAt(node, t);
-        const x = node.scatter.x + (to.x - node.scatter.x) * k;
-        const y = node.scatter.y + (to.y - node.scatter.y) * k;
+        // Unsettled tools jitter: the noise of copy-pasting between tabs.
+        const shake = (1 - Math.min(1, p * 1.6)) * 6;
+        const jx = Math.sin(t * 7 + i * 1.7) * shake;
+        const jy = Math.cos(t * 6 + i * 2.3) * shake;
+        const x = node.scatter.x + (to.x - node.scatter.x) * k + jx;
+        const y = node.scatter.y + (to.y - node.scatter.y) * k + jy;
         nodes[i]!.style.left = `${(x / W) * 100}%`;
         nodes[i]!.style.top = `${(y / H) * 100}%`;
         spokes[i]!.setAttribute("x2", String(x));
@@ -78,8 +88,15 @@ export default function Constellation() {
       });
       const progress = settle / NODES.length;
       if (tangle) tangle.style.opacity = String(1 - Math.min(1, progress * 2.2));
+      if (status) {
+        const done = progress > 0.6;
+        if (status.dataset.done !== String(done)) {
+          status.dataset.done = String(done);
+          status.textContent = done ? "With your setup: Claude works across all of them" : "Today: you copy between 16 tabs by hand";
+        }
+      }
       if (core) {
-        const c = Math.min(1, Math.max(0, (elapsed - 500) / 700));
+        const c = Math.min(1, Math.max(0, (elapsed - 1400) / 900));
         core.style.opacity = String(c);
         core.style.transform = `translate(-50%, -50%) scale(${0.6 + 0.4 * (still ? 1 : spring(c))})`;
       }
@@ -138,6 +155,12 @@ export default function Constellation() {
       >
         <Image src="/setup/logos/claude.svg" alt="Claude" width={48} height={48} className="size-[46%]" priority />
       </span>
+      <p
+        data-status
+        className="absolute bottom-[-6%] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-neutral-200 bg-white px-4 py-1.5 text-[13px] text-neutral-600 shadow-sm"
+      >
+        Today: you copy between 16 tabs by hand
+      </p>
     </div>
   );
 }
