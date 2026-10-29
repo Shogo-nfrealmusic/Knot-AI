@@ -1,58 +1,78 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { IconPencil, IconSearch } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
-// "What you get", told as three scenes that each play when they scroll into view, Apple-style: big picture on one
-// side, three lines of copy on the other, alternating. Each picture is a small working model of the real thing.
+// "What you get", told on real devices (Artboard Studio mockups, exported once as small WebP stills). Each scene
+// pins while you scroll through it, and the scroll drives what happens on the screen, so nothing has played out
+// before you arrive. Screen content is live HTML laid into the screen rectangle measured from the export, sized in
+// container units so it stays sharp at any width.
 
-function useInView<T extends HTMLElement>(threshold = 0.45) {
+/** Scroll progress (0–1) through a tall track whose child is sticky. Eased, and idle while off screen. */
+function useTrack<T extends HTMLElement>() {
   const ref = useRef<T>(null);
-  const [seen, setSeen] = useState(false);
+  const [p, setP] = useState(0);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const o = new IntersectionObserver(([e]) => e?.isIntersecting && setSeen(true), { threshold });
-    o.observe(el);
-    return () => o.disconnect();
-  }, [threshold]);
-  return [ref, seen] as const;
-}
-
-/** A clock that only runs while the scene is on screen; returns seconds since it started. */
-function useClock(running: boolean) {
-  const [t, setT] = useState(0);
-  useEffect(() => {
-    if (!running || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const id = requestAnimationFrame(() => setT(running ? 99 : 0));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const id = requestAnimationFrame(() => setP(1));
       return () => cancelAnimationFrame(id);
     }
-    const start = performance.now();
     let frame = 0;
-    const loop = (now: number) => {
-      setT((now - start) / 1000);
-      frame = requestAnimationFrame(loop);
+    let eased = 0;
+    const tick = () => {
+      frame = requestAnimationFrame(tick);
+      const box = el.getBoundingClientRect();
+      if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
+      const target = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)));
+      eased += (target - eased) * 0.14;
+      setP((prev) => (Math.abs(prev - eased) > 0.0005 ? eased : prev));
     };
-    frame = requestAnimationFrame(loop);
+    frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [running]);
-  return t;
+  }, []);
+  return [ref, p] as const;
+}
+
+const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
+
+type Screen = { left: number; top: number; width: number; height: number; radius: string };
+const DEVICES = {
+  mac: { src: "/setup/mac.webp", aspect: "3186 / 1896", screen: { left: 14.94, top: 8.175, width: 70.151, height: 75.844, radius: "0.6cqw" } },
+  phone: { src: "/setup/phone.webp", aspect: "1180 / 2300", screen: { left: 8.814, top: 4.217, width: 82.288, height: 91.522, radius: "13cqw" } },
+  watch: { src: "/setup/watch.webp", aspect: "1460 / 2322", screen: { left: 11.233, top: 22.524, width: 73.219, height: 54.823, radius: "22cqw" } },
+} satisfies Record<string, { src: string; aspect: string; screen: Screen }>;
+
+function Device({ kind, className, children }: { kind: keyof typeof DEVICES; className?: string; children: React.ReactNode }) {
+  const d = DEVICES[kind];
+  return (
+    <div className={cn("relative", className)} style={{ aspectRatio: d.aspect }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={d.src} alt="" className="absolute inset-0 size-full mix-blend-multiply" />
+      <div
+        className="absolute overflow-hidden"
+        style={{ left: `${d.screen.left}%`, top: `${d.screen.top}%`, width: `${d.screen.width}%`, height: `${d.screen.height}%`, borderRadius: d.screen.radius, containerType: "inline-size" }}
+      >
+        {children}
+      </div>
+    </div>
+  );
 }
 
 function Copy({ kicker, title, accent, text, points }: { kicker: string; title: string; accent: string; text: string; points: string[] }) {
   return (
-    <div className="max-w-[440px]">
+    <div className="max-w-[420px]">
       <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--warm)]">{kicker}</p>
-      <h3 className="mt-4 text-balance text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">
+      <h3 className="mt-4 text-balance text-[clamp(28px,3.4vw,44px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">
         {title} <span className="font-serif font-normal italic tracking-[-0.01em] text-neutral-500">{accent}</span>
       </h3>
-      <p className="mt-5 text-pretty text-[16px] leading-[1.75] text-neutral-600">{text}</p>
-      <ul className="mt-6 space-y-2.5 border-t border-neutral-200 pt-5">
-        {points.map((p) => (
-          <li key={p} className="flex gap-3 text-[14px] text-neutral-700">
+      <p className="mt-4 text-pretty text-[15px] leading-[1.7] text-neutral-600 sm:text-[16px]">{text}</p>
+      <ul className="mt-5 hidden space-y-2.5 border-t border-neutral-200 pt-5 sm:block">
+        {points.map((x) => (
+          <li key={x} className="flex gap-3 text-[14px] text-neutral-700">
             <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-[var(--warm)]" />
-            {p}
+            {x}
           </li>
         ))}
       </ul>
@@ -60,92 +80,120 @@ function Copy({ kicker, title, accent, text, points }: { kicker: string; title: 
   );
 }
 
-// ── 1. The interview writes CLAUDE.md ─────────────────────────────
+// ── 1. MacBook: the interview writes CLAUDE.md ────────────────────
 const QA = [
   { q: "What's the one number that matters this year?", a: "Revenue. $30k a month by June.", line: ["goal", "$30k a month by June"] },
   { q: "When should I push back on you?", a: "When I start chasing a new tool.", line: ["push_back_when", "I chase a shiny new tool"] },
   { q: "What should I never do without asking?", a: "Email a customer.", line: ["never", "email a customer unasked"] },
-  { q: "How do you like reports?", a: "One page, numbers first, Mondays.", line: ["report", "Mondays · one page · numbers first"] },
+  { q: "How do you like reports?", a: "One page, numbers first, Mondays.", line: ["report", "Mondays, one page, numbers first"] },
 ];
-function Interview({ t }: { t: number }) {
-  const step = (i: number) => Math.min(1, Math.max(0, (t - i * 1.6) / 0.6));
+function Interview({ p }: { p: number }) {
+  const at = (i: number) => 0.06 + i * 0.2;
   return (
-    <div className="grid gap-4 sm:grid-cols-[1fr_1fr]">
-      <div className="su-panel flex flex-col gap-3 p-5">
-        <p className="text-[12px] text-neutral-400">Interview · 15 minutes</p>
-        {QA.map((x, i) => (
-          <div key={x.q} className="space-y-2" style={{ opacity: step(i), transform: `translateY(${(1 - step(i)) * 10}px)` }}>
-            <p className="w-fit max-w-[92%] rounded-2xl rounded-tl-sm bg-neutral-100 px-3.5 py-2 text-[13px] text-neutral-700">{x.q}</p>
-            <p className="ml-auto w-fit max-w-[92%] rounded-2xl rounded-tr-sm bg-neutral-900 px-3.5 py-2 text-[13px] text-white" style={{ opacity: Math.min(1, Math.max(0, (t - i * 1.6 - 0.6) / 0.4)) }}>
-              {x.a}
-            </p>
-          </div>
-        ))}
+    <div className="flex size-full flex-col bg-[#141413] font-mono text-[1.45cqw] leading-[1.5] text-[#ECEAE4]">
+      <div className="relative flex h-[5.2cqw] shrink-0 items-center gap-[0.8cqw] border-b border-white/10 bg-[#1F1E1D] px-[1.6cqw] text-[1.25cqw] text-white/45">
+        <span className="size-[0.95cqw] rounded-full bg-[#ff5f57]" />
+        <span className="size-[0.95cqw] rounded-full bg-[#febc2e]" />
+        <span className="size-[0.95cqw] rounded-full bg-[#28c840]" />
+        <span className="ml-[1.2cqw]">~/business — claude</span>
+        {/* The camera notch sits over the menu bar, as on the real screen. */}
+        <span className="absolute left-1/2 top-0 h-[2.7cqw] w-[10.6cqw] -translate-x-1/2 rounded-b-[0.8cqw] bg-black" />
       </div>
-      <div className="su-panel overflow-hidden p-0" style={{ background: "#141413" }}>
-        <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5 font-mono text-[11px] text-white/50">
-          <span className="text-[#D97757]">✻</span> CLAUDE.md
-        </div>
-        <div className="space-y-2.5 p-4 font-mono text-[12px] leading-snug">
-          <p className="text-white/35"># What matters</p>
+      <div className="grid min-h-0 flex-1 grid-cols-[1.25fr_1fr]">
+        <div className="space-y-[1.3cqw] overflow-hidden p-[2.2cqw]">
+          <p className="text-white/45">
+            <span className="text-[#D97757]">✻</span> Let&apos;s set you up. Four questions.
+          </p>
           {QA.map((x, i) => {
-            const shown = Math.max(0, Math.min(x.line[1].length, Math.floor((t - i * 1.6 - 1.0) * 28)));
+            const q = span(p, at(i), at(i) + 0.05);
+            const a = span(p, at(i) + 0.06, at(i) + 0.12);
             return (
-              <p key={x.line[0]} className="text-white/85" style={{ opacity: shown > 0 ? 1 : 0.15 }}>
-                <span className="text-[#7CCB8F]">{x.line[0]}:</span> {x.line[1].slice(0, shown)}
-                {shown > 0 && shown < x.line[1].length ? <span className="text-[#D97757]">▌</span> : null}
-              </p>
+              <div key={x.q} style={{ opacity: q, transform: `translateY(${(1 - q) * 0.8}cqw)` }}>
+                <p className="text-[#ECEAE4]">
+                  <span className="text-[#D97757]">?</span> {x.q}
+                </p>
+                <p className="text-[#7CCB8F]" style={{ opacity: a }}>
+                  › {x.a}
+                </p>
+              </div>
             );
           })}
         </div>
+        <div className="border-l border-white/10 bg-[#191918] p-[2.2cqw]">
+          <p className="text-[1.2cqw] text-white/35">CLAUDE.md</p>
+          <p className="mt-[1.4cqw] text-white/35"># What matters</p>
+          <div className="mt-[0.8cqw] space-y-[0.9cqw]">
+            {QA.map((x, i) => {
+              const k = span(p, at(i) + 0.1, at(i) + 0.19);
+              const n = Math.round(x.line[1].length * k);
+              return (
+                <p key={x.line[0]} style={{ opacity: k > 0 ? 1 : 0.18 }}>
+                  <span className="text-[#7CCB8F]">{x.line[0]}:</span> {x.line[1].slice(0, n)}
+                  {k > 0 && k < 1 ? <span className="text-[#D97757]">▌</span> : null}
+                </p>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── 2. One agent does, another checks ─────────────────────────────
-const WORK = [
-  { job: "Reply to a client's reschedule", verdict: "ok" },
-  { job: "File the Oct 18 lunch", verdict: "back", fix: "Meals, not Software" },
-  { job: "Chase two overdue invoices", verdict: "ok" },
-  { job: "Draft the Monday report", verdict: "ok" },
-] as const;
-function Checker({ t }: { t: number }) {
-  const cycle = 2.4;
-  const i = Math.floor(t / cycle) % WORK.length;
-  const p = (t % cycle) / cycle;
-  const w = WORK[i]!;
-  const sentBack = w.verdict === "back" && p > 0.45 && p < 0.75;
-  const checked = p > (w.verdict === "back" ? 0.75 : 0.45);
-  const x = p < 0.2 ? p / 0.2 : 1;
+// ── 2. iPhone: the checker's notifications ────────────────────────
+const NOTES = [
+  { title: "Invoices chased", body: "Two reminders sent, worded the way you asked.", back: "" },
+  { title: "Expense filed", body: "Oct 18 client lunch → Software", back: "Meals" },
+  { title: "Reply drafted", body: "Thursday's call moved to 4pm. Waiting for you to send.", back: "" },
+  { title: "Monday report", body: "One page, numbers first. Ready at 8:00.", back: "" },
+];
+function Notifications({ p }: { p: number }) {
   return (
-    <div className="su-panel relative h-[300px] overflow-hidden p-6">
-      <div className="absolute left-6 top-6 text-center">
-        <div className="flex size-16 items-center justify-center rounded-2xl border border-neutral-200 bg-white shadow-sm"><IconPencil className="size-7 text-neutral-700" stroke={1.5} /></div>
-        <p className="mt-2 text-[12px] text-neutral-500">Agent 1 · does</p>
+    <div className="relative size-full bg-[#0c0c0d] text-white">
+      <span className="absolute left-1/2 top-0 h-[7.5cqw] w-[44cqw] -translate-x-1/2 rounded-b-[5cqw] bg-black" />
+      <div className="pt-[17cqw] text-center">
+        <p className="text-[4.4cqw] font-medium text-white/70">Friday, October 30</p>
+        <p className="text-[22cqw] font-semibold leading-none tracking-[-0.03em]">7:30</p>
       </div>
-      <div className="absolute right-6 top-6 text-center">
-        <div className={cn("flex size-16 items-center justify-center rounded-2xl border bg-white shadow-sm transition-colors duration-300", sentBack ? "border-red-300" : checked ? "border-emerald-300" : "border-neutral-200")}><IconSearch className="size-7 text-neutral-700" stroke={1.5} /></div>
-        <p className="mt-2 text-[12px] text-neutral-500">Agent 2 · checks</p>
-      </div>
-      <div
-        className="absolute top-[118px] w-[min(250px,60%)] rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_16px_32px_-18px_rgba(0,0,0,0.35)] transition-[border-color] duration-300"
-        style={{ left: `calc(${6 + x * 38}% )`, transform: sentBack ? "translateX(-28%) rotate(-3deg)" : "none", transition: "transform .5s cubic-bezier(.34,1.36,.64,1)", borderColor: sentBack ? "#fca5a5" : checked ? "#86efac" : undefined }}
-      >
-        <p className="text-[13px] font-medium text-neutral-900">{w.job}</p>
-        <p className="mt-1 text-[12px]" style={{ color: sentBack ? "#dc2626" : checked ? "#16a34a" : "#a3a3a3" }}>
-          {sentBack ? `Sent back: ${"fix" in w ? w.fix : ""}` : checked ? "Checked" : "Checking…"}
-        </p>
-      </div>
-      <div className="absolute inset-x-6 bottom-5 flex items-center justify-between text-[12px] text-neutral-400">
-        <span>The one who did the work never grades it.</span>
-        <span className="tabular-nums">{Math.floor(t / cycle) + (checked ? 1 : 0)} checked</span>
+      <div className="mt-[7cqw] space-y-[2.6cqw] px-[4cqw]">
+        {NOTES.map((n, i) => {
+          const s = 0.08 + i * 0.17;
+          const v = span(p, s, s + 0.07);
+          const flagged = n.back && p > s + 0.09 && p < s + 0.22;
+          const fixed = n.back && p >= s + 0.22;
+          return (
+            <div
+              key={n.title}
+              className="rounded-[5.5cqw] px-[4.2cqw] py-[3.2cqw] backdrop-blur"
+              style={{
+                opacity: v,
+                transform: `translateY(${(1 - v) * -6}cqw) scale(${0.94 + 0.06 * v})`,
+                background: flagged ? "rgba(220,38,38,.22)" : "rgba(255,255,255,.13)",
+                boxShadow: flagged ? "inset 0 0 0 1px rgba(248,113,113,.55)" : "inset 0 0 0 1px rgba(255,255,255,.06)",
+                transition: "background .4s, box-shadow .4s",
+              }}
+            >
+              <div className="flex items-center gap-[2cqw] text-[3.3cqw] text-white/60">
+                <span className="flex size-[5.4cqw] items-center justify-center rounded-[1.4cqw] bg-[#D97757] text-[3.6cqw] text-white">✻</span>
+                Claude Code
+                <span className="ml-auto">now</span>
+              </div>
+              <p className="mt-[1.4cqw] text-[4.1cqw] font-semibold">{n.title}</p>
+              <p className="text-[3.7cqw] leading-snug text-white/75">
+                {fixed ? n.body.replace("Software", n.back) : n.body}
+              </p>
+              <p className="mt-[1cqw] text-[3.2cqw] font-medium" style={{ color: flagged ? "#fca5a5" : "#86efac" }}>
+                {flagged ? "Sent back by the checker: wrong account" : fixed ? "Fixed and checked" : "Checked"}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-// ── 3. The 24-hour clock ──────────────────────────────────────────
+// ── 3. Apple Watch: the schedule goes round ───────────────────────
 const JOBS = [
   { h: 2, label: "Leads researched" },
   { h: 6.5, label: "Inbox sorted" },
@@ -154,66 +202,62 @@ const JOBS = [
   { h: 18, label: "Books drafted" },
   { h: 22, label: "Decisions logged" },
 ];
-function Clock({ t }: { t: number }) {
-  const hour = (t * 2.4 + 0.5) % 24;
+function WatchFace({ p }: { p: number }) {
+  const hour = Math.min(23.99, span(p, 0.05, 0.9) * 24);
+  const done = JOBS.filter((j) => hour >= j.h);
+  const last = done[done.length - 1];
+  const R = 40;
+  const C = 2 * Math.PI * R;
   const a = (h: number) => (h / 24) * Math.PI * 2 - Math.PI / 2;
-  const R = 130;
   return (
-    <div className="su-panel flex items-center justify-center p-6">
-      <svg viewBox="-250 -190 500 380" className="w-full max-w-[480px]">
-        <circle r={R} fill="none" stroke="#e5e5e5" strokeWidth="1" />
-        {Array.from({ length: 24 }, (_, i) => (
-          <line key={i} x1={Math.cos(a(i)) * (R - (i % 6 ? 6 : 12))} y1={Math.sin(a(i)) * (R - (i % 6 ? 6 : 12))} x2={Math.cos(a(i)) * R} y2={Math.sin(a(i)) * R} stroke={i % 6 ? "#d4d4d4" : "#a3a3a3"} strokeWidth="1" />
+    <div className="flex size-full flex-col items-center justify-center bg-black text-white">
+      <svg viewBox="-50 -50 100 100" className="w-[86cqw]">
+        <circle r={R} fill="none" stroke="#2a1a14" strokeWidth="7" />
+        <circle r={R} fill="none" stroke="#FA5A2B" strokeWidth="7" strokeLinecap="round" strokeDasharray={`${(hour / 24) * C} ${C}`} transform="rotate(-90)" />
+        {JOBS.map((j) => (
+          <circle key={j.label} cx={Math.cos(a(j.h)) * R} cy={Math.sin(a(j.h)) * R} r={hour >= j.h ? 1.7 : 1.3} fill={hour >= j.h ? "#fff" : "#6b4a3e"} />
         ))}
-        {[0, 6, 12, 18].map((h) => (
-          <text key={h} x={Math.cos(a(h)) * (R - 26)} y={Math.sin(a(h)) * (R - 26) + 4} textAnchor="middle" fontSize="11" fill="#a3a3a3" fontFamily="var(--font-geist-mono)">
-            {String(h).padStart(2, "0")}
-          </text>
-        ))}
-        <path d={`M ${Math.cos(a(0)) * (R + 0.5)} ${Math.sin(a(0)) * (R + 0.5)} A ${R} ${R} 0 ${hour > 12 ? 1 : 0} 1 ${Math.cos(a(hour)) * R} ${Math.sin(a(hour)) * R}`} fill="none" stroke="var(--warm)" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" />
-        {JOBS.map((j) => {
-          const done = hour >= j.h;
-          const x = Math.cos(a(j.h)) * R;
-          const y = Math.sin(a(j.h)) * R;
-          const lx = Math.cos(a(j.h)) * (R + 18);
-          const ly = Math.sin(a(j.h)) * (R + 18);
-          return (
-            <g key={j.label}>
-              <circle cx={x} cy={y} r={done ? 6 : 4} fill={done ? "var(--warm)" : "#fff"} stroke={done ? "var(--warm)" : "#a3a3a3"} strokeWidth="1.5" style={{ transition: "r .3s" }} />
-              <text x={lx} y={ly + 4} textAnchor={lx > 4 ? "start" : lx < -4 ? "end" : "middle"} fontSize="11.5" fill={done ? "#171717" : "#a3a3a3"}>
-                {j.label}
-              </text>
-            </g>
-          );
-        })}
-        <line x1="0" y1="0" x2={Math.cos(a(hour)) * (R - 18)} y2={Math.sin(a(hour)) * (R - 18)} stroke="#171717" strokeWidth="2" strokeLinecap="round" />
-        <circle r="4" fill="#171717" />
-        <text y="48" textAnchor="middle" fontSize="22" fill="#171717" fontWeight="600" fontFamily="var(--font-geist-mono)">
+        <text y="-6" textAnchor="middle" fontSize="15" fontWeight="600" fill="#fff" style={{ fontVariantNumeric: "tabular-nums" }}>
           {String(Math.floor(hour)).padStart(2, "0")}:{String(Math.floor((hour % 1) * 60)).padStart(2, "0")}
+        </text>
+        <text y="8" textAnchor="middle" fontSize="5.4" fill="#FA5A2B">
+          {last ? `${last.label} ✓` : "Waiting for 02:00"}
+        </text>
+        <text y="17" textAnchor="middle" fontSize="4.6" fill="#8E8B82">
+          {done.length} of {JOBS.length} jobs done
         </text>
       </svg>
     </div>
   );
 }
 
-function Scene({ flip, visual, copy }: { flip?: boolean; visual: (t: number) => React.ReactNode; copy: React.ReactNode }) {
-  const [ref, seen] = useInView<HTMLDivElement>();
-  const t = useClock(seen);
+function Scene({ flip, device, copy, track = "h-[220vh]" }: { flip?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
+  const [ref, p] = useTrack<HTMLDivElement>();
   return (
-    <div ref={ref} className="grid items-center gap-10 px-4 py-16 sm:px-10 md:py-24 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
-      <div className={cn("transition-[opacity,transform] duration-1000 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]", flip && "lg:order-2", seen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0")}>
-        {visual(t)}
+    <div ref={ref} className={cn("relative", track)}>
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <div className="grid w-full items-center gap-6 px-4 sm:px-10 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+          <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
+            {copy}
+          </div>
+          <div className="flex justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
+            {device(p)}
+          </div>
+        </div>
       </div>
-      <div className={cn("transition-[opacity,transform] delay-150 duration-1000 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]", seen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0")}>{copy}</div>
     </div>
   );
 }
 
 export default function Scenes() {
   return (
-    <div className="divide-y divide-neutral-200">
+    <div>
       <Scene
-        visual={(t) => <Interview t={t} />}
+        device={(p) => (
+          <Device kind="mac" className="w-full max-w-[min(720px,100%,95vh)]">
+            <Interview p={p} />
+          </Device>
+        )}
         copy={
           <Copy
             kicker="Week one"
@@ -226,7 +270,11 @@ export default function Scenes() {
       />
       <Scene
         flip
-        visual={(t) => <Checker t={t} />}
+        device={(p) => (
+          <Device kind="phone" className="h-[min(78vh,640px)] max-sm:h-[52vh]">
+            <Notifications p={p} />
+          </Device>
+        )}
         copy={
           <Copy
             kicker="Every job"
@@ -238,7 +286,11 @@ export default function Scenes() {
         }
       />
       <Scene
-        visual={(t) => <Clock t={t} />}
+        device={(p) => (
+          <Device kind="watch" className="h-[min(74vh,600px)] max-sm:h-[46vh]">
+            <WatchFace p={p} />
+          </Device>
+        )}
         copy={
           <Copy
             kicker="Around the clock"

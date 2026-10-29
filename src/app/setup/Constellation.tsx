@@ -67,8 +67,8 @@ export default function Constellation() {
       // itself over the middle, and stays settled for the last stretch before the page moves on.
       const box = (track.current ?? host).getBoundingClientRect();
       const run = Math.max(1, box.height - innerHeight);
-      const progress = Math.min(1, Math.max(0, -box.top / run));
-      const scrolled = Math.min(1, Math.max(0, (progress - 0.2) / 0.55));
+      const through = Math.min(1, Math.max(0, -box.top / run));
+      const scrolled = Math.min(1, Math.max(0, (through - 0.2) / 0.55));
       eased += (scrolled - eased) * 0.12;
       const elapsed = still ? 99999 : 650 + eased * 2100;
       const t = (now - start) / 1000;
