@@ -77,15 +77,15 @@ export default function DuoScroll() {
             playsInline
             preload="auto"
             aria-hidden
-            className={cn("h-auto w-full mix-blend-multiply", still && "hidden")}
+            className={cn("mx-auto h-auto max-h-[62vh] w-auto max-w-full mix-blend-multiply", still && "hidden")}
           />
           {still ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src="/setup/duo-story-open.jpg" alt="" className="h-auto w-full mix-blend-multiply" />
+            <img src="/setup/duo-story-open.jpg" alt="" className="mx-auto h-auto max-h-[62vh] w-auto max-w-full mix-blend-multiply" />
           ) : null}
         </div>
 
-        <div className="pointer-events-none relative mt-[-2vh] h-[132px] w-full max-w-[640px] text-center">
+        <div className="pointer-events-none relative mt-4 h-[132px] w-full max-w-[640px] text-center">
           {CHAPTERS.map((c, i) => (
             <div
               key={c.title}
