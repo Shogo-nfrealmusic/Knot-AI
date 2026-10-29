@@ -21,6 +21,7 @@ import {
   IconUsersGroup,
   IconWand,
 } from "@tabler/icons-react";
+import { MediaFigure, OledDemo } from "@/app/free/BreakdownMedia";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -432,6 +433,7 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
   return (
     <div className="divide-y divide-neutral-200">
       <section className="px-5 py-8 sm:px-10">
+        {breakdown.hero ? <MediaFigure media={breakdown.hero} className="mb-6" /> : null}
         <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-5 sm:p-6">
           <p className="font-mono text-[13px] text-warm">THE 60-SECOND VERSION</p>
           <ul className="mt-4 space-y-3">
@@ -498,6 +500,18 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
                     <Rich parts={item.why} />
                   </p>
                 ) : null}
+                {item.media?.length ? (
+                  <div className="mt-5 grid max-w-2xl grid-cols-2 gap-x-3 gap-y-4">
+                    {item.media.map((media, index) => (
+                      <MediaFigure
+                        key={media.src}
+                        media={media}
+                        className={item.media!.length % 2 === 1 && index === 0 ? "col-span-2" : undefined}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+                {item.demo === "oled" ? <OledDemo /> : null}
               </li>
             ))}
           </ol>
