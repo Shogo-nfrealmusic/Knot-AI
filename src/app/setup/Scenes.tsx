@@ -90,7 +90,7 @@ const QA = [
 function Interview({ p }: { p: number }) {
   const at = (i: number) => 0.06 + i * 0.2;
   return (
-    <div className="flex size-full flex-col bg-[#141413] font-mono text-[1.75cqw] leading-[1.5] text-[#ECEAE4]">
+    <div className="flex size-full flex-col bg-[#141413] text-left font-mono text-[1.75cqw] leading-[1.5] text-[#ECEAE4]">
       <div className="relative flex h-[5.2cqw] shrink-0 items-center gap-[0.8cqw] border-b border-white/10 bg-[#1F1E1D] px-[1.6cqw] text-[1.25cqw] text-white/45">
         <span className="size-[0.95cqw] rounded-full bg-[#ff5f57]" />
         <span className="size-[0.95cqw] rounded-full bg-[#febc2e]" />
