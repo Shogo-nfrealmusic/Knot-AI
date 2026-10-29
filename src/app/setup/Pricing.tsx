@@ -4,125 +4,114 @@ import { useState } from "react";
 import { BILLING, FOUNDING, PLANS, billedTotal, perMonth, type Billing } from "@/lib/setup";
 import { cn } from "@/lib/utils";
 
-function Check() {
-  return (
-    <svg viewBox="0 0 12 12" className="mt-[5px] size-3 shrink-0 text-neutral-400" aria-hidden>
-      <path d="M2.5 6.2 5 8.5l4.5-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function FoundingSeats() {
-  const left = FOUNDING.seats - FOUNDING.taken;
-  return (
-    <div className="mt-6 rounded-xl border border-[var(--warm)]/30 bg-[var(--warm)]/[0.06] p-4">
-      <div className="flex items-center justify-between gap-3">
-        <span className="text-[13px] font-medium text-neutral-900">Founding seats</span>
-        <span className="flex gap-1" aria-label={`${left} of ${FOUNDING.seats} left`}>
-          {Array.from({ length: FOUNDING.seats }, (_, i) => (
-            <span key={i} className={cn("h-2 w-5 rounded-full", i < FOUNDING.taken ? "bg-neutral-300" : "bg-[var(--warm)]")} />
-          ))}
-        </span>
-      </div>
-      <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">
-        <span className="font-medium text-neutral-900">${FOUNDING.price}/mo</span> for your first {FOUNDING.months} months. In return, I
-        share your before and after (your data hidden) and you write two lines about it. {left} of {FOUNDING.seats} left.
-      </p>
-    </div>
-  );
-}
-
 export default function Pricing() {
   const [billing, setBilling] = useState<Billing>("monthly");
   const active = BILLING.findIndex((b) => b.id === billing);
+  const left = FOUNDING.seats - FOUNDING.taken;
 
   return (
     <div>
-      <div className="flex justify-center px-4">
-        <div role="radiogroup" aria-label="Billing" className="relative grid grid-cols-3 rounded-full border border-neutral-200 bg-white p-1">
-          <span
-            aria-hidden
-            className="absolute inset-y-1 left-1 w-[calc((100%-8px)/3)] rounded-full bg-neutral-900 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.36,0.64,1)]"
-            style={{ transform: `translateX(${active * 100}%)` }}
-          />
-          {BILLING.map((b) => (
-            <button
-              key={b.id}
-              role="radio"
-              aria-checked={billing === b.id}
-              onClick={() => setBilling(b.id)}
-              className={cn(
-                "relative z-10 flex h-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-4 text-[13px] font-medium transition-colors active:scale-[0.96] sm:px-6",
-                billing === b.id ? "text-white" : "text-neutral-600 hover:text-neutral-900",
-              )}
-            >
-              {b.label}
-              {b.discount > 0 ? (
-                <span className={cn("text-[11px]", billing === b.id ? "text-[#ffb59f]" : "text-[var(--warm)]")}>
-                  −{Math.round(b.discount * 100)}%
-                </span>
-              ) : null}
-            </button>
-          ))}
-        </div>
+      <div role="radiogroup" aria-label="Billing" className="relative inline-grid grid-cols-3 border-b border-[var(--rule)]">
+        <span
+          aria-hidden
+          className="absolute -bottom-px left-0 h-px w-1/3 bg-[var(--ink)] transition-transform duration-700 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]"
+          style={{ transform: `translateX(${active * 100}%)` }}
+        />
+        {BILLING.map((b) => (
+          <button
+            key={b.id}
+            role="radio"
+            aria-checked={billing === b.id}
+            onClick={() => setBilling(b.id)}
+            className={cn(
+              "flex h-12 items-baseline justify-center gap-2 whitespace-nowrap px-4 pt-3 text-[14px] transition-colors duration-300 sm:px-7",
+              billing === b.id ? "text-[var(--ink)]" : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
+            )}
+          >
+            {b.label}
+            {b.discount > 0 ? <span className="text-[12px] text-[var(--gold)]">−{Math.round(b.discount * 100)}%</span> : null}
+          </button>
+        ))}
       </div>
 
-      <div className="mt-12 grid border-t border-neutral-200 lg:grid-cols-3">
+      <div className="mt-14 grid border-t border-[var(--ink)] lg:grid-cols-3">
         {PLANS.map((plan, i) => {
           const featured = plan.id === "build";
           const price = perMonth(plan, billing);
           return (
-            <div
+            <article
               key={plan.id}
               className={cn(
-                "relative flex flex-col p-8 sm:p-10",
-                i > 0 && "border-t border-neutral-200 lg:border-l lg:border-t-0",
-                featured && "bg-neutral-50/80",
+                "relative flex flex-col py-10 lg:px-10 lg:py-12",
+                i === 0 && "lg:pl-0",
+                i === PLANS.length - 1 && "lg:pr-0",
+                i > 0 && "border-t border-[var(--rule)] lg:border-l lg:border-t-0",
               )}
             >
-              {featured ? <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-[var(--warm)]" /> : null}
-              <div className="flex items-baseline justify-between">
-                <h3 className="text-lg font-medium text-neutral-900">{plan.name}</h3>
-                {featured ? <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--warm)]">Start here</span> : null}
-              </div>
-              <p className="mt-2 text-[14px] text-neutral-500 lg:min-h-[2.75rem]">{plan.pitch}</p>
+              <header className="flex items-baseline justify-between gap-4">
+                <h3 className="setup-serif text-[34px] leading-none">{plan.name}</h3>
+                {featured ? <span className="text-[12px] tracking-[0.04em] text-[var(--gold)]">Start here</span> : null}
+              </header>
+              <p className="mt-3 text-[14px] leading-[1.6] text-[var(--ink-soft)] lg:min-h-[2.8rem]">{plan.pitch}</p>
 
-              <div className="mt-8 flex items-baseline gap-2">
-                <span className="text-5xl font-medium tracking-[-0.04em] text-neutral-900 tabular-nums">${price}</span>
-                <span className="text-[14px] text-neutral-500">/ month</span>
-                {billing !== "monthly" ? (
-                  <span className="text-[14px] text-neutral-400 line-through tabular-nums">${plan.monthly}</span>
-                ) : null}
+              <div className="mt-10 flex items-start gap-1.5">
+                <span className="setup-serif mt-2 text-[28px] leading-none">$</span>
+                <span className="setup-serif text-[84px] leading-[0.85] tabular-nums">{price}</span>
+                <span className="mt-auto pb-1 text-[13px] text-[var(--ink-soft)]">a month</span>
               </div>
-              <p className="mt-2 h-5 text-[13px] text-neutral-500 tabular-nums">
-                {billing === "monthly" ? "Billed monthly. Cancel anytime." : `$${billedTotal(plan, billing).toLocaleString("en-US")} billed every ${BILLING[active].months} months.`}
+              <p className="mt-4 h-5 text-[13px] text-[var(--ink-soft)] tabular-nums">
+                {billing === "monthly" ? (
+                  "Billed monthly."
+                ) : (
+                  <>
+                    <span className="line-through decoration-[var(--rule)]">${plan.monthly}</span>
+                    {"  "}${billedTotal(plan, billing).toLocaleString("en-US")} every {BILLING[active]!.months} months.
+                  </>
+                )}
               </p>
 
-              {featured ? <FoundingSeats /> : null}
+              {featured ? (
+                <div className="mt-8 border-y border-[var(--gold)]/50 py-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="setup-serif text-[20px] leading-none">Founding seats</span>
+                    <span className="flex gap-1.5" aria-label={`${left} of ${FOUNDING.seats} left`}>
+                      {Array.from({ length: FOUNDING.seats }, (_, s) => (
+                        <span
+                          key={s}
+                          className={cn("size-2 rotate-45", s < FOUNDING.taken ? "border border-[var(--rule)]" : "bg-[var(--gold)]")}
+                        />
+                      ))}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-pretty text-[13px] leading-[1.7] text-[var(--ink-soft)]">
+                    <span className="text-[var(--ink)]">${FOUNDING.price} a month</span> for your first {FOUNDING.months} months. In
+                    return I share your before and after, with your data hidden, and you write two lines about it.
+                  </p>
+                </div>
+              ) : null}
 
-              <ul className="mt-8 flex-1 space-y-3">
+              <ul className="mt-8 flex-1 divide-y divide-[var(--rule)] border-t border-[var(--rule)]">
                 {plan.includes.map((item) => (
-                  <li key={item} className="flex gap-3 text-[14px] leading-relaxed text-neutral-700">
-                    <Check />
+                  <li key={item} className="py-3 text-[14px] leading-[1.6] text-[var(--ink)]">
                     {item}
                   </li>
                 ))}
               </ul>
 
               <a
-                href={`#apply?plan=${plan.id}`}
+                href="#apply"
                 data-plan={plan.id}
                 className={cn(
-                  "mt-10 inline-flex h-11 items-center justify-center rounded-lg text-sm font-medium transition-all active:scale-[0.96]",
+                  "mt-10 inline-flex h-12 items-center justify-center text-[14px] font-medium tracking-[0.01em] transition-[transform,background-color,color] duration-300 active:scale-[0.97]",
                   featured
-                    ? "border border-black bg-black text-white hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200"
-                    : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50 hover:ring-4 hover:ring-black/5",
+                    ? "bg-[var(--ink)] text-[var(--paper)] hover:bg-black"
+                    : "border border-[var(--ink)] text-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--paper)]",
                 )}
               >
                 Apply for {plan.name}
               </a>
-              <p className="mt-3 text-center text-[12px] text-neutral-400">{plan.hours}</p>
-            </div>
+              <p className="mt-3 text-center text-[12px] text-[var(--ink-soft)]">{plan.hours}</p>
+            </article>
           );
         })}
       </div>

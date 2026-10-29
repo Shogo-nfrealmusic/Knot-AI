@@ -1,12 +1,10 @@
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import SitePageLayout from "@/app/components/SitePageLayout";
-import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
-import { GridSection } from "@/app/components/ui/grid-section";
+import { ISO_CSS } from "@/lib/iso/iso-kit";
 import { FOUNDING } from "@/lib/setup";
-import { cn } from "@/lib/utils";
+import Movement from "./Movement";
+import { movementSvg } from "./movement";
 import Pricing from "./Pricing";
-import RunLog from "./RunLog";
 
 export const metadata: Metadata = {
   title: "Copilot OS Setup | Shogo Kikuchi",
@@ -15,97 +13,126 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setup" },
 };
 
-const entrance = "animate-[hero-slide-up-fade_1s_both] motion-reduce:animate-[hero-fade_1s_both]";
-
-function stagger(delayMs: number, offsetPx: number): CSSProperties {
-  return { animationDelay: `${delayMs}ms`, "--offset": `${offsetPx}px` } as CSSProperties;
+// Warm paper, ink and one line of gold: the language of a watchmaker's catalogue, kept to this page.
+const SETUP_CSS = `
+.setup{--paper:#f3efe7;--paper-deep:#ebe5d9;--ink:#1a1814;--ink-soft:#6b655b;--rule:#d9d1c3;--gold:#a88446;background:var(--paper);color:var(--ink)}
+.setup ::selection{background:#e6d6b5}
+.setup-movement.iso[data-theme="light"]{
+  --anatomy-paper:var(--paper);--anatomy-face:#fbf8f2;--anatomy-top:#fbf8f2;
+  --anatomy-shade-0:#d9d1c2;--anatomy-shade-1:#e3dccf;--anatomy-shade-2:#ece6db;--anatomy-shade-3:#f4f0e8;
+  --anatomy-lit-top:#fffdf8;--anatomy-lit-shade:#efe9de;
+  --anatomy-hi:#2a2620;--anatomy-mid:#8c8477;--anatomy-lo:#b9b0a1;--anatomy-faint:#dcd4c6;--anatomy-lit:#1a1814;
+  --anatomy-halo:#7d6f58;--anatomy-halo-opacity:.28;--anatomy-dot:#2a2620;--anatomy-weight:.55px;
+  --anatomy-mono:var(--font-sans),system-ui,sans-serif;
 }
+.setup-movement .jewel>.iso-top,.setup-movement .jewel>.iso-fill{fill:#8e2433}
+.setup-movement .jewel>.iso-shade{fill:#6d1a26}
+.setup-movement .screw>.iso-top{fill:#e9dcc0}
+.setup-serif{font-family:var(--font-serif);font-weight:400;letter-spacing:-0.015em}
+.setup-link{background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .5s cubic-bezier(.16,1,.3,1)}
+.setup-link:hover{background-size:0 1px;background-position:100% 100%}
+@keyframes setup-rise{from{opacity:0;transform:translateY(var(--rise,14px))}to{opacity:1;transform:none}}
+.setup-rise{animation:setup-rise 1.1s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--at,0ms)}
+@media (prefers-reduced-motion:reduce){.setup-rise{animation:none}}
+`;
+
+const PARTS = [
+  {
+    name: "The barrel",
+    role: "CLAUDE.md",
+    text: "Your goals, priorities and rules, wound once. Every job draws its power from here.",
+  },
+  {
+    name: "The train",
+    role: "The jobs",
+    text: "A video written and rendered every night. A brief every morning. The books drafted every month.",
+  },
+  {
+    name: "The escapement",
+    role: "The verifier",
+    text: "Nothing leaves the train until a second agent has checked it. One tick, one check.",
+  },
+];
 
 export default function SetupPage() {
   const left = FOUNDING.seats - FOUNDING.taken;
   return (
     <SitePageLayout>
-      <GridSection className="border-t-0" innerClassName="pt-32 sm:pt-40">
-        <style>{`
-@keyframes hero-slide-up-fade { from { opacity: 0; transform: translateY(var(--offset, 10px)); } to { opacity: 1; transform: none; } }
-@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
-`}</style>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-px inset-y-0 overflow-hidden [mask-composite:intersect] [mask-image:linear-gradient(transparent,black),radial-gradient(130%_50%_at_50%_100%,transparent,black)]"
-        >
-          <GridPattern
-            cellSize={60}
-            strokeWidth={2}
-            patternOffset={[0, 1]}
-            className="inset-[unset] bottom-0 left-1/2 h-[600px] w-[1080px] -translate-x-1/2 text-neutral-200"
-          />
-        </div>
-
-        <div className="relative grid gap-14 px-4 pb-20 sm:px-10 lg:grid-cols-[1.05fr_1fr] lg:items-end lg:gap-12 lg:pb-24">
-          <div>
-            <div
-              className={cn(entrance, "flex w-fit items-center gap-2 rounded-full border border-neutral-300 bg-white py-1.5 pl-3 pr-3.5 text-xs font-medium text-neutral-800 drop-shadow-sm")}
-              style={stagger(0, 10)}
-            >
-              <span className="relative flex size-1.5">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--warm)] opacity-60" />
-                <span className="relative inline-flex size-1.5 rounded-full bg-[var(--warm)]" />
-              </span>
-              {left} of {FOUNDING.seats} founding seats left
-            </div>
-
-            <h1 className={cn(entrance, "mt-6 text-balance type-display text-text-primary")} style={stagger(100, 20)}>
-              Claude Code that runs{" "}
-              <span className="font-serif text-[1.08em] font-normal italic tracking-[-0.01em] text-neutral-500">your business,</span>{" "}
-              not just your code.
-            </h1>
-
-            <p
-              className={cn(entrance, "mt-8 max-w-lg text-pretty text-[16px] leading-[1.75] tracking-[-0.011em] text-neutral-600")}
-              style={stagger(200, 10)}
-            >
-              I&apos;m the CTO of a two-person company in Tokyo, and Claude Code does the jobs on the right for us. I set the same
-              system up for your business, then build one more job it takes off your plate every month.
-            </p>
-
-            <div className={cn(entrance, "mt-10 flex flex-wrap items-center gap-3")} style={stagger(300, 5)}>
-              <a
-                href="#apply"
-                className="group inline-flex h-11 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 active:scale-[0.96]"
-              >
-                Apply for a seat
-                <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-              </a>
-              <a
-                href="#pricing"
-                className="inline-flex h-11 items-center rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all hover:bg-neutral-50 hover:ring-4 hover:ring-black/5 active:scale-[0.96]"
-              >
-                See pricing
-              </a>
-            </div>
-            <p className={cn(entrance, "mt-4 text-[13px] text-neutral-500")} style={stagger(350, 5)}>
-              Monthly. Pause or cancel anytime. I never log in to your computer.
-            </p>
-          </div>
-
-          <div className={entrance} style={stagger(250, 24)}>
-            <RunLog />
-          </div>
-        </div>
-      </GridSection>
-
-      <GridSection innerClassName="py-20 sm:py-28" >
-        <div id="pricing" className="scroll-mt-24 px-4 text-center sm:px-10">
-          <h2 className="type-heading text-balance text-text-primary">One flat monthly price. No hourly billing.</h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-[16px] leading-[1.75] text-neutral-600">
-            Pay longer up front and it costs less. Every plan starts with your Copilot OS set up in the first month.
+      <style>{ISO_CSS + SETUP_CSS}</style>
+      <div className="setup relative">
+        <section className="mx-auto max-w-[1180px] px-5 pb-24 pt-36 sm:px-10 sm:pt-44">
+          <p className="setup-rise text-[13px] tracking-[0.02em] text-[var(--ink-soft)]" style={{ "--at": "0ms" } as React.CSSProperties}>
+            Copilot OS Setup, by Shogo Kikuchi
           </p>
-        </div>
-        <div className="mt-12">
-          <Pricing />
-        </div>
-      </GridSection>
+          <h1
+            className="setup-serif setup-rise mt-6 max-w-[15ch] text-balance text-[clamp(48px,8.4vw,112px)] leading-[0.95]"
+            style={{ "--at": "80ms", "--rise": "22px" } as React.CSSProperties}
+          >
+            The quiet machinery that runs a business.
+          </h1>
+
+          <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-[1.5fr_1fr] lg:items-center lg:gap-16">
+            <div className="setup-rise" style={{ "--at": "200ms", "--rise": "24px" } as React.CSSProperties}>
+              <Movement svg={movementSvg()} />
+            </div>
+
+            <div className="setup-rise" style={{ "--at": "320ms" } as React.CSSProperties}>
+              <dl className="divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
+                {PARTS.map((part) => (
+                  <div key={part.name} className="grid grid-cols-[1fr] gap-1 py-5">
+                    <dt className="flex items-baseline justify-between gap-4">
+                      <span className="setup-serif text-[26px] leading-none">{part.name}</span>
+                      <span className="text-[12px] tracking-[0.04em] text-[var(--gold)]">{part.role}</span>
+                    </dt>
+                    <dd className="text-pretty text-[14px] leading-[1.7] text-[var(--ink-soft)]">{part.text}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+
+          <div className="mt-20 grid gap-10 border-t border-[var(--rule)] pt-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+            <p className="setup-serif max-w-[30ch] text-pretty text-[clamp(26px,3vw,36px)] leading-[1.2]">
+              Two of us run a company in Tokyo on this. I build the same movement for your business, then add one more
+              wheel to it every month.
+            </p>
+            <div className="flex flex-col justify-end gap-5">
+              <div className="flex flex-wrap items-center gap-6">
+                <a
+                  href="#apply"
+                  className="inline-flex h-12 items-center bg-[var(--ink)] px-7 text-[14px] font-medium tracking-[0.01em] text-[var(--paper)] transition-[transform,background-color] duration-300 hover:bg-black active:scale-[0.97]"
+                >
+                  Apply for a seat
+                </a>
+                <a href="#pricing" className="setup-link pb-0.5 text-[14px] font-medium">
+                  See pricing
+                </a>
+              </div>
+              <p className="text-[13px] leading-relaxed text-[var(--ink-soft)]">
+                Monthly. Pause or cancel anytime. I never log in to your computer.
+                <br />
+                {left} of {FOUNDING.seats} founding seats left, at half price.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="pricing" className="scroll-mt-20 border-t border-[var(--rule)] bg-[var(--paper-deep)]/40">
+          <div className="mx-auto max-w-[1180px] px-5 py-24 sm:px-10 sm:py-32">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <h2 className="setup-serif max-w-[16ch] text-balance text-[clamp(40px,5.6vw,72px)] leading-[0.98]">
+                One flat price. Never by the hour.
+              </h2>
+              <p className="max-w-sm text-pretty text-[14px] leading-[1.7] text-[var(--ink-soft)]">
+                Every plan begins with your movement assembled in the first month. Pay further ahead and it costs less.
+              </p>
+            </div>
+            <div className="mt-16">
+              <Pricing />
+            </div>
+          </div>
+        </section>
+      </div>
     </SitePageLayout>
   );
 }
