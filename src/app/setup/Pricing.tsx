@@ -85,7 +85,7 @@ export default function Pricing() {
                 <h3 className="text-lg font-medium text-neutral-900">{plan.name}</h3>
                 {featured ? <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--warm)]">Start here</span> : null}
               </div>
-              <p className="mt-2 text-[14px] text-neutral-500">{plan.pitch}</p>
+              <p className="mt-2 text-[14px] text-neutral-500 lg:min-h-[2.75rem]">{plan.pitch}</p>
 
               <div className="mt-8 flex items-baseline gap-2">
                 <span className="text-5xl font-medium tracking-[-0.04em] text-neutral-900 tabular-nums">${price}</span>
