@@ -7,11 +7,11 @@ import Image from "next/image";
 // into two rings around Claude and keep turning. Problem and answer in the first second. One rAF loop writes
 // transforms and line ends directly; reduced motion renders the settled rings.
 const W = 1000;
-const H = 560;
-const C = { x: 500, y: 300 };
+const H = 500;
+const C = { x: 500, y: 262 };
 const RINGS = [
-  { rx: 190, ry: 118, speed: 0.07 },
-  { rx: 400, ry: 230, speed: -0.045 },
+  { rx: 190, ry: 104, speed: 0.07 },
+  { rx: 410, ry: 210, speed: -0.045 },
 ];
 
 const LOGOS = [
@@ -27,7 +27,7 @@ const NODES = LOGOS.map((name, i) => {
   const base = (index / count) * Math.PI * 2 + (ring === 0 ? 0.3 : 0);
   // Deterministic scatter: spread over the whole stage, some past the edges.
   const sx = ((i * 379) % 1100) - 50;
-  const sy = ((i * 211) % 600) - 20;
+  const sy = ((i * 211) % 540) - 20;
   return { name, ring, base, scatter: { x: sx, y: sy }, delay: (i % 8) * 70 };
 });
 

@@ -83,7 +83,7 @@ export default function SetupPage() {
     <SitePageLayout>
       <style>{SETUP_CSS}</style>
 
-      <GridSection className="border-t-0" innerClassName="pt-28 sm:pt-36">
+      <GridSection className="border-t-0" innerClassName="pt-24 sm:pt-28">
         <div aria-hidden className="pointer-events-none absolute inset-x-px inset-y-0 overflow-hidden [mask-image:linear-gradient(transparent,black)]">
           <GridPattern cellSize={60} strokeWidth={2} patternOffset={[0, 1]} className="inset-[unset] bottom-0 left-1/2 h-[700px] w-[1080px] -translate-x-1/2 text-neutral-200" />
         </div>
@@ -113,7 +113,7 @@ export default function SetupPage() {
             </a>
           </div>
         </div>
-        <div className="relative mt-4 px-2 pb-12 sm:px-6">
+        <div className="relative -mt-2 px-2 pb-10 sm:px-6">
           <Constellation />
         </div>
       </GridSection>
