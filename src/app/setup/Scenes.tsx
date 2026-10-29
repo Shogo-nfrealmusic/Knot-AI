@@ -240,7 +240,7 @@ function Scene({ flip, stack, device, copy, track = "h-[220vh]" }: { flip?: bool
           <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
             {copy}
           </div>
-          <div className="flex justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
+          <div className="flex w-full justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
             {device(p)}
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function Scenes() {
       <Scene
         stack
         device={(p) => (
-          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh-320px)*1.68))]">
+          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))]">
             <Interview p={p} />
           </Device>
         )}
