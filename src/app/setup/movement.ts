@@ -7,7 +7,7 @@ import * as k from "@/lib/iso/iso-kit";
 // frame and the client's animation come from the same geometry.
 
 export const WIDTH = 640;
-export const HEIGHT = 470;
+export const HEIGHT = 430;
 
 const PLATE_R = 110;
 const PLATE_H = 6;
@@ -25,10 +25,10 @@ export const BALANCE = { at: [78, 2] as k.Plane, r: 24, z: 16, h: 2.4, screws: 1
 const PALLET_PIVOT: k.Plane = [70, 30];
 
 export const P = k.fitProjection(
-  [...k.boxCorners({ x: -HOLDER.outer, y: -HOLDER.outer, w: HOLDER.outer * 2, d: HOLDER.outer * 2, r: HOLDER.outer }, HOLDER.z, 30)],
+  k.circleRing(0, 0, HOLDER.outer, 48).flatMap(([x, y]) => [[x, y, HOLDER.z] as k.Point3, [x, y, 28] as k.Point3]),
   WIDTH,
   HEIGHT,
-  { pad: 10, azimuth: 38, elevation: 36 },
+  { pad: 6, azimuth: 38, elevation: 42 },
 );
 
 const at = (point: k.Point3) => k.iso(point, P);
@@ -105,18 +105,18 @@ function holder() {
   // Three jaws hold the plate. Each has a knurled screw.
   for (const deg of [100, 220, 340]) {
     const a = (deg * Math.PI) / 180;
-    const jaw = capsule(polar([0, 0], HOLDER.inner - 6, a), polar([0, 0], HOLDER.outer - 8, a), 12);
-    out.push(S(solid(jaw, top, 4), { tone: "mid" }));
+    const jaw = capsule(polar([0, 0], PLATE_R + 1.5, a), polar([0, 0], HOLDER.outer - 6, a), 11);
+    out.push(S(solid(jaw, top, 3), { tone: "mid" }));
     const [sx, sy] = polar([0, 0], HOLDER.outer - 12, a);
-    out.push(S(k.cylinder(sx, sy, 3.6, top + 4, 3, P, 24), { tone: "mid" }));
-    out.push(L(k.knurl(sx, sy, 3.6, top + 4, top + 7, 20, P), { tone: "lo" }));
+    out.push(S(k.cylinder(sx, sy, 3.6, top + 3, 3, P, 24), { tone: "mid" }));
+    out.push(L(k.knurl(sx, sy, 3.6, top + 3, top + 6, 20, P), { tone: "lo" }));
   }
   return out.join("");
 }
 
 function plate() {
   const out: string[] = [];
-  out.push(S(k.cylinder(0, 0, PLATE_R, 0, PLATE_H, P, 120, 0.8), { tone: "hi", crease: "lo" }));
+  out.push(S(k.cylinder(0, 0, PLATE_R, 0, PLATE_H, P, 120, 0.8), { tone: "hi", crease: "lo", className: "plate" }));
   // Perlage: overlapping circular graining across the plate, the finish of a hand-made movement.
   const marks: string[] = [];
   for (let gx = -PLATE_R + 8; gx < PLATE_R; gx += 7) {
@@ -135,7 +135,7 @@ function plate() {
 
 export function barrel() {
   const { at: c, r, teeth, z, h } = BARREL;
-  const out = [S(solid(toothRing(c, r, teeth, 0, 1.6), z, h), { tone: "hi", crease: "lo" })];
+  const out = [S(solid(toothRing(c, r, teeth, 0, 1.6), z, h), { tone: "hi", crease: "lo", className: "gilt" })];
   const top = z + h;
   out.push(L(k.ring(c[0], c[1], r - 4, top, P, 72), { tone: "lo" }));
   out.push(L(k.ring(c[0], c[1], r - 5.2, top, P, 72), { tone: "faint" }));
@@ -159,12 +159,12 @@ export function wheel(w: Wheel, angle: number) {
   const out: string[] = [];
   out.push(S(k.cylinder(c[0], c[1], pinion, PLATE_H, z - PLATE_H, P, 16), { tone: "mid" }));
   out.push(L(k.knurl(c[0], c[1], pinion, z - 2.4, z, Math.round(pinion * 3), P, 0.2), { tone: "lo" }));
-  out.push(S(solid(withHole(toothRing(c, r, teeth, angle, 1.3), c, r - 3.2), z, h), { tone: "hi", crease: "lo" }));
+  out.push(S(solid(withHole(toothRing(c, r, teeth, angle, 1.3), c, r - 3.2), z, h), { tone: "hi", crease: "lo", className: "gilt" }));
   for (let i = 0; i < spokes; i++) {
     const a = angle + (TAU * i) / spokes + 0.3;
-    out.push(S(solid(capsule(polar(c, 2.5, a), polar(c, r - 2.6, a - 0.12), 2.6, 6), z, h), { tone: "hi", crease: "none" }));
+    out.push(S(solid(capsule(polar(c, 2.5, a), polar(c, r - 2.6, a - 0.12), 2.6, 6), z, h), { tone: "hi", crease: "none", className: "gilt" }));
   }
-  out.push(S(k.cylinder(c[0], c[1], 4, z, h + 0.4, P, 24), { tone: "hi" }));
+  out.push(S(k.cylinder(c[0], c[1], 4, z, h + 0.4, P, 24), { tone: "hi", className: "gilt" }));
   out.push(D([at([c[0], c[1], z + h + 0.4])], { size: 0.7, tone: "hi" }));
   return out.join("");
 }
@@ -256,7 +256,7 @@ function trainBridge() {
 }
 
 function centreBridge() {
-  return [bridge([[-66, 44], CENTRE.at], 13, 22, 2.4, [-66, 44]), jewel(CENTRE.at, 24.4, 3)].join("");
+  return [bridge([[-46, 62], CENTRE.at], 13, 22, 2.4, [-46, 62]), jewel(CENTRE.at, 24.4, 3)].join("");
 }
 
 function escapeBridge() {

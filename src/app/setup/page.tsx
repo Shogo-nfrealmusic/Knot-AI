@@ -28,6 +28,14 @@ const SETUP_CSS = `
 .setup-movement .jewel>.iso-top,.setup-movement .jewel>.iso-fill{fill:#8e2433}
 .setup-movement .jewel>.iso-shade{fill:#6d1a26}
 .setup-movement .screw>.iso-top{fill:#e9dcc0}
+.setup-movement .plate>.iso-top{fill:#e9e2d3}
+.setup-movement .gilt>.iso-top{fill:#e6d3a8}
+.setup-movement .gilt>.iso-fill{fill:#e6d3a8}
+.setup-movement .gilt>.iso-shade[data-shade="0"]{fill:#b89a5e}
+.setup-movement .gilt>.iso-shade[data-shade="1"]{fill:#c6aa70}
+.setup-movement .gilt>.iso-shade[data-shade="2"]{fill:#d3b982}
+.setup-movement .gilt>.iso-shade[data-shade="3"]{fill:#dec695}
+div:has(>main .setup)>.pointer-events-none{display:none}
 .setup-serif{font-family:var(--font-serif);font-weight:400;letter-spacing:-0.015em}
 .setup-link{background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .5s cubic-bezier(.16,1,.3,1)}
 .setup-link:hover{background-size:0 1px;background-position:100% 100%}
@@ -71,7 +79,7 @@ export default function SetupPage() {
             The quiet machinery that runs a business.
           </h1>
 
-          <div className="mt-14 grid gap-14 lg:mt-20 lg:grid-cols-[1.5fr_1fr] lg:items-center lg:gap-16">
+          <div className="mt-10 grid gap-14 lg:mt-12 lg:grid-cols-[1.9fr_1fr] lg:items-center lg:gap-14">
             <div className="setup-rise" style={{ "--at": "200ms", "--rise": "24px" } as React.CSSProperties}>
               <Movement svg={movementSvg()} />
             </div>
@@ -91,7 +99,7 @@ export default function SetupPage() {
             </div>
           </div>
 
-          <div className="mt-20 grid gap-10 border-t border-[var(--rule)] pt-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+          <div className="mt-20 grid gap-10 border-t border-[var(--rule)] pt-10 lg:grid-cols-[1.9fr_1fr] lg:gap-14">
             <p className="setup-serif max-w-[30ch] text-pretty text-[clamp(26px,3vw,36px)] leading-[1.2]">
               Two of us run a company in Tokyo on this. I build the same movement for your business, then add one more
               wheel to it every month.
