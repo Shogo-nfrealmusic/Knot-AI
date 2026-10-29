@@ -62,7 +62,7 @@ function Copy({ kicker, title, accent, text, points }: { kicker: string; title: 
 
 // ── 1. The interview writes CLAUDE.md ─────────────────────────────
 const QA = [
-  { q: "What's the one number that matters this year?", a: "Bookings. Double them before March.", line: ["goal", "double bookings before March"] },
+  { q: "What's the one number that matters this year?", a: "Revenue. $30k a month by June.", line: ["goal", "$30k a month by June"] },
   { q: "When should I push back on you?", a: "When I start chasing a new tool.", line: ["push_back_when", "I chase a shiny new tool"] },
   { q: "What should I never do without asking?", a: "Email a customer.", line: ["never", "email a customer unasked"] },
   { q: "How do you like reports?", a: "One page, numbers first, Mondays.", line: ["report", "Mondays · one page · numbers first"] },
@@ -105,9 +105,9 @@ function Interview({ t }: { t: number }) {
 
 // ── 2. One agent does, another checks ─────────────────────────────
 const WORK = [
-  { job: "Reply to Emma's booking change", verdict: "ok" },
+  { job: "Reply to a client's reschedule", verdict: "ok" },
   { job: "File the Oct 18 lunch", verdict: "back", fix: "Meals, not Software" },
-  { job: "Cut tonight's reel", verdict: "ok" },
+  { job: "Chase two overdue invoices", verdict: "ok" },
   { job: "Draft the Monday report", verdict: "ok" },
 ] as const;
 function Checker({ t }: { t: number }) {
@@ -147,10 +147,10 @@ function Checker({ t }: { t: number }) {
 
 // ── 3. The 24-hour clock ──────────────────────────────────────────
 const JOBS = [
-  { h: 2, label: "Videos render" },
+  { h: 2, label: "Leads researched" },
   { h: 6.5, label: "Inbox sorted" },
   { h: 7.5, label: "Morning brief" },
-  { h: 12, label: "Reviews answered" },
+  { h: 12, label: "Invoices chased" },
   { h: 18, label: "Books drafted" },
   { h: 22, label: "Decisions logged" },
 ];

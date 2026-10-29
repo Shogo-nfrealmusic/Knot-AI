@@ -34,7 +34,7 @@ const JOBS = [
   { icon: IconFileInvoice, label: "Invoice follow-ups" },
   { icon: IconStar, label: "Review replies" },
   { icon: IconChartBar, label: "Weekly numbers" },
-  { icon: IconCalendarEvent, label: "Booking reminders" },
+  { icon: IconCalendarEvent, label: "Client reminders" },
   { icon: IconMessageCircle, label: "Customer replies" },
   { icon: IconUsers, label: "Lead research" },
   { icon: IconSearch, label: "Competitor watch" },
@@ -54,6 +54,13 @@ const JOBS = [
   { icon: IconMail, label: "Morning brief" },
   { icon: IconRefresh, label: "CRM updates" },
 ];
+
+const SCHEDULE = [
+  ["02:00", "Research new leads"],
+  ["06:30", "Sort the inbox"],
+  ["07:30", "Morning brief"],
+  ["18:00", "Draft the books"],
+] as const;
 
 function Blank() {
   return <div aria-hidden className="su-tile opacity-40" />;
@@ -87,11 +94,19 @@ export default function JobWall() {
           </div>
         ))}
 
-        <div className="su-tile-big col-span-3 row-span-2 bg-[#fff3ee] sm:col-span-2">
-          <Image src="/setup/orbit-type.png" alt="" width={1200} height={1100} className="absolute -bottom-4 left-1/2 w-[78%] -translate-x-1/2" />
+        <div className="su-tile-big col-span-3 row-span-2 sm:col-span-2">
           <div className="absolute left-4 top-4">
             <p className="text-[15px] font-medium text-neutral-900">Your setup</p>
             <p className="text-[12px] text-neutral-500">One new job added every month</p>
+          </div>
+          <div className="absolute inset-x-4 bottom-4 divide-y divide-neutral-100 rounded-xl border border-neutral-200 bg-white font-mono text-[11px] text-neutral-600">
+            {SCHEDULE.map(([time, job]) => (
+              <div key={job} className="flex items-center gap-3 px-3 py-2">
+                <span className="text-neutral-400">{time}</span>
+                <span className="flex-1 truncate">{job}</span>
+                <span className="text-emerald-600">done</span>
+              </div>
+            ))}
           </div>
         </div>
 

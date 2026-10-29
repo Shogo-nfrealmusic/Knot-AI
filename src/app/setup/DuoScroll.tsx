@@ -14,7 +14,7 @@ const CHAPTERS = [
   { t: [2.3, 6], kicker: "The schedule", title: "It reads your goals, then gets to work.", text: "CLAUDE.md tells it what matters. A second agent checks each job." },
   { t: [6, 8.5], kicker: "The brief", title: "You wake up to one page.", text: "What got done, what was checked, and the one decision left for you." },
   { t: [8.5, 11], kicker: "The books", title: "Drafted, then corrected.", text: "Three entries filed under the wrong account. Sent back and fixed before you saw them." },
-  { t: [11, 13.5], kicker: "The content", title: "Ten videos by morning.", text: "Rendered overnight. The best three picked for posting." },
+  { t: [11, 13.5], kicker: "The pipeline", title: "Ten leads by morning.", text: "Researched overnight and scored for fit. The best three ready for you." },
   { t: [13.5, 16], kicker: "The inbox", title: "Sorted before coffee.", text: "Replies drafted, receipts logged, newsletters gone. Only one email needs you." },
   { t: [16, 19], kicker: "The record", title: "Every decision, written down.", text: "What you chose, why, and what you turned down. Searchable forever." },
 ] as const;

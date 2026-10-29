@@ -125,7 +125,7 @@ export default function SetupPage() {
         <div className="flex flex-col items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-center text-[13px] text-neutral-500 sm:flex-row sm:px-10">
           <span className="text-neutral-800">Built on the system behind a six-figure business I co-founded.</span>
           <span className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
-            <span>Videos made overnight</span>
+            <span>Content drafted overnight</span>
             <span className="text-neutral-300">/</span>
             <span>Books drafted monthly</span>
             <span className="text-neutral-300">/</span>

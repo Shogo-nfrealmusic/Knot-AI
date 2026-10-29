@@ -46,6 +46,7 @@ const spring = (p: number) => 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 
 
 export default function Constellation() {
   const root = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const host = root.current;
@@ -62,9 +63,12 @@ export default function Constellation() {
 
     let eased = 0;
     const place = (now: number) => {
-      // Scroll drives the story: chaos while the stage enters the screen, order by the time it is centred.
-      const box = host.getBoundingClientRect();
-      const scrolled = Math.min(1, Math.max(0, (innerHeight * 0.95 - box.top) / (innerHeight * 0.75)));
+      // The stage is pinned while you scroll through its track: it holds the chaos for the first fifth, sorts
+      // itself over the middle, and stays settled for the last stretch before the page moves on.
+      const box = (track.current ?? host).getBoundingClientRect();
+      const run = Math.max(1, box.height - innerHeight);
+      const progress = Math.min(1, Math.max(0, -box.top / run));
+      const scrolled = Math.min(1, Math.max(0, (progress - 0.2) / 0.55));
       eased += (scrolled - eased) * 0.12;
       const elapsed = still ? 99999 : 650 + eased * 2100;
       const t = (now - start) / 1000;
@@ -119,7 +123,9 @@ export default function Constellation() {
   }, []);
 
   return (
-    <div ref={root} className="relative mx-auto w-full max-w-[1080px]" style={{ aspectRatio: `${W} / ${H}` }}>
+    <div ref={track} className="relative h-[230vh]">
+    <div className="sticky top-0 flex h-screen items-center px-2">
+    <div ref={root} className="relative mx-auto w-full max-w-[min(1080px,150vh)]" style={{ aspectRatio: `${W} / ${H}` }}>
       <div aria-hidden className="absolute left-1/2 top-[54%] h-[46%] w-[40%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ff6b3d] opacity-[0.18] blur-[70px]" />
       <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 size-full overflow-visible" aria-hidden>
         {RINGS.map((ring) => (
@@ -161,6 +167,8 @@ export default function Constellation() {
       >
         Today: you copy between 16 tabs by hand
       </p>
+    </div>
+    </div>
     </div>
   );
 }
