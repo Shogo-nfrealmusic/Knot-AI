@@ -469,49 +469,61 @@ export function DropBreakdownBlock({ breakdown }: { breakdown: DropBreakdown }) 
           <h2 className="mt-2 text-2xl font-medium tracking-[-0.03em] text-neutral-900 sm:text-3xl">{section.title}</h2>
           <ol className="mt-4 divide-y divide-neutral-200">
             {section.items.map((item) => (
-              <li key={item.name} className="py-6 last:pb-0">
-                <h3 className="text-lg font-semibold tracking-[-0.015em] text-neutral-900 [overflow-wrap:anywhere]">
-                  {item.name}
-                </h3>
-                <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-neutral-600">
-                  <Rich parts={item.what} />
-                </p>
-                {item.who?.length ? (
-                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                    <span className="font-medium text-neutral-700">{item.whoLabel ?? "Who gets it"}: </span>
-                    <Rich parts={item.who} />
+              <li
+                key={item.name}
+                className={cn(
+                  "py-6 last:pb-0",
+                  (item.media?.length || item.demo) && "lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-10",
+                )}
+              >
+                <div>
+                  <h3 className="text-lg font-semibold tracking-[-0.015em] text-neutral-900 [overflow-wrap:anywhere]">
+                    {item.name}
+                  </h3>
+                  <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-neutral-600">
+                    <Rich parts={item.what} />
                   </p>
-                ) : null}
-                {item.more ? (
-                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                    <span className="font-medium text-neutral-700">{item.more.label}: </span>
-                    <Rich parts={item.more.text} />
-                  </p>
-                ) : null}
-                {item.details?.map((detail) => (
-                  <p key={detail.label} className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                    <span className="font-medium text-neutral-700">{detail.label}: </span>
-                    <Rich parts={detail.text} />
-                  </p>
-                ))}
-                {item.why?.length ? (
-                  <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
-                    <span className="font-medium text-warm">{item.whyLabel ?? "Why it matters"}: </span>
-                    <Rich parts={item.why} />
-                  </p>
-                ) : null}
-                {item.media?.length ? (
-                  <div className="mt-5 grid max-w-2xl grid-cols-2 gap-x-3 gap-y-4">
-                    {item.media.map((media, index) => (
-                      <MediaFigure
-                        key={media.src}
-                        media={media}
-                        className={item.media!.length % 2 === 1 && index === 0 ? "col-span-2" : undefined}
-                      />
-                    ))}
+                  {item.who?.length ? (
+                    <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                      <span className="font-medium text-neutral-700">{item.whoLabel ?? "Who gets it"}: </span>
+                      <Rich parts={item.who} />
+                    </p>
+                  ) : null}
+                  {item.more ? (
+                    <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                      <span className="font-medium text-neutral-700">{item.more.label}: </span>
+                      <Rich parts={item.more.text} />
+                    </p>
+                  ) : null}
+                  {item.details?.map((detail) => (
+                    <p key={detail.label} className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                      <span className="font-medium text-neutral-700">{detail.label}: </span>
+                      <Rich parts={detail.text} />
+                    </p>
+                  ))}
+                  {item.why?.length ? (
+                    <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-neutral-500">
+                      <span className="font-medium text-warm">{item.whyLabel ?? "Why it matters"}: </span>
+                      <Rich parts={item.why} />
+                    </p>
+                  ) : null}
+                </div>
+                {item.media?.length || item.demo ? (
+                  <div className="lg:mt-1">
+                    {item.media?.length ? (
+                      <div className="mt-5 grid max-w-2xl grid-cols-2 gap-x-3 gap-y-4 lg:mt-0">
+                        {item.media.map((media, index) => (
+                          <MediaFigure
+                            key={media.src}
+                            media={media}
+                            className={item.media!.length % 2 === 1 && index === 0 ? "col-span-2" : undefined}
+                          />
+                        ))}
+                      </div>
+                    ) : null}
+                    {item.demo === "oled" ? <OledDemo /> : null}
                   </div>
                 ) : null}
-                {item.demo === "oled" ? <OledDemo /> : null}
               </li>
             ))}
           </ol>

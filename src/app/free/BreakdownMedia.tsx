@@ -86,7 +86,7 @@ function drawPanel(ctx: CanvasRenderingContext2D, t: number, oled: boolean) {
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       const own = lit(x, y);
-      const glow = oled ? 0 : 0.03 + zones[Math.floor(y / ZONE)][Math.floor(x / ZONE)] * 0.2;
+      const glow = oled ? 0 : 0.04 + zones[Math.floor(y / ZONE)][Math.floor(x / ZONE)] * 0.3;
       const v = Math.round(255 * Math.max(own, glow));
       if (v === 0) continue;
       ctx.fillStyle = `rgb(${v},${v},${Math.min(255, v + 8)})`;
