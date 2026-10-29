@@ -95,8 +95,8 @@ function screw([x, y]: k.Plane, z: number, slot: number) {
 
 function holder() {
   const out = [`<path class="iso-halo" d="${k.haloOf({ x: -HOLDER.outer, y: -HOLDER.outer, w: HOLDER.outer * 2, d: HOLDER.outer * 2, r: HOLDER.outer }, HOLDER.z, HOLDER.h, P)}"/>`];
-  const outer = k.circleRing(0, 0, HOLDER.outer, 96);
-  out.push(S(solid(withHole(outer, [0, 0], HOLDER.inner, 96), HOLDER.z, HOLDER.h), { tone: "mid" }));
+  // A solid disc: the plate covers the holder's opening, so a ring with a hole would only add a seam.
+  out.push(S(k.cylinder(0, 0, HOLDER.outer, HOLDER.z, HOLDER.h, P, 120, 0.8), { tone: "mid" }));
   out.push(L(k.ring(0, 0, HOLDER.outer - 5, HOLDER.z + HOLDER.h, P, 96), { tone: "faint" }));
   const top = HOLDER.z + HOLDER.h;
   // Graduations around the holder: every 6 degrees, a longer mark every 30.
