@@ -258,7 +258,7 @@ export default function Scenes() {
       <Scene
         stack
         device={(p) => (
-          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))] max-sm:w-[114%] max-sm:max-w-none">
+          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))] max-sm:w-[100vw] max-sm:max-w-none">
             <Interview p={p} />
           </Device>
         )}
