@@ -5,16 +5,16 @@ import { cn } from "@/lib/utils";
 
 // The hero story on an iPhone Duo (Artboard Studio mockup, commercial licence). Nothing here is tied to scroll
 // speed: when the Duo comes into view it plays the opening once (folded lock screen, the back, unfolding, the
-// schedule running), then steps through five things Copilot OS does, one tab at a time, the way Apple's feature
+// schedule running), then steps through five things Copilot OS does (brief, calendar, pipeline, inbox, decisions), one tab at a time, the way Apple's feature
 // galleries do. Each tab plays its part of the same 19 s render and holds on the result before moving on; tapping
 // a tab jumps there. It pauses while off screen. Phones get a file cropped closer to the Duo (900 px, ~0.9 MB);
 // larger screens get a 1440 px one (~1.5 MB).
 const INTRO = { t: [0, 6], kicker: "Overnight", title: "Claude Code ran the schedule.", text: "It read your goals, did three jobs, and had a second agent check each one." } as const;
 const TABS = [
   { t: [6, 8.5], label: "Brief", kicker: "The brief", title: "You wake up to one page.", text: "What got done, what was checked, and the one decision left for you." },
-  { t: [8.5, 11], label: "Books", kicker: "The books", title: "Drafted, then corrected.", text: "Three entries filed under the wrong account. Sent back and fixed before you saw them." },
-  { t: [11, 13.5], label: "Leads", kicker: "The pipeline", title: "Ten leads by morning.", text: "Researched overnight and scored for fit. The best three ready for you." },
-  { t: [13.5, 16], label: "Inbox", kicker: "The inbox", title: "Sorted before coffee.", text: "Replies drafted, receipts logged, newsletters gone. Only one email needs you." },
+  { t: [8.5, 11], label: "Calendar", kicker: "The calendar", title: "Booked without the back-and-forth.", text: "Requests answered and slotted in. A clash with your dentist caught, moved, and a new invite sent." },
+  { t: [11, 13.5], label: "Pipeline", kicker: "The pipeline", title: "Every lead, followed through.", text: "Visitors to leads to calls to clients, counted every week. The three worth a reply today already have one drafted." },
+  { t: [13.5, 16], label: "Inbox", kicker: "The inbox", title: "Sorted before coffee.", text: "Replies drafted in your voice, receipts filed, newsletters archived. You read, tap send, and only one email needs you." },
   { t: [16, 19], label: "Decisions", kicker: "The record", title: "Every decision, written down.", text: "What you chose, why, and what you turned down. Searchable forever." },
 ] as const;
 const HOLD_MS = 1800; // how long each tab rests on its finished picture
@@ -65,10 +65,19 @@ export default function DuoHero() {
         v.currentTime = b - 0.05;
         return;
       }
-      if (Math.abs(v.currentTime - a) > 0.1) v.currentTime = a;
-      v.play().catch(() => {
-        v.currentTime = b - 0.05;
-      });
+      // Wait until the first frames are in: seeking or playing a video that is still loading gets aborted, which
+      // used to land on the end of the opening (the Duo popping open, or the opening skipped) after a reload.
+      const go = () => {
+        if (index !== i) return;
+        if (Math.abs(v.currentTime - a) > 0.1) v.currentTime = a;
+        v.play().catch((err: DOMException) => {
+          // Only a real autoplay block (Low Power Mode and the like) shows the finished picture instead.
+          // An aborted play is retried by the next visibility change or tick.
+          if (err.name === "NotAllowedError") v.currentTime = b - 0.05;
+        });
+      };
+      if (v.readyState >= 2) go();
+      else v.addEventListener("loadeddata", go, { once: true });
     };
     jump.current = (i: number) => {
       started = true;
@@ -89,6 +98,8 @@ export default function DuoHero() {
         holdUntil = now + (index < 0 ? 300 : HOLD_MS);
       }
       if (v.paused && holdUntil && now >= holdUntil && !reduced) play((index + 1) % TABS.length);
+      // A play that was interrupted (scrolled away mid-start, a slow network) picks up again here.
+      else if (v.paused && !holdUntil && !reduced && v.readyState >= 2 && t < b - 0.05) v.play().catch(() => {});
     };
     frame = requestAnimationFrame(tick);
 
@@ -121,12 +132,12 @@ export default function DuoHero() {
       <video
         ref={video}
         src={src?.video}
-        poster={src?.poster ?? "/setup/duo-story-m.jpg"}
+        poster={src?.poster}
         muted
         playsInline
         preload="auto"
         aria-hidden
-        className="h-auto w-full max-w-[640px] lg:max-h-[64vh] lg:w-auto lg:max-w-full"
+        className="aspect-[2840/1944] h-auto w-full max-w-[640px] bg-white object-contain lg:aspect-video lg:h-[min(64vh,720px)] lg:w-auto lg:max-w-full"
       />
 
       <div role="tablist" aria-label="Jobs it does" className="mt-6 flex max-w-full gap-1 overflow-x-auto rounded-full border border-neutral-200 bg-white p-1 shadow-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
