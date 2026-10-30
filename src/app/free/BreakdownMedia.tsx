@@ -5,7 +5,7 @@ import type { BreakdownMedia } from "@/lib/free";
 import { cn } from "@/lib/utils";
 
 // Muted loop that only plays while on screen; with reduced motion it stays on the poster.
-export function LoopVideo({ media, className = "absolute inset-0 size-full object-cover" }: { media: Pick<BreakdownMedia, "src" | "video" | "alt">; className?: string }) {
+function LoopVideo({ media }: { media: BreakdownMedia }) {
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = ref.current;
@@ -27,7 +27,7 @@ export function LoopVideo({ media, className = "absolute inset-0 size-full objec
       playsInline
       preload="none"
       aria-label={media.alt}
-      className={className}
+      className="absolute inset-0 size-full object-cover"
     />
   );
 }

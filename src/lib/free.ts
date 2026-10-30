@@ -2,6 +2,8 @@
 // Slugs are numbered ("02-claude-design-tools") so they never collide as reels pile up;
 // /free/02 redirects to the full slug, which is what the DMs link to.
 
+import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
+
 export type ToolIcon =
   | "palette"
   | "wand"
@@ -112,7 +114,9 @@ export type DropChapter = {
   /** a table under the text (e.g. a beat sheet): header row + body rows */
   table?: { head: string[]; rows: string[][] };
   /** images under the text; `tall` for 9:16 screens (shown as a grid), otherwise full width */
-  figures?: { src: string; alt: string; caption?: string; tall?: boolean; /** muted loop from the reel; `src` is its poster */ video?: string }[];
+  figures?: { src: string; alt: string; caption?: string; tall?: boolean }[];
+  /** a live figure drawn for the page (src/app/free/jarvis) */
+  demo?: JarvisDemoKind;
 };
 
 export type DropAbout = {
@@ -243,24 +247,25 @@ const drops: FreeDrop[] = [
     ],
     about: {
       intro: [
-        "Four parts, and you can stop after any of them. Parts 1 and 2 alone already give you most of the value.",
+        "Four parts, and you can stop after any of them. The brain and the memory alone already give you most of the value.",
       ],
       chapters: [
         {
-          title: "What it looks like",
-          text: ["I call it, and it answers in its own voice: \"Good morning, sir. Your brief is ready.\" Below are the scenes from the reel, one per part."],
-          figures: [{ src: "/free/46/hud.jpg", video: "/free/46/hud.mp4", alt: "A blue hologram ring labelled JARVIS that pulses while it talks", caption: "The call, drawn for the reel" }],
+          title: "Meet it first",
+          text: ["Tap the ring to hear it. This is the line it says when my morning brief is ready."],
+          demo: "core",
         },
         {
           title: "The brain: Claude Code",
           text: [
             "Install Claude Code and sign in. Unlike a chat window, it works inside a folder on your computer: it opens files, runs code and checks its own work until the task is done.",
           ],
+          demo: "run",
           commands: ["curl -fsSL https://claude.ai/install.sh | bash", "claude"],
-          figures: [{ src: "/free/46/terminal.jpg", video: "/free/46/terminal.mp4", alt: "Claude Code reads brief.md, writes mover.py, runs it and answers Nasdaq Composite -1.38%", caption: "A real run: read the brief, write a script, run it, answer in one line" }],
         },
         {
           title: "The memory: your notes",
+          demo: "vault",
           text: [
             "Keep your notes in an Obsidian vault (a normal folder of Markdown files) and start Claude Code inside that folder. It can now search and read everything you have written, so it never starts from zero.",
             "Then add a file called CLAUDE.md at the top of the vault. Claude Code reads it at the start of every session. Mine is the most important file in the whole setup. Start small:",
@@ -290,10 +295,10 @@ const drops: FreeDrop[] = [
             "Write down decisions with the reason. That is what makes the answers personal.",
             "When it gets something wrong, fix CLAUDE.md, not just the answer.",
           ],
-          figures: [{ src: "/free/46/vault.jpg", video: "/free/46/vault.mp4", alt: "A sphere of 467 coloured dots, one per note, linked by thin lines", caption: "My vault: 467 notes, coloured by folder" }],
         },
         {
           title: "The voice: ElevenLabs Agents",
+          demo: "voice",
           text: [
             "This part is separate from Claude Code. In ElevenLabs, create an agent, pick a voice, pick the model it thinks with (Claude is one of the options), and write a short system prompt: who you are and how it should talk. You can talk to it in the browser right away.",
             "For a phone number, connect a Twilio number to the agent with ElevenLabs' native Twilio integration. Then you can call it, and it can call you.",
@@ -303,10 +308,10 @@ const drops: FreeDrop[] = [
             "Anyone who can reach the agent can talk to it unless you turn on authentication (signed URLs) or an allowlist. Do this before you connect anything private.",
             "To give it facts (your calendar, your sales), add tools that call your own small read-only API. Keep secrets and customer data out.",
           ],
-          figures: [{ src: "/free/46/voice.jpg", video: "/free/46/voice.mp4", alt: "The Jarvis hologram above a voice waveform and a US phone number with the middle digits hidden", caption: "Its voice and its real number" }],
         },
         {
           title: "The team: subagents",
+          demo: "team",
           text: [
             "Claude Code can hand work to subagents: each one is a Markdown file with its own role, rules and tools. Put them in ~/.claude/agents/ and they work from any folder. Mine are an analyst, a marketer and an engineer. I say what I want; Claude Code picks who does it.",
           ],
@@ -331,14 +336,13 @@ const drops: FreeDrop[] = [
             "One role per file. A narrow description is what makes Claude Code pick the right one.",
             "Give each role only the tools it needs. The engineer can edit code; the analyst can only read.",
           ],
-          figures: [{ src: "/free/46/team.jpg", video: "/free/46/team.mp4", alt: "Work flows from the main agent to three cards: Analyst, Marketer, Engineer", caption: "One request, handed to the right role" }],
         },
         {
           title: "Bonus: the 6:30 brief",
+          demo: "brief",
           text: [
             "Every morning at 6:30 a scheduled job on my Mac (launchd) runs a small script that pulls the numbers I care about and saves a one-page brief, so it's ready before I wake up. It only runs on days the Mac is awake. Ask Claude Code to write the script and the schedule for you.",
           ],
-          figures: [{ src: "/free/46/brief.jpg", video: "/free/46/brief.mp4", alt: "A clock turns to 06:30 and a card lists the morning's market numbers", caption: "The real brief from Oct 30" }],
         },
       ],
       notes: [

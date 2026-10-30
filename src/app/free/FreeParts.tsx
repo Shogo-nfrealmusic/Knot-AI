@@ -21,7 +21,8 @@ import {
   IconUsersGroup,
   IconWand,
 } from "@tabler/icons-react";
-import { LoopVideo, MediaFigure, OledDemo } from "@/app/free/BreakdownMedia";
+import { MediaFigure, OledDemo } from "@/app/free/BreakdownMedia";
+import { JarvisDemo } from "@/app/free/jarvis/JarvisDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -287,19 +288,15 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                     <div className={chapter.figures.every((fig) => fig.tall) ? "mt-4 grid max-w-2xl grid-cols-3 gap-2 sm:grid-cols-4" : "mt-4 max-w-2xl space-y-4"}>
                       {chapter.figures.map((fig) => (
                         <figure key={fig.src} className="min-w-0">
-                          {fig.video ? (
-                            // a scene from the reel itself, as a muted loop (src is its poster)
-                            <LoopVideo media={{ src: fig.src, video: fig.video, alt: fig.alt }} className="block w-full max-w-sm rounded-lg border border-neutral-200 bg-neutral-950" />
-                          ) : (
-                            // static screenshots of known size; plain <img> like the other drop images
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={fig.src} alt={fig.alt} loading="lazy" className="w-full rounded-lg border border-neutral-200 bg-neutral-950" />
-                          )}
+                          {/* static screenshots of known size; plain <img> like the other drop images */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={fig.src} alt={fig.alt} loading="lazy" className="w-full rounded-lg border border-neutral-200 bg-neutral-950" />
                           {fig.caption ? <figcaption className="mt-1.5 text-[12px] leading-snug text-neutral-400">{fig.caption}</figcaption> : null}
                         </figure>
                       ))}
                     </div>
                   ) : null}
+                  {chapter.demo ? <JarvisDemo kind={chapter.demo} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (
