@@ -91,14 +91,16 @@ export default function Constellation() {
 
     let eased = 0;
     const place = (now: number) => {
-      // Starts sorting as soon as the stage comes into view, keeps going while it is pinned, and is settled with
-      // the last third of the track still to scroll.
+      // Desktop: starts sorting as the stage comes into view and is settled just as the pin lets go, so you are never
+      // held on a finished picture. Phones do not pin: it sorts between entering the screen and reaching the middle.
       const box = (track.current ?? host).getBoundingClientRect();
       const run = Math.max(1, box.height - innerHeight);
       const enter = innerHeight * 0.75;
-      const scrolled = Math.min(1, Math.max(0, (enter - box.top) / (enter + run * 0.65)));
+      const narrow = innerWidth < 640;
+      const scrolled = Math.min(1, Math.max(0, narrow ? (innerHeight * 0.9 - box.top) / (innerHeight * 0.45 + box.height * 0.5) : (enter - box.top) / (enter + run * 0.92)));
       eased += (scrolled - eased) * 0.12;
-      const elapsed = still ? 99999 : 650 + eased * 2100;
+      // The spring looks settled about halfway through its own curve, so the scroll range maps onto that half.
+      const elapsed = still ? 99999 : 650 + eased * 1350;
       const t = (now - start) / 1000;
       let settle = 0;
       NODES.forEach((node, i) => {
@@ -115,7 +117,7 @@ export default function Constellation() {
         nodes[i]!.style.transform = `translate3d(${x * scale}px, ${y * scale}px, 0) translate(-50%, -50%)`;
         spokes[i]!.setAttribute("x2", String(x));
         spokes[i]!.setAttribute("y2", String(y));
-        spokes[i]!.style.opacity = String(Math.min(1, Math.max(0, p * 1.4 - 0.3)));
+        spokes[i]!.style.opacity = String(Math.min(1, Math.max(0, p * 2 - 0.2)));
         settle += p;
       });
       const progress = settle / NODES.length;
@@ -128,7 +130,7 @@ export default function Constellation() {
         }
       }
       if (core) {
-        const c = Math.min(1, Math.max(0, (elapsed - 1400) / 900));
+        const c = Math.min(1, Math.max(0, (elapsed - 1250) / 600));
         core.style.opacity = String(c);
         core.style.transform = `translate(-50%, -50%) scale(${0.6 + 0.4 * (still ? 1 : spring(c))})`;
       }
@@ -152,8 +154,8 @@ export default function Constellation() {
   }, [g]);
 
   return (
-    <div ref={track} className="relative h-[200svh] sm:h-[230vh]">
-      <div className="sticky top-0 flex h-[100svh] items-center px-2">
+    <div ref={track} className="relative sm:h-[175vh]">
+      <div className="flex items-center px-2 py-12 sm:sticky sm:top-0 sm:h-[100svh] sm:py-0">
         <div
           ref={root}
           className="relative mx-auto w-full max-w-[min(1080px,150vh)] max-sm:max-w-[min(100%,52svh)]"

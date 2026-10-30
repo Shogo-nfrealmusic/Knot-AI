@@ -3,15 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-// The hero story, driven by scroll: the page pins an iPhone Duo (Artboard Studio mockup, commercial licence) and
-// scrubs one 19 s render as you scroll — folded lock screen, the back, unfolding, then six things Copilot OS does,
-// each with its own caption. Every chapter gets the same scroll length, so the quick fold-and-turn at the start
-// is as easy to read as the long scenes. The video is encoded all-keyframe so seeking is instant.
-// Phones and tablets get 16 stills cut from the same render (public/setup/duo/NN.webp, ~150 KB in all) and
-// crossfade between them: iOS Safari will not paint a paused video it is seeking, and the 7 MB file is too much
-// on a phone anyway.
+// The hero story: the page pins an iPhone Duo (Artboard Studio mockup, commercial licence) while you scroll
+// through eight chapters — folded lock screen, the back, unfolding, then six things Copilot OS does.
+// Desktop scrubs one 19 s render with the scroll (encoded all-keyframe, so seeking is instant).
+// Phones and tablets play it instead: iOS Safari will not paint a paused video it is seeking, so each chapter
+// plays forward on its own when you scroll into it and stops at its end, the way Apple's product pages do it on
+// phones. Scrolling back shows the end of the earlier chapter. The phone file is cropped closer to the Duo,
+// 900 px wide and under 1 MB.
 const DURATION = 19;
-const FRAMES = 16;
 const CHAPTERS = [
   { t: [0, 0.9], kicker: "7:30 a.m.", title: "Three jobs already done.", text: "While you slept, the schedule ran and every result was checked." },
   { t: [0.9, 2.3], kicker: "Under the hood", title: "Claude Code, on your machine.", text: "No new app. Your files, your tools, your rules." },
@@ -36,89 +35,80 @@ function timeAt(progress: number) {
 export default function DuoScroll() {
   const section = useRef<HTMLElement>(null);
   const video = useRef<HTMLVideoElement>(null);
-  const stills = useRef<HTMLDivElement>(null);
   const [chapter, setChapter] = useState(0);
-  const [mode, setMode] = useState<"video" | "stills">("stills");
+  const [mode, setMode] = useState<"scrub" | "play" | null>(null);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMode(matchMedia("(max-width: 1023px), (pointer: coarse)").matches ? "play" : "scrub"));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     const el = section.current;
-    if (!el) return;
+    const v = video.current;
+    if (!el || !v || !mode) return;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const phone = matchMedia("(max-width: 1023px), (pointer: coarse)").matches;
-    const useStills = reduced || phone;
-    const id = requestAnimationFrame(() => setMode(useStills ? "stills" : "video"));
     let frame = 0;
-    let shown = 0;
+    let shown = -1;
     let current = 0;
-    let eased = 0;
+    let stopAt = 0;
+
+    // Phones: play one chapter forward, or show the end of the chapter you scrolled back to.
+    const enter = (c: number, from: number) => {
+      const [a, b] = CHAPTERS[c]!.t;
+      if (reduced || c < from) {
+        v.pause();
+        v.currentTime = b - 0.05;
+        return;
+      }
+      if (Math.abs(v.currentTime - a) > 0.12) v.currentTime = a;
+      stopAt = b;
+      v.play().catch(() => {
+        v.currentTime = b - 0.05;
+      });
+    };
+
     const tick = () => {
       frame = requestAnimationFrame(tick);
+      if (mode === "play" && !v.paused && v.currentTime >= stopAt - 0.02) v.pause();
       const box = el.getBoundingClientRect();
       if (box.bottom < 0 || box.top > innerHeight) return;
       const progress = Math.min(1, Math.max(0, -box.top / (box.height - innerHeight)));
-      if (useStills) {
-        // Crossfade the two stills either side of where the scroll is.
-        eased += (progress - eased) * 0.2;
-        const imgs = stills.current?.children;
-        if (imgs) {
-          const x = Math.min(FRAMES - 1, Math.max(0, eased * FRAMES - 0.5));
-          const i = Math.floor(x);
-          const f = Math.min(1, Math.max(0, (x - i - 0.3) / 0.4)); // hold each still, blend only near the change
-          for (let k = 0; k < imgs.length; k++) (imgs[k] as HTMLElement).style.opacity = String(k === i ? 1 : k === i + 1 ? f : 0);
-        }
-      } else {
-        const v = video.current;
+      if (mode === "scrub") {
         current += (timeAt(progress) - current) * 0.18;
-        if (v && Math.abs(v.currentTime - current) > 1 / 60 && v.readyState >= 1) v.currentTime = Math.min(DURATION - 0.05, current);
+        if (Math.abs(v.currentTime - current) > 1 / 60 && v.readyState >= 1) v.currentTime = Math.min(DURATION - 0.05, current);
       }
       const c = Math.min(N - 1, Math.floor(progress * N));
-      if (c !== shown) {
+      // The first chapter waits until the Duo is pinned in view, not while the page is still at the top.
+      if (c !== shown && (c > 0 || box.top <= 1 || shown > 0)) {
+        if (mode === "play") enter(c, shown);
         shown = c;
         setChapter(c);
       }
     };
-    if (!reduced) frame = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(id);
-      cancelAnimationFrame(frame);
-    };
-  }, []);
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [mode]);
 
   return (
     <section
       ref={section}
       className="relative h-[var(--duo-h)] lg:h-[var(--duo-h-lg)]"
-      style={{ "--duo-h": `${N * 55 + 60}vh`, "--duo-h-lg": `${N * 90 + 60}vh` } as React.CSSProperties}
+      style={{ "--duo-h": `${N * 50 + 60}vh`, "--duo-h-lg": `${N * 90 + 60}vh` } as React.CSSProperties}
       aria-label="What Copilot OS does in a day"
     >
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden px-4">
         <div className="relative w-full max-w-[1180px]">
-          {mode === "video" ? (
-            <video
-              ref={video}
-              src="/setup/duo-story.mp4"
-              poster="/setup/duo-story-start.jpg"
-              muted
-              playsInline
-              preload="auto"
-              aria-hidden
-              className="mx-auto h-auto max-h-[62vh] w-auto max-w-full"
-            />
-          ) : (
-            <div ref={stills} className="relative mx-auto aspect-[16/9] w-full max-w-[min(100%,110vh)] max-lg:scale-[1.18]" aria-hidden>
-              {Array.from({ length: FRAMES }, (_, k) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={k}
-                  src={`/setup/duo/${String(k).padStart(2, "0")}.webp`}
-                  alt=""
-                  decoding="async"
-                  className="absolute inset-0 size-full object-contain"
-                  style={{ opacity: k === 0 ? 1 : 0 }}
-                />
-              ))}
-            </div>
-          )}
+          <video
+            ref={video}
+            src={mode === "play" ? "/setup/duo-story-m.mp4" : mode === "scrub" ? "/setup/duo-story.mp4" : undefined}
+            poster={mode === "scrub" ? "/setup/duo-story-start.jpg" : "/setup/duo-story-m.jpg"}
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden
+            className="mx-auto h-auto max-h-[60svh] w-full max-w-[640px] object-contain lg:max-h-[62vh] lg:w-auto lg:max-w-full"
+          />
         </div>
 
         <div className="pointer-events-none relative mt-4 h-[150px] w-full max-w-[640px] text-center">
