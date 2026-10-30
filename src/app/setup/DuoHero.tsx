@@ -138,7 +138,7 @@ export default function DuoHero() {
             aria-selected={active === i}
             onClick={() => jump.current(i)}
             className={cn(
-              "relative shrink-0 overflow-hidden rounded-full px-4 py-2 text-[13px] font-medium transition-colors duration-300 sm:px-5",
+              "relative shrink-0 overflow-hidden rounded-full px-3 py-2 text-[12.5px] font-medium transition-colors duration-300 sm:px-5 sm:text-[13px]",
               active === i ? "bg-neutral-900 text-white" : "text-neutral-600 hover:text-neutral-900",
             )}
           >
