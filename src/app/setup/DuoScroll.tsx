@@ -63,7 +63,7 @@ export default function DuoScroll() {
         if (imgs) {
           const x = Math.min(FRAMES - 1, Math.max(0, eased * FRAMES - 0.5));
           const i = Math.floor(x);
-          const f = x - i;
+          const f = Math.min(1, Math.max(0, (x - i - 0.3) / 0.4)); // hold each still, blend only near the change
           for (let k = 0; k < imgs.length; k++) (imgs[k] as HTMLElement).style.opacity = String(k === i ? 1 : k === i + 1 ? f : 0);
         }
       } else {
@@ -105,7 +105,7 @@ export default function DuoScroll() {
               className="mx-auto h-auto max-h-[62vh] w-auto max-w-full"
             />
           ) : (
-            <div ref={stills} className="relative mx-auto aspect-[16/9] w-full max-w-[min(100%,110vh)]" aria-hidden>
+            <div ref={stills} className="relative mx-auto aspect-[16/9] w-full max-w-[min(100%,110vh)] max-lg:scale-[1.18]" aria-hidden>
               {Array.from({ length: FRAMES }, (_, k) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
