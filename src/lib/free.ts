@@ -212,6 +212,133 @@ if __name__ == "__main__":
 
 const drops: FreeDrop[] = [
   {
+    number: 46,
+    slug: "46-jarvis",
+    title: "Build your own Jarvis: a brain, a memory, a voice and a team",
+    description:
+      "The exact setup behind my personal AI assistant. Claude Code is the brain, an Obsidian vault is the memory, ElevenLabs Agents gives it a voice and a phone number, and three subagents do the work. Step by step, with the files to copy.",
+    date: "2026-10-31",
+    keyword: "JARVIS",
+    tools: [
+      {
+        name: "Claude Code",
+        what: "The brain. Claude in your terminal that can read and edit files, run commands and finish the task, not just answer.",
+        href: "https://code.claude.com/docs/en/overview",
+        icon: "wand",
+        install: ["curl -fsSL https://claude.ai/install.sh | bash"],
+        note: "Needs a paid Claude plan (Pro or Max) or an Anthropic Console (API) account. The free plan doesn't include it.",
+      },
+      {
+        name: "Obsidian",
+        what: "The memory. Free notes app that keeps every note as a plain Markdown file on your computer, so Claude Code can read them.",
+        href: "https://obsidian.md",
+        icon: "notebook",
+      },
+      {
+        name: "ElevenLabs Agents",
+        what: "The voice. A voice agent you can talk to in the browser, and call on a real number through its Twilio integration.",
+        href: "https://elevenlabs.io/docs/agents-platform/overview",
+        icon: "robot",
+      },
+    ],
+    about: {
+      intro: [
+        "Four parts, and you can stop after any of them. Parts 1 and 2 alone already give you most of the value.",
+      ],
+      chapters: [
+        {
+          title: "1. The brain: Claude Code",
+          text: [
+            "Install Claude Code and sign in. Unlike a chat window, it works inside a folder on your computer: it opens files, runs code and checks its own work until the task is done.",
+          ],
+          commands: ["curl -fsSL https://claude.ai/install.sh | bash", "claude"],
+        },
+        {
+          title: "2. The memory: your notes",
+          text: [
+            "Keep your notes in an Obsidian vault (a normal folder of Markdown files) and start Claude Code inside that folder. It can now search and read everything you have written, so it never starts from zero.",
+            "Then add a file called CLAUDE.md at the top of the vault. Claude Code reads it at the start of every session. Mine is the most important file in the whole setup. Start small:",
+          ],
+          code: [
+            {
+              label: "CLAUDE.md",
+              body: [
+                "# Who I am",
+                "Name, what I do, what I'm working on this year.",
+                "",
+                "# Goals",
+                "The one goal everything else is judged against.",
+                "",
+                "# How to work with me",
+                "- Answer with the conclusion first.",
+                "- Don't guess numbers. Say \"unknown\" instead.",
+                "- Ask before sending, posting, deleting or spending money.",
+                "",
+                "# Where things live",
+                "- Projects/  one note per project, current state only",
+                "- Decisions/  one note per decision, with the reason",
+              ].join("\n"),
+            },
+          ],
+          bullets: [
+            "Write down decisions with the reason. That is what makes the answers personal.",
+            "When it gets something wrong, fix CLAUDE.md, not just the answer.",
+          ],
+        },
+        {
+          title: "3. The voice: ElevenLabs Agents",
+          text: [
+            "This part is separate from Claude Code. In ElevenLabs, create an agent, pick a voice, pick the model it thinks with (Claude is one of the options), and write a short system prompt: who you are and how it should talk. You can talk to it in the browser right away.",
+            "For a phone number, connect a Twilio number to the agent with ElevenLabs' native Twilio integration. Then you can call it, and it can call you.",
+          ],
+          bullets: [
+            "Pick a voice from the library or design one. Don't clone a real person's voice without their permission.",
+            "Anyone who can reach the agent can talk to it unless you turn on authentication (signed URLs) or an allowlist. Do this before you connect anything private.",
+            "To give it facts (your calendar, your sales), add tools that call your own small read-only API. Keep secrets and customer data out.",
+          ],
+        },
+        {
+          title: "4. The team: subagents",
+          text: [
+            "Claude Code can hand work to subagents: each one is a Markdown file with its own role, rules and tools. Put them in ~/.claude/agents/ and they work from any folder. Mine are an analyst, a marketer and an engineer. I say what I want; Claude Code picks who does it.",
+          ],
+          code: [
+            {
+              label: "~/.claude/agents/analyst.md",
+              body: [
+                "---",
+                "name: analyst",
+                "description: Data analyst. Use for \"what changed\", \"is X working\" and any numbers question.",
+                "tools: Read, Grep, Glob, Bash",
+                "---",
+                "",
+                "You answer questions about my business numbers.",
+                "- Start from the data, not from a guess. Say where each number came from.",
+                "- Split averages by period to find the step changes.",
+                "- Read-only: never change production data.",
+              ].join("\n"),
+            },
+          ],
+          bullets: [
+            "One role per file. A narrow description is what makes Claude Code pick the right one.",
+            "Give each role only the tools it needs. The engineer can edit code; the analyst can only read.",
+          ],
+        },
+        {
+          title: "Bonus: the 6:30 brief",
+          text: [
+            "Every morning at 6:30 a scheduled job on my Mac (launchd) runs a small script that pulls the numbers I care about and saves a one-page brief, so it's ready before I wake up. It only runs on days the Mac is awake. Ask Claude Code to write the script and the schedule for you.",
+          ],
+        },
+      ],
+      notes: [
+        "The phone agent and Claude Code are two separate parts. In my setup the phone agent can't read my notes directly yet.",
+        "ElevenLabs and Twilio are paid: ElevenLabs bills by call minutes (LLM usage is billed separately), Twilio for the number each month and for call minutes. Check each pricing page.",
+        "An overview by @copilot_shogo. Not affiliated with Anthropic, Obsidian or ElevenLabs.",
+      ],
+    },
+  },
+  {
     number: 45,
     slug: "45-apple-week",
     title: "Apple's week on one page: touch MacBook Pro, M6, OLED iPad mini, iMac, Creator Studio, Siri AI",
