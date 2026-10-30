@@ -19,13 +19,16 @@ function useTrack<T extends HTMLElement>() {
       const id = requestAnimationFrame(() => setP(1));
       return () => cancelAnimationFrame(id);
     }
+    const wide = matchMedia("(min-width: 1024px)");
     let frame = 0;
     let eased = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);
       const box = el.getBoundingClientRect();
       if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
-      const target = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)));
+      // Large screens pin the scene and scroll through its track; phones scroll it past normally and play it
+      // between entering the screen and its device reaching the upper third.
+      const target = Math.min(1, Math.max(0, wide.matches ? -box.top / Math.max(1, box.height - innerHeight) : (innerHeight - box.top) / (box.height + innerHeight * 0.15)));
       eased += (target - eased) * 0.14;
       setP((prev) => (Math.abs(prev - eased) > 0.0005 ? eased : prev));
     };
@@ -62,7 +65,7 @@ function Device({ kind, className, children }: { kind: keyof typeof DEVICES; cla
 
 function Copy({ kicker, title, accent, text, points }: { kicker: string; title: string; accent: string; text: string; points: string[] }) {
   return (
-    <div className="max-w-[420px]">
+    <div className="max-w-[420px] max-lg:mx-auto max-lg:text-center">
       <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--warm)]">{kicker}</p>
       <h3 className="mt-4 text-balance text-[clamp(28px,3.4vw,44px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">
         {title} <span className="font-serif font-normal italic tracking-[-0.01em] text-neutral-500">{accent}</span>
@@ -90,7 +93,7 @@ const QA = [
 function Interview({ p }: { p: number }) {
   const at = (i: number) => 0.06 + i * 0.2;
   return (
-    <div className="flex size-full flex-col bg-[#141413] text-left font-mono text-[1.75cqw] leading-[1.5] text-[#ECEAE4]">
+    <div className="flex size-full flex-col bg-[#141413] text-left font-mono text-[1.75cqw] leading-[1.5] @max-[520px]:text-[2.3cqw] text-[#ECEAE4]">
       <div className="relative flex h-[5.2cqw] shrink-0 items-center gap-[0.8cqw] border-b border-white/10 bg-[#1F1E1D] px-[1.6cqw] text-[1.25cqw] text-white/45">
         <span className="size-[0.95cqw] rounded-full bg-[#ff5f57]" />
         <span className="size-[0.95cqw] rounded-full bg-[#febc2e]" />
@@ -164,7 +167,7 @@ function Notifications({ p }: { p: number }) {
           return (
             <div
               key={n.title}
-              className="rounded-[5.5cqw] px-[4.2cqw] py-[3.2cqw] backdrop-blur"
+              className="rounded-[5.5cqw] px-[4.2cqw] py-[3.2cqw]"
               style={{
                 opacity: v,
                 transform: `translateY(${(1 - v) * -6}cqw) scale(${0.94 + 0.06 * v})`,
@@ -231,12 +234,12 @@ function WatchFace({ p }: { p: number }) {
   );
 }
 
-function Scene({ flip, stack, device, copy, track = "h-[220vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
+function Scene({ flip, stack, device, copy, track = "lg:h-[220vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
   const [ref, p] = useTrack<HTMLDivElement>();
   return (
     <div ref={ref} className={cn("relative", track)}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <div className={cn("grid w-full items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 pt-14 text-center [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
+      <div className="flex items-center overflow-hidden py-14 lg:sticky lg:top-0 lg:h-screen lg:py-0">
+        <div className={cn("grid w-full items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center lg:pt-14 [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
           <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
             {copy}
           </div>
@@ -255,7 +258,7 @@ export default function Scenes() {
       <Scene
         stack
         device={(p) => (
-          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))]">
+          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))] max-sm:w-[114%] max-sm:max-w-none">
             <Interview p={p} />
           </Device>
         )}

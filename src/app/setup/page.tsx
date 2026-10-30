@@ -34,7 +34,7 @@ const SETUP_CSS = `
 @keyframes su-row{0%,100%{opacity:.55}8%,22%{opacity:1}}
 .su-select{position:absolute;left:0;right:0;top:0;height:44px;border-radius:10px;background:#fafafa;box-shadow:0 0 0 1px #e5e5e5,0 4px 12px -6px rgba(0,0,0,.15);animation:su-select 8s cubic-bezier(.65,0,.35,1) infinite}
 @keyframes su-select{0%,20%{transform:translateY(0)}25%,45%{transform:translateY(44px)}50%,70%{transform:translateY(88px)}75%,95%{transform:translateY(132px)}100%{transform:translateY(0)}}
-.su-glow-orange{position:absolute;width:240px;height:150px;border-radius:9999px;background:#ff6b3d;opacity:.14;filter:blur(60px)}
+.su-glow-orange{position:absolute;width:360px;height:260px;border-radius:9999px;background:radial-gradient(closest-side,rgba(255,107,61,.16),rgba(255,107,61,0));pointer-events:none}
 .su-swap{animation:su-swap-a 5s ease-in-out infinite}
 .su-swap-b{animation-name:su-swap-b}
 @keyframes su-swap-a{0%,40%{opacity:1;filter:blur(0);transform:none}50%,90%{opacity:0;filter:blur(6px);transform:translateY(-6px)}100%{opacity:1;filter:blur(0);transform:none}}

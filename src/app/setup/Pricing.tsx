@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BILLING, FOUNDING, PLANS, billedTotal, perMonth, type Billing } from "@/lib/setup";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,27 @@ function Check() {
 
 export default function Pricing() {
   const [billing, setBilling] = useState<Billing>("monthly");
+  const rail = useRef<HTMLDivElement>(null);
+  const [onCard, setOnCard] = useState(1);
+
+  // Phones swipe the plans sideways instead of scrolling past three tall cards; open on Build, in the middle.
+  useEffect(() => {
+    const el = rail.current;
+    if (!el || el.scrollWidth <= el.clientWidth) return;
+    const card = el.children[1] as HTMLElement | undefined;
+    if (card) el.scrollLeft = card.offsetLeft - (el.clientWidth - card.clientWidth) / 2;
+    const onScroll = () => {
+      const mid = el.scrollLeft + el.clientWidth / 2;
+      let best = 0;
+      Array.from(el.children).forEach((c, i) => {
+        const h = c as HTMLElement;
+        if (Math.abs(h.offsetLeft + h.clientWidth / 2 - mid) < Math.abs((el.children[best] as HTMLElement).offsetLeft + (el.children[best] as HTMLElement).clientWidth / 2 - mid)) best = i;
+      });
+      setOnCard(best);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
   const active = BILLING.findIndex((b) => b.id === billing);
   const left = FOUNDING.seats - FOUNDING.taken;
 
@@ -46,7 +67,10 @@ export default function Pricing() {
         </div>
       </div>
 
-      <div className="mt-12 grid gap-3 lg:grid-cols-3">
+      <div
+        ref={rail}
+        className="-mx-4 mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 pt-3 [scrollbar-width:none] sm:mx-0 sm:px-0 lg:mt-12 lg:grid lg:grid-cols-3 lg:overflow-visible lg:p-0 [&::-webkit-scrollbar]:hidden"
+      >
         {PLANS.map((plan) => {
           const featured = plan.id === "build";
           const price = perMonth(plan, billing);
@@ -54,7 +78,7 @@ export default function Pricing() {
             <article
               key={plan.id}
               className={cn(
-                "su-card flex flex-col p-8",
+                "su-card flex w-[84%] max-w-[380px] shrink-0 snap-center flex-col p-7 sm:p-8 lg:w-auto lg:max-w-none",
                 featured && "shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_0_1px_rgba(255,107,61,0.45),0_30px_80px_-30px_rgba(255,107,61,0.45)]",
               )}
             >
@@ -122,6 +146,11 @@ export default function Pricing() {
             </article>
           );
         })}
+      </div>
+      <div className="mt-4 flex justify-center gap-1.5 lg:hidden" aria-hidden>
+        {PLANS.map((plan, i) => (
+          <span key={plan.id} className={cn("h-1.5 rounded-full transition-all duration-300", i === onCard ? "w-5 bg-neutral-900" : "w-1.5 bg-neutral-300")} />
+        ))}
       </div>
     </div>
   );

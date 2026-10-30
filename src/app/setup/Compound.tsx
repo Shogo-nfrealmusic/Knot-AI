@@ -31,6 +31,7 @@ export default function Compound() {
     const tick = () => {
       frame = requestAnimationFrame(tick);
       const box = el.getBoundingClientRect();
+      if (box.bottom < -200 || box.top > innerHeight + 200) return;
       const target = Math.min(1, Math.max(0, (innerHeight * 0.9 - box.top) / (innerHeight * 0.55)));
       eased += (target - eased) * 0.12;
       setP((prev) => (Math.abs(prev - eased) > 0.001 ? eased : prev));
