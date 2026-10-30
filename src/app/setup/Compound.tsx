@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { follow, throughCentre } from "./scroll";
+import { usePlayOnce } from "./playOnce";
 
-// "One a month" made visible: as you scroll, the months fill in and each one adds a job to the stack.
+// "One a month" made visible: once the chart is on screen the months fill in and each one adds a job to the stack.
 // The hours are an illustration for a small business, labelled as such, not a promise.
 const MONTHS = [
   { m: "Month 1", job: "Setup + morning brief", hours: 2 },
@@ -17,37 +16,8 @@ const MONTHS = [
 const TOTALS = MONTHS.map((_, i) => MONTHS.slice(0, i + 1).reduce((sum, x) => sum + x.hours, 0));
 
 export default function Compound() {
-  const ref = useRef<HTMLDivElement>(null);
-  const chart = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const id = requestAnimationFrame(() => setP(1));
-      return () => cancelAnimationFrame(id);
-    }
-    let frame = 0;
-    let eased = 0;
-    let last = performance.now();
-    let sent = -1;
-    const tick = (now: number) => {
-      frame = requestAnimationFrame(tick);
-      const dt = now - last;
-      last = now;
-      // Timed to the chart itself: it grows as the chart comes up the screen and is full as it passes the centre.
-      const box = (chart.current ?? el).getBoundingClientRect();
-      if (box.bottom < -200 || box.top > innerHeight + 200) return;
-      eased = follow(eased, throughCentre(box, innerHeight), dt);
-      if (Math.abs(eased - sent) > 0.002 || (eased !== sent && (eased === 0 || eased === 1))) {
-        sent = eased;
-        setP(eased);
-      }
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, []);
+  // The chart grows once, month by month, when it is on screen, then stays full.
+  const [chart, p] = usePlayOnce<HTMLDivElement>(2600);
 
   const shown = p * MONTHS.length;
   const live = Math.min(MONTHS.length, Math.floor(shown + 0.03));
@@ -55,7 +25,7 @@ export default function Compound() {
   const max = TOTALS[TOTALS.length - 1]!;
 
   return (
-    <div ref={ref} className="grid gap-10 px-4 sm:px-10 lg:grid-cols-[1fr_1.3fr] lg:items-end lg:gap-16">
+    <div className="grid gap-10 px-4 sm:px-10 lg:grid-cols-[1fr_1.3fr] lg:items-end lg:gap-16">
       <div>
         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--warm)]">It compounds</p>
         <h3 className="mt-4 text-balance text-[clamp(30px,3.6vw,46px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">

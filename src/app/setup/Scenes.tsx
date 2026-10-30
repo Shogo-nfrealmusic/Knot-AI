@@ -1,55 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { follow, throughCentre } from "./scroll";
+import { easeOut, usePlayOnce } from "./playOnce";
 
 // "What you get", told on real devices (Artboard Studio mockups, exported once as small WebP stills). Each scene
-// pins while you scroll through it, and the scroll drives what happens on the screen, so nothing has played out
-// before you arrive. Screen content is live HTML laid into the screen rectangle measured from the export, sized in
-// container units so it stays sharp at any width.
+// plays once when its device is on screen and then stays finished; nothing follows the scroll. Screen content is
+// live HTML laid into the screen rectangle measured from the export, sized in container units so it stays sharp at
+// any width.
 
-/** Scroll progress (0–1) through a tall track whose child is sticky. Eased, and idle while off screen. */
-function useTrack<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const device = useRef<HTMLDivElement>(null);
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const id = requestAnimationFrame(() => setP(1));
-      return () => cancelAnimationFrame(id);
-    }
-    const wide = matchMedia("(min-width: 1024px)");
-    let frame = 0;
-    let eased = 0;
-    let last = performance.now();
-    let sent = -1;
-    const tick = (now: number) => {
-      frame = requestAnimationFrame(tick);
-      const dt = now - last;
-      last = now;
-      const box = el.getBoundingClientRect();
-      if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
-      // Large screens pin the scene: it plays over the first 80% of the pinned scroll and holds for the rest.
-      // Phones scroll straight past, so the device itself is measured: it starts as the device comes up from the
-      // bottom of the screen and is finished as it passes the centre.
-      const d = device.current?.getBoundingClientRect();
-      const target =
-        wide.matches || !d ? Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)) / 0.8) : throughCentre(d, innerHeight);
-      eased = follow(eased, target, dt);
-      // Re-render only when the picture would actually change.
-      if (Math.abs(eased - sent) > 0.002 || (eased !== sent && (eased === 0 || eased === 1))) {
-        sent = eased;
-        setP(eased);
-      }
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-  return [ref, p, device] as const;
-}
+const PLAY_MS = 3600;
 
 const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
@@ -247,18 +206,19 @@ function WatchFace({ p }: { p: number }) {
   );
 }
 
-function Scene({ flip, stack, device, copy, track = "lg:h-[190vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
-  const [ref, p, deviceRef] = useTrack<HTMLDivElement>();
+function Scene({ flip, stack, device, copy }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode }) {
+  const [ref, raw] = usePlayOnce<HTMLDivElement>(PLAY_MS);
+  const lift = span(raw, 0, 0.18);
   return (
-    <div ref={ref} className={cn("relative", track)}>
-      <div className="flex items-center overflow-hidden py-14 lg:sticky lg:top-0 lg:h-screen lg:py-0">
-        <div className={cn("grid w-full grid-cols-[minmax(0,1fr)] items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center lg:pt-14 [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
-          <div className={cn(flip && "lg:order-2")}>
-            {copy}
-          </div>
-          <div ref={deviceRef} className="flex w-full justify-center will-change-transform" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
-            {device(p)}
-          </div>
+    <div className="overflow-hidden py-14 sm:py-20">
+      <div className={cn("grid w-full grid-cols-[minmax(0,1fr)] items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
+        <div className={cn(flip && "lg:order-2")}>{copy}</div>
+        <div
+          ref={ref}
+          className="flex w-full justify-center will-change-transform"
+          style={{ opacity: 0.4 + 0.6 * easeOut(lift), transform: `translateY(${(1 - easeOut(lift)) * 28}px)` }}
+        >
+          {device(raw)}
         </div>
       </div>
     </div>
@@ -271,7 +231,7 @@ export default function Scenes() {
       <Scene
         stack
         device={(p) => (
-          <Device kind="mac" className="w-full max-w-[min(980px,100%,calc((100vh_-_320px)*1.68))] max-sm:w-[100vw] max-sm:max-w-none max-sm:shrink-0">
+          <Device kind="mac" className="w-full max-w-[min(900px,100%)] max-sm:w-[100vw] max-sm:max-w-none max-sm:shrink-0">
             <Interview p={p} />
           </Device>
         )}
