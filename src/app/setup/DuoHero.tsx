@@ -65,10 +65,19 @@ export default function DuoHero() {
         v.currentTime = b - 0.05;
         return;
       }
-      if (Math.abs(v.currentTime - a) > 0.1) v.currentTime = a;
-      v.play().catch(() => {
-        v.currentTime = b - 0.05;
-      });
+      // Wait until the first frames are in: seeking or playing a video that is still loading gets aborted, which
+      // used to land on the end of the opening (the Duo popping open, or the opening skipped) after a reload.
+      const go = () => {
+        if (index !== i) return;
+        if (Math.abs(v.currentTime - a) > 0.1) v.currentTime = a;
+        v.play().catch((err: DOMException) => {
+          // Only a real autoplay block (Low Power Mode and the like) shows the finished picture instead.
+          // An aborted play is retried by the next visibility change or tick.
+          if (err.name === "NotAllowedError") v.currentTime = b - 0.05;
+        });
+      };
+      if (v.readyState >= 2) go();
+      else v.addEventListener("loadeddata", go, { once: true });
     };
     jump.current = (i: number) => {
       started = true;
@@ -89,6 +98,8 @@ export default function DuoHero() {
         holdUntil = now + (index < 0 ? 300 : HOLD_MS);
       }
       if (v.paused && holdUntil && now >= holdUntil && !reduced) play((index + 1) % TABS.length);
+      // A play that was interrupted (scrolled away mid-start, a slow network) picks up again here.
+      else if (v.paused && !holdUntil && !reduced && v.readyState >= 2 && t < b - 0.05) v.play().catch(() => {});
     };
     frame = requestAnimationFrame(tick);
 
@@ -121,12 +132,12 @@ export default function DuoHero() {
       <video
         ref={video}
         src={src?.video}
-        poster={src?.poster ?? "/setup/duo-story-m.jpg"}
+        poster={src?.poster}
         muted
         playsInline
         preload="auto"
         aria-hidden
-        className="h-auto w-full max-w-[640px] lg:max-h-[64vh] lg:w-auto lg:max-w-full"
+        className="aspect-[2840/1944] h-auto w-full max-w-[640px] bg-white object-contain lg:aspect-video lg:h-[min(64vh,720px)] lg:w-auto lg:max-w-full"
       />
 
       <div role="tablist" aria-label="Jobs it does" className="mt-6 flex max-w-full gap-1 overflow-x-auto rounded-full border border-neutral-200 bg-white p-1 shadow-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
