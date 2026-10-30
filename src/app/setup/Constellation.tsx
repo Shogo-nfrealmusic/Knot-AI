@@ -63,12 +63,12 @@ export default function Constellation() {
 
     let eased = 0;
     const place = (now: number) => {
-      // The stage is pinned while you scroll through its track: it holds the chaos for the first fifth, sorts
-      // itself over the middle, and stays settled for the last stretch before the page moves on.
+      // Starts sorting as soon as the stage comes into view, keeps going while it is pinned, and is settled with
+      // the last third of the track still to scroll.
       const box = (track.current ?? host).getBoundingClientRect();
       const run = Math.max(1, box.height - innerHeight);
-      const through = Math.min(1, Math.max(0, -box.top / run));
-      const scrolled = Math.min(1, Math.max(0, (through - 0.2) / 0.55));
+      const enter = innerHeight * 0.75;
+      const scrolled = Math.min(1, Math.max(0, (enter - box.top) / (enter + run * 0.65)));
       eased += (scrolled - eased) * 0.12;
       const elapsed = still ? 99999 : 650 + eased * 2100;
       const t = (now - start) / 1000;
