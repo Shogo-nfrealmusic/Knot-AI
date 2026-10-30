@@ -5,16 +5,16 @@ import { cn } from "@/lib/utils";
 
 // The hero story on an iPhone Duo (Artboard Studio mockup, commercial licence). Nothing here is tied to scroll
 // speed: when the Duo comes into view it plays the opening once (folded lock screen, the back, unfolding, the
-// schedule running), then steps through five things Copilot OS does, one tab at a time, the way Apple's feature
+// schedule running), then steps through five things Copilot OS does (brief, calendar, pipeline, inbox, decisions), one tab at a time, the way Apple's feature
 // galleries do. Each tab plays its part of the same 19 s render and holds on the result before moving on; tapping
 // a tab jumps there. It pauses while off screen. Phones get a file cropped closer to the Duo (900 px, ~0.9 MB);
 // larger screens get a 1440 px one (~1.5 MB).
 const INTRO = { t: [0, 6], kicker: "Overnight", title: "Claude Code ran the schedule.", text: "It read your goals, did three jobs, and had a second agent check each one." } as const;
 const TABS = [
   { t: [6, 8.5], label: "Brief", kicker: "The brief", title: "You wake up to one page.", text: "What got done, what was checked, and the one decision left for you." },
-  { t: [8.5, 11], label: "Books", kicker: "The books", title: "Drafted, then corrected.", text: "Three entries filed under the wrong account. Sent back and fixed before you saw them." },
-  { t: [11, 13.5], label: "Leads", kicker: "The pipeline", title: "Ten leads by morning.", text: "Researched overnight and scored for fit. The best three ready for you." },
-  { t: [13.5, 16], label: "Inbox", kicker: "The inbox", title: "Sorted before coffee.", text: "Replies drafted, receipts logged, newsletters gone. Only one email needs you." },
+  { t: [8.5, 11], label: "Calendar", kicker: "The calendar", title: "Booked without the back-and-forth.", text: "Requests answered and slotted in. A clash with your dentist caught, moved, and a new invite sent." },
+  { t: [11, 13.5], label: "Pipeline", kicker: "The pipeline", title: "Every lead, followed through.", text: "Visitors to leads to calls to clients, counted every week. The three worth a reply today already have one drafted." },
+  { t: [13.5, 16], label: "Inbox", kicker: "The inbox", title: "Sorted before coffee.", text: "Replies drafted in your voice, receipts filed, newsletters archived. You read, tap send, and only one email needs you." },
   { t: [16, 19], label: "Decisions", kicker: "The record", title: "Every decision, written down.", text: "What you chose, why, and what you turned down. Searchable forever." },
 ] as const;
 const HOLD_MS = 1800; // how long each tab rests on its finished picture
