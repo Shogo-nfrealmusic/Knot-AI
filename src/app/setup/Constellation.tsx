@@ -99,7 +99,8 @@ export default function Constellation() {
       const narrow = innerWidth < 640;
       const scrolled = Math.min(1, Math.max(0, narrow ? (innerHeight * 0.9 - box.top) / (innerHeight * 0.45 + box.height * 0.5) : (enter - box.top) / (enter + run * 0.92)));
       eased += (scrolled - eased) * 0.12;
-      const elapsed = still ? 99999 : 650 + eased * 2100;
+      // The spring looks settled about halfway through its own curve, so the scroll range maps onto that half.
+      const elapsed = still ? 99999 : 650 + eased * 1350;
       const t = (now - start) / 1000;
       let settle = 0;
       NODES.forEach((node, i) => {
@@ -116,7 +117,7 @@ export default function Constellation() {
         nodes[i]!.style.transform = `translate3d(${x * scale}px, ${y * scale}px, 0) translate(-50%, -50%)`;
         spokes[i]!.setAttribute("x2", String(x));
         spokes[i]!.setAttribute("y2", String(y));
-        spokes[i]!.style.opacity = String(Math.min(1, Math.max(0, p * 1.4 - 0.3)));
+        spokes[i]!.style.opacity = String(Math.min(1, Math.max(0, p * 2 - 0.2)));
         settle += p;
       });
       const progress = settle / NODES.length;
@@ -129,7 +130,7 @@ export default function Constellation() {
         }
       }
       if (core) {
-        const c = Math.min(1, Math.max(0, (elapsed - 1400) / 900));
+        const c = Math.min(1, Math.max(0, (elapsed - 1250) / 600));
         core.style.opacity = String(c);
         core.style.transform = `translate(-50%, -50%) scale(${0.6 + 0.4 * (still ? 1 : spring(c))})`;
       }
