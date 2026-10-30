@@ -62,8 +62,12 @@ export default function Pricing() {
               <div className="relative flex items-center justify-between">
                 <h3 className="text-[18px] font-semibold text-neutral-900">{plan.name}</h3>
                 {featured ? (
+                  <span className="flex items-center gap-1.5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/setup/orbit-cheer.webp" alt="" className="-my-3 h-11 w-auto" />
                   <span className="rounded-full bg-[#ff6b3d]/15 px-2.5 py-1 text-[11px] font-medium text-[var(--warm)] shadow-[inset_0_0_0_1px_rgba(255,107,61,0.35)]">
                     Start here
+                  </span>
                   </span>
                 ) : null}
               </div>

@@ -78,9 +78,20 @@ export default function Compound() {
               <div key={x.m} className="flex flex-1 flex-col items-center gap-2">
                 <div className="relative flex w-full flex-col justify-end" style={{ height: 240 }}>
                   <div
-                    className="w-full rounded-t-lg bg-gradient-to-t from-[var(--warm)] to-[#ffb38a]"
+                    className="relative w-full rounded-t-lg bg-gradient-to-t from-[var(--warm)] to-[#ffb38a]"
                     style={{ height: `${(TOTALS[i]! / max) * 100 * v}%`, opacity: 0.35 + 0.65 * v }}
-                  />
+                  >
+                    {/* Orbit climbs onto the last month once it fills. */}
+                    {i === MONTHS.length - 1 ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src="/setup/orbit-think.webp"
+                        alt=""
+                        className="absolute bottom-[calc(100%-6px)] left-1/2 w-[86%] max-w-[72px] -translate-x-1/2 transition-[opacity,transform] duration-500"
+                        style={{ opacity: v >= 1 ? 1 : 0, transform: `translate(-50%, ${v >= 1 ? 0 : 8}px)` }}
+                      />
+                    ) : null}
+                  </div>
                 </div>
                 <p className="text-[11px] text-neutral-400">{x.m}</p>
               </div>

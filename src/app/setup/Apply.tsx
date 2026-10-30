@@ -116,13 +116,18 @@ export default function Apply() {
               className={cn(field, "resize-none")}
             />
             {error ? <p className="text-[13px] text-red-600">{error}</p> : null}
+            <div className="relative">
+            {/* Orbit sits on the button, typing, as if it is about to start on the first job. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/setup/orbit-type.webp" alt="" className="pointer-events-none absolute -top-[46px] right-3 w-[68px]" />
             <button
               type="submit"
               disabled={!ready || state === "sending"}
-              className="mt-1 inline-flex h-12 items-center justify-center rounded-xl bg-neutral-900 text-[15px] font-medium text-white transition-all hover:bg-black active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+              className="mt-1 inline-flex h-12 w-full items-center justify-center rounded-xl bg-neutral-900 text-[15px] font-medium text-white transition-all hover:bg-black active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {state === "sending" ? "Sending…" : "Apply for a seat"}
             </button>
+            </div>
             <p className="text-center text-[12px] text-neutral-400">No payment now. I&apos;ll send a link only if it&apos;s a fit.</p>
           </form>
         )}
