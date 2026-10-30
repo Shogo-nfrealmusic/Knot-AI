@@ -23,15 +23,22 @@ function useTrack<T extends HTMLElement>() {
     const wide = matchMedia("(min-width: 1024px)");
     let frame = 0;
     let eased = 0;
+    let started = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);
       const box = el.getBoundingClientRect();
       if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
-      // Large screens pin the scene and scroll through its track. Phones scroll past it normally, so time it to the
-      // device itself: it starts when the device's top edge comes up from the bottom of the screen and finishes
-      // once the whole device is in view.
+      // Large screens pin the scene and the scroll drives it. Phones scroll straight past, so a scroll-driven
+      // animation would be over before the device is in view: there it plays on its own, over a few seconds, once
+      // the whole device is on screen (Apple's phone pages do the same).
+      let target: number;
       const d = device.current?.getBoundingClientRect();
-      const target = Math.min(1, Math.max(0, wide.matches || !d ? -box.top / Math.max(1, box.height - innerHeight) : (innerHeight * 0.92 - d.top) / Math.max(1, innerHeight * 0.92 - Math.max(70, innerHeight - d.height - 40))));
+      if (wide.matches || !d) target = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)));
+      else {
+        const inView = d.top >= 40 && d.bottom <= innerHeight + d.height * 0.08;
+        if (!started && inView) started = performance.now();
+        target = started ? Math.min(1, (performance.now() - started) / PLAY_MS) : 0;
+      }
       eased += (target - eased) * 0.14;
       setP((prev) => (Math.abs(prev - eased) > 0.0005 ? eased : prev));
     };
@@ -41,6 +48,7 @@ function useTrack<T extends HTMLElement>() {
   return [ref, p, device] as const;
 }
 
+const PLAY_MS = 4200; // how long a scene plays on a phone
 const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
 type Screen = { left: number; top: number; width: number; height: number; radius: string };
