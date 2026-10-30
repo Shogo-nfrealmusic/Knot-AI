@@ -17,6 +17,7 @@ const TOTALS = MONTHS.map((_, i) => MONTHS.slice(0, i + 1).reduce((sum, x) => su
 
 export default function Compound() {
   const ref = useRef<HTMLDivElement>(null);
+  const chart = useRef<HTMLDivElement>(null);
   const [p, setP] = useState(0);
 
   useEffect(() => {
@@ -30,7 +31,9 @@ export default function Compound() {
     let eased = 0;
     const tick = () => {
       frame = requestAnimationFrame(tick);
-      const box = el.getBoundingClientRect();
+      // On one column the chart sits below the copy, so time it to the chart itself.
+      const box = (innerWidth < 1024 && chart.current ? chart.current : el).getBoundingClientRect();
+      if (box.bottom < -200 || box.top > innerHeight + 200) return;
       const target = Math.min(1, Math.max(0, (innerHeight * 0.9 - box.top) / (innerHeight * 0.55)));
       eased += (target - eased) * 0.12;
       setP((prev) => (Math.abs(prev - eased) > 0.001 ? eased : prev));
@@ -70,7 +73,7 @@ export default function Compound() {
         <p className="mt-4 text-[12px] text-neutral-400">Illustration for a small business. Your jobs and hours will differ.</p>
       </div>
 
-      <div className="su-panel p-6">
+      <div ref={chart} className="su-panel p-6">
         <div className="flex h-[300px] items-end gap-3">
           {MONTHS.map((x, i) => {
             const v = Math.min(1, Math.max(0, shown - i));
