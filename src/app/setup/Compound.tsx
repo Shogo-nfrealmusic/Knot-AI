@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { follow, throughCentre } from "./scroll";
 
 // "One a month" made visible: as you scroll, the months fill in and each one adds a job to the stack.
 // The hours are an illustration for a small business, labelled as such, not a promise.
@@ -29,14 +30,20 @@ export default function Compound() {
     }
     let frame = 0;
     let eased = 0;
-    const tick = () => {
+    let last = performance.now();
+    let sent = -1;
+    const tick = (now: number) => {
       frame = requestAnimationFrame(tick);
-      // On one column the chart sits below the copy, so time it to the chart itself.
-      const box = (innerWidth < 1024 && chart.current ? chart.current : el).getBoundingClientRect();
+      const dt = now - last;
+      last = now;
+      // Timed to the chart itself: it grows as the chart comes up the screen and is full as it passes the centre.
+      const box = (chart.current ?? el).getBoundingClientRect();
       if (box.bottom < -200 || box.top > innerHeight + 200) return;
-      const target = Math.min(1, Math.max(0, (innerHeight * 0.9 - box.top) / (innerHeight * 0.55)));
-      eased += (target - eased) * 0.12;
-      setP((prev) => (Math.abs(prev - eased) > 0.001 ? eased : prev));
+      eased = follow(eased, throughCentre(box, innerHeight), dt);
+      if (Math.abs(eased - sent) > 0.002 || (eased !== sent && (eased === 0 || eased === 1))) {
+        sent = eased;
+        setP(eased);
+      }
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
