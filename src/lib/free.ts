@@ -252,7 +252,7 @@ const drops: FreeDrop[] = [
           figures: [{ src: "/free/46/hud.jpg", video: "/free/46/hud.mp4", alt: "A blue hologram ring labelled JARVIS that pulses while it talks", caption: "The call, drawn for the reel" }],
         },
         {
-          title: "1. The brain: Claude Code",
+          title: "The brain: Claude Code",
           text: [
             "Install Claude Code and sign in. Unlike a chat window, it works inside a folder on your computer: it opens files, runs code and checks its own work until the task is done.",
           ],
@@ -260,7 +260,7 @@ const drops: FreeDrop[] = [
           figures: [{ src: "/free/46/terminal.jpg", video: "/free/46/terminal.mp4", alt: "Claude Code reads brief.md, writes mover.py, runs it and answers Nasdaq Composite -1.38%", caption: "A real run: read the brief, write a script, run it, answer in one line" }],
         },
         {
-          title: "2. The memory: your notes",
+          title: "The memory: your notes",
           text: [
             "Keep your notes in an Obsidian vault (a normal folder of Markdown files) and start Claude Code inside that folder. It can now search and read everything you have written, so it never starts from zero.",
             "Then add a file called CLAUDE.md at the top of the vault. Claude Code reads it at the start of every session. Mine is the most important file in the whole setup. Start small:",
@@ -293,7 +293,7 @@ const drops: FreeDrop[] = [
           figures: [{ src: "/free/46/vault.jpg", video: "/free/46/vault.mp4", alt: "A sphere of 467 coloured dots, one per note, linked by thin lines", caption: "My vault: 467 notes, coloured by folder" }],
         },
         {
-          title: "3. The voice: ElevenLabs Agents",
+          title: "The voice: ElevenLabs Agents",
           text: [
             "This part is separate from Claude Code. In ElevenLabs, create an agent, pick a voice, pick the model it thinks with (Claude is one of the options), and write a short system prompt: who you are and how it should talk. You can talk to it in the browser right away.",
             "For a phone number, connect a Twilio number to the agent with ElevenLabs' native Twilio integration. Then you can call it, and it can call you.",
@@ -306,7 +306,7 @@ const drops: FreeDrop[] = [
           figures: [{ src: "/free/46/voice.jpg", video: "/free/46/voice.mp4", alt: "The Jarvis hologram above a voice waveform and a US phone number with the middle digits hidden", caption: "Its voice and its real number" }],
         },
         {
-          title: "4. The team: subagents",
+          title: "The team: subagents",
           text: [
             "Claude Code can hand work to subagents: each one is a Markdown file with its own role, rules and tools. Put them in ~/.claude/agents/ and they work from any folder. Mine are an analyst, a marketer and an engineer. I say what I want; Claude Code picks who does it.",
           ],
