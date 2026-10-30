@@ -133,8 +133,7 @@ export default function Pricing() {
               </ul>
 
               <a
-                href="#apply"
-                data-plan={plan.id}
+                href={`/setup/apply?plan=${plan.id}&billing=${billing}`}
                 className={cn(
                   "relative mt-9 inline-flex h-12 items-center justify-center rounded-xl text-[15px] font-semibold transition-transform duration-300 active:scale-[0.97]",
                   featured ? "bg-neutral-900 text-white hover:bg-black" : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50",

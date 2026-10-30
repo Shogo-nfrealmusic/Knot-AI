@@ -108,7 +108,7 @@ export default function SetupPage() {
             every month. The same setup two of us run our company on.
           </p>
           <div className={cn(entrance, "mt-9 flex flex-wrap items-center justify-center gap-3")} style={stagger(300, 5)}>
-            <a href="#apply" className="group inline-flex h-11 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 active:scale-[0.96]">
+            <a href="/setup/apply" className="group inline-flex h-11 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 active:scale-[0.96]">
               Apply for a seat
               <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
             </a>

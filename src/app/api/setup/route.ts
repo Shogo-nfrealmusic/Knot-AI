@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { buildEmail, escapeHtml, getMissingEnv, isString, sendReceipt, sendToShogo, validEmail } from "@/lib/mail";
-import { PLANS } from "@/lib/setup";
+import { BILLING, PLANS } from "@/lib/setup";
 
-// Copilot OS Setup applications from /setup. Same inbox and receipt pattern as /api/coaching.
+// Copilot OS Setup applications from /setup/apply. Same inbox and receipt pattern as /api/coaching.
 
-type SetupPayload = { name?: unknown; email?: unknown; business?: unknown; plan?: unknown; job?: unknown; website?: unknown };
+type SetupPayload = { name?: unknown; email?: unknown; business?: unknown; plan?: unknown; billing?: unknown; job?: unknown; website?: unknown };
 
 const text = (value: unknown, max: number) => (isString(value) ? value.trim().slice(0, max) : "");
 const PLAN_IDS = PLANS.map((p) => p.id) as string[];
+const BILLING_IDS = BILLING.map((b) => b.id) as string[];
 
 function validatePayload(payload: SetupPayload) {
   const fields = {
@@ -15,10 +16,12 @@ function validatePayload(payload: SetupPayload) {
     email: text(payload.email, 200),
     business: text(payload.business, 200),
     plan: text(payload.plan, 20),
+    // Older clients sent no billing term; treat that as monthly.
+    billing: text(payload.billing, 20) || "monthly",
     job: text(payload.job, 4000),
     website: text(payload.website, 300),
   };
-  if (!fields.name || !validEmail(fields.email) || !fields.business || !PLAN_IDS.includes(fields.plan) || !fields.job) return null;
+  if (!fields.name || !validEmail(fields.email) || !fields.business || !PLAN_IDS.includes(fields.plan) || !BILLING_IDS.includes(fields.billing) || !fields.job) return null;
   return fields;
 }
 
@@ -46,6 +49,7 @@ export async function POST(request: Request) {
       ["Business", fields.business],
       ["Website", fields.website || "—"],
       ["Plan", fields.plan],
+      ["Billing", BILLING.find((b) => b.id === fields.billing)!.label],
     ],
     "The job they want off their plate",
     fields.job,
