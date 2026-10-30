@@ -469,6 +469,8 @@ const BRIEF: [string, string, string][] = [
   ["US 10-year yield", "4.99%", ""],
 ];
 
+const HAND: React.CSSProperties = { transformBox: "view-box", transformOrigin: "100px 100px", transition: "transform 1.6s cubic-bezier(0.16,1,0.3,1)" };
+
 function Brief() {
   const ref = useRef<HTMLDivElement>(null);
   const seen = useInView(ref, { once: true, amount: 0.5 });
@@ -484,8 +486,9 @@ function Brief() {
             const a = (k / 60) * Math.PI * 2, h = k % 5 === 0;
             return <line key={k} x1={100 + Math.sin(a) * 84} y1={100 - Math.cos(a) * 84} x2={100 + Math.sin(a) * (h ? 74 : 80)} y2={100 - Math.cos(a) * (h ? 74 : 80)} stroke="var(--ink)" strokeWidth={h ? 2 : 0.8} opacity={h ? 0.9 : 0.4} />;
           })}
-          <motion.line x1="100" y1="100" x2="100" y2="52" stroke="var(--ink)" strokeWidth="5" strokeLinecap="round" style={{ transformOrigin: "100px 100px" }} initial={false} animate={{ rotate: done ? 195 : 180 }} transition={{ duration: 1.6, ease: EASE }} />
-          <motion.line x1="100" y1="106" x2="100" y2="28" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" style={{ transformOrigin: "100px 100px" }} initial={false} animate={{ rotate: done ? 180 : 0 }} transition={{ duration: 1.6, ease: EASE }} />
+          {/* rotate around the dial's centre (view-box), not the hand's own box */}
+          <line x1="100" y1="100" x2="100" y2="52" stroke="var(--ink)" strokeWidth="5" strokeLinecap="round" style={{ ...HAND, transform: `rotate(${done ? 195 : 180}deg)` }} />
+          <line x1="100" y1="106" x2="100" y2="28" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" style={{ ...HAND, transform: `rotate(${done ? 180 : 0}deg)` }} />
           <circle cx="100" cy="100" r="5" fill="var(--ink)" />
         </svg>
         <p className="mt-2 text-center font-mono text-[13px] text-[var(--muted)]">06:30, every day</p>
