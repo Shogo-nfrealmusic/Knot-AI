@@ -239,7 +239,7 @@ function Scene({ flip, stack, device, copy, track = "lg:h-[220vh]" }: { flip?: b
   return (
     <div ref={ref} className={cn("relative", track)}>
       <div className="flex items-center overflow-hidden py-14 lg:sticky lg:top-0 lg:h-screen lg:py-0">
-        <div className={cn("grid w-full items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center lg:pt-14 [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
+        <div className={cn("grid w-full grid-cols-[minmax(0,1fr)] items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center lg:pt-14 [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
           <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
             {copy}
           </div>
