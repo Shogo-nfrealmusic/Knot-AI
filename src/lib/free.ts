@@ -2,6 +2,8 @@
 // Slugs are numbered ("02-claude-design-tools") so they never collide as reels pile up;
 // /free/02 redirects to the full slug, which is what the DMs link to.
 
+import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
+
 export type ToolIcon =
   | "palette"
   | "wand"
@@ -113,6 +115,8 @@ export type DropChapter = {
   table?: { head: string[]; rows: string[][] };
   /** images under the text; `tall` for 9:16 screens (shown as a grid), otherwise full width */
   figures?: { src: string; alt: string; caption?: string; tall?: boolean }[];
+  /** a live figure drawn for the page (src/app/free/jarvis) */
+  demo?: JarvisDemoKind;
 };
 
 export type DropAbout = {
@@ -243,18 +247,25 @@ const drops: FreeDrop[] = [
     ],
     about: {
       intro: [
-        "Four parts, and you can stop after any of them. Parts 1 and 2 alone already give you most of the value.",
+        "Four parts, and you can stop after any of them. The brain and the memory alone already give you most of the value.",
       ],
       chapters: [
         {
-          title: "1. The brain: Claude Code",
+          title: "Meet it first",
+          text: ["Tap the ring to hear it. This is the line it says when my morning brief is ready."],
+          demo: "core",
+        },
+        {
+          title: "The brain: Claude Code",
           text: [
             "Install Claude Code and sign in. Unlike a chat window, it works inside a folder on your computer: it opens files, runs code and checks its own work until the task is done.",
           ],
+          demo: "run",
           commands: ["curl -fsSL https://claude.ai/install.sh | bash", "claude"],
         },
         {
-          title: "2. The memory: your notes",
+          title: "The memory: your notes",
+          demo: "vault",
           text: [
             "Keep your notes in an Obsidian vault (a normal folder of Markdown files) and start Claude Code inside that folder. It can now search and read everything you have written, so it never starts from zero.",
             "Then add a file called CLAUDE.md at the top of the vault. Claude Code reads it at the start of every session. Mine is the most important file in the whole setup. Start small:",
@@ -286,7 +297,8 @@ const drops: FreeDrop[] = [
           ],
         },
         {
-          title: "3. The voice: ElevenLabs Agents",
+          title: "The voice: ElevenLabs Agents",
+          demo: "voice",
           text: [
             "This part is separate from Claude Code. In ElevenLabs, create an agent, pick a voice, pick the model it thinks with (Claude is one of the options), and write a short system prompt: who you are and how it should talk. You can talk to it in the browser right away.",
             "For a phone number, connect a Twilio number to the agent with ElevenLabs' native Twilio integration. Then you can call it, and it can call you.",
@@ -298,7 +310,8 @@ const drops: FreeDrop[] = [
           ],
         },
         {
-          title: "4. The team: subagents",
+          title: "The team: subagents",
+          demo: "team",
           text: [
             "Claude Code can hand work to subagents: each one is a Markdown file with its own role, rules and tools. Put them in ~/.claude/agents/ and they work from any folder. Mine are an analyst, a marketer and an engineer. I say what I want; Claude Code picks who does it.",
           ],
@@ -326,6 +339,7 @@ const drops: FreeDrop[] = [
         },
         {
           title: "Bonus: the 6:30 brief",
+          demo: "brief",
           text: [
             "Every morning at 6:30 a scheduled job on my Mac (launchd) runs a small script that pulls the numbers I care about and saves a one-page brief, so it's ready before I wake up. It only runs on days the Mac is awake. Ask Claude Code to write the script and the schedule for you.",
           ],
