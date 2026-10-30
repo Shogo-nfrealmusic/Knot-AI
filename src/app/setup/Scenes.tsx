@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 /** Scroll progress (0–1) through a tall track whose child is sticky. Eased, and idle while off screen. */
 function useTrack<T extends HTMLElement>() {
   const ref = useRef<T>(null);
+  const device = useRef<HTMLDivElement>(null);
   const [p, setP] = useState(0);
   useEffect(() => {
     const el = ref.current;
@@ -26,16 +27,18 @@ function useTrack<T extends HTMLElement>() {
       frame = requestAnimationFrame(tick);
       const box = el.getBoundingClientRect();
       if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
-      // Large screens pin the scene and scroll through its track; phones scroll it past normally and play it
-      // between entering the screen and its device reaching the upper third.
-      const target = Math.min(1, Math.max(0, wide.matches ? -box.top / Math.max(1, box.height - innerHeight) : (innerHeight - box.top) / (box.height + innerHeight * 0.15)));
+      // Large screens pin the scene and scroll through its track. Phones scroll past it normally, so time it to the
+      // device itself: it starts when the device's top edge comes up from the bottom of the screen and finishes
+      // once the whole device is in view.
+      const d = device.current?.getBoundingClientRect();
+      const target = Math.min(1, Math.max(0, wide.matches || !d ? -box.top / Math.max(1, box.height - innerHeight) : (innerHeight * 0.92 - d.top) / Math.max(1, innerHeight * 0.92 - Math.max(70, innerHeight - d.height - 40))));
       eased += (target - eased) * 0.14;
       setP((prev) => (Math.abs(prev - eased) > 0.0005 ? eased : prev));
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, []);
-  return [ref, p] as const;
+  return [ref, p, device] as const;
 }
 
 const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
@@ -235,15 +238,15 @@ function WatchFace({ p }: { p: number }) {
 }
 
 function Scene({ flip, stack, device, copy, track = "lg:h-[220vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
-  const [ref, p] = useTrack<HTMLDivElement>();
+  const [ref, p, deviceRef] = useTrack<HTMLDivElement>();
   return (
     <div ref={ref} className={cn("relative", track)}>
       <div className="flex items-center overflow-hidden py-14 lg:sticky lg:top-0 lg:h-screen lg:py-0">
         <div className={cn("grid w-full grid-cols-[minmax(0,1fr)] items-center gap-6 px-4 sm:px-10", stack ? "justify-items-center gap-8 text-center lg:pt-14 [&_ul]:hidden" : "lg:grid-cols-[1fr_1.2fr] lg:gap-14")}>
-          <div className={cn(flip && "lg:order-2")} style={{ opacity: 0.25 + span(p, 0, 0.08) * 0.75 }}>
+          <div className={cn(flip && "lg:order-2")}>
             {copy}
           </div>
-          <div className="flex w-full justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
+          <div ref={deviceRef} className="flex w-full justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
             {device(p)}
           </div>
         </div>
