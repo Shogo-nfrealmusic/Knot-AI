@@ -5,7 +5,7 @@
 // Material is real: the Jarvis voice line from the ElevenLabs agent, a real Claude Code run, the real Vault link graph
 // (positions and top folders only, no note names), the real 6:30 brief of Oct 30, 2026.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 
 export type JarvisDemoKind = "core" | "run" | "vault" | "voice" | "team" | "brief";
@@ -329,16 +329,37 @@ function hexA(hex: string, a: number) {
 
 /* ───────────── voice: how the phone reaches the agent (and what it can't reach yet) ───────────── */
 
+// below 520px the left-to-right diagrams are laid out top to bottom, so their text stays readable on a phone
+const NARROW = "(max-width: 520px)";
+function useNarrow() {
+  return useSyncExternalStore(
+    (cb) => {
+      const m = window.matchMedia(NARROW);
+      m.addEventListener("change", cb);
+      return () => m.removeEventListener("change", cb);
+    },
+    () => window.matchMedia(NARROW).matches,
+    () => false,
+  );
+}
+
+const VOICE_LAYOUT = {
+  wide: { vb: "0 0 600 270", phone: [20, 40], me: [59, 205, "middle"], num: [160, 76], agent: [372, 52], wire: "M100 110 H160 M310 110 H372", hops: [[100, 160], [310, 372]], axis: "x", at: 110, gap: [475, 170, 475, 204], gapLabel: [483, 191], notes: [372, 206] },
+  narrow: { vb: "0 0 300 540", phone: [111, 10], me: [100, 84, "end"], num: [75, 190], agent: [47, 300], wire: "M150 150 V190 M150 258 V300", hops: [[150, 190], [258, 300]], axis: "y", at: 150, gap: [150, 416, 150, 476], gapLabel: [158, 450], notes: [47, 478] },
+} as const;
+
 function Voice() {
   const ref = useRef<SVGSVGElement>(null);
   const seen = useInView(ref, { amount: 0.5 });
   const reduce = useReducedMotion();
   const live = seen && !reduce;
+  const L = VOICE_LAYOUT[useNarrow() ? "narrow" : "wide"];
+  const mid = (h: readonly number[]) => (h[0] + h[1]) / 2;
   return (
     <figure className="jv-plate p-4 sm:p-6">
-      <svg ref={ref} viewBox="0 0 600 270" className="block w-full" role="img" aria-label="A call goes from my phone to a Twilio number, then to the ElevenLabs agent that speaks with Claude. Claude Code and my notes are a separate part, not connected to the phone yet.">
+      <svg ref={ref} viewBox={L.vb} className="mx-auto block w-full max-w-[600px]" role="img" aria-label="A call goes from my phone to a Twilio number, then to the ElevenLabs agent that speaks with Claude. Claude Code and my notes are a separate part, not connected to the phone yet.">
         {/* phone */}
-        <g transform="translate(20 40)">
+        <g transform={`translate(${L.phone[0]} ${L.phone[1]})`}>
           <rect width="78" height="140" rx="16" fill="#fff" stroke="var(--ink)" strokeWidth="1.3" />
           <rect x="28" y="8" width="22" height="5" rx="2.5" fill="var(--ink)" />
           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
@@ -346,17 +367,17 @@ function Voice() {
           ))}
           <text x="39" y="122" textAnchor="middle" fontSize="11" fill="var(--soft)">calling</text>
         </g>
-        <text x="59" y="205" textAnchor="middle" fontSize="12.5" fill="var(--ink)" fontWeight="600">Me</text>
+        <text x={L.me[0]} y={L.me[1]} textAnchor={L.me[2]} fontSize="12.5" fill="var(--ink)" fontWeight="600">Me</text>
 
         {/* number */}
-        <g transform="translate(160 76)">
+        <g transform={`translate(${L.num[0]} ${L.num[1]})`}>
           <rect width="150" height="68" rx="12" fill="#fff" stroke="var(--ink)" strokeWidth="1.3" />
           <text x="75" y="30" textAnchor="middle" fontSize="13.5" fontWeight="600" fill="var(--ink)" className="font-mono">+1 239 ···· 45</text>
           <text x="75" y="50" textAnchor="middle" fontSize="11.5" fill="var(--muted)">Twilio number</text>
         </g>
 
         {/* agent */}
-        <g transform="translate(372 52)">
+        <g transform={`translate(${L.agent[0]} ${L.agent[1]})`}>
           <rect width="206" height="116" rx="14" fill="var(--ink)" />
           <text x="18" y="30" fontSize="14" fontWeight="600" fill="#fff">ElevenLabs agent</text>
           <text x="18" y="56" fontSize="12" fill="rgba(255,255,255,.65)">Voice</text>
@@ -370,18 +391,21 @@ function Voice() {
         </g>
 
         {/* call path */}
-        <path d="M100 110 H160 M310 110 H372" fill="none" stroke="var(--ink)" strokeWidth="1.3" />
-        {[0, 1].map((k) => (
-          <motion.circle key={k} r="4" cy="110" fill="var(--accent)" initial={false} animate={live ? { cx: k ? [310, 372] : [100, 160], opacity: [0, 1, 0] } : { cx: k ? 341 : 130, opacity: 0 }} transition={{ duration: 1.1, repeat: Infinity, delay: k * 0.5, ease: "linear" }} />
-        ))}
+        <path d={L.wire} fill="none" stroke="var(--ink)" strokeWidth="1.3" />
+        {L.hops.map((h, k) => {
+          const along = L.axis === "x" ? "cx" : "cy", across = L.axis === "x" ? "cy" : "cx";
+          return (
+            <motion.circle key={`${L.axis}${k}`} r="4" {...{ [across]: L.at }} fill="var(--accent)" initial={false} animate={live ? { [along]: [h[0], h[1]], opacity: [0, 1, 0] } : { [along]: mid(h), opacity: 0 }} transition={{ duration: 1.1, repeat: Infinity, delay: k * 0.5, ease: "linear" }} />
+          );
+        })}
 
         {/* the part it can't reach yet */}
-        <g transform="translate(372 206)">
+        <g transform={`translate(${L.notes[0]} ${L.notes[1]})`}>
           <rect width="206" height="48" rx="12" fill="none" stroke="var(--ink)" strokeWidth="1.1" strokeDasharray="4 4" />
           <text x="103" y="29" textAnchor="middle" fontSize="12.5" fill="var(--soft)">Claude Code + my notes</text>
         </g>
-        <line x1="475" y1="170" x2="475" y2="204" stroke="var(--muted)" strokeWidth="1.1" strokeDasharray="3 4" />
-        <text x="483" y="191" fontSize="11" fill="var(--muted)">not connected yet</text>
+        <line x1={L.gap[0]} y1={L.gap[1]} x2={L.gap[2]} y2={L.gap[3]} stroke="var(--muted)" strokeWidth="1.1" strokeDasharray="3 4" />
+        <text x={L.gapLabel[0]} y={L.gapLabel[1]} fontSize="11" fill="var(--muted)">not connected yet</text>
       </svg>
       <figcaption className="pt-3 text-[13px] text-[var(--muted)]">The phone side is its own part. It talks with Claude, but it can&apos;t read my notes yet.</figcaption>
     </figure>
@@ -408,7 +432,11 @@ function Team() {
     const id = setInterval(() => setI((v) => (v + 1) % 3), 2600);
     return () => clearInterval(id);
   }, [seen, auto, reduce]);
-  const xs = [100, 300, 500];
+  const narrow = useNarrow();
+  // wide: three cards in a row under Claude Code; narrow: a column with one trunk line on the left
+  const T = narrow
+    ? { vb: "0 0 320 372", head: [80, 8], card: (k: number) => [60, 104 + k * 92], w: 240, wire: (k: number) => `M160 64 V82 H30 V${140 + k * 92} H60` }
+    : { vb: "0 0 600 250", head: [220, 14], card: (k: number) => [[100, 300, 500][k] - 80, 160], w: 160, wire: (k: number) => `M300 70 C300 120 ${[100, 300, 500][k]} 110 ${[100, 300, 500][k]} 160` };
   return (
     <figure ref={ref} className="jv-plate p-4 sm:p-6">
       <div className="flex flex-wrap gap-2">
@@ -427,27 +455,27 @@ function Team() {
           </button>
         ))}
       </div>
-      <svg viewBox="0 0 600 250" className="mt-4 block w-full" role="img" aria-label={`Claude Code hands "${ASKS[i]}" to the ${ROLES[i].name.toLowerCase()}.`}>
-        <g transform="translate(220 14)">
+      <svg viewBox={T.vb} className="mx-auto mt-4 block w-full max-w-[600px]" role="img" aria-label={`Claude Code hands "${ASKS[i]}" to the ${ROLES[i].name.toLowerCase()}.`}>
+        <g transform={`translate(${T.head[0]} ${T.head[1]})`}>
           <rect width="160" height="56" rx="12" fill="var(--ink)" />
           <text x="80" y="27" textAnchor="middle" fontSize="14" fontWeight="600" fill="#fff">Claude Code</text>
           <text x="80" y="44" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,.6)">picks by description</text>
         </g>
-        {xs.map((x, k) => (
-          <path key={k} d={`M300 70 C300 120 ${x} 110 ${x} 160`} fill="none" stroke={k === i ? "var(--accent)" : "var(--rule-strong)"} strokeWidth={k === i ? 1.8 : 1.1} style={{ transition: "stroke .3s" }} />
+        {ROLES.map((_, k) => (
+          <path key={k} d={T.wire(k)} fill="none" stroke={k === i ? "var(--accent)" : "var(--rule-strong)"} strokeWidth={k === i ? 1.8 : 1.1} style={{ transition: "stroke .3s" }} />
         ))}
         <motion.circle
-          key={i}
+          key={`${narrow}-${i}`}
           r="5"
           fill="var(--accent)"
           initial={reduce ? false : { offsetDistance: "0%" } as never}
           animate={{ offsetDistance: "100%" } as never}
           transition={{ duration: 0.9, ease: EASE }}
-          style={{ offsetPath: `path("M300 70 C300 120 ${xs[i]} 110 ${xs[i]} 160")` } as React.CSSProperties}
+          style={{ offsetPath: `path("${T.wire(i)}")` } as React.CSSProperties}
         />
         {ROLES.map((r, k) => (
-          <g key={r.name} transform={`translate(${xs[k] - 80} 160)`}>
-            <motion.rect width="160" height="72" rx="12" fill="#fff" initial={false} animate={{ stroke: k === i ? "#e0552f" : "#dcded9", strokeWidth: k === i ? 2 : 1.2 }} transition={{ duration: 0.3 }} />
+          <g key={r.name} transform={`translate(${T.card(k)[0]} ${T.card(k)[1]})`}>
+            <motion.rect width={T.w} height="72" rx="12" fill="#fff" initial={false} animate={{ stroke: k === i ? "#e0552f" : "#dcded9", strokeWidth: k === i ? 2 : 1.2 }} transition={{ duration: 0.3 }} />
             <text x="16" y="28" fontSize="14" fontWeight="600" fill="var(--ink)">{r.name}</text>
             <text x="16" y="47" fontSize="11" fill="var(--muted)" className="font-mono">{r.file}</text>
             <text x="16" y="63" fontSize="11" fill={k === i ? "var(--accent)" : "var(--soft)"}>{r.can}</text>
