@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { follow, throughCentre } from "./scroll";
 
 // The problem, then the answer: the tools a small business runs on start scattered and tangled, then spring into
 // two rings around Claude and keep turning. Scroll drives it while the stage is pinned. One rAF loop moves the
@@ -90,6 +91,7 @@ export default function Constellation() {
     resize.observe(host);
 
     let eased = 0;
+    let last = performance.now();
     const place = (now: number) => {
       // Desktop: starts sorting as the stage comes into view and is settled just as the pin lets go, so you are never
       // held on a finished picture. Phones do not pin: it sorts between entering the screen and reaching the middle.
@@ -97,8 +99,9 @@ export default function Constellation() {
       const run = Math.max(1, box.height - innerHeight);
       const enter = innerHeight * 0.75;
       const narrow = innerWidth < 640;
-      const scrolled = Math.min(1, Math.max(0, narrow ? (innerHeight * 0.9 - box.top) / (innerHeight * 0.45 + box.height * 0.5) : (enter - box.top) / (enter + run * 0.92)));
-      eased += (scrolled - eased) * 0.12;
+      const scrolled = narrow ? throughCentre(box, innerHeight) : Math.min(1, Math.max(0, (enter - box.top) / (enter + run * 0.92)));
+      eased = follow(eased, scrolled, now - last);
+      last = now;
       // The spring looks settled about halfway through its own curve, so the scroll range maps onto that half.
       const elapsed = still ? 99999 : 650 + eased * 1350;
       const t = (now - start) / 1000;

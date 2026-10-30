@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { follow } from "./scroll";
 
 // The hero story: the page pins an iPhone Duo (Artboard Studio mockup, commercial licence) while you scroll
 // through eight chapters — folded lock screen, the back, unfolding, then six things Copilot OS does.
@@ -68,14 +69,17 @@ export default function DuoScroll() {
       });
     };
 
-    const tick = () => {
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = now - last;
+      last = now;
       frame = requestAnimationFrame(tick);
       if (mode === "play" && !v.paused && v.currentTime >= stopAt - 0.02) v.pause();
       const box = el.getBoundingClientRect();
       if (box.bottom < 0 || box.top > innerHeight) return;
       const progress = Math.min(1, Math.max(0, -box.top / (box.height - innerHeight)));
       if (mode === "scrub") {
-        current += (timeAt(progress) - current) * 0.18;
+        current = follow(current, timeAt(progress), dt, 80);
         if (Math.abs(v.currentTime - current) > 1 / 60 && v.readyState >= 1) v.currentTime = Math.min(DURATION - 0.05, current);
       }
       const c = Math.min(N - 1, Math.floor(progress * N));

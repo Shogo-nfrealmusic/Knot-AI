@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { follow, throughCentre } from "./scroll";
 
 // "What you get", told on real devices (Artboard Studio mockups, exported once as small WebP stills). Each scene
 // pins while you scroll through it, and the scroll drives what happens on the screen, so nothing has played out
@@ -23,24 +24,26 @@ function useTrack<T extends HTMLElement>() {
     const wide = matchMedia("(min-width: 1024px)");
     let frame = 0;
     let eased = 0;
-    let started = 0;
-    const tick = () => {
+    let last = performance.now();
+    let sent = -1;
+    const tick = (now: number) => {
       frame = requestAnimationFrame(tick);
+      const dt = now - last;
+      last = now;
       const box = el.getBoundingClientRect();
       if (box.bottom < -innerHeight || box.top > innerHeight * 2) return;
-      // Large screens pin the scene and the scroll drives it. Phones scroll straight past, so a scroll-driven
-      // animation would be over before the device is in view: there it plays on its own, over a few seconds, once
-      // the whole device is on screen (Apple's phone pages do the same).
-      let target: number;
+      // Large screens pin the scene: it plays over the first 80% of the pinned scroll and holds for the rest.
+      // Phones scroll straight past, so the device itself is measured: it starts as the device comes up from the
+      // bottom of the screen and is finished as it passes the centre.
       const d = device.current?.getBoundingClientRect();
-      if (wide.matches || !d) target = Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)));
-      else {
-        const inView = d.top >= 40 && d.bottom <= innerHeight + d.height * 0.08;
-        if (!started && inView) started = performance.now();
-        target = started ? Math.min(1, (performance.now() - started) / PLAY_MS) : 0;
+      const target =
+        wide.matches || !d ? Math.min(1, Math.max(0, -box.top / Math.max(1, box.height - innerHeight)) / 0.8) : throughCentre(d, innerHeight);
+      eased = follow(eased, target, dt);
+      // Re-render only when the picture would actually change.
+      if (Math.abs(eased - sent) > 0.002 || (eased !== sent && (eased === 0 || eased === 1))) {
+        sent = eased;
+        setP(eased);
       }
-      eased += (target - eased) * 0.14;
-      setP((prev) => (Math.abs(prev - eased) > 0.0005 ? eased : prev));
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
@@ -48,7 +51,6 @@ function useTrack<T extends HTMLElement>() {
   return [ref, p, device] as const;
 }
 
-const PLAY_MS = 4200; // how long a scene plays on a phone
 const span = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)));
 
 type Screen = { left: number; top: number; width: number; height: number; radius: string };
@@ -245,7 +247,7 @@ function WatchFace({ p }: { p: number }) {
   );
 }
 
-function Scene({ flip, stack, device, copy, track = "lg:h-[220vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
+function Scene({ flip, stack, device, copy, track = "lg:h-[190vh]" }: { flip?: boolean; stack?: boolean; device: (p: number) => React.ReactNode; copy: React.ReactNode; track?: string }) {
   const [ref, p, deviceRef] = useTrack<HTMLDivElement>();
   return (
     <div ref={ref} className={cn("relative", track)}>
@@ -254,7 +256,7 @@ function Scene({ flip, stack, device, copy, track = "lg:h-[220vh]" }: { flip?: b
           <div className={cn(flip && "lg:order-2")}>
             {copy}
           </div>
-          <div ref={deviceRef} className="flex w-full justify-center" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
+          <div ref={deviceRef} className="flex w-full justify-center will-change-transform" style={{ transform: `translateY(${(1 - span(p, 0, 0.1)) * 40}px) scale(${0.96 + span(p, 0, 0.1) * 0.04})` }}>
             {device(p)}
           </div>
         </div>
