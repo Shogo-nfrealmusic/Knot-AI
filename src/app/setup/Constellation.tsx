@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { follow, throughCentre } from "./scroll";
 
 // The problem, then the answer: the tools a small business runs on start scattered and tangled, then spring into
 // two rings around Claude and keep turning. Scroll drives it while the stage is pinned. One rAF loop moves the
@@ -57,7 +56,6 @@ const spring = (p: number) => 1 + 2.2 * Math.pow(p - 1, 3) + 1.2 * Math.pow(p - 
 
 export default function Constellation() {
   const root = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
   const [tall, setTall] = useState(false);
   const g = tall ? TALL : WIDE;
 
@@ -90,20 +88,15 @@ export default function Constellation() {
     });
     resize.observe(host);
 
-    let eased = 0;
-    let last = performance.now();
+    // The tools jitter in their tangle until the stage is well on screen, then sort once into the rings and keep
+    // turning. Nothing follows the scroll, so scrolling back finds the settled rings.
+    let sortStart = 0;
     const place = (now: number) => {
-      // Desktop: starts sorting as the stage comes into view and is settled just as the pin lets go, so you are never
-      // held on a finished picture. Phones do not pin: it sorts between entering the screen and reaching the middle.
-      const box = (track.current ?? host).getBoundingClientRect();
-      const run = Math.max(1, box.height - innerHeight);
-      const enter = innerHeight * 0.75;
-      const narrow = innerWidth < 640;
-      const scrolled = narrow ? throughCentre(box, innerHeight) : Math.min(1, Math.max(0, (enter - box.top) / (enter + run * 0.92)));
-      eased = follow(eased, scrolled, now - last);
-      last = now;
-      // The spring looks settled about halfway through its own curve, so the scroll range maps onto that half.
-      const elapsed = still ? 99999 : 650 + eased * 1350;
+      if (!sortStart) {
+        const box = host.getBoundingClientRect();
+        if (box.top + box.height * 0.45 < innerHeight && box.bottom > innerHeight * 0.2) sortStart = now;
+      }
+      const elapsed = still ? 99999 : sortStart ? 650 + (now - sortStart) : 0;
       const t = (now - start) / 1000;
       let settle = 0;
       NODES.forEach((node, i) => {
@@ -157,8 +150,8 @@ export default function Constellation() {
   }, [g]);
 
   return (
-    <div ref={track} className="relative sm:h-[175vh]">
-      <div className="flex items-center px-2 py-12 sm:sticky sm:top-0 sm:h-[100svh] sm:py-0">
+    <div>
+      <div className="flex items-center px-2 py-12 sm:py-16">
         <div
           ref={root}
           className="relative mx-auto w-full max-w-[min(1080px,150vh)] max-sm:max-w-[min(100%,52svh)]"

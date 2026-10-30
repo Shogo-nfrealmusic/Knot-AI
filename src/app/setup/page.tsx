@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import Apply from "./Apply";
 import Compound from "./Compound";
 import Constellation from "./Constellation";
-import DuoScroll from "./DuoScroll";
+import DuoHero from "./DuoHero";
 import JobWall from "./JobWall";
 import Pricing from "./Pricing";
 import Scenes from "./Scenes";
@@ -53,6 +53,7 @@ const SETUP_CSS = `
 @keyframes su-progress{0%{width:6%}80%,100%{width:92%}}
 .su-dots::after{content:"";animation:su-dots 1.4s steps(4,end) infinite}
 @keyframes su-dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+@keyframes su-caption{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .su-pins path{fill:none;stroke:#a3a3a3;stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:400;stroke-dashoffset:400;animation:su-draw 1.2s cubic-bezier(.16,1,.3,1) forwards;animation-delay:var(--at,0ms)}
 .su-pins circle{fill:#fff;stroke:var(--warm);stroke-width:1.5;vector-effect:non-scaling-stroke;opacity:0;animation:hero-fade .4s ease forwards;animation-delay:calc(var(--at,0ms) + 700ms)}
 @keyframes su-draw{to{stroke-dashoffset:0}}
@@ -119,7 +120,7 @@ export default function SetupPage() {
         <div className="h-10 sm:h-14" />
       </GridSection>
 
-      <DuoScroll />
+      <DuoHero />
 
       <GridSection>
         <div className="flex flex-col items-center justify-center gap-x-8 gap-y-3 px-4 py-6 text-center text-[13px] text-neutral-500 sm:flex-row sm:px-10">
