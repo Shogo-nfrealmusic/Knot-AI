@@ -31,7 +31,7 @@ export default function Compound() {
     const tick = () => {
       frame = requestAnimationFrame(tick);
       const box = el.getBoundingClientRect();
-      const target = Math.min(1, Math.max(0, (innerHeight * 0.85 - box.top) / (box.height * 0.9)));
+      const target = Math.min(1, Math.max(0, (innerHeight * 0.9 - box.top) / (innerHeight * 0.55)));
       eased += (target - eased) * 0.12;
       setP((prev) => (Math.abs(prev - eased) > 0.001 ? eased : prev));
     };
@@ -88,7 +88,7 @@ export default function Compound() {
                         src="/setup/orbit-think.webp"
                         alt=""
                         className="absolute bottom-[calc(100%-6px)] left-1/2 w-[86%] max-w-[72px] -translate-x-1/2 transition-[opacity,transform] duration-500"
-                        style={{ opacity: v >= 1 ? 1 : 0, transform: `translate(-50%, ${v >= 1 ? 0 : 8}px)` }}
+                        style={{ opacity: v > 0.97 ? 1 : 0, transform: `translate(-50%, ${v > 0.97 ? 0 : 8}px)` }}
                       />
                     ) : null}
                   </div>
