@@ -40,7 +40,7 @@ export default function Compound() {
   }, []);
 
   const shown = p * MONTHS.length;
-  const live = Math.min(MONTHS.length, Math.floor(shown + 0.0001));
+  const live = Math.min(MONTHS.length, Math.floor(shown + 0.03));
   const hours = live > 0 ? TOTALS[live - 1]! : 0;
   const max = TOTALS[TOTALS.length - 1]!;
 
