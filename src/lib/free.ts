@@ -112,7 +112,7 @@ export type DropChapter = {
   /** a table under the text (e.g. a beat sheet): header row + body rows */
   table?: { head: string[]; rows: string[][] };
   /** images under the text; `tall` for 9:16 screens (shown as a grid), otherwise full width */
-  figures?: { src: string; alt: string; caption?: string; tall?: boolean }[];
+  figures?: { src: string; alt: string; caption?: string; tall?: boolean; /** muted loop from the reel; `src` is its poster */ video?: string }[];
 };
 
 export type DropAbout = {
@@ -247,11 +247,17 @@ const drops: FreeDrop[] = [
       ],
       chapters: [
         {
+          title: "What it looks like",
+          text: ["I call it, and it answers in its own voice: \"Good morning, sir. Your brief is ready.\" Below are the scenes from the reel, one per part."],
+          figures: [{ src: "/free/46/hud.jpg", video: "/free/46/hud.mp4", alt: "A blue hologram ring labelled JARVIS that pulses while it talks", caption: "The call, drawn for the reel" }],
+        },
+        {
           title: "1. The brain: Claude Code",
           text: [
             "Install Claude Code and sign in. Unlike a chat window, it works inside a folder on your computer: it opens files, runs code and checks its own work until the task is done.",
           ],
           commands: ["curl -fsSL https://claude.ai/install.sh | bash", "claude"],
+          figures: [{ src: "/free/46/terminal.jpg", video: "/free/46/terminal.mp4", alt: "Claude Code reads brief.md, writes mover.py, runs it and answers Nasdaq Composite -1.38%", caption: "A real run: read the brief, write a script, run it, answer in one line" }],
         },
         {
           title: "2. The memory: your notes",
@@ -284,6 +290,7 @@ const drops: FreeDrop[] = [
             "Write down decisions with the reason. That is what makes the answers personal.",
             "When it gets something wrong, fix CLAUDE.md, not just the answer.",
           ],
+          figures: [{ src: "/free/46/vault.jpg", video: "/free/46/vault.mp4", alt: "A sphere of 467 coloured dots, one per note, linked by thin lines", caption: "My vault: 467 notes, coloured by folder" }],
         },
         {
           title: "3. The voice: ElevenLabs Agents",
@@ -296,6 +303,7 @@ const drops: FreeDrop[] = [
             "Anyone who can reach the agent can talk to it unless you turn on authentication (signed URLs) or an allowlist. Do this before you connect anything private.",
             "To give it facts (your calendar, your sales), add tools that call your own small read-only API. Keep secrets and customer data out.",
           ],
+          figures: [{ src: "/free/46/voice.jpg", video: "/free/46/voice.mp4", alt: "The Jarvis hologram above a voice waveform and a US phone number with the middle digits hidden", caption: "Its voice and its real number" }],
         },
         {
           title: "4. The team: subagents",
@@ -323,12 +331,14 @@ const drops: FreeDrop[] = [
             "One role per file. A narrow description is what makes Claude Code pick the right one.",
             "Give each role only the tools it needs. The engineer can edit code; the analyst can only read.",
           ],
+          figures: [{ src: "/free/46/team.jpg", video: "/free/46/team.mp4", alt: "Work flows from the main agent to three cards: Analyst, Marketer, Engineer", caption: "One request, handed to the right role" }],
         },
         {
           title: "Bonus: the 6:30 brief",
           text: [
             "Every morning at 6:30 a scheduled job on my Mac (launchd) runs a small script that pulls the numbers I care about and saves a one-page brief, so it's ready before I wake up. It only runs on days the Mac is awake. Ask Claude Code to write the script and the schedule for you.",
           ],
+          figures: [{ src: "/free/46/brief.jpg", video: "/free/46/brief.mp4", alt: "A clock turns to 06:30 and a card lists the morning's market numbers", caption: "The real brief from Oct 30" }],
         },
       ],
       notes: [
