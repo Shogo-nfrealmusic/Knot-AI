@@ -3,6 +3,7 @@
 // /free/02 redirects to the full slug, which is what the DMs link to.
 
 import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
+import type { KreaDemoKind } from "@/app/free/krea/KreaDemos";
 
 export type ToolIcon =
   | "palette"
@@ -117,6 +118,8 @@ export type DropChapter = {
   figures?: { src: string; alt: string; caption?: string; tall?: boolean }[];
   /** a live figure drawn for the page (src/app/free/jarvis) */
   demo?: JarvisDemoKind;
+  /** a live figure drawn for /free/47 (src/app/free/krea) */
+  krea?: KreaDemoKind;
 };
 
 export type DropAbout = {
@@ -215,6 +218,88 @@ if __name__ == "__main__":
     print(confusion_matrix(y_te, pred, labels=keys))`;
 
 const drops: FreeDrop[] = [
+  {
+    number: 47,
+    slug: "47-krea-ad-studio",
+    title: "Krea Ad Studio, tried on my real business",
+    description:
+      "I gave Krea's new Ad Studio one link: my Tokyo photo studio's site. What it built in 90 seconds, the four ads it made, what it missed, how to run it from Claude, and what it costs.",
+    date: "2026-11-02",
+    keyword: "ADS",
+    tools: [
+      {
+        name: "Krea Ad Studio",
+        what: "Type your domain and it builds a brand kit from your site, finds your products and prices, and makes ads with Krea 3.",
+        href: "https://www.krea.ai/ad-studio",
+        icon: "store",
+        note: "On Krea's paid plans (from Basic). My free account showed a time-limited offer of 5 free ads.",
+      },
+      {
+        name: "Krea MCP server",
+        what: "Lets Claude use Ad Studio: research a brand, pick products and generate ads with the same brand kits.",
+        href: "https://www.krea.ai/docs/developers/mcp",
+        icon: "plug",
+        install: ["claude mcp add --transport http krea-ai https://api.krea.ai/mcp"],
+        note: "Sign in with your Krea account when prompted, then restart Claude Code.",
+      },
+    ],
+    about: {
+      intro: [
+        "I tried it on Tetty's Photo Studio, the photo studio I run in Tokyo, on November 1, 2026. Everything below is from that run.",
+      ],
+      chapters: [
+        {
+          title: "One link in, a brand kit out",
+          text: [
+            "Open Ad Studio, type your domain and press Enter. It reads the site and builds a brand kit: the rulebook every ad follows. Krea lists logo, colors, fonts, a description, tone of voice, audience and selling points, plus your products with photos and prices.",
+            "For my studio it took about a minute and a half. It got our colors, our prices, our three Tokyo locations and a fair description of who our customers are. It did not find our logo.",
+          ],
+          krea: "kit",
+          bullets: [
+            "Check the name and the logo first. Mine started as \"Tettyphotostudio\" and the logo slot stayed empty, so I'd upload the logo by hand.",
+            "Shopify stores: Krea says it reads the product catalog directly.",
+          ],
+        },
+        {
+          title: "Pick products, get ads",
+          text: [
+            "Choose products and a size, and it makes a batch: one product per ad, each with its own layout and copy. Krea 3 keeps the product photo as it is. You can preview an ad in a Facebook, Instagram or Reels mockup and download one ad or the whole campaign as a ZIP.",
+            "I asked for five 9:16 ads. Four came back in about 90 seconds; the fifth wasn't sent because of a concurrency limit.",
+          ],
+          krea: "ads",
+        },
+        {
+          title: "Edit with the agent, then check",
+          text: [
+            "You can ask the Krea Agent for changes in plain words: a new headline, a darker background, another product, another size. I asked for a night scene and a shorter, more playful headline. It kept the same headline and barely changed the scene.",
+          ],
+          krea: "edit",
+          bullets: ["Ask for one change per request, and compare before and after yourself."],
+        },
+        {
+          title: "Run it from Claude",
+          text: [
+            "Ad Studio also works through Krea's MCP server. Connect it to Claude and you can ask Claude to research a brand, pick products and generate ads; it uses the same brand kits you see in Krea.",
+            "In Claude Code it's one command. Sign in with your Krea account when the browser opens, then restart Claude Code. Usage is billed to the compute units of the workspace you pick at sign-in. Krea's docs also cover Codex and Cursor.",
+          ],
+          krea: "mcp",
+          commands: ["claude mcp add --transport http krea-ai https://api.krea.ai/mcp"],
+        },
+        {
+          title: "What it costs",
+          text: [
+            "Ad Studio is on every paid Krea plan, from Basic up. Brand research and product import are free; the ads themselves use your compute units. On the pricing page Basic shows $9 (or $5 a month billed yearly) with 5,000 units a month; the Free plan gives 100 units a day. When I tried it, my free account showed \"Your first 5 ads are free\" as a time-limited offer.",
+          ],
+          krea: "price",
+        },
+      ],
+      notes: [
+        "Prices and the free offer change. Check krea.ai/pricing and what your own account shows.",
+        "The ads are for my own business and use photos from my own site. Use it only on brands and photos you have the rights to.",
+        "A hands-on review by @copilot_shogo. Not affiliated with Krea or Anthropic.",
+      ],
+    },
+  },
   {
     number: 46,
     slug: "46-jarvis",

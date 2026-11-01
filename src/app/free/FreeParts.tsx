@@ -23,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { MediaFigure, OledDemo } from "@/app/free/BreakdownMedia";
 import { JarvisDemo } from "@/app/free/jarvis/JarvisDemos";
+import { KreaDemo } from "@/app/free/krea/KreaDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -297,6 +298,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                     </div>
                   ) : null}
                   {chapter.demo ? <JarvisDemo kind={chapter.demo} /> : null}
+                  {chapter.krea ? <KreaDemo kind={chapter.krea} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (
