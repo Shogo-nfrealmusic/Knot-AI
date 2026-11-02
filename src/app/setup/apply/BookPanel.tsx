@@ -30,20 +30,22 @@ export default function BookPanel({ initialPlan, initialBilling }: { initialPlan
   const src = `${CAL_URL}?${new URLSearchParams({ layout: "month_view", theme: "light", "metadata[plan]": initialPlan, "metadata[billing]": initialBilling })}`;
 
   return (
-    <div className="grid gap-10 px-4 sm:px-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12">
-      <aside className="lg:pt-2">
-        <Link href="/setup#pricing" className="text-[13px] text-neutral-500 hover:text-neutral-900">
-          ← Plans
-        </Link>
-        <h1 className="mt-5 text-balance text-[clamp(32px,4.4vw,52px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">
-          Book a <span className="font-serif font-normal italic text-neutral-500">20-minute call.</span>
-        </h1>
-        <p className="mt-4 max-w-[42ch] text-[15px] leading-relaxed text-neutral-600">
-          We look at your business and the work that eats your week. You leave knowing which jobs Claude Code can take off your plate, and whether
-          the setup is a fit. No payment now.
-        </p>
+    <div className="grid gap-12 px-4 sm:px-10">
+      <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:gap-16">
+        <div className="lg:pt-2">
+          <Link href="/setup#pricing" className="text-[13px] text-neutral-500 hover:text-neutral-900">
+            ← Plans
+          </Link>
+          <h1 className="mt-5 text-balance text-[clamp(32px,4.4vw,52px)] font-medium leading-[1.04] tracking-[-0.04em] text-neutral-900">
+            Book a <span className="font-serif font-normal italic text-neutral-500">20-minute call.</span>
+          </h1>
+          <p className="mt-4 max-w-[42ch] text-[15px] leading-relaxed text-neutral-600">
+            We look at your business and the work that eats your week. You leave knowing which jobs Claude Code can take off your plate, and whether
+            the setup is a fit. No payment now.
+          </p>
+        </div>
 
-        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-18px_rgba(0,0,0,0.18)]">
+        <aside aria-label="Your plan" className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-18px_rgba(0,0,0,0.18)]">
           <div role="radiogroup" aria-label="Plan" className="grid grid-cols-3 gap-1 rounded-xl bg-neutral-100 p-1">
             {PLANS.map((p) => (
               <button
@@ -101,15 +103,15 @@ export default function BookPanel({ initialPlan, initialBilling }: { initialPlan
               you share a before-and-after (your data hidden) and two lines about it.
             </p>
           ) : null}
-        </div>
-      </aside>
+        </aside>
+      </div>
 
       <div className="relative">
         {/* Orbit sits on the calendar's top edge, as if waiting for the call. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/setup/orbit-type.webp" alt="" className="pointer-events-none absolute -top-[46px] right-5 z-10 w-[68px]" />
         <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-18px_rgba(0,0,0,0.18)]">
-          <iframe src={src} title="Book a 20-minute call with Shogo" className="block h-[1180px] w-full sm:h-[760px]" />
+          <iframe src={src} title="Book a 20-minute call with Shogo" className="block h-[1180px] w-full lg:h-[620px]" />
         </div>
         <p className="mt-3 text-center text-[12px] text-neutral-400">
           Times show in your time zone. Trouble with the calendar?{" "}
