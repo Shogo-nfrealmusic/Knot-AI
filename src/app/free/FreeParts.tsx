@@ -24,6 +24,7 @@ import {
 import { MediaFigure, OledDemo } from "@/app/free/BreakdownMedia";
 import { JarvisDemo } from "@/app/free/jarvis/JarvisDemos";
 import { KreaDemo } from "@/app/free/krea/KreaDemos";
+import { SuncatcherDemo } from "@/app/free/suncatcher/SuncatcherDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -245,7 +246,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
       ) : null}
       {about.chapters?.length ? (
         <section className="px-5 py-8 sm:px-10">
-          <p className={aboutLabel}>The guide · {about.chapters.length} parts</p>
+          <p className={aboutLabel}>{about.chaptersLabel ?? "The guide"} · {about.chapters.length} parts</p>
           <ol className="mt-4 divide-y divide-neutral-200">
             {about.chapters.map((chapter, index) => (
               <li key={chapter.title} className="grid grid-cols-[1.75rem_1fr] gap-x-2 py-7 first:pt-2 last:pb-0">
@@ -299,6 +300,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   ) : null}
                   {chapter.demo ? <JarvisDemo kind={chapter.demo} /> : null}
                   {chapter.krea ? <KreaDemo kind={chapter.krea} /> : null}
+                  {chapter.suncatcher ? <SuncatcherDemo kind={chapter.suncatcher} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (

@@ -4,6 +4,7 @@
 
 import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
 import type { KreaDemoKind } from "@/app/free/krea/KreaDemos";
+import type { SuncatcherDemoKind } from "@/app/free/suncatcher/SuncatcherDemos";
 
 export type ToolIcon =
   | "palette"
@@ -55,6 +56,8 @@ export type FreeDrop = {
   icon?: ToolIcon;
   /** news explainer: a short TL;DR, grouped announcements, and the sources */
   breakdown?: DropBreakdown;
+  /** replaces the automatic label in "Reel 48 · …" (e.g. "explainer") */
+  kind?: string;
 };
 
 /** One announcement: what it is, who gets it (plans, price, availability), and why it matters. */
@@ -120,6 +123,8 @@ export type DropChapter = {
   demo?: JarvisDemoKind;
   /** a live figure drawn for /free/47 (src/app/free/krea) */
   krea?: KreaDemoKind;
+  /** a live figure drawn for /free/48 (src/app/free/suncatcher) */
+  suncatcher?: SuncatcherDemoKind;
 };
 
 export type DropAbout = {
@@ -127,6 +132,8 @@ export type DropAbout = {
   intro?: RichText;
   /** a numbered step-by-step guide; the drop is labelled "step-by-step guide" */
   chapters?: DropChapter[];
+  /** replaces "The guide" above the chapters (e.g. "The explainer" for a news drop) */
+  chaptersLabel?: string;
   /** a numbered checklist; the drop is labelled "N checks" */
   checks?: DropCheck[];
   /** a boxed summary under the checks: tools that cover several of them at once */
@@ -217,7 +224,87 @@ if __name__ == "__main__":
     print("confusion (rows = true key, columns = guess):", keys)
     print(confusion_matrix(y_te, pred, labels=keys))`;
 
+const SUNCATCHER_POST = "https://blog.google/innovation-and-ai/models-and-research/google-research/project-suncatcher-satellite-response/";
+const SUNCATCHER_FACTS = "https://blog.google/innovation-and-ai/models-and-research/google-research/google-project-suncatcher-facts/";
+const SUNCATCHER_PAPER = "https://research.google/blog/exploring-a-space-based-scalable-ai-infrastructure-system-design/";
+
 const drops: FreeDrop[] = [
+  {
+    number: 48,
+    slug: "48-suncatcher-haiku",
+    title: "Project Suncatcher: Google's first AI answer from a data-center TPU in orbit was a haiku",
+    description:
+      "Google ran its open model Gemma 4 on its own AI chip in orbit and got a haiku back over Svalbard, Norway. What happened, why Google wants AI in space, three of the hard problems (radiation, bandwidth, formation), and how far along it really is.",
+    date: "2026-11-02",
+    keyword: "ORBIT",
+    kind: "explainer",
+    tools: [],
+    icon: "cpu",
+    about: {
+      intro: [
+        "Project Suncatcher is Google's research moonshot to find out whether space is a good place to run AI, because satellites get plenty of solar power. On Oct 30, 2026, ",
+        { text: "Google reported", href: SUNCATCHER_POST },
+        " its first answer from orbit. Everything below is from Google's own posts unless noted.",
+      ],
+      chaptersLabel: "The explainer",
+      chapters: [
+        {
+          title: "Hello World from orbit",
+          text: [
+            "On October 1, 2026, Google launched a prototype satellite, developed with Planet, on SpaceX's Transporter-18 rideshare. First came a commissioning checklist: powering up the host and TPU trays, then early machine-learning tests.",
+            "Then, during a ground-station pass, the team uplinked a first prompt to Gemma 4, Google's open model, running on board. They asked for a haiku about being in space. As the satellite passed by Svalbard, Norway, the poem came back down.",
+            "Google calls it its \"Hello World\" milestone: the first-ever AI response from a data-center-class TPU in orbit. A TPU is Google's own AI chip.",
+          ],
+          suncatcher: "hello",
+        },
+        {
+          title: "Why put AI in space?",
+          text: [
+            "AI needs power, and in the right orbit the sun barely sets. In that orbit, Google says, a solar panel can be up to 8 times more productive than on Earth.",
+            "Future satellites would likely fly a dawn–dusk sun-synchronous low Earth orbit, with near-constant sunlight. That reduces the need for heavy batteries on board.",
+          ],
+          suncatcher: "sun",
+          bullets: ["That orbit is the likely choice in Google's 2025 design. Google hasn't said the prototype flies it."],
+        },
+        {
+          title: "Hard problem 1: radiation",
+          text: [
+            "Space is hard on chips. In a lab, Google put Trillium, its v6e Cloud TPU, in a 67 MeV proton beam. The most sensitive part, the high-bandwidth memory (HBM), only began showing irregularities after a cumulative dose of 2 krad(Si). That's nearly three times the dose expected over a five-year mission with shielding: 750 rad(Si).",
+          ],
+          suncatcher: "radiation",
+          bullets: ["This was a ground test. Testing heat and radiation in orbit is the next step."],
+        },
+        {
+          title: "Hard problem 2: bandwidth",
+          text: [
+            "The satellites would talk to each other by laser. On a bench-scale demonstrator, Google reached 800 Gbps each way, 1.6 Tbps in total, with a single pair of transceivers.",
+          ],
+          suncatcher: "laser",
+        },
+        {
+          title: "Hard problem 3: formation",
+          text: [
+            "To work like one data center, the satellites would fly in a tight cluster. Google's paper shows an illustrative layout: 81 satellites in a cluster with a 1 km radius, so about 2 km across, with the distance between next-nearest-neighbour satellites swinging between about 100 and 200 m.",
+          ],
+          suncatcher: "cluster",
+        },
+        {
+          title: "What's next",
+          text: [
+            "Google's TPUs are in orbit; the lasers and the cluster aren't yet. Next, Google will test how its TPUs perform under thermal stress and radiation exposure in orbit. Then, in 2027, two interconnected satellites, where Google plans to test the laser links in orbit.",
+          ],
+          suncatcher: "next",
+        },
+      ],
+      notes: [
+        "\"First\" means the first from a data-center-class TPU. Other AI chips have answered from orbit before: Starcloud-1, launched in November 2025, carried an NVIDIA H100 into orbit and ran a Google model there (Starcloud says Gemini; Demis Hassabis's quoted post says Gemma).",
+        "Some reports give the number of TPUs, the power and how long each pass lasts. Google hasn't published these, so they're left out.",
+        "The prompt is from Sundar Pichai's screen recording of Oct 30, 2026. The haiku and every Suncatcher number are from Google's posts below.",
+        ["Sources: ", { text: "Google, Oct 30, 2026 (the haiku)", href: SUNCATCHER_POST }, " · ", { text: "Google, Sep 24, 2026 (the launch)", href: SUNCATCHER_FACTS }, " · ", { text: "Google Research, Nov 4, 2025 (the paper)", href: SUNCATCHER_PAPER }, " · ", { text: "Starcloud-1", href: "https://www.starcloud.com/starcloud-1" }],
+        "An explainer by @copilot_shogo. Not affiliated with Google.",
+      ],
+    },
+  },
   {
     number: 47,
     slug: "47-krea-ad-studio",
@@ -3672,6 +3759,7 @@ export const pad = (n: number) => String(n).padStart(2, "0");
 
 /** What a drop contains, for the cover badge and the page header: "build kit", "free guide", "12 checks", "1 tool". */
 export function dropKind(drop: FreeDrop): string {
+  if (drop.kind) return drop.kind;
   if (drop.kit) return "build kit";
   if (drop.breakdown) return "full breakdown";
   if (drop.guide) return "free guide";
