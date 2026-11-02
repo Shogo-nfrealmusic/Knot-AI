@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CtaLink } from "@/app/components/CtaLink";
 import { FOUNDING } from "@/lib/setup";
 
 // The closing scene: the folded Duo with "3 jobs done overnight" beside one button to the booking page
@@ -21,13 +21,14 @@ export default function Apply() {
           Pick a time for a 20-minute call. We look at your business and the job you&apos;d hand off first. {left} of {FOUNDING.seats} founding seats
           left.
         </p>
-        <Link
+        <CtaLink
+          place="setup-end"
           href="/setup/apply"
           className="group mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-neutral-900 px-6 text-[15px] font-medium text-white transition-all hover:bg-black hover:ring-4 hover:ring-neutral-200 active:scale-[0.97]"
         >
-          Book a call
+          Book a 20-minute call
           <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-        </Link>
+        </CtaLink>
         <p className="mt-3 text-[12px] text-neutral-400">No payment now. I&apos;ll send a link only after the call, if it&apos;s a fit.</p>
       </div>
     </div>

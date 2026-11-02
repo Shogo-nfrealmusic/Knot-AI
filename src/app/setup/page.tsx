@@ -6,6 +6,7 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { FOUNDING } from "@/lib/setup";
 import { cn } from "@/lib/utils";
 import Apply from "./Apply";
+import { CtaLink } from "@/app/components/CtaLink";
 import Compound from "./Compound";
 import Constellation from "./Constellation";
 import DuoHero from "./DuoHero";
@@ -108,10 +109,10 @@ export default function SetupPage() {
             every month. The same setup two of us run our company on.
           </p>
           <div className={cn(entrance, "mt-9 flex flex-wrap items-center justify-center gap-3")} style={stagger(300, 5)}>
-            <a href="/setup/apply" className="group inline-flex h-11 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 active:scale-[0.96]">
-              Book a call
+            <CtaLink place="setup-hero" href="/setup/apply" className="group inline-flex h-11 items-center gap-2 rounded-lg border border-black bg-black px-5 text-sm font-medium text-white shadow-sm transition-all hover:bg-neutral-800 hover:ring-4 hover:ring-neutral-200 active:scale-[0.96]">
+              Book a 20-minute call
               <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span>
-            </a>
+            </CtaLink>
             <a href="#pricing" className="inline-flex h-11 items-center rounded-lg border border-neutral-300 bg-white px-5 text-sm font-medium text-neutral-900 transition-all hover:bg-neutral-50 hover:ring-4 hover:ring-black/5 active:scale-[0.96]">
               See pricing
             </a>

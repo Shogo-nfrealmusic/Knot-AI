@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { track } from "@vercel/analytics";
 
 // Kit's own embed script (not a hand-rolled POST): it runs reCAPTCHA and handles Kit's spam check ("quarantined"),
 // which a plain POST without a token fails silently. Styled below to match the site.
@@ -14,6 +15,10 @@ export function GuideSignup({ uid, src }: { uid: string; src: string }) {
     s.src = src;
     s.dataset.uid = uid;
     box.appendChild(s);
+    // Count the sign-up in Vercel Analytics per form and page (Kit redirects right after, so send on submit).
+    const onSubmit = () => track("email_signup", { form: uid, page: location.pathname });
+    box.addEventListener("submit", onSubmit, true);
+    return () => box.removeEventListener("submit", onSubmit, true);
   }, [uid, src]);
   return (
     <div ref={ref} className="kit-guide min-h-[52px]">
