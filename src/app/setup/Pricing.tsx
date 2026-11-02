@@ -139,7 +139,7 @@ export default function Pricing() {
                   featured ? "bg-neutral-900 text-white hover:bg-black" : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50",
                 )}
               >
-                Apply for {plan.name}
+                Book a call for {plan.name}
               </a>
               <p className="relative mt-3 text-center text-[12px] text-neutral-400">{plan.hours}</p>
             </article>
