@@ -225,8 +225,8 @@ function Room() {
         {p < 1 && <circle cx={at.x} cy={at.y - 30} r={5} fill="var(--accent)" />}
         {p >= 1 && (
           <g>
-            <rect x={(m.from === 0 ? B.x : A.x) - 120} y={(m.from === 0 ? B.y : A.y) - 82} width={240} height={36} rx={10} fill="#fff" stroke="var(--ink)" strokeWidth={1.2} />
-            <text x={m.from === 0 ? B.x : A.x} y={(m.from === 0 ? B.y : A.y) - 58} textAnchor="middle" fontSize={16} fill="var(--ink)" fontFamily="Georgia, serif">{m.text}</text>
+            <rect x={Math.min(390, Math.max(10, (m.from === 0 ? B.x : A.x) - 120))} y={(m.from === 0 ? B.y : A.y) - 82} width={240} height={36} rx={10} fill="#fff" stroke="var(--ink)" strokeWidth={1.2} />
+            <text x={Math.min(510, Math.max(130, m.from === 0 ? B.x : A.x))} y={(m.from === 0 ? B.y : A.y) - 58} textAnchor="middle" fontSize={16} fill="var(--ink)" fontFamily="Georgia, serif">{m.text}</text>
           </g>
         )}
       </svg>
