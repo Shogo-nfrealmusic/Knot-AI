@@ -13,7 +13,7 @@ export type Social = {
   href: string;
 };
 
-export type ButtonIcon = "tools" | "portfolio" | "company";
+export type ButtonIcon = "tools" | "portfolio" | "company" | "call";
 
 /** A Linktree-style row: one full-width button with a small line icon (Shogo, 2026-10-25). */
 export type LinkButton = {
@@ -54,6 +54,7 @@ export const linksContent: Record<LinksMode, ModeContent> = {
     ],
     // ids reuse the old card ids ("free", "tps") so their click counts carry on
     buttons: [
+      { id: "setup", label: "Claude Code set up for your business", icon: "call", href: "/setup" },
       { id: "free", label: "Free AI tools & guides", icon: "tools", href: "/free" },
       { id: "portfolio", label: "Portfolio", icon: "portfolio", href: "/" },
       { id: "tps", label: "Our company", icon: "company", href: "https://www.tps-collective.com/" },

@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState, useSyncExternal
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { FiBriefcase, FiGrid, FiMail, FiTool } from "react-icons/fi";
+import { FiBriefcase, FiGrid, FiMail, FiPhoneCall, FiTool } from "react-icons/fi";
 import { parseSource, type ButtonIcon, type LinksMode, type ModeContent, type SocialIcon } from "@/lib/links";
 import { markJourney } from "@/lib/linksJourney";
 import LinksCoachingForm from "./LinksCoachingForm";
@@ -293,6 +293,7 @@ const BUTTON_ICONS: Record<ButtonIcon, ReactNode> = {
   tools: <FiTool />,
   portfolio: <FiGrid />,
   company: <FiBriefcase />,
+  call: <FiPhoneCall />,
 };
 
 /** Linktree-style buttons: full width, icon on the left, label centred, all visible on the first screen. */

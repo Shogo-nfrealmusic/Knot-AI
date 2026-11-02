@@ -8,6 +8,7 @@ import { GridSection } from "@/app/components/ui/grid-section";
 import { DropAboutBlock, DropBreakdownBlock, DropTip, FollowBlock, ToolRow } from "@/app/free/FreeParts";
 import { GuideSignup } from "@/app/free/GuideSignup";
 import { KitSales } from "@/app/free/KitSales";
+import { SetupStrip } from "@/app/free/SetupStrip";
 import { StarterSignup } from "@/app/free/StarterSignup";
 import { dropKind, formatDropDate, getDrop, getDropByNumber, getDrops, pad } from "@/lib/free";
 import { siteOgImage, twitterCard } from "@/lib/site";
@@ -97,6 +98,7 @@ export default async function FreeDropPage({ params }: { params: Promise<{ slug:
               ))}
             </ul>
             {drop.tip ? <DropTip tip={drop.tip} /> : null}
+            <SetupStrip number={pad(drop.number)} />
             {drop.breakdown && drop.about ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}
             {drop.about ? <DropAboutBlock about={drop.about} /> : null}
             {drop.breakdown && !drop.about ? <DropBreakdownBlock breakdown={drop.breakdown} /> : null}

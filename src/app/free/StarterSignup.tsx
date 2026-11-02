@@ -161,7 +161,7 @@ function StarterForm() {
     <div className="starter-form">
       <GuideSignup uid={STARTER_FORM.uid} src={STARTER_FORM.script} />
       <p className="mt-3 text-[13px] text-white/80">
-        Confirm your email and the download starts. One email a week after that, unsubscribe any time.
+        The starter opens right away, and the link lands in your inbox to keep. One email a week after that, unsubscribe any time.
       </p>
       <style>{`
         .starter-form .kit-guide .formkit-input { border-color: transparent !important; height: 52px !important; font-size: 16px !important; }

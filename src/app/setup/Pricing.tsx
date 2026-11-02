@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BILLING, FOUNDING, PLANS, billedTotal, perMonth, type Billing } from "@/lib/setup";
 import { cn } from "@/lib/utils";
+import { CtaLink } from "@/app/components/CtaLink";
 
 function Check() {
   return (
@@ -132,15 +133,16 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a
+              <CtaLink
+                place={`setup-pricing-${plan.id}`}
                 href={`/setup/apply?plan=${plan.id}&billing=${billing}`}
                 className={cn(
                   "relative mt-9 inline-flex h-12 items-center justify-center rounded-xl text-[15px] font-semibold transition-transform duration-300 active:scale-[0.97]",
                   featured ? "bg-neutral-900 text-white hover:bg-black" : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50",
                 )}
               >
-                Apply for {plan.name}
-              </a>
+                Book a call for {plan.name}
+              </CtaLink>
               <p className="relative mt-3 text-center text-[12px] text-neutral-400">{plan.hours}</p>
             </article>
           );

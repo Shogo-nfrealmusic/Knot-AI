@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { CtaLink } from "@/app/components/CtaLink";
 import { BLOCKS, CARRIAGE_TOP, DIAL, PER_TURN, SPEC, STEP, BLOCK_W, TIP_R, STOPS, carriageAt, needleAt, plungerAt } from "./figure";
 
 export type StarterFile = { path: string; role: string; body: string };
@@ -46,7 +47,7 @@ function Hero({ figure, files }: { figure: string; files: StarterFile[] }) {
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-[var(--pass)] opacity-60" />
             <span className="relative inline-flex size-2 rounded-full bg-[var(--pass)]" />
           </span>
-          Email confirmed
+          You&apos;re on the list
         </motion.p>
         <h1 className="mt-5 text-[44px] font-semibold leading-[0.98] tracking-[-0.045em] sm:text-[64px]">
           {HEADLINE.map((word, index) => (
@@ -662,18 +663,18 @@ function DoneForYou() {
             ))}
           </dl>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/setup" className="press inline-flex h-12 items-center rounded-full bg-[var(--ink)] px-6 text-[15px] font-medium text-white">
+            <CtaLink place="starter" href="/setup/apply" className="press inline-flex h-12 items-center rounded-full bg-[var(--ink)] px-6 text-[15px] font-medium text-white">
+              Book a 20-minute call
+            </CtaLink>
+            <CtaLink place="starter" href="/setup" className="press inline-flex h-12 items-center rounded-full px-5 text-[15px] font-medium text-[var(--ink)] ring-1 ring-[var(--rule)] hover:bg-white">
               See how the setup works
-            </Link>
-            <Link href="/setup#pricing" className="press inline-flex h-12 items-center rounded-full px-5 text-[15px] font-medium text-[var(--ink)] ring-1 ring-[var(--rule)] hover:bg-white">
-              Pricing
-            </Link>
+            </CtaLink>
           </div>
         </div>
-        <Link href="/setup" aria-label="See how the setup works" className="starter-plate mx-auto block w-full max-w-[420px] overflow-hidden bg-white !p-0">
+        <CtaLink place="starter" href="/setup" aria-label="See how the setup works" className="starter-plate mx-auto block w-full max-w-[420px] overflow-hidden bg-white !p-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/setup/duo-closed.jpg" alt="A phone at 7:30 showing a Claude Code notice: 3 jobs done overnight, all checked, 1 decision waiting." width={900} height={1200} loading="lazy" className="h-auto w-full" />
-        </Link>
+        </CtaLink>
       </div>
     </section>
   );
