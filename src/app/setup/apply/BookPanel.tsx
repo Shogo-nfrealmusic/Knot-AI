@@ -42,7 +42,7 @@ export default function BookPanel({ plan, billing }: { plan: Plan; billing: Bill
       <div className="relative mt-6">
         {/* Orbit sits on the calendar's top edge, as if waiting for the call. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/setup/orbit-type.webp" alt="" className="pointer-events-none absolute -top-[42px] right-5 z-10 w-[60px] max-sm:hidden" />
+        <img src="/setup/orbit-type.webp" alt="" className="pointer-events-none absolute -top-[42px] left-6 z-10 w-[60px] max-sm:hidden" />
         <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-18px_rgba(0,0,0,0.18)]">
           <iframe src={src} title="Book a 20-minute call with Shogo" className="block h-[1000px] w-full lg:h-[560px]" />
         </div>
