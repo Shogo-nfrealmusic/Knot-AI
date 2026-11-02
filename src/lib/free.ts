@@ -5,6 +5,7 @@
 import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
 import type { KreaDemoKind } from "@/app/free/krea/KreaDemos";
 import type { SuncatcherDemoKind } from "@/app/free/suncatcher/SuncatcherDemos";
+import type { SubvocalDemoKind } from "@/app/free/subvocal/SubvocalDemos";
 
 export type ToolIcon =
   | "palette"
@@ -125,6 +126,8 @@ export type DropChapter = {
   krea?: KreaDemoKind;
   /** a live figure drawn for /free/48 (src/app/free/suncatcher) */
   suncatcher?: SuncatcherDemoKind;
+  /** a live figure drawn for /free/49 (src/app/free/subvocal) */
+  subvocal?: SubvocalDemoKind;
 };
 
 export type DropAbout = {
@@ -228,7 +231,79 @@ const SUNCATCHER_POST = "https://blog.google/innovation-and-ai/models-and-resear
 const SUNCATCHER_FACTS = "https://blog.google/innovation-and-ai/models-and-research/google-research/google-project-suncatcher-facts/";
 const SUNCATCHER_PAPER = "https://research.google/blog/exploring-a-space-based-scalable-ai-infrastructure-system-design/";
 
+const SUBVOCAL_POST = "https://x.com/AarushYadav47/status/2116198463847408066";
+const SUBVOCAL_PREORDER = "https://subvocal.company/preorder";
+const SUBVOCAL_YC = "https://www.ycombinator.com/companies/the-subvocal-company";
+
 const drops: FreeDrop[] = [
+  {
+    number: 49,
+    slug: "49-subvocal",
+    title: "Subvocal: glasses that let you type without making a sound",
+    description:
+      "Subvocal's glasses read how your lips and jaw move with radar, and AI turns it into text. How it works, what it's for, what $499 gets you today, and what's still a prototype.",
+    date: "2026-11-03",
+    keyword: "SILENT",
+    kind: "explainer",
+    tools: [],
+    icon: "brain",
+    about: {
+      intro: [
+        "Subvocal is a YC startup (Fall 2026) that ",
+        { text: "opened preorders on Oct 30, 2026", href: SUBVOCAL_POST },
+        " for glasses you type with by mouthing the words. Everything below is from Subvocal's own post, launch film and ",
+        { text: "preorder page", href: SUBVOCAL_PREORDER },
+        ".",
+      ],
+      chaptersLabel: "The explainer",
+      chapters: [
+        {
+          title: "Typing without a sound",
+          text: [
+            "Talking to your computer is fast, but you can't always speak out loud. Subvocal's idea: you mouth the words silently and the glasses type them.",
+            "In the company's words, it \"decodes silent, almost invisible mouthing into text at more than 200 words/min.\"",
+          ],
+          subvocal: "silent",
+        },
+        {
+          title: "How it works: radar on your lips and jaw",
+          text: [
+            "The glasses send radar signals toward your face. When you silently form words, your lips and jaw move, and that changes how the signals bounce back.",
+            "The film labels three of them: upper lip, lower lip and jaw. The preorder page says Subvocal does not use or require cameras for silent speech input.",
+          ],
+          subvocal: "radar",
+        },
+        {
+          title: "AI turns the signals into text",
+          text: ["Subvocal's AI learns from those returning signals and turns them into text. The film's example sentence is \"Explain the new system to me.\""],
+          subvocal: "decode",
+          bullets: ["200+ words a minute is Subvocal's own claim. No accuracy numbers have been published yet."],
+        },
+        {
+          title: "A conversation nobody hears",
+          text: [
+            "Besides messaging your team or telling an AI agent what to do in public, two people wearing Subvocal can have a private conversation, even across a crowded room.",
+          ],
+          subvocal: "room",
+        },
+        {
+          title: "What $499 gets you today",
+          text: [
+            "A preorder. The early-bird price is $499 (regular $699), with a $199 deposit per pair that's fully refundable any time before the final payment. Paid preorders are US only.",
+            "Shipping is expected to start in Q1 2027, delivery is subject to FCC approval, and no delivery date is confirmed yet.",
+          ],
+          subvocal: "preorder",
+        },
+      ],
+      notes: [
+        "Parts of the launch film are marked \"*Prototype design\", and the signal panel in it is a graphic. The prototype in the interviews is wired.",
+        "Subvocal raised $1.3M from YC, Afore Capital and angels. That's the total, not YC alone.",
+        "Not to be confused with AlterEgo (an MIT spin-out) or Cornell's EchoSpeech research.",
+        ["Sources: ", { text: "Subvocal on X, Oct 30, 2026", href: SUBVOCAL_POST }, " · ", { text: "the preorder page", href: SUBVOCAL_PREORDER }, " · ", { text: "Y Combinator", href: SUBVOCAL_YC }, " · the launch film's subtitles"],
+        "An explainer by @copilot_shogo. Not affiliated with Subvocal.",
+      ],
+    },
+  },
   {
     number: 48,
     slug: "48-suncatcher-haiku",
