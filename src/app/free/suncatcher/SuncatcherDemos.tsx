@@ -89,7 +89,7 @@ function Button({ onClick, children, primary, disabled }: { onClick: () => void;
 /** two or three options, one picked */
 function Toggle<T extends string>({ value, options, onChange, label }: { value: T; options: { id: T; label: string }[]; onChange: (v: T) => void; label: string }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-1 rounded-full bg-white p-1 shadow-[0_0_0_1px_var(--rule)]">
+    <div role="radiogroup" aria-label={label} className="inline-flex gap-1 rounded-full bg-white p-1 shadow-[0_0_0_1px_var(--rule)]">
       {options.map((o) => (
         <button
           key={o.id}
@@ -97,7 +97,7 @@ function Toggle<T extends string>({ value, options, onChange, label }: { value: 
           role="radio"
           aria-checked={value === o.id}
           onClick={() => onChange(o.id)}
-          className={`sc-press rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${value === o.id ? "bg-[var(--ink)] text-white" : "text-[var(--soft)] hover:text-[var(--ink)]"}`}
+          className={`sc-press whitespace-nowrap rounded-full px-2.5 py-1.5 text-[12.5px] font-medium sm:px-3 sm:text-[13px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${value === o.id ? "bg-[var(--ink)] text-white" : "text-[var(--soft)] hover:text-[var(--ink)]"}`}
         >
           {o.label}
         </button>
@@ -190,7 +190,7 @@ function Hello() {
             <text x={s.x} y={s.y + 18} textAnchor="middle" fontSize={15} fill="var(--soft)" fontFamily="ui-monospace, monospace">ground station</text>
           </g>
         ))}
-        {t >= T_DOWN && <text x={ST2} y={sat2y - 20} textAnchor="middle" fontSize={15} fill="var(--accent)" fontFamily="ui-monospace, monospace">passing by Svalbard, Norway</text>}
+        {t >= T_DOWN && <text x={625} y={sat2y - 20} textAnchor="end" fontSize={15} fill="var(--accent)" fontFamily="ui-monospace, monospace">passing by Svalbard, Norway</text>}
         {/* satellite */}
         {thinking && <circle cx={sx} cy={sy} r={14 + 6 * Math.sin(t * 9)} fill="none" stroke="var(--accent)" strokeWidth={1.2} opacity={0.6} />}
         <Sat x={sx} y={sy} lit={t >= T_UP + 0.5} />
@@ -264,11 +264,11 @@ function Sun() {
           { l: "Solar panel on Earth", v: 1, txt: "1×" },
           { l: "In the right orbit", v: 8, txt: "up to 8×" },
         ].map((b) => (
-          <div key={b.l} className="grid grid-cols-[132px_1fr] items-center gap-3 sm:grid-cols-[160px_1fr]">
-            <span className="text-[13px] text-[var(--soft)]">{b.l}</span>
+          <div key={b.l} className="grid grid-cols-[96px_1fr] items-center gap-3 sm:grid-cols-[160px_1fr]">
+            <span className="text-[13px] leading-tight text-[var(--soft)]">{b.l}</span>
             <div className="flex items-center gap-2.5">
-              <div className="h-3.5 rounded-full" style={{ width: `${(b.v / 8) * 72 * k}%`, minWidth: 6, background: b.v > 1 ? "var(--accent)" : "var(--ink)" }} />
-              <span className="font-mono text-[13px] tabular-nums text-[var(--ink)]">{b.v > 1 ? (k < 1 ? `${Math.max(1, Math.round(8 * k))}×` : b.txt) : b.txt}</span>
+              <div className="h-3.5 rounded-full" style={{ width: `${(b.v / 8) * 62 * k}%`, minWidth: 6, background: b.v > 1 ? "var(--accent)" : "var(--ink)" }} />
+              <span className="whitespace-nowrap font-mono text-[13px] tabular-nums text-[var(--ink)]">{b.v > 1 ? (k < 1 ? `${Math.max(1, Math.round(8 * k))}×` : b.txt) : b.txt}</span>
             </div>
           </div>
         ))}
@@ -278,7 +278,7 @@ function Sun() {
           label="Orbit"
           value={orbit}
           onChange={setOrbit}
-          options={[{ id: "ordinary", label: "Orbit through the shadow" }, { id: "dawn", label: "Dawn–dusk orbit" }]}
+          options={[{ id: "ordinary", label: "Through shadow" }, { id: "dawn", label: "Dawn–dusk" }]}
         />
         {orbit === "dawn" && <Tag>likely future design</Tag>}
       </div>
@@ -296,7 +296,6 @@ function Sun() {
           <circle cx={E.x} cy={E.y} r={E.r} fill="#fff" stroke="var(--ink)" strokeWidth={1.3} />
           <path d={`M ${E.x} ${E.y - E.r} A ${E.r} ${E.r} 0 0 1 ${E.x} ${E.y + E.r} Z`} fill="rgba(21,23,26,.16)" />
           <circle cx={E.x} cy={E.y} r={2.5} fill="var(--ink)" />
-          <text x={E.x - 8} y={E.y - 8} textAnchor="end" fontSize={13} fill="var(--soft)" fontFamily="ui-monospace, monospace">N pole</text>
           {/* the orbit */}
           {orbit === "ordinary" ? (
             <circle cx={E.x} cy={E.y} r={R} fill="none" stroke="var(--rule-strong)" strokeWidth={1.2} strokeDasharray="3 5" />
@@ -344,7 +343,7 @@ function Radiation() {
         <Tag>lab test</Tag>
         <span className="font-mono text-[12px] text-[var(--muted)]">67 MeV proton beam · Trillium (v6e Cloud TPU)</span>
       </div>
-      <svg viewBox="0 0 620 230" className="mt-3 w-full" aria-label="A proton beam hits the Trillium chip while the dose counter climbs past the five-year mission dose to 2 krad">
+      <svg viewBox="0 0 620 248" className="mt-3 w-full" aria-label="A proton beam hits the Trillium chip while the dose counter climbs past the five-year mission dose to 2 krad">
         {/* beam */}
         {Array.from({ length: 7 }, (_, i) => (
           <line key={i} x1={40} y1={42 + i * 9} x2={238} y2={42 + i * 9} stroke={beam ? "var(--accent)" : "var(--rule-strong)"} strokeWidth={1.2} strokeDasharray="10 8" className={beam ? "sc-dash-fast" : undefined} />
@@ -362,15 +361,15 @@ function Radiation() {
         <text x={294} y={72} textAnchor="middle" fontSize={13} fontWeight={600} fill="var(--ink)">TPU</text>
         <rect x={350} y={36} width={26} height={64} rx={3} fill="#fff" stroke={dose >= DOSE_HBM - 1 ? "var(--accent)" : "var(--ink)"} strokeWidth={1.4} />
         <text x={363} y={72} textAnchor="middle" fontSize={11} fill="var(--ink)" fontFamily="ui-monospace, monospace">HBM</text>
-        <text x={390} y={60} fontSize={15} fill="var(--soft)">memory, the most</text>
-        <text x={390} y={76} fontSize={15} fill="var(--soft)">sensitive part</text>
+        <text x={390} y={56} fontSize={15} fill="var(--soft)">memory, the most</text>
+        <text x={390} y={82} fontSize={15} fill="var(--soft)">sensitive part</text>
         {/* dose scale */}
         <line x1={x(0)} y1={170} x2={x(DOSE_MAX)} y2={170} stroke="var(--rule-strong)" strokeWidth={10} strokeLinecap="round" />
         <line x1={x(0)} y1={170} x2={x(dose)} y2={170} stroke="var(--accent)" strokeWidth={10} strokeLinecap="round" />
         <line x1={x(DOSE_MISSION)} y1={152} x2={x(DOSE_MISSION)} y2={188} stroke="var(--ink)" strokeWidth={1.4} />
         <text x={x(DOSE_MISSION)} y={146} textAnchor="middle" fontSize={14} fill="var(--ink)" fontFamily="ui-monospace, monospace">750 rad</text>
         <text x={x(DOSE_MISSION)} y={204} textAnchor="middle" fontSize={14} fill="var(--soft)">5-year mission dose</text>
-        <text x={x(DOSE_MISSION)} y={219} textAnchor="middle" fontSize={14} fill="var(--soft)">(expected, shielded)</text>
+        <text x={x(DOSE_MISSION)} y={230} textAnchor="middle" fontSize={14} fill="var(--soft)">(expected, shielded)</text>
         <line x1={x(DOSE_HBM)} y1={152} x2={x(DOSE_HBM)} y2={188} stroke={dose >= DOSE_HBM - 1 ? "var(--accent)" : "var(--rule-strong)"} strokeWidth={1.4} />
         <text x={x(DOSE_HBM)} y={146} textAnchor="middle" fontSize={14} fill="var(--ink)" fontFamily="ui-monospace, monospace">2 krad</text>
         <text x={x(DOSE_HBM)} y={204} textAnchor="middle" fontSize={14} fill="var(--soft)">first irregularities</text>
@@ -403,7 +402,7 @@ function Laser() {
         <Toggle label="Direction" value={way} onChange={setWay} options={[{ id: "one", label: "One way" }, { id: "both", label: "Both ways" }]} />
         <Tag>lab test · bench-scale</Tag>
       </div>
-      <svg viewBox="0 0 620 130" className="mt-3 w-full" aria-label="Two transceivers on a bench linked by laser, with data pulses flowing between them">
+      <svg viewBox="0 0 620 150" className="mt-3 w-full" aria-label="Two transceivers on a bench linked by laser, with data pulses flowing between them">
         <line x1={A + 30} y1={Y - 8} x2={B - 30} y2={Y - 8} stroke="var(--accent)" strokeWidth={1.4} opacity={0.5} />
         <line x1={A + 30} y1={Y + 8} x2={B - 30} y2={Y + 8} stroke={way === "both" ? "var(--accent)" : "var(--rule-strong)"} strokeWidth={1.4} opacity={way === "both" ? 0.5 : 1} />
         {pulses.map((p, i) => (
@@ -413,19 +412,19 @@ function Laser() {
           <circle key={`b${i}`} cx={B - 30 - (B - A - 60) * p} cy={Y + 8} r={3.2} fill="var(--accent)" />
         ))}
         {/* two transceivers on a bench (boxes with a lens), not satellites */}
-        <line x1={20} y1={Y + 30} x2={600} y2={Y + 30} stroke="var(--ink)" strokeWidth={1.2} />
+        <line x1={20} y1={Y + 76} x2={600} y2={Y + 76} stroke="var(--ink)" strokeWidth={1.2} />
         {[{ x: A, d: 1 }, { x: B, d: -1 }].map((b) => (
           <g key={b.x}>
             <rect x={b.x - 30} y={Y - 20} width={60} height={40} rx={4} fill="#fff" stroke="var(--ink)" strokeWidth={1.4} />
             <circle cx={b.x + 30 * b.d} cy={Y} r={7} fill="#fff" stroke="var(--accent)" strokeWidth={1.6} />
-            <line x1={b.x - 14} y1={Y + 20} x2={b.x - 14} y2={Y + 30} stroke="var(--ink)" strokeWidth={1.2} />
-            <line x1={b.x + 14} y1={Y + 20} x2={b.x + 14} y2={Y + 30} stroke="var(--ink)" strokeWidth={1.2} />
+            <line x1={b.x - 14} y1={Y + 20} x2={b.x - 14} y2={Y + 76} stroke="var(--ink)" strokeWidth={1.2} />
+            <line x1={b.x + 14} y1={Y + 20} x2={b.x + 14} y2={Y + 76} stroke="var(--ink)" strokeWidth={1.2} />
           </g>
         ))}
-        <text x={(A + B) / 2} y={Y - 20} textAnchor="middle" fontSize={15} fill="var(--soft)" fontFamily="ui-monospace, monospace">800 Gbps →</text>
-        {way === "both" && <text x={(A + B) / 2} y={Y + 26} textAnchor="middle" fontSize={15} fill="var(--soft)" fontFamily="ui-monospace, monospace">← 800 Gbps</text>}
-        <text x={A} y={Y + 50} textAnchor="middle" fontSize={14} fill="var(--muted)">transceiver</text>
-        <text x={B} y={Y + 50} textAnchor="middle" fontSize={14} fill="var(--muted)">transceiver</text>
+        <text x={(A + B) / 2} y={Y - 24} textAnchor="middle" fontSize={15} fill="var(--soft)" fontFamily="ui-monospace, monospace">800 Gbps →</text>
+        {way === "both" && <text x={(A + B) / 2} y={Y + 48} textAnchor="middle" fontSize={15} fill="var(--soft)" fontFamily="ui-monospace, monospace">← 800 Gbps</text>}
+        <text x={A} y={Y + 46} textAnchor="middle" fontSize={14} fill="var(--muted)">transceiver</text>
+        <text x={B} y={Y + 46} textAnchor="middle" fontSize={14} fill="var(--muted)">transceiver</text>
       </svg>
       <div className="flex flex-wrap items-baseline gap-x-3">
         <span className="text-[40px] font-semibold leading-none tracking-[-0.05em] tabular-nums text-[var(--ink)]">{total.toFixed(1)}</span>
@@ -556,5 +555,6 @@ const SC_CSS = `
 .sc-dash{stroke-dasharray:6 6;animation:sc-flow .8s linear infinite}
 @keyframes sc-flow-fast{to{stroke-dashoffset:-36}}
 .sc-dash-fast{animation:sc-flow-fast .35s linear infinite}
+@media (max-width:640px){.sc svg text{font-size:21px}}
 @media (prefers-reduced-motion:reduce){.sc-caret,.sc-dash,.sc-dash-fast{animation:none}}
 `;
