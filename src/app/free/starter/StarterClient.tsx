@@ -22,6 +22,7 @@ export function StarterClient({ files, figure }: { files: StarterFile[]; figure:
       <Rules />
       <Quiz />
       <Next />
+      <DoneForYou />
     </div>
   );
 }
@@ -626,6 +627,53 @@ function Next() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ───────────── or have it set up for you ───────────── */
+
+// The road from the free starter to the paid service on /setup, for readers who would rather not build it.
+const SETUP_FACTS = [
+  { k: "Month one", v: "Set up on your own accounts, from an interview with you" },
+  { k: "Every month", v: "One more repeat job taken off your plate" },
+  { k: "From $149", v: "A month. The first three Build clients pay half for three months" },
+];
+
+function DoneForYou() {
+  return (
+    <section className="py-24">
+      <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-12 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_420px]">
+        <div>
+          <h2 className="max-w-[18ch] text-[32px] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[40px]">
+            Rather have it running than build it yourself?
+          </h2>
+          <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-[var(--soft)]">
+            I set Claude Code up inside your business, the same way two of us run our company on it: your schedule, inbox,
+            leads and the work you repeat every week. You wake up to the jobs done and checked.
+          </p>
+          <dl className="mt-8 grid max-w-[620px] gap-px overflow-hidden rounded-2xl bg-[var(--rule)] ring-1 ring-[var(--rule)] sm:grid-cols-3">
+            {SETUP_FACTS.map((fact) => (
+              <div key={fact.k} className="bg-white px-5 py-4">
+                <dt className="text-[15px] font-medium text-[var(--ink)]">{fact.k}</dt>
+                <dd className="mt-1 text-[13.5px] leading-snug text-[var(--muted)]">{fact.v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/setup" className="press inline-flex h-12 items-center rounded-full bg-[var(--ink)] px-6 text-[15px] font-medium text-white">
+              See how the setup works
+            </Link>
+            <Link href="/setup#pricing" className="press inline-flex h-12 items-center rounded-full px-5 text-[15px] font-medium text-[var(--ink)] ring-1 ring-[var(--rule)] hover:bg-white">
+              Pricing
+            </Link>
+          </div>
+        </div>
+        <Link href="/setup" aria-label="See how the setup works" className="starter-plate mx-auto block w-full max-w-[420px] overflow-hidden bg-white !p-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/setup/duo-closed.jpg" alt="A phone at 7:30 showing a Claude Code notice: 3 jobs done overnight, all checked, 1 decision waiting." width={900} height={1200} loading="lazy" className="h-auto w-full" />
+        </Link>
       </div>
     </section>
   );
