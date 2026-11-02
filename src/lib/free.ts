@@ -232,9 +232,9 @@ const drops: FreeDrop[] = [
   {
     number: 48,
     slug: "48-suncatcher-haiku",
-    title: "Project Suncatcher: Google's first AI answer from a TPU in orbit was a haiku",
+    title: "Project Suncatcher: Google's first AI answer from a data-center TPU in orbit was a haiku",
     description:
-      "Google ran its open model Gemma 4 on its own AI chip in orbit and got a haiku back over Svalbard, Norway. What happened, why Google wants AI in space, the three hard problems (radiation, bandwidth, formation), and how far along it really is.",
+      "Google ran its open model Gemma 4 on its own AI chip in orbit and got a haiku back over Svalbard, Norway. What happened, why Google wants AI in space, three of the hard problems (radiation, bandwidth, formation), and how far along it really is.",
     date: "2026-11-02",
     keyword: "ORBIT",
     kind: "explainer",
@@ -244,7 +244,7 @@ const drops: FreeDrop[] = [
       intro: [
         "Project Suncatcher is Google's research moonshot to find out whether space is a good place to run AI, because satellites get plenty of solar power. On Oct 30, 2026, ",
         { text: "Google reported", href: SUNCATCHER_POST },
-        " its first answer from orbit. Everything below is from Google's own posts.",
+        " its first answer from orbit. Everything below is from Google's own posts unless noted.",
       ],
       chaptersLabel: "The explainer",
       chapters: [
@@ -260,11 +260,11 @@ const drops: FreeDrop[] = [
         {
           title: "Why put AI in space?",
           text: [
-            "AI needs power, and in space the sun barely sets. In the right orbit, Google says, a solar panel can be up to 8 times more productive than on Earth.",
-            "Future satellites would fly a dawn–dusk sun-synchronous low Earth orbit, riding the line between day and night in near-constant sunlight. That reduces the need for heavy batteries on board.",
+            "AI needs power, and in the right orbit the sun barely sets. In that orbit, Google says, a solar panel can be up to 8 times more productive than on Earth.",
+            "Future satellites would likely fly a dawn–dusk sun-synchronous low Earth orbit, with near-constant sunlight. That reduces the need for heavy batteries on board.",
           ],
           suncatcher: "sun",
-          bullets: ["That orbit is the design for future satellites. Google hasn't said the prototype flies it."],
+          bullets: ["That orbit is the likely choice in Google's 2025 design. Google hasn't said the prototype flies it."],
         },
         {
           title: "Hard problem 1: radiation",
@@ -284,22 +284,22 @@ const drops: FreeDrop[] = [
         {
           title: "Hard problem 3: formation",
           text: [
-            "To work like one data center, the satellites would fly in a tight cluster. Google's paper shows an illustrative layout: 81 satellites in a cluster with a 1 km radius, so about 2 km across, with neighbouring satellites about 100 to 200 m apart.",
+            "To work like one data center, the satellites would fly in a tight cluster. Google's paper shows an illustrative layout: 81 satellites in a cluster with a 1 km radius, so about 2 km across, with the distance between next-nearest-neighbour satellites swinging between about 100 and 200 m.",
           ],
           suncatcher: "cluster",
         },
         {
           title: "What's next",
           text: [
-            "The TPU is in orbit; the lasers and the cluster aren't yet. Next, Google will test how its TPUs perform under thermal stress and radiation exposure in orbit. Then, in 2027, two interconnected satellites, where the laser links get their first test.",
+            "Google's TPUs are in orbit; the lasers and the cluster aren't yet. Next, Google will test how its TPUs perform under thermal stress and radiation exposure in orbit. Then, in 2027, two interconnected satellites, where Google plans to test the laser links in orbit.",
           ],
           suncatcher: "next",
         },
       ],
       notes: [
-        "\"First\" means the first from a data-center-class TPU. Other AI chips have answered from orbit before: Starcloud-1 carried an NVIDIA H100 into orbit and ran Gemma in December 2025.",
+        "\"First\" means the first from a data-center-class TPU. Other AI chips have answered from orbit before: Starcloud-1, launched in November 2025, carried an NVIDIA H100 into orbit and ran a Google model there (Starcloud says Gemini; Demis Hassabis's quoted post says Gemma).",
         "Some reports give the number of TPUs, the power and how long each pass lasts. Google hasn't published these, so they're left out.",
-        "The prompt is from Sundar Pichai's screen recording of Oct 30, 2026. The haiku and every number are from Google's posts below.",
+        "The prompt is from Sundar Pichai's screen recording of Oct 30, 2026. The haiku and every Suncatcher number are from Google's posts below.",
         ["Sources: ", { text: "Google, Oct 30, 2026 (the haiku)", href: SUNCATCHER_POST }, " · ", { text: "Google, Sep 24, 2026 (the launch)", href: SUNCATCHER_FACTS }, " · ", { text: "Google Research, Nov 4, 2025 (the paper)", href: SUNCATCHER_PAPER }, " · ", { text: "Starcloud-1", href: "https://www.starcloud.com/starcloud-1" }],
         "An explainer by @copilot_shogo. Not affiliated with Google.",
       ],
