@@ -7,6 +7,7 @@ import type { KreaDemoKind } from "@/app/free/krea/KreaDemos";
 import type { SuncatcherDemoKind } from "@/app/free/suncatcher/SuncatcherDemos";
 import type { SubvocalDemoKind } from "@/app/free/subvocal/SubvocalDemos";
 import type { HackerTubeDemoKind } from "@/app/free/hackertube/HackerTubeDemos";
+import type { StudioDemoKind } from "@/app/free/studio/StudioDemos";
 
 export type ToolIcon =
   | "palette"
@@ -131,6 +132,8 @@ export type DropChapter = {
   subvocal?: SubvocalDemoKind;
   /** a live figure drawn for /free/50 (src/app/free/hackertube) */
   hackertube?: HackerTubeDemoKind;
+  /** a live figure drawn for /free/52 (src/app/free/studio) */
+  studio?: StudioDemoKind;
 };
 
 export type DropAbout = {
@@ -244,7 +247,101 @@ const HT_BLOG = "https://karpathy.bearblog.dev/hacker-tube/";
 const HT_X = "https://x.com/karpathy/status/2116957135661945283";
 const HT_HN = "https://news.ycombinator.com/item?id=50319510";
 
+// free/52: the folder layout and a starter rule page (rules translated from my own docs/craft.md)
+const STUDIO_TREE = String.raw`episodes/
+  2026-11-04_01_my-reel/
+    script.md        # the script, the sources, the shot list
+    Video.tsx        # the reel as code (Remotion)
+    render/final.mp4 # what gets posted
+public/episodes/
+  2026-11-04_01_my-reel/
+    narration.mp3    # the voice (ElevenLabs), sped up with Rubber Band
+    music.mp3
+docs/
+  craft.md           # the rule page Claude reads before every reel
+scripts/
+  check.sh           # reads the rules, refuses to render when one breaks`;
+const STUDIO_RULES = String.raw`# craft.md — read this before every reel
+
+## Hook
+- Frame 1 is the content, not a logo. One strong line on screen from the first frame.
+- Say what it is and what the viewer gets within 3 seconds.
+
+## Look
+- One background, one text colour, one accent. Solid backgrounds, no glow.
+- Real screens, real files, real numbers. Never redraw a fake product screen.
+- Never upscale an image past 1.5×.
+- Other people's footage only as short proof.
+
+## Motion
+- Something meaningful moves wherever you pause. No dead frames.
+- Shake twice at most. One full-screen flash at most.
+
+## Sound
+- One sound per event, within 2 frames of it.
+- Music 18–24 dB under the voice. Whole reel at −14 LUFS.
+
+## When a reel looks cheap
+- Write the fix here as one line, with the reel number. Don't just fix that reel.`;
+
 const drops: FreeDrop[] = [
+  {
+    number: 52,
+    slug: "52-claude-edit-setup",
+    title: "My whole reel setup with Claude Code: one folder, four tools, one rule page",
+    description:
+      "The setup behind my last 51 reels, free: one folder per reel, four tools (Remotion, ElevenLabs, Rubber Band, FFmpeg), one rule page Claude Code reads before every reel, and a check that refuses to render when a rule breaks.",
+    date: "2026-11-04",
+    keyword: "STUDIO",
+    kind: "the setup",
+    tools: [
+      { name: "Claude Code", what: "Writes every reel as code, reads past reels and the rule page first.", href: "https://docs.anthropic.com/en/docs/claude-code/overview", icon: "robot", install: ["npm install -g @anthropic-ai/claude-code"] },
+      { name: "Remotion", what: "Turns React code into video and renders every frame.", href: "https://www.remotion.dev/", icon: "cube", install: ["npx create-video@latest"] },
+      { name: "ElevenLabs", what: "My cloned voice, with the start time of every word (the with-timestamps endpoint), so captions land on the exact frame.", href: "https://elevenlabs.io/", icon: "wand" },
+      { name: "Rubber Band", what: "Speeds the voice up without changing its pitch.", href: "https://breakfastquay.com/rubberband/", icon: "scissors", install: ["brew install rubberband"] },
+      { name: "FFmpeg", what: "Mixes voice and music and sets every reel to the same loudness.", href: "https://ffmpeg.org/", icon: "plug", install: ["brew install ffmpeg"] },
+    ],
+    about: {
+      intro: ["This is the setup I've used for my last 51 reels on @copilot_shogo. Nothing to buy except the services you already use. Take the folder layout and the starter rule page below."],
+      chaptersLabel: "The setup",
+      chapters: [
+        {
+          title: "One folder per reel",
+          text: [
+            "Every reel gets its own folder with the same four files: the script, the voice, the code and the final video. Claude Code works inside the whole project, so it can open any past reel and reuse what worked. Each new reel's code starts from one of the best-rated past reels.",
+          ],
+          studio: "folder",
+          code: [{ label: "the layout", body: STUDIO_TREE }],
+        },
+        {
+          title: "Four tools do the work",
+          text: [
+            "Claude writes the reel as React. Remotion renders it. ElevenLabs reads the script in my cloned voice and returns the time of every word. Rubber Band speeds it up without the chipmunk sound. FFmpeg mixes the music and sets the loudness.",
+          ],
+          studio: "tools",
+        },
+        {
+          title: "The rule page is why it works",
+          text: [
+            "Every time a reel looked cheap, the fix became a line on one page. Claude Code reads that page before every reel, so the same mistake doesn't come back. Mine is 230 lines now. Start with the one below and add a line every time you catch something.",
+          ],
+          studio: "rules",
+          code: [{ label: "craft.md (starter)", body: STUDIO_RULES }],
+        },
+        {
+          title: "A check that refuses to render",
+          text: [
+            "Rules you only read get skipped. A small script checks the ones a machine can check (a missing mascot, text outside the caption boxes, no real material listed) and stops the render with a list of what's broken.",
+          ],
+          studio: "check",
+        },
+      ],
+      notes: [
+        "Numbers on this page are from my own studio: file sizes of real reel folders, reel #52's frame count and word timings, and the loudness of reels #42–#49 measured with FFmpeg on Nov 4, 2026.",
+        "Clawd, the little orange character, is Claude Code's own mascot, drawn from the characters Claude Code prints when it starts. Not affiliated with Anthropic, Remotion, ElevenLabs, Rubber Band or FFmpeg.",
+      ],
+    },
+  },
   {
     number: 50,
     slug: "50-hackertube",
