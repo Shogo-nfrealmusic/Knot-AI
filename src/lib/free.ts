@@ -6,6 +6,7 @@ import type { JarvisDemoKind } from "@/app/free/jarvis/JarvisDemos";
 import type { KreaDemoKind } from "@/app/free/krea/KreaDemos";
 import type { SuncatcherDemoKind } from "@/app/free/suncatcher/SuncatcherDemos";
 import type { SubvocalDemoKind } from "@/app/free/subvocal/SubvocalDemos";
+import type { HackerTubeDemoKind } from "@/app/free/hackertube/HackerTubeDemos";
 
 export type ToolIcon =
   | "palette"
@@ -128,6 +129,8 @@ export type DropChapter = {
   suncatcher?: SuncatcherDemoKind;
   /** a live figure drawn for /free/49 (src/app/free/subvocal) */
   subvocal?: SubvocalDemoKind;
+  /** a live figure drawn for /free/50 (src/app/free/hackertube) */
+  hackertube?: HackerTubeDemoKind;
 };
 
 export type DropAbout = {
@@ -235,7 +238,87 @@ const SUBVOCAL_POST = "https://x.com/AarushYadav47/status/2116198463847408066";
 const SUBVOCAL_PREORDER = "https://subvocal.company/preorder";
 const SUBVOCAL_YC = "https://www.ycombinator.com/companies/the-subvocal-company";
 
+const HT_SITE = "https://hackertube.org/";
+const HT_DATA = "https://hackertube.org/data";
+const HT_BLOG = "https://karpathy.bearblog.dev/hacker-tube/";
+const HT_X = "https://x.com/karpathy/status/2116957135661945283";
+const HT_HN = "https://news.ycombinator.com/item?id=50319510";
+
 const drops: FreeDrop[] = [
+  {
+    number: 50,
+    slug: "50-hackertube",
+    title: "HackerTube: Karpathy had Claude build his own YouTube from Hacker News",
+    description:
+      "Karpathy was annoyed with YouTube's recommendations, so he had Claude filter 43M Hacker News comments down to 6,454 videos people keep recommending. How it works, what he did by hand, the copies it set off, and the free data to build your own.",
+    date: "2026-11-03",
+    keyword: "TUBE",
+    kind: "explainer",
+    tools: [],
+    icon: "browser",
+    about: {
+      intro: [
+        "HackerTube is a weekend hack by Andrej Karpathy, ",
+        { text: "posted on Oct 31, 2026", href: HT_BLOG },
+        ". It's free and needs no login: ",
+        { text: "hackertube.org", href: HT_SITE },
+        ". The numbers and quotes below are from his ",
+        { text: "post on X", href: HT_X },
+        ", his blog and the site's data page.",
+      ],
+      chaptersLabel: "The explainer",
+      chapters: [
+        {
+          title: "A YouTube picked by Hacker News, not by the algorithm",
+          text: [
+            "In Karpathy's words: \"I was annoyed with YouTube's recommendations so I had Claude filter down 43M comments over 20 years of HN to 6,454 videos that keep being recommended.\"",
+            "Every video on the site is there because people on Hacker News kept recommending it in their comments. Run the filter on six real rows from the data.",
+          ],
+          hackertube: "filter",
+        },
+        {
+          title: "No login, and your history stays in your browser",
+          text: ["There's no account. What you watch is remembered by your own browser, not by a server, and the recommendations still work."],
+          hackertube: "browser",
+        },
+        {
+          title: "Thumbnails from the middle of the video",
+          text: [
+            "YouTube shows the picture the uploader chose, often tested to get the most clicks. HackerTube shows a frame from the middle of the video instead, so you see what the video actually looks like.",
+          ],
+          hackertube: "thumb",
+        },
+        {
+          title: "About two hours with Opus 5.5, three things by hand",
+          text: [
+            "Karpathy says it took about two hours with Opus 5.5. The only manual work was in the browser: an API key from Google Cloud (for YouTube's video metadata), a VPS to serve it, and the domain name.",
+            "Then he gave Claude the server and told it to update, secure, harden, deploy and optimize the code.",
+          ],
+          hackertube: "hand",
+        },
+        {
+          title: "Within two days, people copied it",
+          text: [
+            "HackerTube went to #1 on Hacker News. The next day HackerBooks did the same for books mentioned on HN, and on Nov 2 came Wikihack (Wikipedia articles) and HackerHack (HN posts).",
+          ],
+          hackertube: "copies",
+        },
+        {
+          title: "Build your own from the data",
+          text: [
+            "The data behind the site is one free zip on hackertube.org/data: 6,454 videos and 39,834 labeled Hacker News comments, exported on Oct 31, 2026.",
+            "Karpathy's suggestion: point your Claude at it and ask for your own version. DATA.md in the zip starts with a section for AI agents.",
+          ],
+          hackertube: "zip",
+        },
+      ],
+      notes: [
+        "DATA.md says each comment was read by Claude Sonnet 5.5, and the whole pipeline was built and coordinated by Claude Opus 5.5 in Claude Code, prompted by @karpathy. The data is under the Open Data Commons Attribution License (ODC-By) v1.0.",
+        ["Sources: ", { text: "Karpathy on X, Nov 1, 2026", href: HT_X }, " · ", { text: "his blog post", href: HT_BLOG }, " · ", { text: "hackertube.org/data", href: HT_DATA }, " · ", { text: "the HN thread", href: HT_HN }, " · the HN front pages of Oct 31 to Nov 2"],
+        "An explainer by @copilot_shogo. Not affiliated with Karpathy or HackerTube.",
+      ],
+    },
+  },
   {
     number: 49,
     slug: "49-subvocal",
