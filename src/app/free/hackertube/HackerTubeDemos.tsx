@@ -355,7 +355,7 @@ function Zip() {
 const HT_CSS = `
 .ht{--page:#f3f4f1;--ink:#15171a;--soft:#4a4f56;--muted:#868b92;--rule:#dcded9;--rule-strong:#c4c7c2;--accent:#e0552f}
 .ht-plate{border-radius:18px;background-color:var(--page);background-image:linear-gradient(to right,rgba(21,23,26,.045) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,23,26,.045) 1px,transparent 1px);background-size:28px 28px;box-shadow:0 0 0 1px var(--rule),0 30px 70px -48px rgba(21,23,26,.45)}
-.ht-card{display:block;border-radius:12px;border:1px solid var(--rule);background:#fff;padding:9px 12px;font-size:13.5px;line-height:1.35}
+.ht-card{border-radius:12px;border:1px solid var(--rule);background:#fff;padding:9px 12px;font-size:13.5px;line-height:1.35}
 .ht-press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),border-color .2s,opacity .2s,color .2s,background-color .2s}
 .ht-press:active{transform:scale(.96)}
 @keyframes ht-in{from{opacity:0;transform:translateY(-4px)}}
