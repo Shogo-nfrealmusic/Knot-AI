@@ -8,6 +8,7 @@ import type { SuncatcherDemoKind } from "@/app/free/suncatcher/SuncatcherDemos";
 import type { SubvocalDemoKind } from "@/app/free/subvocal/SubvocalDemos";
 import type { HackerTubeDemoKind } from "@/app/free/hackertube/HackerTubeDemos";
 import type { StudioDemoKind } from "@/app/free/studio/StudioDemos";
+import type { FindSkillsDemoKind } from "@/app/free/findskills/FindSkillsDemos";
 
 export type ToolIcon =
   | "palette"
@@ -134,6 +135,8 @@ export type DropChapter = {
   hackertube?: HackerTubeDemoKind;
   /** a live figure drawn for /free/52 (src/app/free/studio) */
   studio?: StudioDemoKind;
+  /** a live figure drawn for /free/53 (src/app/free/findskills) */
+  findskills?: FindSkillsDemoKind;
 };
 
 export type DropAbout = {
@@ -284,7 +287,93 @@ const STUDIO_RULES = String.raw`# craft.md — read this before every reel
 ## When a reel looks cheap
 - Write the fix here as one line, with the reel number. Don't just fix that reel.`;
 
+// free/53: sources for find-skills (all read on Nov 4, 2026)
+const FS_REPO = "https://github.com/vercel-labs/skills";
+const FS_PAGE = "https://skills.sh/vercel-labs/skills/find-skills";
+const FS_SKILL_MD = "https://github.com/vercel-labs/skills/blob/main/skills/find-skills/SKILL.md";
+const FS_STATE = "https://vercel.com/blog/state-of-agent-skills";
+const FS_INSTALL = "npx skills add vercel-labs/skills --skill find-skills";
+
 const drops: FreeDrop[] = [
+  {
+    number: 53,
+    slug: "53-find-skills",
+    title: "find-skills: the free skill that finds you the right skills",
+    description:
+      "The most installed agent skill in the world is free, and all it does is find you other skills. What find-skills is, why searching a million skills yourself is a lottery, the same search done both ways, and how it picks.",
+    date: "2026-11-06",
+    keyword: "SKILLS",
+    kind: "the skill",
+    tools: [
+      {
+        name: "find-skills",
+        what: "Vercel's skill that turns what you're working on into search keywords, checks installs and makers, and installs the skill you pick. Open source (MIT). Works in Claude Code, Cursor, Codex and more.",
+        href: FS_REPO,
+        icon: "store",
+        install: [FS_INSTALL],
+        note: "Run it in your project's folder. The Skills CLI needs Node.js 22.20 or later; add -g to install it for every project.",
+      },
+    ],
+    about: {
+      intro: [
+        "find-skills is a skill made by Vercel. Install it once, then just tell your agent what you're trying to do. It searches ",
+        { text: "skills.sh", href: "https://skills.sh/" },
+        " for you and installs the good one.",
+      ],
+      chaptersLabel: "The explainer",
+      chapters: [
+        {
+          title: "The most installed skill there is",
+          text: [
+            [
+              "find-skills lives in ",
+              { text: "vercel-labs/skills", href: FS_REPO },
+              ", Vercel's open-source Skills CLI (MIT license). On ",
+              { text: "its skills.sh page", href: FS_PAGE },
+              " it has 4.2M installs, #1 on the leaderboard. It works with Claude Code, Cursor, Codex and the other agents the CLI supports.",
+            ],
+          ],
+          findskills: "rank",
+          commands: [FS_INSTALL],
+        },
+        {
+          title: "A million skills, and most of them nobody uses",
+          text: [
+            [
+              "Vercel's ",
+              { text: "State of agent skills", href: FS_STATE },
+              " counts about one million agent skills. Nearly half were installed exactly once. Just 375 skills, 0.04% of the registry, get 62% of all installs.",
+            ],
+            "So searching on your own is a lottery: most of what you find has never been used by anyone else.",
+          ],
+          findskills: "pile",
+        },
+        {
+          title: "Your words vs. the right keywords",
+          text: [
+            "Search the way you'd say it, \"make my site faster\", and the Skills CLI finds one skill with 3 installs. find-skills turns what you're working on into the keywords skills are listed under, \"web performance\", and the same search returns 20, led by Vercel and Cloudflare with up to 1.3M installs.",
+          ],
+          findskills: "search",
+        },
+        {
+          title: "How it picks",
+          text: [
+            [
+              "find-skills doesn't recommend a skill on search results alone. Its ",
+              { text: "SKILL.md", href: FS_SKILL_MD },
+              " tells the agent to prefer skills with 1K+ installs, be cautious under 100, trust official sources over unknown authors, and be skeptical of repos with fewer than 100 GitHub stars. Then it shows you the best few, each with its install count, source and install command, and installs the one you pick.",
+            ],
+          ],
+          findskills: "pick",
+        },
+      ],
+      notes: [
+        "Install counts are from skills.sh and from two runs of the Skills CLI (skills@1.7.4) on Nov 4, 2026. They change every day.",
+        ["Sources: ", { text: "vercel-labs/skills on GitHub", href: FS_REPO }, " · ", { text: "find-skills on skills.sh", href: FS_PAGE }, " · ", { text: "find-skills' SKILL.md", href: FS_SKILL_MD }, " · ", { text: "Vercel: State of agent skills", href: FS_STATE }],
+        "An explainer by @copilot_shogo. Clawd is Claude Code's own mascot. Not affiliated with Vercel, Anthropic or skills.sh.",
+      ],
+    },
+  },
   {
     number: 52,
     slug: "52-claude-edit-setup",
