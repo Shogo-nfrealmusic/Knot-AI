@@ -9,6 +9,7 @@ import type { SubvocalDemoKind } from "@/app/free/subvocal/SubvocalDemos";
 import type { HackerTubeDemoKind } from "@/app/free/hackertube/HackerTubeDemos";
 import type { StudioDemoKind } from "@/app/free/studio/StudioDemos";
 import type { FindSkillsDemoKind } from "@/app/free/findskills/FindSkillsDemos";
+import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
 
 export type ToolIcon =
   | "palette"
@@ -137,6 +138,8 @@ export type DropChapter = {
   studio?: StudioDemoKind;
   /** a live figure drawn for /free/53 (src/app/free/findskills) */
   findskills?: FindSkillsDemoKind;
+  /** a live figure drawn for /free/54 (src/app/free/lifters) */
+  lifters?: LiftersDemoKind;
 };
 
 export type DropAbout = {
@@ -244,6 +247,8 @@ const SUBVOCAL_POST = "https://x.com/AarushYadav47/status/2116198463847408066";
 const SUBVOCAL_PREORDER = "https://subvocal.company/preorder";
 const SUBVOCAL_YC = "https://www.ycombinator.com/companies/the-subvocal-company";
 
+const LIFTERS_URL = "https://lifters.club";
+
 const HT_SITE = "https://hackertube.org/";
 const HT_DATA = "https://hackertube.org/data";
 const HT_BLOG = "https://karpathy.bearblog.dev/hacker-tube/";
@@ -295,6 +300,75 @@ const FS_STATE = "https://vercel.com/blog/state-of-agent-skills";
 const FS_INSTALL = "npx skills add vercel-labs/skills --skill find-skills";
 
 const drops: FreeDrop[] = [
+  {
+    number: 54,
+    slug: "54-lifters-club",
+    title: "Lifters Club: the free gym app I built that shows you how to do every lift",
+    description:
+      "My free gym app: 582 exercises with the full movement in 3D, sets logged in a few taps with last time already there to beat, a progress chart for every lift, and a coach mode where Claude plans a client's next block with you.",
+    date: "2026-11-06",
+    keyword: "LIFT",
+    kind: "the app",
+    tools: [
+      {
+        name: "Lifters Club",
+        what: "The gym app: 582 exercises with a 3D clip each, set logging, progress charts, and a coach mode for your clients. Free, and it runs in your phone's browser.",
+        href: LIFTERS_URL,
+        icon: "notebook",
+      },
+    ],
+    about: {
+      intro: [
+        "Lifters Club is a gym app I built with Claude Code. It's free: open ",
+        { text: "lifters.club", href: LIFTERS_URL },
+        " on your phone. Every number on this page is from the app's demo account (a fictional client, Alex Morgan, and coach, Sam Lee).",
+      ],
+      chaptersLabel: "How it works",
+      chapters: [
+        {
+          title: "Find the lift, then watch the whole movement",
+          text: [
+            "Search 582 exercises. Each one has a 3D clip of the full movement, with the muscles doing the work marked in red, so you know exactly how to do it before you touch the bar.",
+          ],
+          lifters: "library",
+        },
+        {
+          title: "Log a set in a few taps, and beat last time",
+          text: [
+            "Open the exercise and your last numbers are already there: last time Alex squatted 100×9, 100×8, 100×8. Set the weight and reps, tap Log set, and the rest timer starts. Beat it and the app tells you on the spot.",
+          ],
+          lifters: "log",
+        },
+        {
+          title: "Every lift turns into a chart",
+          text: [
+            "From your weight and reps, the app works out the most you could lift once, and plots it for every exercise. You see yourself getting stronger without ever testing a one-rep max: Alex's squat went from 93 to 130 kg in 12 sessions.",
+          ],
+          lifters: "progress",
+        },
+        {
+          title: "For coaches: every client in one place",
+          text: [
+            "Every client's workouts, sets and notes are in one place. When you can't be there, they still see perfect form in the app, and you still see every set they log.",
+            "Set their targets or change their plan, and it's on their phone, with your note on why.",
+          ],
+          lifters: "coach",
+        },
+        {
+          title: "Plan the next block with Claude",
+          text: [
+            "Connect Claude and plan a client's next block together. Claude reads the plan and the progress, proposes the new plan as a diff, and saves nothing until you say OK. Step through the real run below.",
+          ],
+          lifters: "claude",
+        },
+      ],
+      notes: [
+        "Numbers are from the Lifters Club demo account (fictional client Alex Morgan, coach Sam Lee), recorded for the reel. The 12 squat points are read off the app's own chart. The Claude run is the real output of the Lifters Club MCP server in Claude Code.",
+        "The figures on this page are drawn for the page; the app's 3D clips are licensed and not shown here.",
+        "I built Lifters Club. Not affiliated with Anthropic.",
+      ],
+    },
+  },
   {
     number: 53,
     slug: "53-find-skills",
