@@ -96,7 +96,7 @@ const along = (a: V3, len: number, ang: number, back = false): V3 => [a[0] + (ba
 
 /** the lifter's joints at depth d (0 = standing, 1 = bottom of the rep), one side at z = side */
 function pose(lift: LiftId, d: number, side: number) {
-  const k = lift === "squat" ? { shin: 0.62, thigh: 1.5, lean: 0.62 } : lift === "deadlift" ? { shin: 0.32, thigh: 1.05, lean: 1.15 } : { shin: 0, thigh: 0, lean: 0 };
+  const k = lift === "squat" ? { shin: 0.62, thigh: 1.5, lean: 0.62 } : lift === "deadlift" ? { shin: 0.32, thigh: 1.25, lean: 1.25 } : { shin: 0, thigh: 0, lean: 0 };
   const ankle: V3 = [0, 0.06, side * 0.14];
   const knee = along(ankle, 0.46, k.shin * d);
   const hip = along(knee, 0.46, k.thigh * d, true);
@@ -312,7 +312,7 @@ function Progress() {
         <Button primary={!today} onClick={() => setToday((v) => !v)}>{today ? "Remove today's set" : "Add today's set: 105 × 9"}</Button>
         <span className="font-mono text-[12px] text-[var(--soft)]">+{(130 - 93.3).toFixed(1)} kg in 12 sessions</span>
       </div>
-      <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">Drag across the chart. The 12 points are the demo account&apos;s squat, read off the app&apos;s own &ldquo;Strength over time&rdquo; chart (26 Sept to Wed 4 Nov). The dashed point is worked out from the 105 × 9 in the chapter above; the app adds it the same way once the set is logged.</figcaption>
+      <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">Drag across the chart. The 12 points are the demo account&apos;s squat, read off the app&apos;s own &ldquo;Strength over time&rdquo; chart (26 Sept to Wed 4 Nov). The dashed point is worked out the same way from the 105 × 9 in the chapter above.</figcaption>
     </figure>
   );
 }
@@ -385,9 +385,9 @@ const DIFF: { day: string; add: string[]; drop: string[] }[] = [
   { day: "Day 3 · Full body C", add: ["Goblet Squat", "Lat Pulldown", "Treadmill Run"], drop: ["Barbell Squat", "Pull Ups", "Barbell Bench Press", "Dumbbell Rear Lunge", "Lying Leg Curl", "Cable Lateral Raise"] },
 ];
 const STEPS = [
-  { tool: "propose_plan", who: "Claude", line: "saved: false · here is the diff" },
+  { tool: "propose_plan", who: "Claude", line: "saved: false · diff.changed: true (3 days)" },
   { tool: "you", who: "You", line: "OK" },
-  { tool: "save_plan", who: "Claude", line: "saved: true · new version a0996dd7" },
+  { tool: "save_plan", who: "Claude", line: "saved: true · versionId a0996dd7…" },
 ];
 function ClaudePlan() {
   const { ref, t } = useClock();
@@ -414,7 +414,7 @@ function ClaudePlan() {
           <span className={`rounded-full px-2.5 py-1 font-mono text-[11px] ${step >= 3 ? "bg-[var(--accent)] text-white" : "border border-[var(--rule-strong)] text-[var(--soft)]"}`}>{step >= 3 ? "saved" : step === 2 ? "approved" : "not saved"}</span>
         </div>
         <div className="text-[13px] font-semibold text-[var(--ink)]">{DIFF[day].day}</div>
-        <ul className="mt-1.5 grid gap-0.5 sm:grid-cols-2">
+        <ul className="mt-1.5 gap-x-6 space-y-0.5 sm:columns-2">
           {rows.map((r, i) => {
             const k = step >= 1 ? ease(ramp(step === 1 ? s : 5, 0.1 + i * 0.07, 0.4 + i * 0.07)) : 0;
             return (
