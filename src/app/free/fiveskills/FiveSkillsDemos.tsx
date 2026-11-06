@@ -160,7 +160,8 @@ function Find() {
               className={`fv-in mt-1 flex w-full items-center gap-2 rounded-md px-1.5 py-0.5 text-left transition-colors ${done ? "cursor-pointer hover:bg-white/10" : "cursor-default"} ${on ? "bg-white/10" : ""}`}
               aria-pressed={on}
             >
-              <span className="min-w-0 truncate text-[#c9ccd1]">{h.pkg}</span>
+              {/* on phones only the skill's own name fits; the owner/repo shows from sm up */}
+              <span className="min-w-0 truncate text-[#c9ccd1]"><span className="hidden text-[#868b92] sm:inline">{h.pkg.split("@")[0]}@</span>{h.pkg.split("@")[1]}</span>
               <span className="ml-auto shrink-0 text-[#7dd3e0]">{h.label}</span>
               <span className={`w-4 shrink-0 text-center ${on ? "text-[#a6e3a1]" : "text-[#5b6068]"}`}>{on ? "✓" : "+"}</span>
             </button>
