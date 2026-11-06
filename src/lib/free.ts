@@ -10,6 +10,7 @@ import type { HackerTubeDemoKind } from "@/app/free/hackertube/HackerTubeDemos";
 import type { StudioDemoKind } from "@/app/free/studio/StudioDemos";
 import type { FindSkillsDemoKind } from "@/app/free/findskills/FindSkillsDemos";
 import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
+import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 
 export type ToolIcon =
   | "palette"
@@ -140,6 +141,8 @@ export type DropChapter = {
   findskills?: FindSkillsDemoKind;
   /** a live figure drawn for /free/54 (src/app/free/lifters) */
   lifters?: LiftersDemoKind;
+  /** a live figure drawn for /free/55 (src/app/free/fiveskills) */
+  fiveskills?: FiveSkillsDemoKind;
 };
 
 export type DropAbout = {
@@ -299,7 +302,174 @@ const FS_SKILL_MD = "https://github.com/vercel-labs/skills/blob/main/skills/find
 const FS_STATE = "https://vercel.com/blog/state-of-agent-skills";
 const FS_INSTALL = "npx skills add vercel-labs/skills --skill find-skills";
 
+// free/55: the five skills (repos, READMEs and star counts read on Nov 6, 2026, 20:57 JST)
+const FIVE_SKILLS_SH = "https://skills.sh/";
+const FIVE_FS_INSTALL = "npx skills add https://github.com/vercel-labs/skills --skill find-skills";
+const FIVE_SP = "https://github.com/obra/superpowers";
+const FIVE_SP_INSTALL = "/plugin install superpowers@claude-plugins-official";
+const FIVE_CM = "https://github.com/thedotmack/claude-mem";
+const FIVE_CM_INSTALL = "npx claude-mem install";
+const FIVE_IM = "https://github.com/pbakaus/impeccable";
+const FIVE_IM_INSTALL = "npx impeccable install";
+const FIVE_TO = "https://github.com/rebelytics/one-skill-to-rule-them-all";
+const FIVE_TO_ENV = "https://github.com/rebelytics/one-skill-to-rule-them-all/blob/main/references/environments.md";
+const FIVE_TO_INSTALL = "npx skills add rebelytics/one-skill-to-rule-them-all --skill task-observer";
+
 const drops: FreeDrop[] = [
+  {
+    number: 55,
+    slug: "55-five-skills",
+    title: "The only 5 Claude Code skills you need",
+    description:
+      "Over a million agent skills are listed on skills.sh. These five are the ones worth installing: find-skills, Superpowers, claude-mem, Impeccable and task-observer. What each one does, the exact install line, and a live figure for each.",
+    date: "2026-11-07",
+    keyword: "SKILLS",
+    kind: "5 skills",
+    tools: [
+      {
+        name: "find-skills",
+        what: "Tell Claude what you're building, and it searches the open skills registry, finds the right skills and installs the one you pick. By Vercel, open source (MIT).",
+        href: FS_REPO,
+        icon: "store",
+        install: [FIVE_FS_INSTALL],
+        note: "Run it in your terminal, in your project's folder; add -g to install it for every project. The Skills CLI needs Node.js 22.20 or later.",
+      },
+      {
+        name: "Superpowers",
+        what: "Makes Claude slow down: it asks what you really want, writes a plan, builds test-first and checks its own work before calling it done. A set of skills by Jesse Vincent (MIT).",
+        href: FIVE_SP,
+        icon: "wand",
+        install: [FIVE_SP_INSTALL],
+        note: "Paste it into Claude Code. Superpowers is in Anthropic's official plugin marketplace.",
+      },
+      {
+        name: "claude-mem",
+        what: "Gives Claude memory across sessions: it saves what happened as you work and brings it back when the next session starts. A Claude Code plugin, open source (Apache-2.0).",
+        href: FIVE_CM,
+        icon: "brain",
+        install: [FIVE_CM_INSTALL],
+        note: "Run it in your terminal, or in Claude Code: /plugin marketplace add thedotmack/claude-mem, then /plugin install claude-mem. The installer offers a sign-in with a 30-day free trial of its hosted memory; after that, memory runs on your Anthropic plan unless you subscribe. Pass an explicit --provider flag to skip the sign-in.",
+      },
+      {
+        name: "Impeccable",
+        what: "Gives Claude a design vocabulary (bolder, polish, critique, audit and 20 more) and a detector that catches AI slop before it ships. By Paul Bakaus (Apache-2.0).",
+        href: FIVE_IM,
+        icon: "palette",
+        install: [FIVE_IM_INSTALL, "/impeccable init"],
+        note: "Run the first line in your project's folder and say yes to the design hook. Reload Claude Code, then run /impeccable init once in Claude Code.",
+      },
+      {
+        name: "task-observer",
+        what: "Watches how you work, learns from your corrections and suggests improvements to your other skills, which you approve. By Eoghan Henn (CC BY 4.0).",
+        href: FIVE_TO,
+        icon: "review",
+        install: [FIVE_TO_INSTALL],
+        note: "Run it in your terminal (add -g for every project). Then add the activation instruction from references/environments.md to your CLAUDE.md: installing alone is not enough, because it won't trigger reliably on its own.",
+      },
+    ],
+    about: {
+      intro: [
+        "Over a million agent skills are listed on ",
+        { text: "skills.sh", href: FIVE_SKILLS_SH },
+        " (1,270,748 on Nov 6, 2026). You only need five. Here they are in the order of the reel, each with what it does, the exact install line, and a figure you can play with.",
+      ],
+      chaptersLabel: "The five",
+      chapters: [
+        {
+          title: "Find Skills: tell it what you're building",
+          text: [
+            [
+              "find-skills is made by Vercel and lives in ",
+              { text: "vercel-labs/skills", href: FS_REPO },
+              ". You tell Claude what you're building; it turns that into search keywords, searches the skills on skills.sh, finds the right ones for you, and installs the one you pick. It's the most installed skill on skills.sh, with 4.2M installs.",
+            ],
+            ["More on how it searches and picks: ", { text: "/free/53", href: "/free/53" }, "."],
+          ],
+          fiveskills: "find",
+          commands: [FIVE_FS_INSTALL],
+        },
+        {
+          title: "Superpowers: plan first, check its own work",
+          text: [
+            [
+              "Give Claude a task and ",
+              { text: "Superpowers", href: FIVE_SP },
+              " makes it slow down. It doesn't jump into code: it asks what you're really trying to do, shows you the design, writes a plan of bite-sized tasks, builds it test-first, and verifies the work before it touches your project's main branch. The skills trigger on their own.",
+            ],
+            "Seven of its skills are in my own setup: systematic-debugging, test-driven-development, writing-plans, executing-plans, verification-before-completion, using-git-worktrees and requesting-code-review.",
+          ],
+          fiveskills: "plan",
+          commands: [FIVE_SP_INSTALL],
+        },
+        {
+          title: "claude-mem: memory across sessions",
+          text: [
+            [
+              "Claude forgets everything between sessions. ",
+              { text: "claude-mem", href: FIVE_CM },
+              " gives it memory: its hooks capture what Claude does as you work, save it as observations and summaries in a local database, and the next session starts with that context. In its README's words: \"Context survives across sessions.\"",
+            ],
+          ],
+          fiveskills: "memory",
+          commands: [FIVE_CM_INSTALL],
+        },
+        {
+          title: "Impeccable: design taste for your front end",
+          text: [
+            [
+              "For front-end, ",
+              { text: "Impeccable", href: FIVE_IM },
+              " gives Claude the words for good design. Name a move and a target, like ",
+              { code: "/impeccable bolder the pricing cards" },
+              ", and it loads a playbook for that one move. ",
+              { code: "critique" },
+              " and ",
+              { code: "audit" },
+              " review the page, and a detector with 62 rules flags the tells of AI slop, like Inter for everything and purple-to-blue gradients, so your UI stops looking like slop.",
+            ],
+          ],
+          fiveskills: "design",
+          commands: [FIVE_IM_INSTALL],
+        },
+        {
+          title: "task-observer: it improves your other skills",
+          text: [
+            [
+              "And finally, ",
+              { text: "task-observer", href: FIVE_TO },
+              ". It runs alongside your work, watches what you do, and logs what it notices: corrections you make, gaps no skill covers yet, even its own blind spots. Then it suggests specific updates to your skills. You approve each one, so your skills keep getting better the more you use them. In its README's words: \"You work normally. It watches. Your skill library grows and gets better over time.\"",
+            ],
+            [
+              "One step after installing: add the activation instruction from ",
+              { text: "references/environments.md", href: FIVE_TO_ENV },
+              " to your CLAUDE.md, so it runs in every session.",
+            ],
+          ],
+          fiveskills: "observer",
+          commands: [FIVE_TO_INSTALL],
+        },
+      ],
+      notes: [
+        "GitHub stars are from Nov 6, 2026 (20:57 JST); the skills.sh count is its All Time figure on the same day. Both change every day. find-skills' stars are for the whole vercel-labs/skills repo.",
+        "The figures are drawn for this page. The requests, sessions and suggestions inside them are examples; the search results, workflow, hooks, commands and rules are each project's own.",
+        [
+          "Sources: ",
+          { text: "vercel-labs/skills", href: FS_REPO },
+          " · ",
+          { text: "obra/superpowers", href: FIVE_SP },
+          " · ",
+          { text: "thedotmack/claude-mem", href: FIVE_CM },
+          " · ",
+          { text: "pbakaus/impeccable", href: FIVE_IM },
+          " · ",
+          { text: "rebelytics/one-skill-to-rule-them-all", href: FIVE_TO },
+          " · ",
+          { text: "skills.sh", href: FIVE_SKILLS_SH },
+        ],
+        "An explainer by @copilot_shogo. The logos are each repo owner's GitHub avatar. Not affiliated with Anthropic, Vercel or any of the authors.",
+      ],
+    },
+  },
   {
     number: 54,
     slug: "54-lifters-club",

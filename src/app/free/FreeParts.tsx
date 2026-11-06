@@ -30,6 +30,7 @@ import { HackerTubeDemo } from "@/app/free/hackertube/HackerTubeDemos";
 import { StudioDemo } from "@/app/free/studio/StudioDemos";
 import { FindSkillsDemo } from "@/app/free/findskills/FindSkillsDemos";
 import { LiftersDemo } from "@/app/free/lifters/LiftersDemos";
+import { FiveSkillsDemo } from "@/app/free/fiveskills/FiveSkillsDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -311,6 +312,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.studio ? <StudioDemo kind={chapter.studio} /> : null}
                   {chapter.findskills ? <FindSkillsDemo kind={chapter.findskills} /> : null}
                   {chapter.lifters ? <LiftersDemo kind={chapter.lifters} /> : null}
+                  {chapter.fiveskills ? <FiveSkillsDemo kind={chapter.fiveskills} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (
