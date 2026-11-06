@@ -120,10 +120,11 @@ function pose(lift: LiftId, d: number, side: number) {
 function Library() {
   const [lift, setLift] = useState<LiftId>("squat");
   const [playing, setPlaying] = useState(true);
+  const { ref: introRef, t: introT } = useClock(); // the 582 count runs on its own clock, so Pause never freezes it half way
   const { ref, t, reduce } = useClock(!playing);
   const [yaw, setYaw] = useState(-0.9);
   const drag = useRef<{ x: number; yaw: number } | null>(null);
-  const grid = ease(ramp(t, 0, 1.4));
+  const grid = reduce ? 1 : ease(ramp(introT, 0, 1.4));
   const count = Math.round(582 * grid);
   const phase = reduce ? 0.5 : (t % 2.6) / 2.6;
   const d = lift === "press" ? (1 + Math.cos(2 * Math.PI * phase)) / 2 : (1 - Math.cos(2 * Math.PI * phase)) / 2;
@@ -155,7 +156,7 @@ function Library() {
   return (
     <figure ref={ref} className="lc-plate p-4 sm:p-6">
       <div className="grid gap-4 sm:grid-cols-[1fr_1.35fr]">
-        <div>
+        <div ref={introRef}>
           <div className="flex items-baseline gap-2 font-mono text-[13px] text-[var(--soft)]">
             <span className="text-[28px] font-semibold tabular-nums text-[var(--ink)]">{count}</span>exercises
           </div>
