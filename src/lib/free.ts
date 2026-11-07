@@ -11,6 +11,7 @@ import type { StudioDemoKind } from "@/app/free/studio/StudioDemos";
 import type { FindSkillsDemoKind } from "@/app/free/findskills/FindSkillsDemos";
 import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
 import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
+import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
 
 export type ToolIcon =
   | "palette"
@@ -143,6 +144,8 @@ export type DropChapter = {
   lifters?: LiftersDemoKind;
   /** a live figure drawn for /free/55 (src/app/free/fiveskills) */
   fiveskills?: FiveSkillsDemoKind;
+  /** a live figure drawn for /free/58 (src/app/free/freellmapi) */
+  freellmapi?: FreeLlmApiDemoKind;
 };
 
 export type DropAbout = {
@@ -315,7 +318,137 @@ const FIVE_TO = "https://github.com/rebelytics/one-skill-to-rule-them-all";
 const FIVE_TO_ENV = "https://github.com/rebelytics/one-skill-to-rule-them-all/blob/main/references/environments.md";
 const FIVE_TO_INSTALL = "npx skills add rebelytics/one-skill-to-rule-them-all --skill task-observer";
 
+// free/58: FreeLLMAPI (README, docs and source read on Nov 8, 2026)
+const FL_REPO = "https://github.com/tashfeenahmed/freellmapi";
+const FL_RELEASES = "https://github.com/tashfeenahmed/freellmapi/releases/latest";
+const FL_INSTALL_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/install/01-install.md";
+const FL_AGENTS_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/clients/01-agent-clients.md";
+const FL_HANDOFF_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/clients/01-agent-clients.md#context-handoff";
+const FL_LIMITS_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/architecture/00-high-level-index.md#limitations";
+const FL_TOS_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/architecture/00-high-level-index.md#terms-of-service-review";
+const FL_MODELS = "https://freellmapi.co/models.html";
+const FL_SETUP = "npx freellmapi setup-claude --url http://localhost:3001 --api-key <unified-key>";
+
 const drops: FreeDrop[] = [
+  {
+    number: 58,
+    slug: "58-freellmapi",
+    title: "Run Claude Code on 34 free AI tiers",
+    description:
+      "FreeLLMAPI stacks the free tiers of 34 AI providers (about 7.4 billion tokens a month) behind one endpoint that Claude Code can use. When a free model hits its limit, it switches to the next and can leave a handoff note. The setup, how the switch works, and the limits.",
+    date: "2026-11-08",
+    keyword: "FREE",
+    tools: [
+      {
+        name: "FreeLLMAPI",
+        what: "One OpenAI-compatible /v1 endpoint, plus Anthropic's /v1/messages for Claude Code, over the free tiers of 34 providers. It falls over to the next model when one is rate-limited. Open source (MIT).",
+        href: FL_REPO,
+        icon: "plug",
+        install: [FL_SETUP],
+        note: "Start the router first (the desktop app or Docker), add your provider keys on its Keys page, and paste the unified key from that page in place of <unified-key>.",
+      },
+    ],
+    about: {
+      intro: [
+        "Every AI lab has a free tier. On its own each one is small; stacked, ",
+        { text: "FreeLLMAPI", href: FL_REPO },
+        " counts about 7.4 billion tokens a month across 34 providers and 635 free model endpoints, all behind one local endpoint. Here is what it is, how to point Claude Code at it, what happens when a model runs out, and where it falls short.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: 34 free tiers, one endpoint",
+          text: [
+            [
+              "FreeLLMAPI is a router you run on your own machine. You add API keys for the providers you want (Google, Groq, Cerebras, Mistral, OpenRouter and more), and it serves them all on one OpenAI-compatible ",
+              { code: "/v1" },
+              " endpoint. It also speaks Anthropic's ",
+              { code: "/v1/messages" },
+              ", which is how Claude Code runs on the free pool. Your apps see a single key; the provider keys are stored encrypted.",
+            ],
+            [
+              "The full catalog, with each model's rate limits and free-token budget, is at ",
+              { text: "freellmapi.co/models", href: FL_MODELS },
+              ".",
+            ],
+          ],
+          freellmapi: "stack",
+        },
+        {
+          title: "Set it up with Claude Code",
+          text: [
+            [
+              "Run the router: the ",
+              { text: "desktop app", href: FL_RELEASES },
+              " for macOS or Windows, or Docker (",
+              { text: "install guide", href: FL_INSTALL_DOC },
+              "). Open it, add your provider keys on the Keys page and copy the unified key. Then one command (under the figure) points Claude Code at it.",
+            ],
+            [
+              "Add ",
+              { code: "--dry-run" },
+              " first to see the diff; a real run merges into your existing Claude Code config and makes a timestamped backup. Other agents (Codex CLI, Cline, Aider, Cursor and more) have their own setup commands: ",
+              { text: "Clients & coding agents", href: FL_AGENTS_DOC },
+              ".",
+            ],
+          ],
+          freellmapi: "setup",
+          commands: [FL_SETUP],
+        },
+        {
+          title: "When a model hits its limit",
+          text: [
+            "The router picks the best available model for each request. When that provider answers 429 (rate limited) or a 5xx error, it cools that key down and retries the next model in your chain, so the session keeps going.",
+            [
+              "A new model doesn't know it's picking up someone else's task. The optional ",
+              { text: "context handoff", href: FL_HANDOFF_DOC },
+              " adds one short system message when the model changes, telling it to continue rather than start over. It is off by default; the line that turns it on goes in the router's ",
+              { code: ".env" },
+              " (under the figure).",
+            ],
+          ],
+          freellmapi: "failover",
+          code: [{ label: ".env", body: "FREELLMAPI_CONTEXT_HANDOFF=on_model_switch" }],
+        },
+        {
+          title: "The limits, honestly",
+          text: [
+            "The README is direct about what this is and isn't:",
+          ],
+          bullets: [
+            [
+              { text: "\"For personal experimentation and learning, not production.\"", href: FL_REPO + "#disclaimer" },
+              " If you build something real on it, swap in a paid API before you ship.",
+            ],
+            [
+              "No frontier models, variable latency, no SLA. The best free models hit their daily caps late in the day, then reset at UTC midnight (",
+              { text: "limitations", href: FL_LIMITS_DOC },
+              ").",
+            ],
+            [
+              "Each provider's terms still apply when your traffic goes through the proxy, and you're responsible for following them (",
+              { text: "the project's review, provider by provider", href: FL_TOS_DOC },
+              ").",
+            ],
+          ],
+          freellmapi: "limits",
+        },
+      ],
+      notes: [
+        "Numbers are the README's on Nov 8, 2026; the catalog updates itself, so they change. GitHub stars read the same day.",
+        "The figures are drawn for this page. The provider names, counts, command, error codes and handoff text are the project's own; the requests, the chain and the times of day inside them are examples.",
+        [
+          "Sources: ",
+          { text: "tashfeenahmed/freellmapi", href: FL_REPO },
+          " · ",
+          { text: "Clients & coding agents", href: FL_AGENTS_DOC },
+          " · ",
+          { text: "Install & deploy", href: FL_INSTALL_DOC },
+        ],
+        "An explainer by @copilot_shogo. The avatar is the repo owner's GitHub avatar. Not affiliated with FreeLLMAPI, Anthropic or any of the providers.",
+      ],
+    },
+  },
   {
     number: 55,
     slug: "55-five-skills",
