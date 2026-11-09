@@ -12,6 +12,7 @@ import type { FindSkillsDemoKind } from "@/app/free/findskills/FindSkillsDemos";
 import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
 import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
+import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
 
 export type ToolIcon =
   | "palette"
@@ -146,6 +147,8 @@ export type DropChapter = {
   fiveskills?: FiveSkillsDemoKind;
   /** a live figure drawn for /free/58 (src/app/free/freellmapi) */
   freellmapi?: FreeLlmApiDemoKind;
+  /** a live figure drawn for /free/59 (src/app/free/agents) */
+  agents?: AgentsDemoKind;
 };
 
 export type DropAbout = {
@@ -329,7 +332,159 @@ const FL_TOS_DOC = "https://github.com/tashfeenahmed/freellmapi/blob/main/docs/e
 const FL_MODELS = "https://freellmapi.co/models.html";
 const FL_SETUP = "npx freellmapi setup-claude --url http://localhost:3001 --api-key <unified-key>";
 
+// free/59: four AI agents compared (official pages read on Nov 9, 2026)
+const AG_DOTS = "https://openai.com/index/introducing-dots/";
+const AG_DOTS_HELP = "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot";
+const AG_PRO_TIERS = "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers";
+const AG_MUSE = "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/";
+const AG_MUSE_SG = "https://about.fb.com/news/2026/10/muse-is-now-available-in-singapore-the-worlds-first-personal-ai-agent-built-for-everyone/";
+const AG_GROK = "https://x.ai/news/introducing-grok-bot";
+const AG_GROK_DOCS = "https://docs.x.ai/grok-bot/overview";
+const AG_XSUB = "https://docs.x.ai/x-subscription/pricing";
+const AG_MAUS = "https://github.com/milind-soni/OpenMausBot";
+const AG_MAUS_SITE = "https://www.mausbot.com/";
+
 const drops: FreeDrop[] = [
+  {
+    number: 59,
+    slug: "59-ai-agents-compared",
+    title: "dots vs Muse vs Grok Bot vs MausBot",
+    description:
+      "Four AI agents that all promise to work for you in the background, and are four different things: OpenAI's dots, Meta's Muse, xAI's Grok Bot and the open-source OpenMausBot. What each one does, what it costs, where it runs, and a table to pick from.",
+    date: "2026-11-09",
+    keyword: "COMPARE",
+    kind: "4 agents compared",
+    tools: [
+      {
+        name: "dots (OpenAI)",
+        what: "Always-on assistants inside ChatGPT that keep working on an ongoing goal with your connected apps. ChatGPT Pro (from $100/mo) or Business Premium; Pro is not in the EEA, Switzerland or the UK at launch.",
+        href: AG_DOTS,
+        icon: "robot",
+      },
+      {
+        name: "Muse (Meta)",
+        what: "A personal agent for everyday errands: bookings, shopping, forms and long-term goals, on its own cloud computer. Free for most of what people need, with paid plans. US, Canada and Singapore.",
+        href: AG_MUSE,
+        icon: "event",
+      },
+      {
+        name: "Grok Bot (xAI)",
+        what: "A team of always-on bots with roles (sales, marketing, operations and more) under a chief-of-staff bot. Included in the X Subscription from Premium ($30/mo). In beta.",
+        href: AG_GROK,
+        icon: "council",
+      },
+      {
+        name: "OpenMausBot",
+        what: "Open-source (Apache-2.0) bots you run from your own computer on the model you choose, with approval cards before risky steps. The app is free; you pay your model provider.",
+        href: AG_MAUS,
+        icon: "cpu",
+      },
+    ],
+    about: {
+      intro: [
+        "Four launches in three months, and all four say the same thing: an agent that keeps working for you in the background. They aren't the same product. One lives in ChatGPT, one runs your errands, one is a team of work bots, and one is a kit you run yourself. Here is each one, with its real price and limits, then the table.",
+      ],
+      chaptersLabel: "The comparison",
+      chapters: [
+        {
+          title: "Why they look alike, and how they differ",
+          text: [
+            "Read the launch posts and you'd think these are four versions of one thing. Look at what each one actually does and where it runs, and they split into four kinds of work: a worker inside ChatGPT, a personal assistant for life admin, a team of bots for a business, and an open-source setup on your own machine.",
+          ],
+          agents: "lineup",
+        },
+        {
+          title: "OpenAI dots: an always-on worker inside ChatGPT",
+          text: [
+            [
+              "OpenAI announced ",
+              { text: "dots", href: AG_DOTS },
+              " at DevDay on Sep 29, 2026. You give a dot an ongoing goal and connect your apps, and it keeps working in the background, even with ChatGPT closed. OpenAI calls them proactive assistants that \"work towards your goals 24/7\", each with its own cloud computer.",
+            ],
+            [
+              "Who gets it: ChatGPT ",
+              { text: "Pro", href: AG_PRO_TIERS },
+              " (from $100 a month) and Business Premium users aged 18 and over, rolling out gradually. Pro access excludes the EEA, Switzerland and the UK at launch (",
+              { text: "getting started", href: AG_DOTS_HELP },
+              ").",
+            ],
+          ],
+          agents: "dots",
+        },
+        {
+          title: "Meta Muse: a personal agent for everyday tasks",
+          text: [
+            [
+              { text: "Muse", href: AG_MUSE },
+              " (Sep 8, 2026) handles the errands: booking travel, sending an email, shopping, filling out forms, and bigger goals it turns into a plan. Meta says it can open a browser, fill out forms and negotiate on your behalf, on \"its own dedicated computer in the cloud\", and it comes back when something changes or it needs your approval.",
+            ],
+            [
+              "Price: \"free for most of what people need, with subscription plans for people who want to do more.\" Where: the US, Canada and, since Oct 28, ",
+              { text: "Singapore", href: AG_MUSE_SG },
+              ", on iOS, Android and muse.ai.",
+            ],
+          ],
+          agents: "muse",
+        },
+        {
+          title: "xAI Grok Bot: a team of always-on bots",
+          text: [
+            [
+              { text: "Grok Bot", href: AG_GROK },
+              " (beta since Aug 11, 2026) is a team rather than one assistant: specialist bots for inbox, expenses, recruiting, operations, sales outbound and marketing, coordinated by a chief-of-staff bot. They share one persistent cloud computer with a browser, files and a terminal, and you reach them on desktop, mobile, in Slack or on X (",
+              { text: "docs", href: AG_GROK_DOCS },
+              ").",
+            ],
+            [
+              "Price: since Oct 12 it comes with ",
+              { text: "the X Subscription", href: AG_XSUB },
+              " Premium ($30 a month), Super ($100) and Ultra ($200); the Plus tier doesn't include it. Existing SuperGrok and Cursor plans keep it.",
+            ],
+          ],
+          agents: "grok",
+        },
+        {
+          title: "MausBot: open source, on your own computer",
+          text: [
+            [
+              { text: "OpenMausBot", href: AG_MAUS },
+              " (also called MausBot) is open source under Apache-2.0, with about 19,000 GitHub stars on Nov 9, 2026. It runs from your own machine on the claude, codex or grok CLIs, or another model through an OpenAI-compatible endpoint (Gemini, Ollama and others). Transcripts and keys stay in a folder on your disk. Each bot works in a cloud Linux desktop, a local VM or, if you opt in, your own computer (macOS and Ubuntu Xorg), and approval cards stop it before risky steps; a phone companion is optional.",
+            ],
+            [
+              "Price: the desktop app is free. You pay your model provider, and their limits apply. Without the optional Cloud plans ($15, $49 or $99 a month, ",
+              { text: "mausbot.com", href: AG_MAUS_SITE },
+              "), bots only work while your computer is awake. It calls itself \"the open source Grok Bot alternative\" and is not affiliated with xAI, Meta or OpenAI.",
+            ],
+          ],
+          agents: "maus",
+        },
+        {
+          title: "The table: which one fits",
+          text: [
+            "Pick a row to compare one thing across all four, or pick what you need and the one that fits lights up. There is no overall winner: they solve different problems.",
+          ],
+          agents: "table",
+        },
+      ],
+      notes: [
+        "Prices, plans and regions as of Nov 9, 2026, from each company's own pages. They change often; check the source before you pay.",
+        "The figures are drawn for this page. The characters are each company's own mascots. The goals, errands, tasks and log lines inside the figures are examples.",
+        [
+          "Sources: ",
+          { text: "OpenAI, Introducing dots", href: AG_DOTS },
+          " · ",
+          { text: "Meta, Introducing Muse", href: AG_MUSE },
+          " · ",
+          { text: "xAI, Introducing Grok Bot", href: AG_GROK },
+          " · ",
+          { text: "X Subscription pricing", href: AG_XSUB },
+          " · ",
+          { text: "milind-soni/OpenMausBot", href: AG_MAUS },
+        ],
+        "A comparison by @copilot_shogo. Not affiliated with OpenAI, Meta, xAI or OpenMausBot.",
+      ],
+    },
+  },
   {
     number: 58,
     slug: "58-freellmapi",
