@@ -342,8 +342,8 @@ function FlipCard({ p, free, onFlip, reduce }: { p: Pair; free: boolean; onFlip:
         <div className="rp-face rp-back rp-card flex flex-col p-3" style={{ borderColor: "var(--accent)", pointerEvents: free ? undefined : "none" }} aria-hidden={!free} inert={!free}>
           <span className="flex w-full items-center justify-between gap-2">
             <Tag free />
-            <button type="button" onClick={onFlip} className="font-mono text-[10px] text-[var(--muted)] hover:text-[var(--ink)]" aria-label={`Flip ${p.name} back to ${p.paid}`}>
-              instead of {p.paid} ↺
+            <button type="button" onClick={onFlip} className="min-w-0 truncate whitespace-nowrap font-mono text-[10px] text-[var(--muted)] hover:text-[var(--ink)]" aria-label={`Flip ${p.name} back to ${p.paid}`}>
+              ↺ {p.paid}
             </button>
           </span>
           <a href={gh(p.repo)} target="_blank" rel="noopener noreferrer" className="group mt-2 block">
@@ -368,7 +368,8 @@ const RP_CSS = `
 .rp-card{border-radius:12px;border:1px solid var(--rule);background:#fff}
 .rp-press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),border-color .2s,color .2s,background-color .2s}
 .rp-press:active{transform:scale(.97)}
-.rp-flip-inner{display:grid;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.34,1.3,.64,1)}
+.rp-flip{display:flex}
+.rp-flip-inner{flex:1;display:grid;grid-template:1fr/1fr;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.34,1.3,.64,1)}
 .rp-face{grid-area:1/1;min-height:150px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .rp-back{transform:rotateY(180deg)}
 @keyframes rp-dot{50%{opacity:.45}}
