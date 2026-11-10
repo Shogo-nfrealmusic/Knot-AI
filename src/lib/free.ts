@@ -13,6 +13,7 @@ import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
 import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
 import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
+import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
   | "palette"
@@ -149,6 +150,8 @@ export type DropChapter = {
   freellmapi?: FreeLlmApiDemoKind;
   /** a live figure drawn for /free/59 (src/app/free/agents) */
   agents?: AgentsDemoKind;
+  /** a live figure drawn for /free/60 (src/app/free/repos) */
+  repos?: ReposDemoKind;
 };
 
 export type DropAbout = {
@@ -344,7 +347,126 @@ const AG_XSUB = "https://docs.x.ai/x-subscription/pricing";
 const AG_MAUS = "https://github.com/milind-soni/OpenMausBot";
 const AG_MAUS_SITE = "https://www.mausbot.com/";
 
+// free/60: nine paid apps and their open-source versions (GitHub API and READMEs read on Nov 10, 2026)
+const RP_OGAI = "https://github.com/Anil-matcha/Open-Generative-AI";
+const RP_VOICE = "https://github.com/debpalash/VoiceStudio";
+const RP_SEO = "https://github.com/every-app/open-seo";
+const RP_APPFLOWY = "https://github.com/AppFlowy-IO/AppFlowy";
+const RP_WHISPR = "https://github.com/OpenWhispr/openwhispr";
+const RP_OPENPROJECT = "https://github.com/opf/openproject";
+const RP_CALDIY = "https://github.com/calcom/cal.diy";
+const RP_CHATWOOT = "https://github.com/chatwoot/chatwoot";
+const RP_CAP = "https://github.com/CapSoftware/Cap";
+
 const drops: FreeDrop[] = [
+  {
+    number: 60,
+    slug: "60-nine-free-github-repos",
+    title: "Stop paying for these 9 apps",
+    description:
+      "Nine paid apps and the free, open-source versions on GitHub: Higgsfield, ElevenLabs, Semrush, Notion, Wispr Flow, Asana, Calendly, Intercom and Loom. Each repo with its stars, licence, and what to know before you switch.",
+    date: "2026-11-10",
+    keyword: "REPO",
+    kind: "9 free repos",
+    tools: [
+      {
+        name: "Open Generative AI · instead of Higgsfield",
+        what: "AI image, video and lip-sync studio with 600+ models, self-hosted. MIT · ★ 33.8K. Cloud models need a Muapi API key.",
+        href: RP_OGAI,
+        icon: "wand",
+      },
+      {
+        name: "VoiceStudio · instead of ElevenLabs",
+        what: "Voice cloning, voice design, dubbing, dictation and audiobooks on your own hardware. AGPL-3.0 · ★ 106.8K.",
+        href: RP_VOICE,
+        icon: "cpu",
+      },
+      {
+        name: "OpenSEO · instead of Semrush",
+        what: "Keyword research, backlinks and site audits. MIT · ★ 27.1K. Data from DataForSEO, pay-as-you-go.",
+        href: RP_SEO,
+        icon: "browser",
+      },
+      {
+        name: "AppFlowy · instead of Notion",
+        what: "Docs, wikis and databases with AI, where you keep your data. AGPL-3.0 · ★ 78.6K. Local AI via Ollama.",
+        href: RP_APPFLOWY,
+        icon: "notebook",
+      },
+      {
+        name: "OpenWhispr · instead of Wispr Flow",
+        what: "Hotkey dictation into any app, with local or bring-your-own-key cloud models. MIT · ★ 11.2K.",
+        href: RP_WHISPR,
+        icon: "brain",
+      },
+      {
+        name: "OpenProject · instead of Asana",
+        what: "Project management with boards, roadmaps, Gantt charts and time tracking. GPL-3.0 · ★ 17.2K.",
+        href: RP_OPENPROJECT,
+        icon: "council",
+      },
+      {
+        name: "Cal.diy · instead of Calendly",
+        what: "Self-hosted booking pages, the community edition of Cal.com. MIT · ★ 49.9K. Its README says personal, non-production use.",
+        href: RP_CALDIY,
+        icon: "event",
+      },
+      {
+        name: "Chatwoot · instead of Intercom",
+        what: "Website chat, email and social messages in one support inbox, with an AI agent. MIT (except enterprise/) · ★ 39.6K.",
+        href: RP_CHATWOOT,
+        icon: "store",
+      },
+      {
+        name: "Cap · instead of Loom",
+        what: "Screen recordings with instant share links, or local recording and editing. AGPLv3 (mostly) · ★ 24.8K.",
+        href: RP_CAP,
+        icon: "scissors",
+      },
+    ],
+    about: {
+      intro: [
+        "Nine subscriptions, and for each one an open-source project on GitHub that does the same job for free. Below: the nine side by side, a picker to flip the ones you pay for, and what \"free\" means for each before you switch.",
+      ],
+      chaptersLabel: "The nine",
+      chapters: [
+        {
+          title: "Nine bills, nine repos",
+          text: [
+            "AI video, AI voice, SEO research, docs, dictation, project management, scheduling, support chat and screen recording. Each has a well-known paid app and an open-source version you can download or run on your own server.",
+          ],
+          repos: "swap",
+        },
+        {
+          title: "Pick what you pay for",
+          text: [
+            "Tap the apps you pay for today. Each one flips to its free version, with the link to the repository, the GitHub stars, the licence and anything to know first.",
+          ],
+          repos: "picker",
+        },
+        {
+          title: "What free means here",
+          text: [
+            "Free here means the code is free to use. You run it on your own computer or server, so setup, updates and hosting are yours. Some projects also sell a hosted version or paid extras; the repos below are the free part.",
+            "On licences: MIT lets you use, change and sell the code with few conditions. GPL-3.0 and AGPL-3.0 are free to use too, including at work; if you distribute a changed version (and, for AGPL, if you run a changed version as a service for others), you share your changes under the same licence.",
+          ],
+          bullets: [
+            [{ text: "Open Generative AI", href: RP_OGAI }, ": cloud models run through Muapi and need a Muapi API key; the desktop app can also run local models without one."],
+            [{ text: "OpenSEO", href: RP_SEO }, ": the SEO data comes from DataForSEO with your own API key, paid as you go."],
+            [{ text: "AppFlowy", href: RP_APPFLOWY }, ": local AI runs through Ollama."],
+            [{ text: "Cal.diy", href: RP_CALDIY }, ": its README recommends it for personal, non-production use and has removed team and enterprise features."],
+            [{ text: "Chatwoot", href: RP_CHATWOOT }, ": MIT, except the enterprise/ folder."],
+            [{ text: "Cap", href: RP_CAP }, ": mostly AGPLv3, with some parts under MIT."],
+          ],
+        },
+      ],
+      notes: [
+        "Stars and licences as of Nov 10, 2026, from the GitHub API. Stars change every day.",
+        "The figures are drawn for this page. Notes are from each project's own README.",
+        "A list by @copilot_shogo. Not affiliated with any of these projects or the paid apps named.",
+      ],
+    },
+  },
   {
     number: 59,
     slug: "59-ai-agents-compared",
