@@ -226,7 +226,7 @@ function Swap() {
           const on = k > 0 && k < 1;
           const free = k >= 1;
           return (
-            <li key={p.id} className="grid grid-cols-[minmax(0,34%)_minmax(0,1fr)_minmax(0,46%)] items-center gap-1.5 sm:grid-cols-[minmax(0,30%)_minmax(0,1fr)_minmax(0,48%)]">
+            <li key={p.id} className="grid grid-cols-[minmax(0,1fr)_16px_minmax(0,1.3fr)] items-center gap-1 sm:grid-cols-[minmax(0,30%)_minmax(0,1fr)_minmax(0,48%)]">
               <span className="rp-card flex items-center justify-between gap-1.5 px-2 py-1.5 transition-opacity duration-300" style={{ opacity: free ? 0.5 : 1 }}>
                 <span className={`truncate text-[12.5px] text-[var(--ink)] sm:text-[13px] ${free ? "line-through decoration-[var(--muted)]" : ""}`}>{p.paid}</span>
                 <span className="hidden sm:inline"><Tag free={false} /></span>
@@ -248,8 +248,8 @@ function Swap() {
                   <span className="hidden truncate font-mono text-[10px] text-[var(--muted)] sm:block">{p.repo}</span>
                 </span>
                 <span className="shrink-0 text-right">
-                  {free ? <Tag free /> : <span className="font-mono text-[10px] text-[var(--muted)]">{on ? "…" : ""}</span>}
-                  <span className="block font-mono text-[10px] tabular-nums text-[var(--muted)]">★ {fmtK(p.stars)}</span>
+                  {free ? <Tag free /> : null}
+                  <span className="hidden font-mono text-[10px] tabular-nums text-[var(--muted)] sm:block">★ {fmtK(p.stars)}</span>
                 </span>
               </span>
             </li>
