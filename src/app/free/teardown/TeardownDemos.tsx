@@ -177,7 +177,7 @@ function Rack() {
   const legA = ((180 - deg) * Math.PI) / 180; // a schematic: the leg starts pointing left and swings half a turn to the right
   const legLen = 86;
   const lx = cx + legLen * Math.cos(legA);
-  const rackX = cx - (TRAVEL * k) / 2 - 20 + x * k;
+  const rackX = cx - 20 - TRAVEL * k + x * k; // the rack stays under the gear over its whole travel
   return (
     <figure ref={ref} className="td-plate p-4 sm:p-6">
       <Plate n={2} title="Real numbers you can check by hand" sub="one cylinder pushes a rack · the rack turns a 32-tooth gear" />
