@@ -105,13 +105,13 @@ function Value() {
   return (
     <figure ref={ref} className="os-plate p-4 sm:p-6">
       <Plate n={1} title="Six months of Claude Ultra" sub="one tile per month · press Replay" />
-      <ol className="grid grid-cols-6 gap-1.5 sm:gap-2" aria-label="Six months, each one month of the 200 dollar plan">
+      <ol className="grid grid-cols-6 gap-1 sm:gap-2" aria-label="Six months, each one month of the 200 dollar plan">
         {Array.from({ length: MONTHS }, (_, i) => {
           const on = i < shown;
           return (
             <li
               key={i}
-              className="rounded-[10px] border px-1 py-2.5 text-center sm:py-3.5"
+              className="min-w-0 rounded-[10px] border py-2.5 text-center sm:py-3.5"
               style={{
                 borderColor: on ? "var(--accent)" : "var(--rule)",
                 background: on ? "var(--accent)" : "#fff",
@@ -121,7 +121,7 @@ function Value() {
               <span className="block font-mono text-[10.5px]" style={{ color: on ? "rgba(255,255,255,.85)" : "var(--muted)" }}>
                 M{i + 1}
               </span>
-              <span className="mt-0.5 block text-[13px] font-semibold tabular-nums sm:text-[15px]" style={{ color: on ? "#fff" : "var(--rule-strong)" }}>
+              <span className="mt-0.5 block text-[11.5px] font-semibold tabular-nums sm:text-[15px]" style={{ color: on ? "#fff" : "var(--rule-strong)" }}>
                 $200
               </span>
             </li>
@@ -186,6 +186,23 @@ function CountField({ label, value, set, threshold }: { label: string; value: st
   );
 }
 
+/** the big number of a slider route, what it counts, and whether it meets the threshold */
+function Counter({ value, label, on, needs }: { value: string; label: string; on: boolean; needs: string }) {
+  return (
+    <>
+      <span className="flex items-baseline justify-between gap-2">
+        <span className="text-[30px] font-semibold leading-none tabular-nums" style={{ color: on ? "var(--accent)" : "var(--ink)", transition: "color .25s" }}>
+          {value}
+        </span>
+        <span className="shrink-0 font-mono text-[11px]" style={{ color: on ? "var(--accent)" : "var(--muted)" }}>
+          {on ? "met" : "needs"} {needs}
+        </span>
+      </span>
+      <span className="mt-1.5 block text-[12.5px] leading-snug text-[var(--soft)]">{label}</span>
+    </>
+  );
+}
+
 function Slider({ label, value, set, min, max, step }: { label: string; value: number; set: (v: number) => void; min: number; max: number; step: number }) {
   return (
     <input
@@ -234,7 +251,7 @@ function Checker() {
   };
   return (
     <figure className="os-plate p-4 sm:p-6">
-      <Plate n={2} title="The route checker" sub="pick a route · enter your numbers · a dot lights when the threshold is met" />
+      <Plate n={2} title="The route checker" sub="pick a route · enter your numbers" />
       <div role="tablist" aria-label="The five routes" className="flex flex-wrap gap-1.5">
         {ROUTES.map((r) => {
           const lit = met.includes(r.id);
@@ -294,19 +311,11 @@ function Checker() {
 
         {tab === "active" && (
           <div className="os-card mt-2">
-            <div className="flex items-center gap-4">
-              <div className="grid w-[136px] shrink-0 grid-cols-10 gap-[3px] sm:w-[168px]" role="img" aria-label={`${Math.min(prs, 100)} of 100 squares filled`}>
-                {Array.from({ length: 100 }, (_, i) => (
-                  <span key={i} className="aspect-square rounded-[2px]" style={{ background: i < prs ? (on ? "var(--accent)" : "var(--ink)") : "var(--rule)", transition: "background-color .2s" }} />
-                ))}
-              </div>
-              <div className="min-w-0">
-                <span className="block text-[30px] font-semibold leading-none tabular-nums text-[var(--ink)]">{prs}</span>
-                <span className="mt-1.5 block text-[12.5px] leading-snug text-[var(--soft)]">pull requests merged into repos you don&apos;t own, last 12 months</span>
-                <span className="mt-1.5 block font-mono text-[11px]" style={{ color: on ? "var(--accent)" : "var(--muted)" }}>
-                  {on ? "met" : "needs"} {THRESHOLDS.mergedPrs}+
-                </span>
-              </div>
+            <Counter value={String(prs)} label="pull requests merged into repos you don't own, last 12 months" on={on} needs={`${THRESHOLDS.mergedPrs}+`} />
+            <div className="mx-auto mt-3 grid max-w-[260px] grid-cols-10 gap-[3px] sm:gap-1" role="img" aria-label={`${Math.min(prs, 100)} of 100 squares filled`}>
+              {Array.from({ length: 100 }, (_, i) => (
+                <span key={i} className="aspect-square rounded-[3px]" style={{ background: i < prs ? (on ? "var(--accent)" : "var(--ink)") : "var(--rule)", transition: "background-color .2s" }} />
+              ))}
             </div>
             <Slider label="Merged pull requests in the last 12 months" value={prs} set={setPrs} min={0} max={150} step={1} />
           </div>
@@ -314,19 +323,11 @@ function Checker() {
 
         {tab === "community" && (
           <div className="os-card mt-2">
-            <div className="flex items-center gap-4">
-              <div className="grid w-[150px] shrink-0 grid-cols-10 gap-[5px] sm:w-[190px]" role="img" aria-label={`${Math.min(people, 20)} of 20 contributors`}>
-                {Array.from({ length: 20 }, (_, i) => (
-                  <span key={i} className="aspect-square rounded-full" style={{ background: i < people ? (on ? "var(--accent)" : "var(--ink)") : "var(--rule)", transition: "background-color .2s" }} />
-                ))}
-              </div>
-              <div className="min-w-0">
-                <span className="block text-[30px] font-semibold leading-none tabular-nums text-[var(--ink)]">{people}</span>
-                <span className="mt-1.5 block text-[12.5px] leading-snug text-[var(--soft)]">unique external contributors with merged pull requests on one repo, last 12 months</span>
-                <span className="mt-1.5 block font-mono text-[11px]" style={{ color: on ? "var(--accent)" : "var(--muted)" }}>
-                  {on ? "met" : "needs"} {THRESHOLDS.externalContributors}+
-                </span>
-              </div>
+            <Counter value={String(people)} label="unique external contributors with merged pull requests on one repo, last 12 months" on={on} needs={`${THRESHOLDS.externalContributors}+`} />
+            <div className="mx-auto mt-3 grid max-w-[260px] grid-cols-10 gap-1.5" role="img" aria-label={`${Math.min(people, 20)} of 20 contributors`}>
+              {Array.from({ length: 20 }, (_, i) => (
+                <span key={i} className="aspect-square rounded-full" style={{ background: i < people ? (on ? "var(--accent)" : "var(--ink)") : "var(--rule)", transition: "background-color .2s" }} />
+              ))}
             </div>
             <Slider label="Unique external contributors in the last 12 months" value={people} set={setPeople} min={0} max={40} step={1} />
           </div>
@@ -334,13 +335,7 @@ function Checker() {
 
         {tab === "critical" && (
           <div className="os-card mt-2">
-            <span className="flex items-baseline justify-between gap-2">
-              <span className="text-[12.5px] font-medium text-[var(--ink)]">OpenSSF criticality score of a repo you maintain</span>
-              <span className="shrink-0 font-mono text-[11px]" style={{ color: on ? "var(--accent)" : "var(--muted)" }}>
-                {on ? "met" : "needs"} 0.4+
-              </span>
-            </span>
-            <span className="mt-1 block text-[30px] font-semibold leading-none tabular-nums text-[var(--ink)]">{score.toFixed(2)}</span>
+            <Counter value={score.toFixed(2)} label="OpenSSF criticality score of a repo you maintain" on={on} needs="0.4+" />
             <svg viewBox="0 0 400 34" className="mt-3 w-full" aria-hidden>
               <rect x="0" y="6" width="400" height="8" rx="4" fill="var(--rule)" />
               <rect x="0" y="6" width={400 * score} height="8" rx="4" fill={on ? "var(--accent)" : "var(--ink)"} />
@@ -507,53 +502,59 @@ function Draft() {
 function After() {
   const [before, setBefore] = useState<"paid" | "none">("paid");
   const paid = before === "paid";
-  // drawing: six months from x=16 to x=256, the end at x=256, then a fork to two outcomes
-  const x = (m: number) => 16 + m * 40;
-  const up = paid ? "var(--ink)" : "var(--rule-strong)";
-  const down = paid ? "var(--rule-strong)" : "var(--ink)";
+  // drawing: six months from x=14 to x=242 (38 per month); from the end, one line drops to the outcome card below it
+  const x = (m: number) => 14 + m * 38;
+  const END = x(6);
+  const outcomes = [
+    { id: "paid" as const, label: "Prior paid plan", sub: "resumes at its prior rate" },
+    { id: "none" as const, label: "Free plan", sub: "the account returns to it" },
+  ];
   return (
     <figure className="os-plate p-4 sm:p-6">
       <Plate n={5} title="After the six months" sub="choose what you had before" />
       <Choice
         label="What you had before the program"
         options={[
-          { id: "paid", label: "I had a paid plan" },
-          { id: "none", label: "I had no paid plan" },
+          { id: "paid", label: "Had a paid plan" },
+          { id: "none", label: "No paid plan" },
         ]}
         value={before}
         set={setBefore}
       />
-      <svg viewBox="0 0 420 150" className="mt-3 w-full" role="img" aria-label={paid ? "After month six the prior paid plan resumes" : "After month six the account returns to the free plan"}>
+      <svg viewBox="0 0 280 96" className="mt-3 w-full" role="img" aria-label={paid ? "After month six the prior paid plan resumes" : "After month six the account returns to the free plan"}>
+        <text x={x(0)} y="12" className="os-label">Claude Ultra, complimentary</text>
+        {/* the email before it ends */}
+        <g transform={`translate(${x(5) + 8} 4)`}>
+          <rect x="0" y="0" width="22" height="15" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="1.2" />
+          <polyline points="1,2 11,9 21,2" fill="none" stroke="var(--ink)" strokeWidth="1.2" />
+        </g>
+        <line x1={x(5) + 19} y1="21" x2={x(5) + 19} y2="31" stroke="var(--ink)" strokeWidth="1" strokeDasharray="2 2" />
         {/* the six complimentary months */}
-        <line x1={x(0)} y1="75" x2={x(6)} y2="75" stroke="var(--accent)" strokeWidth="6" strokeLinecap="round" />
+        <line x1={x(0)} y1="38" x2={END} y2="38" stroke="var(--accent)" strokeWidth="6" strokeLinecap="round" />
         {Array.from({ length: 7 }, (_, m) => (
-          <line key={m} x1={x(m)} y1="66" x2={x(m)} y2="84" stroke="var(--ink)" strokeWidth="1.2" />
+          <line key={m} x1={x(m)} y1="30" x2={x(m)} y2="46" stroke="var(--ink)" strokeWidth="1.2" />
         ))}
         {Array.from({ length: 6 }, (_, m) => (
-          <text key={m} x={x(m) + 20} y="100" textAnchor="middle" className="os-label">
+          <text key={m} x={x(m) + 19} y="60" textAnchor="middle" className="os-label">
             M{m + 1}
           </text>
         ))}
-        <text x={x(0)} y="52" className="os-label">Claude Ultra, complimentary</text>
-        {/* the email before it ends */}
-        <g transform={`translate(${x(5) + 8} 30)`}>
-          <rect x="0" y="0" width="24" height="16" rx="3" fill="#fff" stroke="var(--ink)" strokeWidth="1.2" />
-          <polyline points="1,2 12,10 23,2" fill="none" stroke="var(--ink)" strokeWidth="1.2" />
-        </g>
-        <line x1={x(5) + 20} y1="48" x2={x(5) + 20} y2="64" stroke="var(--ink)" strokeWidth="1" strokeDasharray="2 2" />
-        {/* the fork */}
-        <path d={`M${x(6)} 75 C ${x(6) + 30} 75, ${x(6) + 26} 36, ${x(6) + 56} 36`} fill="none" stroke={up} strokeWidth={paid ? 2 : 1.2} style={{ transition: "stroke .3s" }} />
-        <path d={`M${x(6)} 75 C ${x(6) + 30} 75, ${x(6) + 26} 114, ${x(6) + 56} 114`} fill="none" stroke={down} strokeWidth={paid ? 1.2 : 2} style={{ transition: "stroke .3s" }} />
-        <rect x={x(6) + 56} y="22" width="100" height="28" rx="8" fill="#fff" stroke={up} strokeWidth={paid ? 1.6 : 1} style={{ transition: "stroke .3s" }} />
-        <text x={x(6) + 106} y="40" textAnchor="middle" fontSize="11.5" fontFamily="ui-monospace, monospace" fill={paid ? "var(--ink)" : "var(--muted)"}>
-          prior paid plan
-        </text>
-        <rect x={x(6) + 56} y="100" width="100" height="28" rx="8" fill="#fff" stroke={down} strokeWidth={paid ? 1 : 1.6} style={{ transition: "stroke .3s" }} />
-        <text x={x(6) + 106} y="118" textAnchor="middle" fontSize="11.5" fontFamily="ui-monospace, monospace" fill={paid ? "var(--muted)" : "var(--ink)"}>
-          free plan
-        </text>
-        <circle cx={x(6)} cy="75" r="5" fill="var(--ink)" />
+        {/* from the end, down to the outcome: left card or right card */}
+        <path d={`M${END} 38 C ${END + 26} 38, ${END + 26} 74, 210 74 L 210 96`} fill="none" stroke={paid ? "var(--rule-strong)" : "var(--ink)"} strokeWidth={paid ? 1.2 : 2} style={{ transition: "stroke .3s" }} />
+        <path d={`M${END} 38 C ${END + 30} 38, ${END + 30} 82, 200 82 L 90 82 Q 70 82 70 96`} fill="none" stroke={paid ? "var(--ink)" : "var(--rule-strong)"} strokeWidth={paid ? 2 : 1.2} style={{ transition: "stroke .3s" }} />
+        <circle cx={END} cy="38" r="5" fill="var(--ink)" />
       </svg>
+      <div className="grid grid-cols-2 gap-2">
+        {outcomes.map((o) => {
+          const on = before === o.id;
+          return (
+            <div key={o.id} className="os-card" style={{ borderColor: on ? "var(--ink)" : undefined, opacity: on ? 1 : 0.5, transition: "opacity .3s, border-color .3s" }}>
+              <span className="block text-[13.5px] font-semibold leading-snug text-[var(--ink)]">{o.label}</span>
+              <span className="mt-0.5 block text-[12px] leading-snug text-[var(--soft)]">{o.sub}</span>
+            </div>
+          );
+        })}
+      </div>
       <div className="os-card mt-2" aria-live="polite">
         <span className="block font-mono text-[11px] text-[var(--accent)]">AT THE END OF MONTH 6</span>
         <span className="mt-1 block text-[14.5px] font-semibold leading-snug text-[var(--ink)]">
