@@ -14,6 +14,7 @@ import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
 import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
 import type { FableDemoKind } from "@/app/free/fable/FableDemos";
+import type { FounderDemoKind } from "@/app/free/founder/FounderDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
@@ -153,6 +154,8 @@ export type DropChapter = {
   agents?: AgentsDemoKind;
   /** a live figure drawn for /free/61 (src/app/free/fable) */
   fable?: FableDemoKind;
+  /** a live figure drawn for /free/63 (src/app/free/founder) */
+  founder?: FounderDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
 };
@@ -364,7 +367,78 @@ const RP_CAP = "https://github.com/CapSoftware/Cap";
 const FB_POST = "https://www.anthropic.com/claude-fable-and-mythos-5-2";
 const FB_PRICING = "https://platform.claude.com/docs/en/about-claude/pricing";
 
+const FOUNDER_REPO = "https://github.com/Jakeschincariol/founder-skill";
+
 const drops: FreeDrop[] = [
+  {
+    number: 63,
+    slug: "63-founder-skill",
+    title: "The Founder skill: test a business idea on 100 AI buyers",
+    description:
+      "Eleven free Claude skills that test a business before you launch it: a board, a competitor scout, a CFO, a launch plan and a consumer panel of 100 buyer agents. What each one does, how to install it, and how to read the panel's answer.",
+    date: "2026-11-13",
+    keyword: "FOUNDER",
+    kind: "11 free skills",
+    tools: [],
+    icon: "council",
+    about: {
+      intro: [
+        { text: "The Founder skill", href: FOUNDER_REPO },
+        " is a free, MIT-licensed pack of eleven Claude skills by Jake Schincariol. No signup, no API key, nothing to connect. Everything below is from the repo's README and skill files, read on Nov 13, 2026.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What is in it",
+          text: [
+            "Eleven skills, each one a job on a startup team. A board judges the idea with frameworks from $100M Offers (Alex Hormozi), Zero to One (Peter Thiel) and Walter Isaacson's biography of Steve Jobs. One maps your competitors and what their customers complain about. One is your CFO. One plans the launch with a dated countdown. The last one compiles a plan with a verdict computed from your numbers.",
+            "The README is clear about the board: it applies published frameworks, it does not speak as those people, and the project is not affiliated with any of them.",
+          ],
+          founder: "eleven",
+        },
+        {
+          title: "Install it",
+          text: ["Paste the repo link into Claude and say install skill:"],
+          commands: [FOUNDER_REPO, "install skill"],
+        },
+        {
+          title: "Or as a plugin in Claude Code",
+          text: ["Installed this way the skills show up as /founder-skill:founder-board and so on. The tools need Python 3.8 or newer, with nothing to pip install."],
+          commands: ["/plugin marketplace add Jakeschincariol/founder-skill", "/plugin install founder-skill@founder-skill"],
+        },
+        {
+          title: "The consumer panel",
+          text: [
+            "You describe the business and who it is for. The skill writes a customer profile, deals 100 buyer cards across income, habits and objections, and runs one sub-agent per buyer. Every buyer sees the same pitch, word for word. Back comes who buys, who passes, the reasons in their own words, and what would flip a no.",
+            "A full run is 100 sub-agent calls, in 10 waves of 10. For a first look, run it with --quick, which uses 20 buyers:",
+          ],
+          commands: ["/founder-consumer --quick"],
+          founder: "panel",
+        },
+        {
+          title: "The CFO",
+          text: [
+            "The CFO runs the unit economics from one file of your numbers: what each sale leaves after its own costs, the real profit margin, break-even per day, year 1 month by month, the cash you need and when it pays back. A missing number is an error, never a guess.",
+            "The README's worked example is a matcha café in Toronto selling iced matcha lattes at $6.50 a cup:",
+          ],
+          founder: "cfo",
+        },
+        {
+          title: "Read the panel as the best case",
+          text: [
+            "These are simulated buyers. They are good at surfacing objections and wording you had not thought of, and bad at predicting real conversion: language models lean agreeable, so the README says to read the buy rate as an upper bound.",
+            "Use it to find the doubts before you spend money, then confirm the big calls with real people: a waitlist, a pre-sale, a landing page with a price. The launch skill starts with exactly that test. Panel answers are research, so do not use them as testimonials.",
+          ],
+        },
+      ],
+      notes: [
+        "Checked on Nov 13, 2026: the repo is MIT-licensed and had about 3.5K stars.",
+        "The figures are drawn for this page. The panel figure shows the procedure and draws no buy rate; the break-even figure recomputes the README's own example.",
+        "Not financial, legal or tax advice. The skills tell you what to check; a professional confirms it.",
+        ["Source: ", { text: "Jakeschincariol/founder-skill on GitHub", href: FOUNDER_REPO }],
+      ],
+    },
+  },
   {
     number: 61,
     slug: "61-claude-fable-5-2",
