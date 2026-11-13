@@ -35,6 +35,7 @@ import { FreeLlmApiDemo } from "@/app/free/freellmapi/FreeLlmApiDemos";
 import { AgentsDemo } from "@/app/free/agents/AgentsDemos";
 import { FableDemo } from "@/app/free/fable/FableDemos";
 import { TeardownDemo } from "@/app/free/teardown/TeardownDemos";
+import { FounderDemo } from "@/app/free/founder/FounderDemos";
 import { ReposDemo } from "@/app/free/repos/ReposDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
@@ -322,6 +323,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.agents ? <AgentsDemo kind={chapter.agents} /> : null}
                   {chapter.fable ? <FableDemo kind={chapter.fable} /> : null}
                   {chapter.teardown ? <TeardownDemo kind={chapter.teardown} /> : null}
+                  {chapter.founder ? <FounderDemo kind={chapter.founder} /> : null}
                   {chapter.repos ? <ReposDemo kind={chapter.repos} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
