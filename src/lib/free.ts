@@ -16,6 +16,7 @@ import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
 import type { FableDemoKind } from "@/app/free/fable/FableDemos";
 import type { TeardownDemoKind } from "@/app/free/teardown/TeardownDemos";
 import type { FounderDemoKind } from "@/app/free/founder/FounderDemos";
+import type { McpDemoKind } from "@/app/free/mcp/McpDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
@@ -159,6 +160,8 @@ export type DropChapter = {
   teardown?: TeardownDemoKind;
   /** a live figure drawn for /free/63 (src/app/free/founder) */
   founder?: FounderDemoKind;
+  /** a live figure drawn for /free/62 (src/app/free/mcp) */
+  mcp?: McpDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
 };
@@ -375,7 +378,91 @@ const FOUNDER_REPO = "https://github.com/Jakeschincariol/founder-skill";
 const TD_REPO = "https://github.com/elvarofficial/teardown";
 const TD_ARTICLE = "https://x.com/elvar_official/status/2116174609355571402";
 
+const MCP_SPEC_TOOLS = "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/docs/specification/2026-07-28/server/tools.mdx";
+const MCP_REPO = "https://github.com/modelcontextprotocol/modelcontextprotocol";
+const SLACK_HISTORY = "https://docs.slack.dev/reference/methods/conversations.history";
+
 const drops: FreeDrop[] = [
+  {
+    number: 62,
+    slug: "62-mcp-vs-api",
+    title: "MCP vs API: the whole map on one page",
+    description:
+      "Why do we need MCP when we already have APIs? One page: what an API call is, why two apps and ten services become twenty integrations, what an MCP client and an MCP server are, how discovery works, and why MCP does not replace your API. With a figure you can change yourself.",
+    date: "2026-11-13",
+    keyword: "MCP",
+    kind: "one-page map",
+    tools: [],
+    icon: "plug",
+    about: {
+      intro: [
+        "MCP (",
+        { text: "Model Context Protocol", href: MCP_REPO },
+        ") is an open protocol that lets an AI app reach outside tools in one standard way. It does not replace APIs. It sits in front of them. This page is the reel as a map you can keep, with the two method names checked against the specification on Nov 13, 2026.",
+      ],
+      chaptersLabel: "The map",
+      chapters: [
+        {
+          title: "What an API is",
+          text: [
+            "An API is how two programs talk to each other. Say your program needs to read messages from Slack. Slack exposes an endpoint, which is just a URL. Your program sends a request to that URL, and Slack sends back a response with the data.",
+          ],
+          mcp: "request",
+        },
+        {
+          title: "Why it becomes 20 integrations",
+          text: [
+            "A real app rarely talks to one service. It might talk to ten: Slack for alerts, Gmail for email, Jira for tickets, Notion for documents, your own database, and five more. For each one you write the same kind of code again: the authentication, the calls, the error handling, the retries.",
+            "Adding an LLM does not change this. The model does not make the API call itself. It tells your application which action it wants, and your application, normal software outside the model, performs it. So you still wrote all ten integrations by hand.",
+            "Then your team builds a second app that needs the same ten services. Two apps times ten services is twenty piles of integration code to write and maintain. Try other numbers below.",
+          ],
+          mcp: "wiring",
+        },
+        {
+          title: "MCP client and MCP server",
+          bullets: [
+            "Each app gets one standard piece called an MCP client.",
+            "Each service gets a small program next to it called an MCP server.",
+            "Clients and servers speak one common protocol, so any client can talk to any server.",
+            "Two apps and ten services is 2 + 10 = 12 pieces, not 20. A third app reuses the same ten servers and adds one client. (Switch the figure above to \u201cWith MCP\u201d to see it.)",
+          ],
+        },
+        {
+          title: "Discovery: the part people get wrong",
+          text: [
+            [
+              "The client does not need a hard-coded list of what each service can do. It connects to each server and asks. In the specification this request is called ",
+              { code: "tools/list" },
+              ". The app then shows that list to the model, the model chooses which tool fits the task, and the app sends a ",
+              { code: "tools/call" },
+              " to the right server.",
+            ],
+            "The model can only choose from the tools your application lets it see. You hand it a labeled toolbox and let it pick; you decide what goes in the box.",
+          ],
+          mcp: "discovery",
+        },
+        {
+          title: "MCP does not replace APIs",
+          text: [
+            "The Slack MCP server is the only piece that actually talks to Slack, and it does that by calling Slack's normal API, the same one that existed all along.",
+            "If your system already has an API, an MCP server sits in front of it as a translator, and your API stays exactly where it is. MCP is a common, AI-facing layer on top of APIs.",
+          ],
+        },
+      ],
+      notes: [
+        "The 20 and the 12 are a simplified count from the reel's example (2 apps, 10 services). Someone still has to write each MCP server once.",
+        "The three figures are drawn for this page. The tool names in the discovery figure are made-up examples; the method names tools/list and tools/call are from the specification.",
+        [
+          "Sources: ",
+          { text: "MCP specification, server/tools", href: MCP_SPEC_TOOLS },
+          " · ",
+          { text: "Model Context Protocol on GitHub", href: MCP_REPO },
+          " · ",
+          { text: "Slack developer docs, conversations.history", href: SLACK_HISTORY },
+        ],
+      ],
+    },
+  },
   {
     number: 64,
     slug: "64-teardown",
