@@ -37,6 +37,7 @@ import { FableDemo } from "@/app/free/fable/FableDemos";
 import { TeardownDemo } from "@/app/free/teardown/TeardownDemos";
 import { FounderDemo } from "@/app/free/founder/FounderDemos";
 import { McpDemo } from "@/app/free/mcp/McpDemos";
+import { OssDemo } from "@/app/free/oss/OssDemos";
 import { ReposDemo } from "@/app/free/repos/ReposDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
@@ -151,7 +152,7 @@ export function ToolRow({ tool, index }: { tool: FreeTool; index: number }) {
   const buttonInner = (
     <>
       {onGitHub ? <IconBrandGithub className="size-4" /> : null}
-      {onGitHub ? "Open on GitHub" : "Open the site"}
+      {tool.cta ?? (onGitHub ? "Open on GitHub" : "Open the site")}
       <IconArrowUpRight className="size-4 text-neutral-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
     </>
   );
@@ -326,6 +327,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.teardown ? <TeardownDemo kind={chapter.teardown} /> : null}
                   {chapter.founder ? <FounderDemo kind={chapter.founder} /> : null}
                   {chapter.mcp ? <McpDemo kind={chapter.mcp} /> : null}
+                  {chapter.oss ? <OssDemo kind={chapter.oss} /> : null}
                   {chapter.repos ? <ReposDemo kind={chapter.repos} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
