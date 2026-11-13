@@ -13,6 +13,7 @@ import type { LiftersDemoKind } from "@/app/free/lifters/LiftersDemos";
 import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
 import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
+import type { FableDemoKind } from "@/app/free/fable/FableDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
@@ -150,6 +151,8 @@ export type DropChapter = {
   freellmapi?: FreeLlmApiDemoKind;
   /** a live figure drawn for /free/59 (src/app/free/agents) */
   agents?: AgentsDemoKind;
+  /** a live figure drawn for /free/61 (src/app/free/fable) */
+  fable?: FableDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
 };
@@ -358,7 +361,98 @@ const RP_CALDIY = "https://github.com/calcom/cal.diy";
 const RP_CHATWOOT = "https://github.com/chatwoot/chatwoot";
 const RP_CAP = "https://github.com/CapSoftware/Cap";
 
+const FB_POST = "https://www.anthropic.com/claude-fable-and-mythos-5-2";
+const FB_PRICING = "https://platform.claude.com/docs/en/about-claude/pricing";
+
 const drops: FreeDrop[] = [
+  {
+    number: 61,
+    slug: "61-claude-fable-5-2",
+    title: "Claude Fable 5.2: the cheat sheet",
+    description:
+      "Anthropic released Claude Fable 5.2 on Nov 9, 2026. The numbers on one page: how it scores against GPT-6 Astra and Gemini 4 Carbon, how much faster it is, what it costs next to Fable 5.1, how to switch to it, and three prompts to try first.",
+    date: "2026-11-13",
+    keyword: "FABLE",
+    kind: "cheat sheet",
+    tools: [],
+    icon: "brain",
+    about: {
+      intro: [
+        "Anthropic ",
+        { text: "released Claude Fable 5.2 on Nov 9, 2026", href: FB_POST },
+        ", together with Claude Mythos 5.2 (the same underlying model, for approved organizations only). Everything below is from Anthropic's announcement and its pricing docs, read on Nov 13, 2026.",
+      ],
+      chaptersLabel: "The cheat sheet",
+      chapters: [
+        {
+          title: "Benchmarks: where it stands",
+          text: [
+            "On FrontierCode 2.0, Anthropic's agentic coding test, Fable 5.2 scores 49.1% at Xhigh effort. Anthropic calls that the highest score of any released model it has tested: Opus 5.5 is at 45.5%, GPT-6 Astra at 42.8%, Gemini 4 Carbon at 41.1%, and Fable 5.1 at 32.4%.",
+            "The biggest jump is in robotics. On RoboDojo Sim, Fable 5.2 scores 64.9% at Max effort, more than double GPT-6 Astra (29.8%) and Fable 5.1 (27.6%). These are Anthropic's own evaluations, so treat them as the maker's numbers until others repeat them.",
+          ],
+          fable: "bench",
+        },
+        {
+          title: "Speed and effort",
+          text: [
+            "Anthropic says Fable 5.2 generates outputs up to 30% faster than Fable 5.1. There is also an optional fast mode that speeds up token generation by up to 2.5 times, at a higher price ($16 input / $80 output per million tokens).",
+            "Effort is the dial that trades time for quality. Medium is the default in the Claude apps and Claude Code. The launch scores were measured higher up: Xhigh for FrontierCode 2.0, Max for RoboDojo Sim. If a task matters, raise the effort before you rewrite the prompt.",
+            "For long jobs, Anthropic's description is that it works until the job is actually complete instead of stopping at a plausible checkpoint. One customer quoted in the announcement ran a 10 to 12 hour security audit with it.",
+          ],
+          fable: "speed",
+        },
+        {
+          title: "Price: 20% lower than Fable 5.1",
+          text: [
+            [
+              "On the API, Fable 5.2 costs $8 per million input tokens and $40 per million output tokens. Fable 5.1 was $10 and $50, so the same work costs 20% less (",
+              { text: "pricing docs", href: FB_PRICING },
+              ").",
+            ],
+            "In the Claude apps, Fable is on the paid plans. Limits and terms differ by plan and Anthropic's pages describe them differently, so check your own plan before you count on it.",
+          ],
+          fable: "price",
+        },
+        {
+          title: "How to switch to it",
+          text: [
+            "In the Claude apps, pick Fable 5.2 in the model menu. In Claude Code, choose it with /model. On the API, change the model id:",
+          ],
+          commands: ["claude-fable-5-2"],
+        },
+        {
+          title: "Three prompts to try first",
+          text: [
+            "The outputs people shared in launch week came from short prompts that say what to build and how good it has to be, and then leave the method to the model. Three to start from (they are mine, written for this page):",
+          ],
+          code: [
+            {
+              label: "A film from one prompt",
+              body: "Make a 60-second animated short film about a single dot that wants to reach the sun.\nWrite the code yourself, no stock footage, no external assets.\nAdd original music and sound. Render it and give me the file.\nDo not stop at a draft: watch your own render and fix what looks wrong before you finish.",
+            },
+            {
+              label: "A playable game",
+              body: "Build me a small first-person game I can play in the browser, one tiny level.\nEverything from scratch: models, sounds, textures.\nKeep the scope small and make that one level look as good as you can.\nPlay-test it yourself and fix what breaks before you hand it over.",
+            },
+            {
+              label: "A long job on a real codebase",
+              body: "Read this repository and find the three changes that would most reduce bugs.\nPlan them, make them one at a time, and run the tests after each one.\nIf a test fails, fix the cause, not the test.\nWhen you are done, give me a short report: what changed, what you verified, what you did not.",
+            },
+          ],
+        },
+      ],
+      notes: [
+        "Scores, speed and prices as of Nov 13, 2026, from Anthropic's own pages. The benchmark numbers are Anthropic's evaluations.",
+        "The figures are drawn for this page. The token amounts in the price figure are yours to set; the race in the speed figure draws Anthropic's \"up to\" numbers and is not a measurement.",
+        [
+          "Sources: ",
+          { text: "Anthropic, Introducing Claude Fable 5.2 and Claude Mythos 5.2", href: FB_POST },
+          " · ",
+          { text: "Claude Platform pricing", href: FB_PRICING },
+        ],
+      ],
+    },
+  },
   {
     number: 60,
     slug: "60-nine-free-github-repos",
