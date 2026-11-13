@@ -91,11 +91,23 @@ export function routesMet(i: Inputs): RouteId[] {
 
 const MAX_COUNT = 999_999_999_999;
 
-/** A typed count ("200,000", " 1 200 ", "12.9") as a whole number; anything else is 0. */
+/**
+ * A typed count as a whole number: "200,000", "200.000", "200'000", " 1 200 ", "５００", "200k", "1.5M", "500+", "12.9".
+ * Anything it cannot read for certain ("1,5", "abc", "-5") is 0, so a typo never lights a route.
+ */
 export function toCount(raw: string): number {
-  const text = raw.replace(/[,\s]/g, "");
+  // NFKC turns full-width digits and odd spaces into plain ones; a leading "~" and a trailing "+" carry no number
+  let text = raw.normalize("NFKC").replace(/\s/g, "").replace(/^~/, "").replace(/\+$/, "");
+  let scale = 1;
+  const suffix = /^(\d+(?:\.\d+)?)([km])$/i.exec(text);
+  if (suffix) {
+    text = suffix[1];
+    scale = suffix[2].toLowerCase() === "k" ? 1_000 : 1_000_000;
+  } else if (/^\d{1,3}([,.'_]\d{3})+$/.test(text)) {
+    text = text.replace(/[,.'_]/g, ""); // thousands separators
+  }
   if (!/^\d+(\.\d+)?$/.test(text)) return 0;
-  return Math.min(MAX_COUNT, Math.floor(Number(text)));
+  return Math.min(MAX_COUNT, Math.floor(Number(text) * scale));
 }
 
 export function countWords(text: string): number {

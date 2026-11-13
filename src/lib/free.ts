@@ -412,7 +412,7 @@ const drops: FreeDrop[] = [
     ],
     about: {
       intro: [
-        "Claude for Open Source is Anthropic's program for open-source maintainers and contributors. If you fit one of five routes you can apply for six months of Claude Ultra, the $200-a-month plan, at no cost. ",
+        "Claude for Open Source is Anthropic's program for open-source maintainers and contributors. The official page lists five routes to apply for six months of Claude Ultra, the $200-a-month plan, at no cost. ",
         { text: "Apply on claude.com", href: OSS_APPLY },
         " · ",
         { text: "program terms", href: OSS_TERMS },
@@ -423,14 +423,14 @@ const drops: FreeDrop[] = [
         {
           title: "What you get",
           text: [
-            "Six months of Claude Ultra. Ultra is $200 per month on the pricing page, so that is $1,200 of plan value. It is not automatic: you apply, and Anthropic reviews the application.",
+            "Six months of Claude Ultra. Ultra is $200 per month on the pricing page, so that is $1,200 of plan value. It is not automatic: you apply, and applications are reviewed on a rolling basis.",
           ],
           oss: "value",
         },
         {
           title: "Which route fits you (the 30-second check)",
           text: [
-            "There are five routes, and one is enough. Pick a route below and enter your own numbers. Its dot lights up as soon as you meet the published threshold.",
+            "The official page lists five routes. Pick the one that fits you below and enter your own numbers. Its dot lights up as soon as you meet the published threshold.",
             "The check only compares your numbers with the official page. It cannot tell you whether you will be approved.",
           ],
           oss: "checker",

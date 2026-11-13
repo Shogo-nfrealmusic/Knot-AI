@@ -6,8 +6,8 @@
 // (anthropic.com/claude-for-oss-terms), read on 2026-11-14. The checker only compares what the visitor enters with the
 // published thresholds (qualify.ts). It never says "approved", and nothing typed here leaves the page.
 
-import { useEffect, useRef, useState } from "react";
-import { useInView, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useInView } from "motion/react";
 import { EMPTY, FALLBACK, ROUTES, THRESHOLDS, countWords, routesMet, toCount, type Inputs, type RouteId } from "./qualify";
 
 export type OssDemoKind = "value" | "checker" | "ready" | "draft" | "after";
@@ -84,11 +84,25 @@ function Choice<T extends string>({ label, options, value, set }: { label: strin
 
 // ───────── 1 · what you get: six months of the $200 plan, one tile per month ─────────
 const MONTHS = 6;
+const REDUCE_QUERY = "(prefers-reduced-motion: reduce)";
+
+/** The visitor's reduced-motion setting. False on the server and during hydration, so the first client render matches the server's HTML. */
+function useReducedMotionSafe() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(REDUCE_QUERY);
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(REDUCE_QUERY).matches,
+    () => false,
+  );
+}
 
 function Value() {
   const ref = useRef<HTMLElement>(null);
-  const visible = useInView(ref, { amount: 0.4 });
-  const reduce = useReducedMotion();
+  const visible = useInView(ref, { amount: 0.4, once: true });
+  const reduce = useReducedMotionSafe();
   const [run, setRun] = useState(0);
   const [lit, setLit] = useState(0);
   useEffect(() => {
@@ -135,7 +149,7 @@ function Value() {
         <button
           type="button"
           className={BTN}
-          disabled={!!reduce}
+          disabled={reduce}
           onClick={() => {
             setLit(0);
             setRun((v) => v + 1);
@@ -161,12 +175,13 @@ function Value() {
 function CountField({ label, value, set, threshold }: { label: string; value: string; set: (v: string) => void; threshold: number }) {
   const n = toCount(value);
   const ok = n >= threshold;
+  const unread = n === 0 && value.trim() !== "" && !/^[0\s]+$/.test(value); // typed something the check cannot read as a count
   return (
     <label className="os-card block">
       <span className="flex items-baseline justify-between gap-2">
         <span className="text-[12.5px] font-medium text-[var(--ink)]">{label}</span>
         <span className="shrink-0 font-mono text-[11px]" style={{ color: ok ? "var(--accent)" : "var(--muted)" }}>
-          {ok ? "met" : "needs"} {threshold.toLocaleString("en-US")}+
+          {unread ? "numbers only" : `${ok ? "met" : "needs"} ${threshold.toLocaleString("en-US")}+`}
         </span>
       </span>
       <input
@@ -336,13 +351,13 @@ function Checker() {
         {tab === "critical" && (
           <div className="os-card mt-2">
             <Counter value={score.toFixed(2)} label="OpenSSF criticality score of a repo you maintain" on={on} needs="0.4+" />
-            <svg viewBox="0 0 400 34" className="mt-3 w-full" aria-hidden>
-              <rect x="0" y="6" width="400" height="8" rx="4" fill="var(--rule)" />
-              <rect x="0" y="6" width={400 * score} height="8" rx="4" fill={on ? "var(--accent)" : "var(--ink)"} />
-              <line x1={400 * THRESHOLDS.openssfScore} y1="0" x2={400 * THRESHOLDS.openssfScore} y2="20" stroke="var(--ink)" strokeWidth="1.5" strokeDasharray="3 2" />
-              <text x="0" y="31" className="os-label">0</text>
-              <text x={400 * THRESHOLDS.openssfScore} y="31" textAnchor="middle" className="os-label">0.4</text>
-              <text x="400" y="31" textAnchor="end" className="os-label">1</text>
+            <svg viewBox="0 0 250 36" className="mt-3 w-full" aria-hidden>
+              <rect x="0" y="6" width="250" height="8" rx="4" fill="var(--rule)" />
+              <rect x="0" y="6" width={250 * score} height="8" rx="4" fill={on ? "var(--accent)" : "var(--ink)"} />
+              <line x1={250 * THRESHOLDS.openssfScore} y1="0" x2={250 * THRESHOLDS.openssfScore} y2="20" stroke="var(--ink)" strokeWidth="1.5" strokeDasharray="3 2" />
+              <text x="0" y="33" className="os-label">0</text>
+              <text x={250 * THRESHOLDS.openssfScore} y="33" textAnchor="middle" className="os-label">0.4</text>
+              <text x="250" y="33" textAnchor="end" className="os-label">1</text>
             </svg>
             <Slider label="OpenSSF criticality score" value={score} set={setScore} min={0} max={1} step={0.01} />
           </div>
@@ -357,7 +372,7 @@ function Checker() {
               You meet the published threshold for {met.map((id) => ROUTES.find((r) => r.id === id)!.name).join(", ")}.
             </span>
             <span className="mt-1.5 block text-[13px] leading-relaxed text-[var(--soft)]">
-              That is all this check can tell you. Anthropic reviews every application, and the terms say &ldquo;meeting or exceeding any threshold does not guarantee acceptance&rdquo;.
+              That is all this check can tell you. Applications are reviewed on a rolling basis, and the terms say &ldquo;meeting or exceeding any threshold does not guarantee acceptance&rdquo;.
             </span>
           </>
         ) : (
@@ -379,7 +394,7 @@ function Checker() {
         </span>
       </div>
       <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">
-        Nothing you enter leaves this page. The check compares your numbers with the thresholds on the official page, and that is all it does. One route is enough to apply.
+        Nothing you enter leaves this page. The check compares your numbers with the thresholds on the official page, and that is all it does.
       </figcaption>
       <Sources links={[{ text: "claude.com, Claude for Open Source", href: APPLY }]} />
     </figure>
@@ -390,7 +405,7 @@ function Checker() {
 const CONDITIONS = [
   "I am 18 or older (or the age of majority where I live)",
   "My GitHub account is in good standing and at least two years old",
-  "I have public open-source activity within the last 90 days",
+  "I have public open-source activity within the 90 days before applying",
   "At least one of my projects is under an OSI-approved license",
   "I am applying for myself, as an individual (one active subscription per person)",
 ];

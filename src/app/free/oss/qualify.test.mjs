@@ -87,6 +87,33 @@ test("toCount turns empty, negative and non-numeric text into 0", () => {
   assert.equal(toCount("1e9"), 0);
 });
 
+test("toCount reads thousands written with dots, apostrophes, underscores or odd spaces", () => {
+  assert.equal(toCount("200.000"), 200_000);
+  assert.equal(toCount("1.200.000"), 1_200_000);
+  assert.equal(toCount("200'000"), 200_000);
+  assert.equal(toCount("200_000"), 200_000);
+  assert.equal(toCount("200 000"), 200_000);
+  assert.equal(toCount("0500"), 500);
+});
+
+test("toCount reads full-width digits and the k / M shorthand", () => {
+  assert.equal(toCount("５００"), 500);
+  assert.equal(toCount("200k"), 200_000);
+  assert.equal(toCount("1.5M"), 1_500_000);
+  assert.equal(toCount("500+"), 500);
+  assert.equal(toCount("~500"), 500);
+});
+
+test("toCount gives 0 for an ambiguous number rather than guess high", () => {
+  assert.equal(toCount("1,5"), 0);
+  assert.equal(toCount("12,34"), 0);
+});
+
+test("routesMet ignores negative numbers and treats a score just under 0.4 as not met", () => {
+  assert.deepEqual(met({ dependentRepos: -500, mergedPrs: -100, openssfScore: 0.7 - 0.3 }), []);
+  assert.deepEqual(met({ openssfScore: Number("0.40") }), ["critical"]);
+});
+
 test("toCount caps absurd numbers so the page never prints Infinity", () => {
   assert.equal(toCount("9".repeat(40)), 999_999_999_999);
 });
