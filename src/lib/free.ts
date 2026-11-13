@@ -17,6 +17,7 @@ import type { FableDemoKind } from "@/app/free/fable/FableDemos";
 import type { TeardownDemoKind } from "@/app/free/teardown/TeardownDemos";
 import type { FounderDemoKind } from "@/app/free/founder/FounderDemos";
 import type { McpDemoKind } from "@/app/free/mcp/McpDemos";
+import type { OssDemoKind } from "@/app/free/oss/OssDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
@@ -47,6 +48,8 @@ export type FreeTool = {
   install?: string[];
   /** one short caveat shown under the install lines */
   note?: string;
+  /** replaces the button label "Open the site" / "Open on GitHub" (e.g. "Apply on claude.com") */
+  cta?: string;
 };
 
 export type FreeDrop = {
@@ -162,6 +165,8 @@ export type DropChapter = {
   founder?: FounderDemoKind;
   /** a live figure drawn for /free/62 (src/app/free/mcp) */
   mcp?: McpDemoKind;
+  /** a live figure drawn for /free/65 (src/app/free/oss) */
+  oss?: OssDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
 };
@@ -382,7 +387,92 @@ const MCP_SPEC_TOOLS = "https://github.com/modelcontextprotocol/modelcontextprot
 const MCP_REPO = "https://github.com/modelcontextprotocol/modelcontextprotocol";
 const SLACK_HISTORY = "https://docs.slack.dev/reference/methods/conversations.history";
 
+const OSS_APPLY = "https://claude.com/contact-sales/claude-for-oss";
+const OSS_TERMS = "https://www.anthropic.com/claude-for-oss-terms";
+const OSS_PRICING = "https://claude.com/pricing";
+
 const drops: FreeDrop[] = [
+  {
+    number: 65,
+    slug: "65-claude-oss",
+    title: "Claude for Open Source: 6 months of Claude Ultra, and which route fits you",
+    description:
+      "Open-source maintainers and contributors can apply to Anthropic for 6 months of Claude Ultra at no cost. The link to apply, a 30-second check to see which of the five routes you qualify under, what the application asks, and what happens after the six months.",
+    date: "2026-11-14",
+    keyword: "CLAUDE",
+    kind: "route checker",
+    tools: [
+      {
+        name: "Claude for Open Source",
+        what: "Anthropic's program for open-source maintainers and contributors: 6 months of Claude Ultra. You apply on the official page with your GitHub account.",
+        href: OSS_APPLY,
+        icon: "review",
+        cta: "Apply on claude.com",
+      },
+    ],
+    about: {
+      intro: [
+        "Claude for Open Source is Anthropic's program for open-source maintainers and contributors. The official page lists five routes to apply for six months of Claude Ultra, the $200-a-month plan, at no cost. ",
+        { text: "Apply on claude.com", href: OSS_APPLY },
+        " · ",
+        { text: "program terms", href: OSS_TERMS },
+        ". Read from claude.com and the program terms on 2026-11-14. Check the official page for changes. This page is not affiliated with Anthropic.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What you get",
+          text: [
+            "Six months of Claude Ultra. Ultra is $200 per month on the pricing page, so that is $1,200 of plan value. It is not automatic: you apply, and applications are reviewed on a rolling basis.",
+          ],
+          oss: "value",
+        },
+        {
+          title: "Which route fits you (the 30-second check)",
+          text: [
+            "The official page lists five routes. Pick the one that fits you below and enter your own numbers. Its dot lights up as soon as you meet the published threshold.",
+            "The check only compares your numbers with the official page. It cannot tell you whether you will be approved.",
+          ],
+          oss: "checker",
+        },
+        {
+          title: "Before you apply",
+          text: ["The program terms add five conditions about you and your account, whichever route you use. Tick them off in the figure. Three more things to know first:"],
+          bullets: [
+            "The program is limited to 10,000 approved recipients. Anthropic may raise the cap.",
+            "Applications are reviewed on a rolling basis.",
+            "In the terms' own words: “meeting or exceeding any threshold does not guarantee acceptance”.",
+          ],
+          oss: "ready",
+        },
+        {
+          title: "What the application asks",
+          text: [
+            "Four things: a GitHub sign-in, an email address, a brief description of how you plan to use the subscription, and a brief explanation of why you qualify, in no more than 500 words. Draft the last one below so it is ready to paste.",
+          ],
+          oss: "draft",
+        },
+        {
+          title: "After the six months",
+          text: ["The complimentary subscription ends and does not renew automatically, and Anthropic emails you before it ends. What your account goes back to depends on what you had before:"],
+          oss: "after",
+        },
+      ],
+      notes: [
+        "Read from claude.com and the program terms on 2026-11-14. Check the official page for changes.",
+        "This page is not affiliated with Anthropic. The five figures are drawn for this page; the thresholds and the quoted lines are the official wording.",
+        "The route checker and the draft box run in your browser. Nothing you enter is sent or saved.",
+        [
+          "Sources: ",
+          { text: "Claude for Open Source on claude.com", href: OSS_APPLY },
+          " · ",
+          { text: "Claude for Open Source program terms", href: OSS_TERMS },
+          " · ",
+          { text: "claude.com/pricing", href: OSS_PRICING },
+        ],
+      ],
+    },
+  },
   {
     number: 62,
     slug: "62-mcp-vs-api",
