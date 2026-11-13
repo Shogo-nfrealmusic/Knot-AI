@@ -14,6 +14,7 @@ import type { FiveSkillsDemoKind } from "@/app/free/fiveskills/FiveSkillsDemos";
 import type { FreeLlmApiDemoKind } from "@/app/free/freellmapi/FreeLlmApiDemos";
 import type { AgentsDemoKind } from "@/app/free/agents/AgentsDemos";
 import type { FableDemoKind } from "@/app/free/fable/FableDemos";
+import type { TeardownDemoKind } from "@/app/free/teardown/TeardownDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 
 export type ToolIcon =
@@ -153,6 +154,8 @@ export type DropChapter = {
   agents?: AgentsDemoKind;
   /** a live figure drawn for /free/61 (src/app/free/fable) */
   fable?: FableDemoKind;
+  /** a live figure drawn for /free/64 (src/app/free/teardown) */
+  teardown?: TeardownDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
 };
@@ -364,7 +367,114 @@ const RP_CAP = "https://github.com/CapSoftware/Cap";
 const FB_POST = "https://www.anthropic.com/claude-fable-and-mythos-5-2";
 const FB_PRICING = "https://platform.claude.com/docs/en/about-claude/pricing";
 
+const TD_REPO = "https://github.com/elvarofficial/teardown";
+const TD_ARTICLE = "https://x.com/elvar_official/status/2116174609355571402";
+
 const drops: FreeDrop[] = [
+  {
+    number: 64,
+    slug: "64-teardown",
+    title: "teardown: 9 prompts for 3D machines you can take apart",
+    description:
+      "teardown is a free Claude Code skill that builds any machine as a 3D simulator you can orbit, cut open and take apart. The one-line install, the one thing most people miss (give it one real picture), and nine prompts to paste.",
+    date: "2026-11-13",
+    keyword: "TEARDOWN",
+    kind: "9 prompts",
+    tools: [],
+    icon: "cube",
+    about: {
+      intro: [
+        { text: "teardown", href: TD_REPO },
+        " is a free, MIT-licensed Claude Code skill by Elvar (@elvar_official). You ask how a machine works and Claude builds it as one offline HTML page: the machine runs in the middle, the panels around it read the real numbers, and a button opens the part doing the work. Everything below is from the skill's README and ",
+        { text: "the author's own write-up", href: TD_ARTICLE },
+        ", read on Nov 13, 2026.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "Install it (one command)",
+          text: [
+            "You need Claude Code and Node.js 20 or newer. Add the skill, then run the setup once in the installed folder. After that, open Claude Code and type /teardown, or just ask in plain words.",
+            "ffmpeg and Python 3 are only needed if you also want the recorded video and its sound.",
+          ],
+          commands: ["npx skills add elvarofficial/teardown -g -a claude-code", "cd ~/.claude/skills/teardown && npm install && npx playwright install chromium"],
+        },
+        {
+          title: "Why the gauges move with the machine",
+          text: [
+            "The skill makes Claude write the machine as a model first: one input (a crank angle, a stroke from 0 to 1) and pure functions that give the pose of every part and every number on screen. The parts, the panels and the labels all read that one model. Drag the angle below and watch three things follow one number.",
+          ],
+          teardown: "crank",
+        },
+        {
+          title: "The thing most people miss: one real picture",
+          text: [
+            "The author asked for a pangolin, an armadillo and a scorpion with nothing to work from, and all three came out as generic toys. Then he gave the same model one clip of a real V8 simulator and it rebuilt the engine panel by panel.",
+            "So before you prompt: pick a machine with one moving input and real numbers, and find one picture of it. A cutaway from a manual, a photo, a patent drawing or a short clip all work. Attach it, and ask for the numbers to be checked by hand. The figure below is the check from his landing-gear example.",
+          ],
+          teardown: "rack",
+        },
+        {
+          title: "The 9 prompts",
+          text: [
+            "The first three are the examples from the skill's README, word for word. The other six are the machines in the reel; I wrote those prompts for this page in the shape the skill asks for (a reference, real parts, one input, real numbers). Swap everything in [brackets]. I have not run all nine myself, so treat the six as starting points.",
+            [
+              "The author's write-up has his own step-by-step prompts for the console, the look, the review, the video and publishing. Read them there: ",
+              { text: "How I Turn Any Machine Into a 3D Simulator You Can Take Apart", href: TD_ARTICLE },
+              ".",
+            ],
+          ],
+          code: [
+            { label: "1 · Motorcycle engine (README)", body: "Build me a simulator of a 4-stroke motorcycle engine I can take apart." },
+            { label: "2 · Mechanical watch (README)", body: "How does a mechanical watch keep time? Show me as a simulator." },
+            { label: "3 · Excavator arm, with a video (README)", body: "Make a teardown of a hydraulic excavator arm and record a 20-second video of it." },
+            {
+              label: "4 · V8 engine",
+              body: "/teardown Build a cross-plane V8 four-stroke engine as an interactive 3D simulator. Reference attached: [a cutaway drawing or a photo of a real V8].\nOne input: the crank angle, 0 to 720 degrees. Every piston, valve, gauge and chart reads from it.\nUse real numbers for [bore, stroke, rod length and firing order] and tell me where each one comes from. If you are not sure a number is real, say so.\nGive me a button that cuts one cylinder open so I can watch it fire.",
+            },
+            {
+              label: "5 · Landing gear",
+              body: "/teardown Build the main landing gear of [a Cessna 337] as an interactive 3D simulator. Reference attached: [a cutaway drawing of the gear].\nOne input: the actuator stroke, 0 to 1. The rack, the pinion, the legs and the wheels all follow it.\nUse the real numbers for [rack travel, pinion teeth and module, leg swing] and check them by hand. Show me the check.\nAdd buttons for x-ray, exploded and cut-open views.",
+            },
+            {
+              label: "6 · Walking robot",
+              body: "/teardown Build a six-legged walking robot as an interactive 3D simulator. Reference attached: [a photo or drawing of a real hexapod].\nOne solver for every leg: [6 legs, 3 joints each]. The legs, the panels and the floor markers all read from it.\nLet me switch between tripod, ripple and wave gaits and steer it with the keyboard.\nShow joint torque and the load on each leg as live panels.",
+            },
+            {
+              label: "7 · Robotic jellyfish",
+              body: "/teardown Build a robotic jellyfish as an interactive 3D simulator. Reference attached: [a picture of a soft-robot jellyfish or a real one].\nOne input: the phase of the swimming pulse, 0 to 1. The bell, the limbs and every panel follow it.\nMake every subsystem a button: press one and that part comes apart while the rest steps aside.\nThis machine does not exist, so tell me which numbers are invented.",
+            },
+            {
+              label: "8 · Strandbeest",
+              body: "/teardown Build a Theo Jansen Strandbeest as an interactive 3D simulator. Reference attached: [a photo or the leg diagram].\nOne input: the crank angle. Solve every joint from Jansen's 11 link lengths by circle intersection, and show me the link lengths you used.\nAdd a wind slider and a button that isolates one leg and traces its foot path.\nUse a 3/4 camera along the spine so the legs do not collapse into a fence.",
+            },
+            {
+              label: "9 · Something that does not exist",
+              body: "/teardown Build [a sandworm 1,300 m long] as an interactive 3D simulator, as if it were a real machine. Reference attached: [a concept drawing].\nOne input: [distance travelled along its track]. The head, the body segments and every panel read the same pose.\nGive me an x-ray view of the buried body and a close-up of the head.\nSay clearly which numbers are invented and keep them consistent with each other.",
+            },
+          ],
+        },
+        {
+          title: "Before you share it",
+          bullets: [
+            "Ask Claude to render a still at every step of the tour and read each one: a part passing through another, a part floating off its mount, a label covering what it names, a number that disagrees with the pose.",
+            "Fix collisions with a number in the model, not by moving the camera.",
+            "Test the page on a laptop without a graphics card. If it is slow, ask for quality steps (no ambient occlusion, a lower pixel ratio, smaller shadows).",
+          ],
+        },
+      ],
+      notes: [
+        "Install commands and the three README prompts as of Nov 13, 2026 (repository commit a91262a). The repository had 3,380 stars that day.",
+        "The two figures are drawn for this page. The rack-and-pinion numbers are the author's worked example; the slider-crank uses example dimensions.",
+        [
+          "Sources: ",
+          { text: "elvarofficial/teardown on GitHub", href: TD_REPO },
+          " · ",
+          { text: "Elvar's write-up on X", href: TD_ARTICLE },
+        ],
+      ],
+    },
+  },
   {
     number: 61,
     slug: "61-claude-fable-5-2",
