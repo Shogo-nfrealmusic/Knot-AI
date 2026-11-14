@@ -39,6 +39,7 @@ import { FounderDemo } from "@/app/free/founder/FounderDemos";
 import { McpDemo } from "@/app/free/mcp/McpDemos";
 import { OssDemo } from "@/app/free/oss/OssDemos";
 import { ReposDemo } from "@/app/free/repos/ReposDemos";
+import { YoutubeDemo } from "@/app/free/youtube/YoutubeDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -329,6 +330,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.mcp ? <McpDemo kind={chapter.mcp} /> : null}
                   {chapter.oss ? <OssDemo kind={chapter.oss} /> : null}
                   {chapter.repos ? <ReposDemo kind={chapter.repos} /> : null}
+                  {chapter.youtube ? <YoutubeDemo kind={chapter.youtube} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (

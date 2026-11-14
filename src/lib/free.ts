@@ -19,6 +19,7 @@ import type { FounderDemoKind } from "@/app/free/founder/FounderDemos";
 import type { McpDemoKind } from "@/app/free/mcp/McpDemos";
 import type { OssDemoKind } from "@/app/free/oss/OssDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
+import type { YoutubeDemoKind } from "@/app/free/youtube/YoutubeDemos";
 
 export type ToolIcon =
   | "palette"
@@ -169,6 +170,8 @@ export type DropChapter = {
   oss?: OssDemoKind;
   /** a live figure drawn for /free/60 (src/app/free/repos) */
   repos?: ReposDemoKind;
+  /** a live figure drawn for /free/66 (src/app/free/youtube) */
+  youtube?: YoutubeDemoKind;
 };
 
 export type DropAbout = {
@@ -391,7 +394,106 @@ const OSS_APPLY = "https://claude.com/contact-sales/claude-for-oss";
 const OSS_TERMS = "https://www.anthropic.com/claude-for-oss-terms";
 const OSS_PRICING = "https://claude.com/pricing";
 
+const YT_REPO = "https://github.com/Jakeschincariol/youtube-agent-skill";
+
 const drops: FreeDrop[] = [
+  {
+    number: 66,
+    slug: "66-youtube-agent-skill",
+    title: "The YouTube agent skill: the install, all 11 commands and the 21 hook formulas",
+    description:
+      "Eleven free Claude skills for running a YouTube channel: scripts, titles and thumbnails, edits, comments, planning and what is working in your niche. The lines to paste, a picker for the 11 commands, all 21 hook formulas, and what to know before you start.",
+    date: "2026-11-14",
+    keyword: "YOUTUBE",
+    kind: "11 skills",
+    tools: [
+      {
+        name: "The YouTube agent skill",
+        what: "Eleven Claude skills that run a YouTube channel. Free, MIT, no signup, no API key, nothing to connect. They write; you upload.",
+        href: YT_REPO,
+        icon: "robot",
+      },
+    ],
+    about: {
+      intro: [
+        "The YouTube agent skill is a free, MIT-licensed pack of eleven Claude skills, by Jakeschincariol on GitHub. This page is the guide from the reel: how to install it, which command does what, the 21 hook formulas, and the fine print. ",
+        { text: "Open the repo", href: YT_REPO },
+        ". Read from the repo on 2026-11-14.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "Install it",
+          text: [
+            "There are three ways in the README. The first is the short one: paste the repo link and one sentence into Claude. Pick a way below and copy its lines.",
+          ],
+          bullets: [
+            ["For one project instead of everywhere: copy the same folders into your repo's ", { code: ".claude/skills/" }, "."],
+            [
+              "No Claude Code at all? Paste any single ",
+              { code: "SKILL.md" },
+              " at the top of a chat and it runs as a mode. You lose the six Python tools, which the README calls most of the point of ",
+              { code: "/yt-script" },
+              ", ",
+              { code: "/yt-retention" },
+              " and ",
+              { code: "/yt-edit" },
+              ", but the rest works.",
+            ],
+          ],
+          youtube: "install",
+        },
+        {
+          title: "The 11 commands",
+          text: ["Each skill is one command. Pick what you want to do and the figure shows the command, what the README says it does, and the Python tool behind it when there is one."],
+          youtube: "picker",
+        },
+        {
+          title: "The 21 hook formulas",
+          text: [
+            [
+              { code: "/yt-script" },
+              " writes five hooks against these 21 formulas, scores them, and shows you the top two with their scores. Every formula comes with its shape, a worked example and the way it fails. Tap a number to read one.",
+            ],
+            "The file also sets five rules for any hook:",
+          ],
+          bullets: [
+            "Confirm the title in the first sentence. A hook that ignores its own title is why people leave at 0:08.",
+            "One idea. A hook carrying two promises keeps neither.",
+            "Specific beats big. '400 to 200,000 in seven months' outperforms 'massive growth'.",
+            "Show the artifact inside 20 seconds if you promised one.",
+            "Never open with who you are. The subscribe pitch has not been earned yet.",
+          ],
+          youtube: "hooks",
+        },
+        {
+          title: "Do this first: voice.md",
+          text: [
+            [
+              "Before you run a command, make ",
+              { code: "voice.md" },
+              ". It is a short profile of how you talk on camera, and every skill reads it. You can fill in the template yourself, or send Claude three of your own videos and let it write the file.",
+            ],
+            ["If the file is missing, ", { code: "/yt-script" }, " asks for three of your videos and writes it. In its words: “A script in the wrong voice is worse than no script, because they have to read it out loud.”"],
+          ],
+          youtube: "voice",
+        },
+        {
+          title: "Know this before you start",
+          text: [
+            "The README has a section most packs leave out. The short version: nothing gets published until you do it. Every skill ends in a block you copy and one question: ship it, or change it? Try it in the figure, then open the six lines under it.",
+          ],
+          youtube: "gate",
+        },
+      ],
+      notes: [
+        "Read from the repo's README, skills/yt-script/hooks.json and the SKILL.md of /yt-script and /yt-viral on 2026-11-14. Check the repo for changes.",
+        "This page is not affiliated with the repo's author, Anthropic or YouTube. The five figures are drawn for this page; the commands, the install lines, the formulas and the quoted lines are the repo's own wording (MIT).",
+        "Many repos with the same name are forks. Every link on this page goes to the original.",
+        ["Source: ", { text: "github.com/Jakeschincariol/youtube-agent-skill", href: YT_REPO }],
+      ],
+    },
+  },
   {
     number: 65,
     slug: "65-claude-oss",
