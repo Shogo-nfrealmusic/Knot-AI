@@ -408,7 +408,7 @@ function Voice() {
           replay();
         }}
       />
-      <svg viewBox="0 0 320 132" className="mt-3 w-full" role="img" aria-label={mode === "videos" ? "Three of your videos go into one file, voice.md, and all eleven skills read it" : "The template is copied to voice.md, you fill it in, and all eleven skills read it"}>
+      <svg viewBox="0 0 320 132" className="mx-auto mt-3 block w-full max-w-[440px]" role="img" aria-label={mode === "videos" ? "Three of your videos go into one file, voice.md, and all eleven skills read it" : "The template is copied to voice.md, you fill it in, and all eleven skills read it"}>
         {/* left: what goes in */}
         {mode === "videos" ? (
           [14, 52, 90].map((y, n) => (
@@ -420,10 +420,10 @@ function Voice() {
           ))
         ) : (
           <g>
-            <rect x="8" y="46" width="62" height="40" rx="5" fill="#fff" stroke="var(--ink)" strokeWidth="1.2" strokeDasharray="4 3" />
-            <text x="39" y="64" textAnchor="middle" className="yt-label">templates/</text>
-            <text x="39" y="77" textAnchor="middle" className="yt-label">voice.md</text>
-            <path d={`M70 66 L ${fileX} 66`} fill="none" stroke={fed ? "var(--ink)" : "var(--rule-strong)"} strokeWidth="1.2" strokeDasharray="3 3" style={{ transition: "stroke .3s" }} />
+            <rect x="3" y="46" width="80" height="40" rx="5" fill="#fff" stroke="var(--ink)" strokeWidth="1.2" strokeDasharray="4 3" />
+            <text x="43" y="64" textAnchor="middle" className="yt-label">templates/</text>
+            <text x="43" y="78" textAnchor="middle" className="yt-label">voice.md</text>
+            <path d={`M83 66 L ${fileX} 66`} fill="none" stroke={fed ? "var(--ink)" : "var(--rule-strong)"} strokeWidth="1.2" strokeDasharray="3 3" style={{ transition: "stroke .3s" }} />
           </g>
         )}
         {/* middle: the file, filling in */}
@@ -513,7 +513,7 @@ function Gate() {
   return (
     <figure className="yt-plate p-4 sm:p-6">
       <Plate n={5} title="Ship it, or change it?" sub="answer the skill's last question" />
-      <svg viewBox="0 0 320 84" className="w-full" role="img" aria-label={line[stage]}>
+      <svg viewBox="0 0 320 84" className="mx-auto block w-full max-w-[440px]" role="img" aria-label={line[stage]}>
         <text x="36" y="12" textAnchor="middle" className="yt-label">the skill</text>
         <text x="150" y="12" textAnchor="middle" className="yt-label">a block you copy</text>
         <text x="284" y="12" textAnchor="middle" className="yt-label">YouTube</text>
@@ -592,7 +592,7 @@ const YT_CSS = `
 .yt{--page:#f3f4f1;--ink:#15171a;--soft:#4a4f56;--muted:#868b92;--rule:#dcded9;--rule-strong:#c4c7c2;--accent:#d77757}
 .yt-plate{border-radius:18px;background-color:var(--page);background-image:linear-gradient(to right,rgba(21,23,26,.045) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,23,26,.045) 1px,transparent 1px);background-size:24px 24px;box-shadow:0 0 0 1px var(--rule)}
 .yt-card{border-radius:12px;border:1px solid var(--rule);background:#fff;padding:9px 12px}
-.yt-label{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:var(--muted)}
+.yt-label{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;fill:var(--muted)}
 .yt-press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),border-color .2s,opacity .2s,color .2s,background-color .2s}
 .yt-press:active:not(:disabled){transform:scale(.97)}
 .yt-in{animation:yt-in .35s cubic-bezier(.22,1,.36,1)}
