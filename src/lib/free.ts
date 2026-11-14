@@ -453,7 +453,7 @@ const drops: FreeDrop[] = [
           text: [
             [
               { code: "/yt-script" },
-              " writes five hooks against these 21 formulas, scores them, and shows you the top two with their scores. Every formula comes with its shape, a worked example and the way it fails. Tap a number to read one.",
+              " writes five hooks against these 21 formulas, scores them, and shows you the top two with their scores. Every formula comes with its shape, a worked example and the way it fails. All 21 names are below, in the file's order. Tap one to read it.",
             ],
             "The file also sets five rules for any hook:",
           ],
@@ -472,7 +472,7 @@ const drops: FreeDrop[] = [
             [
               "Before you run a command, make ",
               { code: "voice.md" },
-              ". It is a short profile of how you talk on camera, and every skill reads it. You can fill in the template yourself, or send Claude three of your own videos and let it write the file.",
+              ". It is a profile of how you talk on camera, and every skill reads it. You can fill in the template yourself, or send Claude three of your own videos and let it write the file.",
             ],
             ["If the file is missing, ", { code: "/yt-script" }, " asks for three of your videos and writes it. In its words: “A script in the wrong voice is worse than no script, because they have to read it out loud.”"],
           ],
@@ -489,7 +489,7 @@ const drops: FreeDrop[] = [
       notes: [
         "Read from the repo's README, skills/yt-script/hooks.json and the SKILL.md of /yt-script and /yt-viral on 2026-11-14. Check the repo for changes.",
         "This page is not affiliated with the repo's author, Anthropic or YouTube. The five figures are drawn for this page; the commands, the install lines, the formulas and the quoted lines are the repo's own wording (MIT).",
-        "Many repos with the same name are forks. Every link on this page goes to the original.",
+        "Every link on this page goes to github.com/Jakeschincariol/youtube-agent-skill.",
         ["Source: ", { text: "github.com/Jakeschincariol/youtube-agent-skill", href: YT_REPO }],
       ],
     },

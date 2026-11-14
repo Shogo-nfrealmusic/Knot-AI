@@ -13,7 +13,7 @@ export const INSTALL: InstallWay[] = [
     tab: "Paste into Claude",
     label: "Paste this into Claude",
     body: `${REPO}\n\nInstall this skill, then confirm /yt-script works.`,
-    after: "Claude reads the repo, installs the skills and checks that /yt-script answers.",
+    after: "The link, then one sentence that asks Claude to install it and confirm /yt-script works.",
   },
   {
     id: "code",
@@ -27,7 +27,7 @@ export const INSTALL: InstallWay[] = [
     tab: "Plugin",
     label: "Or as a plugin",
     body: "/plugin marketplace add Jakeschincariol/youtube-agent-skill\n/plugin install youtube-agent",
-    after: "Two commands inside Claude Code.",
+    after: "Run the two lines one after the other.",
   },
 ];
 
@@ -95,7 +95,7 @@ export const COMMANDS: Command[] = [
       "the top five with their multiples",
       "the formula each used",
       "the ONE structural thing they share",
-      "which of those you could actually make this week, in your voice, with what you have",
+      "which of those the user could actually make this week, in their voice, with what they have",
     ],
   },
   {
@@ -170,7 +170,7 @@ export const FINE_PRINT: { id: string; quote: string; plain: string }[] = [
   {
     id: "tags",
     quote: "Tags barely matter",
-    plain: "and the pack says so instead of selling you a tag generator.",
+    plain: "The pack says so instead of selling you a tag generator.",
   },
   {
     id: "numbers",

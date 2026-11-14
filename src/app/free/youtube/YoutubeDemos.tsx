@@ -95,16 +95,21 @@ function useSteps(total: number, ms: number) {
 
 /** Copies `text`; the label turns to "Copied" for a moment, or to "Select and copy" if the browser refuses. */
 function useCopy(text: string) {
-  const [state, setState] = useState<"idle" | "done" | "failed">("idle");
+  const [last, setLast] = useState<{ text: string; ok: boolean } | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => void (timer.current && clearTimeout(timer.current)), []);
   const copy = async () => {
+    let ok = true;
     try {
       await navigator.clipboard.writeText(text);
-      setState("done");
     } catch {
-      setState("failed");
+      ok = false;
     }
-    setTimeout(() => setState("idle"), 1800);
+    setLast({ text, ok });
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setLast(null), 1800);
   };
+  const state: "idle" | "done" | "failed" = last && last.text === text ? (last.ok ? "done" : "failed") : "idle";
   return { state, copy };
 }
 
@@ -138,15 +143,15 @@ function Choice<T extends string>({ label, options, value, set }: { label: strin
 }
 
 /* ───────────── 1 · install: pick a way, copy its lines, watch the eleven skills land ───────────── */
-const FOLDERS = COMMANDS.map((c) => c.command.slice(1));
+const GOT = COMMANDS.map((c) => c.command);
 
 function Install() {
   const [wayId, setWayId] = useState<InstallWay["id"]>("claude");
   const way = INSTALL.find((w) => w.id === wayId)!;
   const { state, copy } = useCopy(way.body);
-  // steps 1–11: one skill lands per step; step 12: the check
-  const { ref, step, replay, reduce } = useSteps(FOLDERS.length + 1, 150);
-  const done = step > FOLDERS.length;
+  // steps 1–11: one command lights per step; step 12: the check
+  const { ref, step, replay, reduce } = useSteps(GOT.length + 1, 150);
+  const done = step > GOT.length;
   return (
     <figure ref={ref} className="yt-plate p-4 sm:p-6">
       <Plate n={1} title="Install it" sub="pick a way · copy · paste" />
@@ -177,13 +182,13 @@ function Install() {
 
       <div className="yt-card mt-2">
         <span className="flex items-baseline justify-between gap-2">
-          <span className="font-mono text-[11.5px] text-[var(--muted)]">{wayId === "code" ? "~/.claude/skills/" : "what gets installed"}</span>
+          <span className="font-mono text-[11.5px] text-[var(--muted)]">{wayId === "code" ? "copied into ~/.claude/skills/" : "what you get"}</span>
           <span className="font-mono text-[11.5px] tabular-nums" style={{ color: done ? "var(--accent)" : "var(--muted)" }}>
-            {Math.min(step, FOLDERS.length)}/{FOLDERS.length}
+            {Math.min(step, GOT.length)}/{GOT.length}
           </span>
         </span>
-        <ul className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-4" aria-label="The eleven skills">
-          {FOLDERS.map((name, i) => {
+        <ul className="mt-2 grid grid-cols-2 gap-1.5 sm:grid-cols-4" aria-label="The eleven commands">
+          {GOT.map((name, i) => {
             const on = i < step;
             return (
               <li
@@ -191,7 +196,7 @@ function Install() {
                 className="truncate rounded-md border px-2 py-1.5 font-mono text-[11.5px]"
                 style={{
                   borderColor: on ? "var(--ink)" : "var(--rule)",
-                  color: on ? "var(--ink)" : "var(--rule-strong)",
+                  color: on ? "var(--ink)" : "var(--muted)",
                   background: on ? "#fff" : "transparent",
                   transform: on ? "none" : "translateY(-4px)",
                   transition: "transform .35s cubic-bezier(.34,1.56,.64,1), color .25s, border-color .25s",
@@ -259,9 +264,9 @@ function Picker() {
         ))}
       </svg>
 
-      <div className="yt-card mt-2" aria-live="polite" key={c.id}>
+      <div className="yt-card mt-2" aria-live="polite">
         <span className="flex flex-wrap items-center justify-between gap-2">
-          <span className="yt-in font-mono text-[24px] font-semibold leading-none tracking-[-0.02em] text-[var(--ink)] sm:text-[28px]">{c.command}</span>
+          <span key={c.id} className="yt-in font-mono text-[24px] font-semibold leading-none tracking-[-0.02em] text-[var(--ink)] sm:text-[28px]">{c.command}</span>
           <button type="button" className={BTN} onClick={copy} aria-label={`Copy ${c.command}`}>
             {state === "done" ? "Copied" : state === "failed" ? "Type it instead" : "Copy"}
           </button>
@@ -298,84 +303,32 @@ function Picker() {
   );
 }
 
-/* ───────────── 3 · the 21 formulas: the list by number, one open at a time ───────────── */
+/* ───────────── 3 · the 21 formulas: every name in the file's order; a row opens in place ───────────── */
 const JOBS = ["confirm the click the title promised", "raise a question the viewer cannot close", "prove the payoff exists"];
 
 function Hooks() {
-  const [i, setI] = useState(2); // #3 The Mistake, the first card the reel shows
-  const hook = HOOKS[i];
+  const [open, setOpen] = useState<string | null>("the-mistake"); // #3, the first card the reel shows
   // steps 1–3: the three jobs of the first 15 seconds light in turn
-  const { ref, step, replay } = useSteps(JOBS.length, 420);
-  const go = (next: number) => {
-    setI((next + HOOKS.length) % HOOKS.length);
-    replay();
-  };
+  const { ref, step } = useSteps(JOBS.length, 420);
   return (
     <figure ref={ref} className="yt-plate p-4 sm:p-6">
-      <Plate n={3} title="The 21 hook formulas" sub="pick a number · read the formula" />
-      <div role="radiogroup" aria-label="The 21 formulas" className="grid grid-cols-7 gap-1 sm:gap-1.5">
-        {HOOKS.map((h, n) => {
-          const on = n === i;
-          return (
-            <button
-              key={h.id}
-              type="button"
-              role="radio"
-              aria-checked={on}
-              aria-label={`${n + 1}, ${h.name}`}
-              onClick={() => go(n)}
-              className={`yt-press flex aspect-square min-h-9 items-center justify-center rounded-[10px] border font-mono text-[12.5px] tabular-nums sm:text-[13.5px] ${FOCUS} ${on ? "border-[var(--accent)] bg-[var(--accent)] font-semibold text-white" : "border-[var(--rule)] bg-white text-[var(--soft)] hover:border-[var(--ink)] hover:text-[var(--ink)]"}`}
-            >
-              {n + 1}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="yt-card mt-3" aria-live="polite">
-        <span className="flex items-baseline justify-between gap-3">
-          <span key={hook.id} className="yt-in min-w-0 text-[19px] font-semibold leading-tight tracking-[-0.015em] text-[var(--ink)]">
-            <span className="mr-2 font-mono text-[13px] font-normal text-[var(--accent)]">#{i + 1}</span>
-            {hook.name}
-          </span>
-          <span className="flex shrink-0 gap-1">
-            <button type="button" className={BTN} onClick={() => go(i - 1)} aria-label="Previous formula">
-              Prev
-            </button>
-            <button type="button" className={BTN} onClick={() => go(i + 1)} aria-label="Next formula">
-              Next
-            </button>
-          </span>
-        </span>
-        <dl className="mt-3 space-y-2.5">
-          <div>
-            <dt className="font-mono text-[11px] text-[var(--muted)]">The shape</dt>
-            <dd className="mt-0.5 text-[14px] leading-relaxed text-[var(--ink)]">{hook.shape}</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-[11px] text-[var(--muted)]">Its example</dt>
-            <dd className="mt-0.5 border-l-2 border-[var(--accent)] pl-3 text-[14px] leading-relaxed text-[var(--ink)]">&ldquo;{hook.example}&rdquo;</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-[11px] text-[var(--muted)]">Where it fails</dt>
-            <dd className="mt-0.5 text-[13.5px] leading-relaxed text-[var(--soft)]">{hook.failsWhen}</dd>
-          </div>
-        </dl>
-      </div>
+      <Plate n={3} title="The 21 hook formulas" sub="tap a name · read the formula" />
 
       {/* the first 15 seconds and its three jobs */}
-      <div className="yt-card mt-2">
+      <div className="yt-card">
         <span className="block text-[12.5px] font-medium text-[var(--ink)]">Whichever formula you pick, the first 15 seconds has three jobs</span>
-        <svg viewBox="0 0 264 30" className="mt-2 w-full" aria-hidden>
-          <rect x="2" y="6" width="260" height="6" rx="3" fill="var(--rule)" />
-          <rect x="2" y="6" width={(260 * step) / JOBS.length} height="6" rx="3" fill="var(--accent)" style={{ transition: "width .4s ease-out" }} />
+        <svg viewBox="0 0 264 18" className="mt-2 w-full" aria-hidden>
+          <rect x="2" y="6" width="254" height="6" rx="3" fill="var(--rule)" />
+          <rect x="2" y="6" width={(254 * step) / JOBS.length} height="6" rx="3" fill="var(--accent)" style={{ transition: "width .4s ease-out" }} />
           {JOBS.map((_, n) => (
-            <circle key={n} cx={2 + (260 * (n + 1)) / JOBS.length - 4} cy="9" r="6" fill={n < step ? "var(--ink)" : "#fff"} stroke="var(--ink)" strokeWidth="1.2" style={{ transition: "fill .3s" }} />
+            <circle key={n} cx={2 + (254 * (n + 1)) / JOBS.length} cy="9" r="6" fill={n < step ? "var(--ink)" : "#fff"} stroke="var(--ink)" strokeWidth="1.2" style={{ transition: "fill .3s" }} />
           ))}
-          <text x="2" y="27" className="yt-label">0:00</text>
-          <text x="262" y="27" textAnchor="end" className="yt-label">0:15</text>
         </svg>
-        <ol className="mt-1 grid gap-1 sm:grid-cols-3 sm:gap-2">
+        <span className="flex justify-between font-mono text-[10.5px] text-[var(--muted)]" aria-hidden>
+          <span>0:00</span>
+          <span>0:15</span>
+        </span>
+        <ol className="mt-1.5 grid gap-1 sm:grid-cols-3 sm:gap-2">
           {JOBS.map((job, n) => (
             <li key={job} className="flex items-start gap-2 text-[12.5px] leading-snug" style={{ color: n < step ? "var(--ink)" : "var(--muted)", transition: "color .3s" }}>
               <span className="font-mono text-[11px] text-[var(--accent)]">{n + 1}</span>
@@ -384,6 +337,45 @@ function Hooks() {
           ))}
         </ol>
       </div>
+
+      <ol className="mt-2 space-y-1" aria-label="The 21 hook formulas">
+        {HOOKS.map((h, n) => {
+          const on = open === h.id;
+          return (
+            <li key={h.id} className="yt-card p-0!" style={{ borderColor: on ? "var(--ink)" : undefined, transition: "border-color .2s" }}>
+              <button
+                type="button"
+                aria-expanded={on}
+                aria-controls={`yt-hook-${h.id}`}
+                onClick={() => setOpen(on ? null : h.id)}
+                className={`flex min-h-11 w-full items-center gap-3 rounded-[12px] px-3 py-2 text-left ${FOCUS}`}
+              >
+                <span className="w-6 shrink-0 font-mono text-[12px] tabular-nums" style={{ color: on ? "var(--accent)" : "var(--muted)" }}>
+                  {n + 1}
+                </span>
+                <span className="min-w-0 flex-1 text-[14px] font-semibold leading-snug text-[var(--ink)]">{h.name}</span>
+                <svg viewBox="0 0 12 12" className="size-3 shrink-0" aria-hidden style={{ transform: on ? "rotate(45deg)" : "none", transition: "transform .25s" }}>
+                  <path d="M6 1v10M1 6h10" stroke="var(--ink)" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+              <dl id={`yt-hook-${h.id}`} hidden={!on} className="yt-in space-y-2.5 px-3 pb-3 pl-12">
+                <div>
+                  <dt className="font-mono text-[11px] text-[var(--muted)]">The shape</dt>
+                  <dd className="mt-0.5 text-[14px] leading-relaxed text-[var(--ink)]">{h.shape}</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[11px] text-[var(--muted)]">Its example</dt>
+                  <dd className="mt-0.5 border-l-2 border-[var(--accent)] pl-3 text-[14px] leading-relaxed text-[var(--ink)]">&ldquo;{h.example}&rdquo;</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[11px] text-[var(--muted)]">Where it fails</dt>
+                  <dd className="mt-0.5 text-[13.5px] leading-relaxed text-[var(--soft)]">{h.failsWhen}</dd>
+                </div>
+              </dl>
+            </li>
+          );
+        })}
+      </ol>
       <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">
         From the file&apos;s own note: a hook that only does the third job &ldquo;is a summary and it leaks&rdquo;. The numbers are the order in hooks.json. /yt-script writes five hooks against these, scores them, and shows you the top two.
       </figcaption>
@@ -446,13 +438,13 @@ function Voice() {
           const y = 11 + n * 11;
           return (
             <g key={c.id}>
-              <path d={`M${fileX + 76} 66 C 240 66, 240 ${y}, 272 ${y}`} fill="none" stroke={read ? "var(--accent)" : "var(--rule)"} strokeWidth="1" style={{ transition: `stroke .3s ${n * 0.03}s` }} />
-              <circle cx="276" cy={y} r="3.2" fill={read ? "var(--accent)" : "var(--rule-strong)"} style={{ transition: `fill .3s ${n * 0.03}s` }} />
+              <path d={`M${fileX + 76} 66 C 232 66, 232 ${y}, 258 ${y}`} fill="none" stroke={read ? "var(--accent)" : "var(--rule)"} strokeWidth="1" style={{ transition: `stroke .3s ${n * 0.03}s` }} />
+              <circle cx="262" cy={y} r="3.2" fill={read ? "var(--accent)" : "var(--rule-strong)"} style={{ transition: `fill .3s ${n * 0.03}s` }} />
             </g>
           );
         })}
-        <text x="286" y="62" className="yt-label">11</text>
-        <text x="286" y="74" className="yt-label">skills</text>
+        <text x="273" y="62" className="yt-label">11</text>
+        <text x="273" y="74" className="yt-label">skills</text>
       </svg>
 
       <ol className="mt-1 grid gap-1.5 sm:grid-cols-2">
@@ -503,9 +495,19 @@ function Gate() {
   const [stage, setStage] = useState<Stage>("asked");
   const [open, setOpen] = useState<string | null>("publish");
   const reduce = useReducedMotionSafe();
+  // the buttons swap when the stage changes; keep keyboard focus on the one that replaces them
+  const next = useRef<HTMLButtonElement>(null);
+  const answered = useRef(false);
+  useEffect(() => {
+    if (answered.current) next.current?.focus();
+  }, [stage]);
+  const answer = (to: Stage) => {
+    answered.current = true;
+    setStage(to);
+  };
   const line: Record<Stage, string> = {
     asked: "The skill has written a block you can copy. It stops here and asks.",
-    shipped: "You copied the block and uploaded it yourself. The skill never touched YouTube.",
+    shipped: "You copied the block and uploaded it yourself. The skill published nothing.",
     changed: "Back to the skill with your notes. It writes again, and asks again.",
   };
   return (
@@ -539,15 +541,15 @@ function Gate() {
         <span className="mt-2.5 flex flex-wrap gap-2">
           {stage === "asked" ? (
             <>
-              <button type="button" className={PRIMARY} onClick={() => setStage("shipped")}>
+              <button ref={next} type="button" className={PRIMARY} onClick={() => answer("shipped")}>
                 Ship it
               </button>
-              <button type="button" className={`${BTN} h-10 rounded-lg!`} onClick={() => setStage("changed")}>
+              <button type="button" className={`${BTN} h-10 rounded-lg!`} onClick={() => answer("changed")}>
                 Change it
               </button>
             </>
           ) : (
-            <button type="button" className={`${BTN} h-10 rounded-lg!`} onClick={() => setStage("asked")}>
+            <button ref={next} type="button" className={`${BTN} h-10 rounded-lg!`} onClick={() => answer("asked")}>
               {stage === "shipped" ? "Start over" : "See the next draft"}
             </button>
           )}
@@ -579,7 +581,7 @@ function Gate() {
         })}
       </ul>
       <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">
-        The six bold lines are the README&apos;s own, from the section it calls &ldquo;The fine print. The part most packs leave out.&rdquo;
+        The six bold lines are the README&apos;s own, from its section &ldquo;The fine print&rdquo;, which it calls &ldquo;The part most packs leave out.&rdquo;
       </figcaption>
       <Source text="README, The fine print" path="README.md" />
     </figure>
