@@ -254,7 +254,7 @@ function Picker() {
         </div>
       </div>
       <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">
-        The sentence with the orange line is the plugin&apos;s own README. The card further down has every install line, what to do next and what to know first.
+        The text with the orange line is made of sentences from the plugin&apos;s own README. The card further down has every install line, what to do next and what to know first.
       </figcaption>
     </figure>
   );
@@ -270,14 +270,14 @@ function Card({ plugin: p }: { plugin: Plugin }) {
       <div className="pl-card">
         <span className={LABEL}>FIXES: {p.problem.toUpperCase()}</span>
         <p className="mt-2 border-l-2 border-[var(--accent)] pl-3 text-[14px] leading-relaxed text-[var(--ink)]">{p.fixes}</p>
-        <span className="mt-2 block font-mono text-[12px] text-[var(--muted)]">In its README&apos;s words</span>
+        <span className="mt-2 block font-mono text-[12px] text-[var(--muted)]">Sentences from its README</span>
       </div>
 
       {p.id === "omniroute" ? (
         <ul className="mt-2 grid grid-cols-3 gap-2" aria-label="The README's headline numbers">
           {OMNI_NUMBERS.map((item) => (
             <li key={item.label} className="pl-card min-w-0">
-              <span className="block font-mono text-[20px] font-semibold leading-tight tracking-[-0.02em] text-[var(--ink)] sm:text-[24px]">{item.value}</span>
+              <span className="block font-mono text-[16px] font-semibold leading-tight tracking-[-0.03em] text-[var(--ink)] sm:text-[24px]">{item.value}</span>
               <span className="mt-0.5 block text-[12px] leading-snug text-[var(--soft)]">{item.label}</span>
             </li>
           ))}
@@ -370,7 +370,7 @@ function Cutoff() {
         label="Fallback"
         options={[
           { id: "with", label: "With OmniRoute" },
-          { id: "without", label: "Without a fallback" },
+          { id: "without", label: "Without it" },
         ]}
         value={mode}
         set={(id) => {
@@ -435,7 +435,7 @@ function Cutoff() {
       </div>
       <figcaption className="mt-3 text-[13px] leading-relaxed text-[var(--soft)]">
         The task and where it gets cut off are an illustration. The four tiers are the README&apos;s, which says OmniRoute &ldquo;can fall back across 4 provider tiers while an eligible healthy target
-        remains&rdquo;. Which one it moves to depends on the providers you have connected.
+        remains&rdquo;. Which one it moves to depends on the providers you have connected. To stay on the plan you already pay for, the README has the model auto/subscription, which &ldquo;fails closed, never a billable fallback&rdquo;.
       </figcaption>
       <Source text="OmniRoute README, Why OmniRoute and Combos" href={PLUGINS[0].href} />
     </figure>

@@ -93,7 +93,7 @@ test("OmniRoute's numbers are the README's current ones, not the reel's", () => 
   assert.deepEqual(
     OMNI_NUMBERS.map((n) => [n.value, n.label]),
     [
-      ["393", "AI providers"],
+      ["394", "AI providers"],
       ["150+", "free tiers"],
       ["~1.62B", "free tokens/mo"],
     ],

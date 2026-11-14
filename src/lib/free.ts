@@ -412,7 +412,7 @@ const drops: FreeDrop[] = [
     slug: "67-claude-code-plugins",
     title: "5 Claude Code plugins for when it cuts you off, forgets your project and burns your tokens",
     description:
-      "OmniRoute, Claude Mem, Headroom, Claude Code Setup and Task Observer. Pick what is going wrong and get the one that answers it, with the install line from its README, the link to the original repo, its license, and what to know before you install.",
+      "OmniRoute, Claude Mem, Headroom, Claude Code Setup and Task Observer. Pick what is going wrong and get the one that answers it, with its install line, the link to the original repo, its license, and what to know before you install.",
     date: "2026-11-14",
     keyword: "CLAUDE",
     kind: "5 plugins",
@@ -450,13 +450,13 @@ const drops: FreeDrop[] = [
     ],
     about: {
       intro: [
-        "Five add-ons for Claude Code, one for each thing that goes wrong in the reel: it cuts you off mid-task, it forgets your project, it burns through your tokens, you don't know what to set up, and your skills never improve. Each one below has its install line as its README writes it, the link to the original repo, its license, and what the README says to know first. Read from the five READMEs on 2026-11-14.",
+        "Five add-ons for Claude Code, one for each thing that goes wrong in the reel: it cuts you off mid-task, it forgets your project, it burns through your tokens, you don't know what to set up, and your skills never improve. Each one below has its install line as the source writes it, the link to the original repo, its license, and what the README says to know first. Read from the five READMEs on 2026-11-14.",
       ],
       chaptersLabel: "The five",
       chapters: [
         {
           title: "What is going wrong?",
-          text: ["Pick the problem you have. The figure opens the one plugin that answers it, with the first line to paste. The full card for each is further down, in the reel's order."],
+          text: ["Pick the problem you have. The picker opens the one plugin that answers it, with the first line to paste. The full card for each is further down, in the reel's order."],
           plugins: "picker",
         },
         {
@@ -475,7 +475,7 @@ const drops: FreeDrop[] = [
           text: [
             [
               { text: "Claude Mem", href: PL_MEM },
-              " runs a second agent beside Claude that takes notes while it works. The next session in the same project opens with a short index of those notes. Tap a session in the second figure to see what it starts with.",
+              " runs a second agent beside Claude that takes notes while it works. The next session in the same project opens with a short index of those notes. Tap a session in the figure under the card to see what it starts with.",
             ],
           ],
           plugins: "claude-mem",
@@ -485,7 +485,7 @@ const drops: FreeDrop[] = [
           text: [
             [
               { text: "Headroom", href: PL_HEADROOM },
-              " sits between your agent and the model and compresses what the agent reads before it is sent. The README measures four scenarios; pick one in the second figure and press it.",
+              " sits between your agent and the model and compresses what the agent reads before it is sent. The README measures four scenarios; pick one in the figure under the card and press it.",
             ],
           ],
           plugins: "headroom",

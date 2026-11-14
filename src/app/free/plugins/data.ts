@@ -55,7 +55,7 @@ export const PLUGINS: Plugin[] = [
     know: [
       "“Bring your own provider accounts.” The ~1.62B is “an estimated aggregate across separately eligible third-party free tiers, not a token grant from OmniRoute.”",
       "“Free tiers may require signup, approval, or a payment method.” Each provider controls its limits, availability, and terms.",
-      "“A fresh installation can have no eligible keyless targets”. The model auto only routes among providers you have connected.",
+      "“A fresh installation can have no eligible keyless targets”. The model auto “routes among eligible connections”, and providers marked tos: avoid are left out of it by default.",
       "On npm 11 or later, npm may block the install scripts OmniRoute needs. The README's Quick Start has the --allow-scripts line for that.",
       "The figures “are re-audited every two weeks against the live catalog and move both ways”.",
     ],
@@ -79,7 +79,7 @@ export const PLUGINS: Plugin[] = [
         source: "README, Quick Start: “Or install from the plugin marketplace inside Claude Code”",
       },
     ],
-    then: "Restart Claude Code. Context from previous sessions will automatically appear in new sessions. Memory injection starts on your second session in a project.",
+    then: "After the terminal installer, just start working. After the two /plugin lines, restart Claude Code. Either way, memory injection starts on your second session in a project.",
     know: [
       "The installer “asks you to sign in to claude-mem in your browser (email magic link, no card required to sign in)”. Choosing the claude-mem observer starts a 30 Day Free Trial “on a checkout page that asks for a payment method”.",
       "“When the free trial ends, memory automatically falls back to your Anthropic plan unless you subscribe.”",
@@ -156,7 +156,7 @@ export const PLUGINS: Plugin[] = [
     kind: "A meta-skill",
     problem: "Skills never improve",
     fixes:
-      "The skills that do get built stay frozen: they never learn from how you actually use them. Task Observer improves your existing skills — it notices corrections you make, preferences you express, and gaps in your current skills, then suggests specific updates. You decide which changes are installed.",
+      "The skills that do get built stay frozen: they never learn from how you actually use them. It notices corrections you make, preferences you express, and gaps in your current skills, then suggests specific updates. You decide which changes are installed.",
     href: "https://github.com/rebelytics/one-skill-to-rule-them-all",
     shown: "github.com/rebelytics/one-skill-to-rule-them-all",
     license: "CC BY 4.0",
@@ -199,9 +199,10 @@ export const PROBLEMS: { label: string; plugin: PluginId }[] = [
   { label: "My skills never improve", plugin: "task-observer" },
 ];
 
-/** OmniRoute's headline numbers, as its README states them today (the reel's voice rounds them differently). */
+/** OmniRoute's headline numbers, as its README states them today (the reel's voice rounds them differently).
+ * Re-read on 2026-11-14 after README commit 57a4c5ec: the provider count had moved from 393 to 394 that day. */
 export const OMNI_NUMBERS: { value: string; label: string }[] = [
-  { value: "393", label: "AI providers" },
+  { value: "394", label: "AI providers" },
   { value: "150+", label: "free tiers" },
   { value: "~1.62B", label: "free tokens/mo" },
 ];
