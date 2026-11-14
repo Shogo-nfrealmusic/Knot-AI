@@ -20,6 +20,7 @@ import type { McpDemoKind } from "@/app/free/mcp/McpDemos";
 import type { OssDemoKind } from "@/app/free/oss/OssDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 import type { YoutubeDemoKind } from "@/app/free/youtube/YoutubeDemos";
+import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
 
 export type ToolIcon =
   | "palette"
@@ -172,6 +173,8 @@ export type DropChapter = {
   repos?: ReposDemoKind;
   /** a live figure drawn for /free/66 (src/app/free/youtube) */
   youtube?: YoutubeDemoKind;
+  /** a live figure drawn for /free/67 (src/app/free/plugins) */
+  plugins?: PluginsDemoKind;
 };
 
 export type DropAbout = {
@@ -396,7 +399,138 @@ const OSS_PRICING = "https://claude.com/pricing";
 
 const YT_REPO = "https://github.com/Jakeschincariol/youtube-agent-skill";
 
+// free/67: five Claude Code plugins (READMEs read on Nov 14, 2026). The same five addresses as src/app/free/plugins/data.ts; a test keeps them equal.
+const PL_OMNI = "https://github.com/cheaper-inference/OmniRoute";
+const PL_MEM = "https://github.com/thedotmack/claude-mem";
+const PL_HEADROOM = "https://github.com/headroomlabs-ai/headroom";
+const PL_SETUP = "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup";
+const PL_OBSERVER = "https://github.com/rebelytics/one-skill-to-rule-them-all";
+
 const drops: FreeDrop[] = [
+  {
+    number: 67,
+    slug: "67-claude-code-plugins",
+    title: "5 Claude Code plugins for when it cuts you off, forgets your project and burns your tokens",
+    description:
+      "OmniRoute, Claude Mem, Headroom, Claude Code Setup and Task Observer. Pick what is going wrong and get the one that answers it, with the install line from its README, the link to the original repo, its license, and what to know before you install.",
+    date: "2026-11-14",
+    keyword: "CLAUDE",
+    kind: "5 plugins",
+    tools: [
+      {
+        name: "OmniRoute",
+        what: "A free AI gateway you run on your own machine. When quota runs out on one model, it can move to the next eligible one you have connected. MIT.",
+        href: PL_OMNI,
+        icon: "plug",
+      },
+      {
+        name: "Claude Mem",
+        what: "A second agent takes notes while Claude works, and the next session starts with a short index of what matters. Apache-2.0.",
+        href: PL_MEM,
+        icon: "brain",
+      },
+      {
+        name: "Headroom",
+        what: "Compresses what your agent reads (tool outputs, logs, files, history) before it reaches the model. Same answers, fewer input tokens. Apache-2.0.",
+        href: PL_HEADROOM,
+        icon: "scissors",
+      },
+      {
+        name: "Claude Code Setup",
+        what: "Anthropic's own plugin. It scans your codebase and recommends the top 1-2 automations in each category: hooks, skills, MCP servers, subagents and slash commands. Read-only.",
+        href: PL_SETUP,
+        icon: "robot",
+      },
+      {
+        name: "Task Observer",
+        what: "A meta-skill that watches how you work and suggests specific updates to your other skills. You decide which changes are installed. By Eoghan Henn, CC BY 4.0.",
+        href: PL_OBSERVER,
+        icon: "review",
+      },
+    ],
+    about: {
+      intro: [
+        "Five add-ons for Claude Code, one for each thing that goes wrong in the reel: it cuts you off mid-task, it forgets your project, it burns through your tokens, you don't know what to set up, and your skills never improve. Each one below has its install line as its README writes it, the link to the original repo, its license, and what the README says to know first. Read from the five READMEs on 2026-11-14.",
+      ],
+      chaptersLabel: "The five",
+      chapters: [
+        {
+          title: "What is going wrong?",
+          text: ["Pick the problem you have. The figure opens the one plugin that answers it, with the first line to paste. The full card for each is further down, in the reel's order."],
+          plugins: "picker",
+        },
+        {
+          title: "OmniRoute: when it cuts you off mid-task",
+          text: [
+            [
+              { text: "OmniRoute", href: PL_OMNI },
+              " is a gateway that runs on your machine and sits between Claude Code and the model providers you connect. The numbers on the card are the README's own on 2026-11-14, and the README says they move both ways.",
+            ],
+            "The ~1.62B is not a grant from OmniRoute. It is the README's estimate of what the third-party free tiers add up to if you sign up for them yourself and connect them.",
+          ],
+          plugins: "omniroute",
+        },
+        {
+          title: "Claude Mem: when it forgets your project",
+          text: [
+            [
+              { text: "Claude Mem", href: PL_MEM },
+              " runs a second agent beside Claude that takes notes while it works. The next session in the same project opens with a short index of those notes. Tap a session in the second figure to see what it starts with.",
+            ],
+          ],
+          plugins: "claude-mem",
+        },
+        {
+          title: "Headroom: when it burns through your tokens",
+          text: [
+            [
+              { text: "Headroom", href: PL_HEADROOM },
+              " sits between your agent and the model and compresses what the agent reads before it is sent. The README measures four scenarios; pick one in the second figure and press it.",
+            ],
+          ],
+          plugins: "headroom",
+        },
+        {
+          title: "Claude Code Setup: when you don't know what to set up",
+          text: [
+            [
+              { text: "Claude Code Setup", href: PL_SETUP },
+              " is in Anthropic's own plugin marketplace. You ask it in your project and it recommends; it does not change your files.",
+            ],
+          ],
+          plugins: "claude-code-setup",
+        },
+        {
+          title: "Task Observer: when your skills never improve",
+          text: [
+            [
+              { text: "Task Observer", href: PL_OBSERVER },
+              ", by Eoghan Henn, runs alongside your work and logs what it notices. It suggests updates to your skills and you approve them. It needs one more step after the install line, so read the card to the end.",
+            ],
+          ],
+          plugins: "task-observer",
+        },
+      ],
+      notes: [
+        "Read from the five READMEs on 2026-11-14. The Claude Code Setup install line is from the README of Anthropic's claude-plugins-official marketplace, because the plugin's own README has none. Check each repo for changes.",
+        "The reel calls all five plugins. By their own READMEs, OmniRoute is a gateway you run, Headroom wraps the agent, Task Observer is a skill, and Claude Mem and Claude Code Setup install as Claude Code plugins.",
+        "The three figures are drawn for this page. The task, the cut-off point and the sessions inside them are illustrations; the tiers, the three steps and every token count are each README's own.",
+        "Task Observer is by Eoghan Henn (rebelytics.com), licensed CC BY 4.0. This page is not affiliated with Anthropic or with any of the five authors.",
+        [
+          "Sources: ",
+          { text: "cheaper-inference/OmniRoute", href: PL_OMNI },
+          " · ",
+          { text: "thedotmack/claude-mem", href: PL_MEM },
+          " · ",
+          { text: "headroomlabs-ai/headroom", href: PL_HEADROOM },
+          " · ",
+          { text: "anthropics/claude-plugins-official (claude-code-setup)", href: PL_SETUP },
+          " · ",
+          { text: "rebelytics/one-skill-to-rule-them-all", href: PL_OBSERVER },
+        ],
+      ],
+    },
+  },
   {
     number: 66,
     slug: "66-youtube-agent-skill",
