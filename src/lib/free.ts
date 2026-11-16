@@ -21,6 +21,7 @@ import type { OssDemoKind } from "@/app/free/oss/OssDemos";
 import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 import type { YoutubeDemoKind } from "@/app/free/youtube/YoutubeDemos";
 import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
+import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 
 export type ToolIcon =
   | "palette"
@@ -175,6 +176,8 @@ export type DropChapter = {
   youtube?: YoutubeDemoKind;
   /** a live figure drawn for /free/67 (src/app/free/plugins) */
   plugins?: PluginsDemoKind;
+  /** a live figure drawn for /free/68 (src/app/free/geo) */
+  geo?: GeoDemoKind;
 };
 
 export type DropAbout = {
@@ -407,6 +410,82 @@ const PL_SETUP = "https://github.com/anthropics/claude-plugins-official/tree/mai
 const PL_OBSERVER = "https://github.com/rebelytics/one-skill-to-rule-them-all";
 
 const drops: FreeDrop[] = [
+  {
+    number: 68,
+    slug: "68-geo-101",
+    title: "GEO 101: how your brand shows up in AI answers",
+    description:
+      "GEO (Generative Engine Optimization) is SEO, but for LLMs. One page: how matching meaning differs from matching keywords, how an AI finds an answer, the two ways your brand gets into it, and a 7-step checklist you can tick off. With five figures you can press.",
+    date: "2026-11-16",
+    keyword: "GEO",
+    kind: "one-page guide",
+    tools: [],
+    icon: "browser",
+    about: {
+      intro: [
+        "GEO stands for Generative Engine Optimization. It is essentially SEO, but for LLMs: the work of making sure your brand appears when someone asks an AI assistant instead of typing into a search box. This page is the reel as a guide you can keep. Every figure is drawn for this page, and you can press all of them.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "SEO vs GEO",
+          text: [
+            "Take one search: best Italian restaurants near me. SEO looks for pages with those exact keywords.",
+            "GEO does something more. It picks out the important details, the topic, the qualifier and the location, to predict what the person is actually looking for. Switch the figure between the two and watch which result comes out on top.",
+          ],
+          geo: "compare",
+        },
+        {
+          title: "How an AI finds an answer",
+          text: [
+            "It also uses something called the vector searching method. The meaning behind a question is turned into a mathematical fingerprint (the technical word is an embedding). The engine then looks for content whose fingerprint matches.",
+            "That is how it finds results based on meaning, and not just keywords. Pick a question below. The snippet that answers it shares no keyword with it, and it is still the one that matches.",
+          ],
+          geo: "match",
+        },
+        {
+          title: "Way 1: third-party sources",
+          text: [
+            "There are two major ways to show up in that AI answer. The first is what other people say about you. Being mentioned in a relevant podcast or listed in a top-10 article helps, and so do reviews and forum threads. Think of it as PR, but for AI.",
+            "Things you can do this month:",
+          ],
+          bullets: [
+            "List the podcasts, newsletters and blogs your customers already follow, and pitch one of them a specific story.",
+            "Find the top-10 and “best of” articles for your category, and give the author a concrete reason to consider you.",
+            "Ask happy customers for a review on the sites where your category gets reviewed.",
+            "Answer questions in the forums and communities where your topic comes up. Be useful, and say who you are.",
+            "Describe what you do in the same words everywhere you are mentioned.",
+          ],
+          geo: "sources",
+        },
+        {
+          title: "Way 2: your own content",
+          text: [
+            "The second way is to create content that stands out from the crowd. Think firsthand stories, unique angles and under-covered topics. The more value your content delivers, the more AI sees you as a trusted authority.",
+            "How to write it:",
+          ],
+          bullets: [
+            "Answer the real questions your customers ask, in the words they use.",
+            "Put the answer first. Give the direct answer in the opening lines, then the detail.",
+            "Add what only you have: your own experience, your own numbers, your own photos.",
+            "Give it a clear structure: one question per heading, short paragraphs, lists where they fit.",
+          ],
+          geo: "content",
+        },
+        {
+          title: "The 7-step GEO checklist",
+          text: ["Both ways, in the order to do them. Tick each step as you go. Your ticks are saved in this browser, so you can come back to the list."],
+          geo: "checklist",
+        },
+      ],
+      notes: [
+        "This page follows the reel's explanation. It is a plain-words picture of the idea, not a description of how any one product ranks its answers.",
+        "The search results, questions and snippets in the figures are made up for this page, and the bar patterns are drawings, not real embeddings.",
+        "The action lists and the checklist are general advice. Nothing on this page is a statistic or a promise of a result.",
+        "The checklist is saved only in your browser. Nothing you tick is sent anywhere.",
+      ],
+    },
+  },
   {
     number: 67,
     slug: "67-claude-code-plugins",
