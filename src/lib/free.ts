@@ -22,6 +22,7 @@ import type { ReposDemoKind } from "@/app/free/repos/ReposDemos";
 import type { YoutubeDemoKind } from "@/app/free/youtube/YoutubeDemos";
 import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
 import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
+import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 
 export type ToolIcon =
   | "palette"
@@ -178,6 +179,8 @@ export type DropChapter = {
   plugins?: PluginsDemoKind;
   /** a live figure drawn for /free/68 (src/app/free/geo) */
   geo?: GeoDemoKind;
+  /** a live figure drawn for /free/69 (src/app/free/close), with the step's prompt under it */
+  close?: CloseDemoKind;
 };
 
 export type DropAbout = {
@@ -409,7 +412,110 @@ const PL_HEADROOM = "https://github.com/headroomlabs-ai/headroom";
 const PL_SETUP = "https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup";
 const PL_OBSERVER = "https://github.com/rebelytics/one-skill-to-rule-them-all";
 
+const MC_SOURCE =
+  "https://www.cpapracticeadvisor.com/2025/09/15/why-small-businesses-using-ai-are-still-wasting-20-hours-a-week-on-manual-accounting/168927/";
+
 const drops: FreeDrop[] = [
+  {
+    number: 69,
+    slug: "69-month-close",
+    title: "Month-end close with Claude Code: the full system and the prompts",
+    description:
+      "How Claude Code closes a small company's books every month: receipts, card matching, Stripe, contractor pay, the three statements and Drive. Eight steps, a prompt to copy for each, and the two places a human still decides. With figures you can press.",
+    date: "2026-11-18",
+    keyword: "CLOSE",
+    kind: "system + prompts",
+    tools: [],
+    icon: "notebook",
+    about: {
+      intro: [
+        "Every month-end, Claude Code closes the books of a six-figure business in Tokyo. It collects the receipts, matches them, reads Stripe, works out contractor pay, updates the financial model and syncs it to Drive. I approve the entries and answer one question. This page is that system, with a prompt for every step that you can paste into Claude Code and edit for your own business.",
+      ],
+      chaptersLabel: "The system",
+      chapters: [
+        {
+          title: "The problem: 20 hours a week",
+          text: [
+            [
+              "Small business owners spend about 20 hours a week on accounting (",
+              { text: "CPA Practice Advisor, 2025-09-15", href: MC_SOURCE },
+              "). Month-end is where it piles up: billing pages to log into, card statements to go through, every receipt typed in by hand.",
+            ],
+            "The idea of this system: Claude Code does the collecting, matching and checking. You keep the two decisions that are yours: approving what gets booked, and the one number it cannot read for itself.",
+          ],
+          close: "hours",
+        },
+        {
+          title: "The system in eight steps",
+          text: [
+            "It starts on the last day of the month and finishes on the 1st. Seven parts, one after the other, each one feeding the next. Step through the month below, or press any part of the map to open its prompt.",
+          ],
+          close: "map",
+        },
+        {
+          title: "Step 1: collect every receipt",
+          text: [
+            "Most receipts arrive by email, so Claude Code searches the inbox first. The rest only exist behind a login: billing pages for hosting, tools and subscriptions. In my case there are seven. Claude in Chrome opens each one in my logged-in browser and downloads the invoice.",
+            "Keep the list of billing pages in a file (billing-pages.md), so the step is the same every month.",
+          ],
+          close: "collect",
+        },
+        {
+          title: "Steps 2 and 3: match, draft, and wait for approval",
+          text: [
+            "Each receipt is matched to a line on the company cards (we have two): same vendor, same amount, dates a few days apart at most. For every match, Claude Code drafts the entry in the accounting software.",
+            "The rule that makes this safe: Claude drafts, a human approves. Nothing gets booked until I approve it. The drafting prompt says so, and the approval prompt books only what I named. Anything without a receipt, or without an account, stays a draft and comes back to me as a list.",
+          ],
+          close: "match",
+        },
+        {
+          title: "Steps 4 and 5: read Stripe, ask one question",
+          text: [
+            "On the 1st, Claude Code reads both of our Stripe accounts: payments, fees, refunds and payouts. Each account has to tie out: opening balance plus payments, minus fees, refunds and payouts, equals the closing balance.",
+            "Then it asks me exactly one thing: the bank balance. Everything else it can read for itself, so it does. Tell it to ask only what exists nowhere it can reach.",
+          ],
+          close: "stripe",
+        },
+        {
+          title: "Step 6: contractor pay, and the 28% lesson",
+          text: [
+            "My first version worked out contractor pay as jobs × rate. It came up 28% short. Add-ons were missing, and so was a contractor who was not in the rate table.",
+            "Now it pulls the confirmed amounts straight from our own app, where each job's pay is confirmed. The lesson travels: compute money from the confirmed source data, not from a formula that rebuilds it. Press the figure to see where the gap comes from.",
+          ],
+          close: "pay",
+        },
+        {
+          title: "Step 7: update the model, check every month is zero",
+          text: [
+            "Claude Code fills the P&L, cash flow and balance sheet in the financial model, then checks every month in the file, not just the new one: assets minus liabilities minus equity has to be zero.",
+            "If a month is off, it stops and shows the difference. It never plugs the gap with a balancing number. Break a number in the figure to see what that looks like.",
+          ],
+          close: "balance",
+        },
+        {
+          title: "Step 8: sync to Drive, send one summary",
+          text: [
+            "The finished file goes to the shared Google Drive folder, so my co-founder sees the same numbers. Then Claude Code sends me one summary. Twenty hours of paperwork; now, one approval and one answer.",
+          ],
+          close: "sync",
+        },
+        {
+          title: "What to set up",
+          text: [
+            "Five connections, each with the least access the step needs. Then save the whole month-end as one file and start it on the last day of the month.",
+          ],
+          close: "setup",
+        },
+      ],
+      notes: [
+        "The prompts are written to be edited: change the folder names, the file names and the number of cards and accounts to match your business.",
+        "Every vendor, amount, contractor and month in the figures is made up for this page. The times on the map are an example of one month-end.",
+        "Keep the rule: Claude drafts, a human approves. Give it read-only keys where it only needs to read, and never let it book, pay or send money on its own.",
+        "This page shows how one small business runs its month-end. It is not tax or accounting advice; your accountant decides how entries should be booked.",
+        ["The 20-hour figure: ", { text: "CPA Practice Advisor, 15 September 2025", href: MC_SOURCE }, "."],
+      ],
+    },
+  },
   {
     number: 68,
     slug: "68-geo-101",
