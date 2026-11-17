@@ -274,7 +274,7 @@ function SystemMap() {
   const reached = (id: NodeId) => STEPS.slice(0, at + 1).some((s) => s.node === id);
   return (
     <figure ref={ref} className="mc-plate p-4 sm:p-6">
-      <Plate n={2} title="One month-end, OCT 31 → NOV 1" sub="press Next, or press a part of the map to open its prompt" />
+      <Plate n={2} title={"One month-end, OCT 31 → NOV 1"} sub="press Next, or press a part of the map to open its prompt" />
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span key={`${step.day}${step.time}`} className="mc-flip inline-flex min-h-10 items-center gap-2 rounded-[10px] bg-[var(--ink)] px-3 font-mono text-[14px] font-semibold tracking-[0.04em] text-white" aria-live="polite">
@@ -321,18 +321,18 @@ function SystemMap() {
                 type="button"
                 onClick={() => openNode(node.id)}
                 aria-current={active ? "step" : undefined}
-                className={`mc-press my-1 flex min-h-12 w-full items-center justify-between gap-3 rounded-[12px] border bg-white px-3 py-2 text-left ${FOCUS}`}
+                className={`mc-press my-1 flex min-h-12 w-full flex-wrap items-center justify-between gap-x-3 gap-y-1.5 rounded-[12px] border bg-white px-3 py-2 text-left ${FOCUS}`}
                 style={{
                   borderColor: active ? "var(--accent)" : isHub ? "var(--ink)" : "var(--rule)",
                   boxShadow: active ? "0 0 0 1px var(--accent)" : "none",
                   transition: "border-color .3s, box-shadow .3s",
                 }}
               >
-                <span className="min-w-0">
+                <span className="min-w-0 flex-1 basis-[180px]">
                   <span className="block text-[14px] font-semibold leading-snug text-[var(--ink)]">{node.label}</span>
                   <span className="block text-[13px] leading-snug text-[var(--soft)]">{node.sub}</span>
                 </span>
-                <span className="flex shrink-0 items-center gap-1.5">
+                <span className="ml-auto flex shrink-0 items-center gap-1.5">
                   {people.map((s) => (
                     <span key={s.id} className="rounded-full px-2 py-0.5 font-mono text-[12px]" style={{ background: active && s.id === step.id ? "var(--accent)" : "transparent", color: active && s.id === step.id ? "#fff" : "var(--muted)", boxShadow: "inset 0 0 0 1px var(--rule-strong)" }}>
                       you: {s.you}
@@ -575,7 +575,7 @@ function Pay() {
         label="How pay is worked out"
         options={[
           { id: "v1", label: "v1: jobs × rate" },
-          { id: "v2", label: "v2: confirmed amounts" },
+          { id: "v2", label: "v2: confirmed" },
         ]}
         value={mode}
         set={setPicked}
