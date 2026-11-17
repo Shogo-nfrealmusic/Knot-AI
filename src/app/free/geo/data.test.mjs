@@ -189,7 +189,7 @@ test("/free/68 opens the GEO 101 page", () => {
   const drop = getDropByNumber("68");
   assert.equal(drop?.slug, "68-geo-101");
   assert.equal(getDrop("68-geo-101")?.title, "GEO 101: how your brand shows up in AI answers");
-  assert.equal(getDrops()[0].number, 68);
+  assert.ok(getDrops().some((d) => d.number === 68)); // listed (not necessarily first: newer reels come after it)
 });
 
 test("five chapters, one figure each, in the reel's order", () => {

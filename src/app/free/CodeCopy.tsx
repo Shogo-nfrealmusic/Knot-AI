@@ -47,7 +47,8 @@ export function CommandCopy({ command, className = "w-full" }: { command: string
 }
 
 // A multi-line snippet with a label and a copy button (guides that teach with code).
-export function CodeBlock({ label, code }: { label: string; code: string }) {
+// `wrap` wraps long lines instead of scrolling sideways (prompts written as prose, read on a phone).
+export function CodeBlock({ label, code, wrap = false }: { label: string; code: string; wrap?: boolean }) {
   const [done, setDone] = useState(false);
   return (
     <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-50">
@@ -68,7 +69,7 @@ export function CodeBlock({ label, code }: { label: string; code: string }) {
           {done ? "Copied" : "Copy"}
         </button>
       </div>
-      <pre className="overflow-x-auto px-4 py-3 font-mono text-[12px] leading-relaxed text-neutral-800">{code}</pre>
+      <pre className={`px-4 py-3 font-mono text-[12px] leading-relaxed text-neutral-800 ${wrap ? "whitespace-pre-wrap [overflow-wrap:anywhere]" : "overflow-x-auto"}`}>{code}</pre>
     </div>
   );
 }
