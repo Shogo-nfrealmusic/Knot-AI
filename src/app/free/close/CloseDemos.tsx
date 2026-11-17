@@ -328,7 +328,7 @@ function SystemMap() {
                   transition: "border-color .3s, box-shadow .3s",
                 }}
               >
-                <span className="min-w-0 flex-1 basis-[180px]">
+                <span className="min-w-0 flex-1 basis-[140px]">
                   <span className="block text-[14px] font-semibold leading-snug text-[var(--ink)]">{node.label}</span>
                   <span className="block text-[13px] leading-snug text-[var(--soft)]">{node.sub}</span>
                 </span>
