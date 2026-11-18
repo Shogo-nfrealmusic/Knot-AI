@@ -266,7 +266,7 @@ function Launch() {
 const GC_CSS = `
 .gc{--page:#f3f4f1;--ink:#15171a;--soft:#4a4f56;--muted:#6f747b;--rule:#dcded9;--rule-strong:#c4c7c2;--accent:#d77757}
 .gc-plate{border-radius:18px;background-color:var(--page);background-image:linear-gradient(to right,rgba(21,23,26,.045) 1px,transparent 1px),linear-gradient(to bottom,rgba(21,23,26,.045) 1px,transparent 1px);background-size:24px 24px;box-shadow:0 0 0 1px var(--rule)}
-.gc-card{display:block;border-radius:12px;border:1px solid var(--rule);background:#fff;padding:10px 12px}
+.gc-card{border-radius:12px;border:1px solid var(--rule);background:#fff;padding:10px 12px}
 .gc-press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),border-color .2s,opacity .2s,color .2s,background-color .2s}
 .gc-press:active:not(:disabled){transform:scale(.97)}
 .gc-in{animation:gc-in .4s cubic-bezier(.22,1,.36,1) both}
