@@ -23,6 +23,7 @@ import type { YoutubeDemoKind } from "@/app/free/youtube/YoutubeDemos";
 import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
 import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
+import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
 
 export type ToolIcon =
   | "palette"
@@ -181,6 +182,8 @@ export type DropChapter = {
   geo?: GeoDemoKind;
   /** a live figure drawn for /free/69 (src/app/free/close), with the step's prompt under it */
   close?: CloseDemoKind;
+  /** a live figure drawn for /free/70 (src/app/free/gta) */
+  gta?: GtaDemoKind;
 };
 
 export type DropAbout = {
@@ -416,6 +419,66 @@ const MC_SOURCE =
   "https://www.cpapracticeadvisor.com/2025/09/15/why-small-businesses-using-ai-are-still-wasting-20-hours-a-week-on-manual-accounting/168927/";
 
 const drops: FreeDrop[] = [
+  {
+    number: 70,
+    slug: "70-gta-channel",
+    title: "Start a GTA 6 YouTube channel: the full setup",
+    description:
+      "Pick one search, make the video with Claude Code and Remotion, add a free AI voice, and post on day one. Five prompts to copy, the money math, and what to check before you publish.",
+    date: "2026-11-18",
+    keyword: "CHANNEL",
+    kind: "setup guide",
+    tools: [],
+    icon: "wand",
+    about: {
+      intro: [
+        "GTA 6 launches November 19, and millions of people are about to search for it. This is the setup from the reel: one search, one video, no console needed. Every prompt is ready to paste into Claude Code.",
+      ],
+      chaptersLabel: "The setup",
+      chapters: [
+        {
+          title: "Pick one search",
+          text: [
+            "Do not start a general GTA channel. Start with one question people are already typing, and make the video that answers it. You do not need to be good at the game. People are looking for what is new.",
+          ],
+          gta: "search",
+        },
+        {
+          title: "Know what it can pay",
+          text: [
+            "The reel uses about $2 for every 1,000 views. Ad money only starts once YouTube accepts your channel into its Partner Program, so treat your first videos as the start of a channel, not as income.",
+          ],
+          gta: "math",
+        },
+        {
+          title: "Set up three tools",
+          text: [
+            "Remotion and Kokoro are free for an individual. Claude Code needs a paid Claude plan or API credits. If you already have one, there is nothing else to buy.",
+          ],
+          gta: "setup",
+        },
+        {
+          title: "Build the video with five prompts",
+          text: [
+            "Download the official trailers and screenshots yourself, then put them in a folder called sources. Claude Code works from that folder, one step at a time, and you review each result before moving on.",
+          ],
+          gta: "build",
+        },
+        {
+          title: "Check it, then post on day one",
+          text: [
+            "Speed matters on launch day, but one false claim costs more than an hour of delay. Go through this list, then publish.",
+          ],
+          gta: "launch",
+        },
+      ],
+      notes: [
+        "GTA 6, its trailers and its screenshots belong to Rockstar Games and Take-Two Interactive. This page is not affiliated with them.",
+        "Using trailer footage can lead to a copyright claim, even with commentary. Read Rockstar's current video policy and YouTube's monetization rules before you rely on ad money.",
+        "The earnings on this page are estimates, not a promise of income. MrBossFTW's views are vidIQ's figure as of November 1, 2026.",
+      ],
+    },
+  },
   {
     number: 69,
     slug: "69-month-close",
