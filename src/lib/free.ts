@@ -24,6 +24,7 @@ import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
 import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
+import type { SpaceDemoKind } from "@/app/free/space/SpaceDemos";
 
 export type ToolIcon =
   | "palette"
@@ -184,6 +185,8 @@ export type DropChapter = {
   close?: CloseDemoKind;
   /** a live figure drawn for /free/70 (src/app/free/gta) */
   gta?: GtaDemoKind;
+  /** a live figure drawn for /free/73 (src/app/free/space) */
+  space?: SpaceDemoKind;
 };
 
 export type DropAbout = {
@@ -418,7 +421,63 @@ const PL_OBSERVER = "https://github.com/rebelytics/one-skill-to-rule-them-all";
 const MC_SOURCE =
   "https://www.cpapracticeadvisor.com/2025/09/15/why-small-businesses-using-ai-are-still-wasting-20-hours-a-week-on-manual-accounting/168927/";
 
+const SPACE_NOTES = "https://help.openai.com/en/articles/6825453-chatgpt-release-notes";
+const SPACE_POST = "https://x.com/ChatGPT/status/2123850912867471807";
+
 const drops: FreeDrop[] = [
+  {
+    number: 73,
+    slug: "73-chatgpt-space",
+    title: "ChatGPT Space on Plus: three setups worth using",
+    description:
+      "Space reached ChatGPT Plus on November 20, 2026. A to-do list that refreshes itself from Slack every hour, slides you fix by leaving a comment, and one page your team builds together. Prompts to copy, and who can open what you share.",
+    date: "2026-11-21",
+    keyword: "PLUS",
+    kind: "setup guide",
+    tools: [],
+    icon: "notebook",
+    about: {
+      intro: [
+        "On November 20, 2026, OpenAI opened ChatGPT Space to Plus users aged 18 and over (",
+        { text: "release notes", href: SPACE_NOTES },
+        "). Before that it was for Pro, Business and Enterprise. Open Space in the ChatGPT sidebar; it replaces Library. These are the three setups from the reel.",
+      ],
+      chaptersLabel: "The setups",
+      chapters: [
+        {
+          title: "A to-do list that fixes itself",
+          text: [
+            "Pages and slides in Space can update themselves from your connected apps and tools. OpenAI's own example is a project plan that stays current with decisions from Slack. Connect Slack to ChatGPT first, then create a page and paste the prompt.",
+            [
+              "In OpenAI's demo the page has a scheduled task called “Refresh checklist from Slack”, set to hourly (",
+              { text: "@ChatGPT, Nov 20", href: SPACE_POST },
+              ").",
+            ],
+          ],
+          space: "refresh",
+        },
+        {
+          title: "Slides you edit by comment",
+          text: [
+            "Leave a comment on a page or a slide and tag ChatGPT to ask for a change. In OpenAI's demo one comment restyles a whole brand deck to match a new website.",
+          ],
+          space: "comment",
+        },
+        {
+          title: "One page, the whole team",
+          text: [
+            "Invite people who have Space access and build the page together. Each person works with their own ChatGPT. Check who you are sharing with first: Free users can't open shared pages, and there are no public links.",
+          ],
+          space: "access",
+        },
+      ],
+      notes: [
+        "Space on Plus is for users aged 18 and over and is rolling out globally, so it may reach your account a little later.",
+        "The Slack messages and the restyled looks in the figures are examples drawn for this page. ChatGPT decides the real result.",
+        "ChatGPT and Space are OpenAI's products. This page is not affiliated with OpenAI.",
+      ],
+    },
+  },
   {
     number: 70,
     slug: "70-gta-channel",
