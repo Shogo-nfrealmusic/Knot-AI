@@ -51,16 +51,19 @@ export function Cross() {
 export function ScreenShot({ screen, caption, eager, className }: { screen: Screen; caption?: ReactNode; eager?: boolean; className?: string }) {
   return (
     <figure className={cn("m-0", className)}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={screen.src}
-        alt={screen.alt}
-        width={screen.width}
-        height={screen.height}
-        loading={eager ? "eager" : "lazy"}
-        decoding="async"
-        className="block h-auto w-full rounded-[14px] shadow-[0_0_0_1px_rgba(0,0,0,.08),0_16px_32px_-16px_rgba(0,0,0,.28)]"
-      />
+      {/* The text in a capture is small on a phone, so the picture opens at full size on its own. */}
+      <a href={screen.src} target="_blank" rel="noopener noreferrer" className="block rounded-[14px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={screen.src}
+          alt={screen.alt}
+          width={screen.width}
+          height={screen.height}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          className="block h-auto w-full rounded-[14px] shadow-[0_0_0_1px_rgba(0,0,0,.08),0_16px_32px_-16px_rgba(0,0,0,.28)]"
+        />
+      </a>
       {caption ? <figcaption className="mt-3 text-[13px] text-neutral-500">{caption}</figcaption> : null}
     </figure>
   );

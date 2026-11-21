@@ -83,7 +83,7 @@ export default function OsPage() {
           <h1 className={cn(entrance, "text-[15px] font-medium text-[var(--warm)]")} style={stagger(0, 10)}>
             {HERO.name}
           </h1>
-          <h2 className={cn(entrance, "mx-auto mt-5 max-w-[17ch] text-balance type-display text-text-primary")} style={stagger(100, 20)}>
+          <h2 className={cn(entrance, "mx-auto mt-5 max-w-[22ch] text-balance type-display text-text-primary")} style={stagger(100, 20)}>
             {HERO.title}{" "}
             <span className="font-serif text-[1.08em] font-normal italic tracking-[-0.01em] text-neutral-500">{HERO.accent}</span>
           </h2>
@@ -101,8 +101,8 @@ export default function OsPage() {
             </a>
           </div>
         </div>
-        <div className={cn(entrance, "relative mx-auto mt-14 max-w-[680px] px-4 pb-16 sm:mt-16 sm:pb-20")} style={stagger(400, 20)}>
-          <ScreenShot screen={TEAM_SCREEN} eager />
+        <div className={cn(entrance, "relative mx-auto mt-14 max-w-[860px] px-4 pb-16 sm:mt-16 sm:pb-20")} style={stagger(400, 20)}>
+          <ScreenShot screen={GUARD_SCREEN} eager />
         </div>
       </GridSection>
 
@@ -150,9 +150,9 @@ export default function OsPage() {
           ))}
         </div>
         <p className="mx-auto mt-12 max-w-[44ch] px-4 text-center text-[17px] leading-[1.6] text-neutral-900">{JOBS_NOTE}</p>
-        <div className="mt-10 gap-5 px-4 sm:columns-2 sm:px-10">
+        <div className="mx-auto mt-10 max-w-[920px] space-y-10 px-4">
           {JOBS.map((row) => (
-            <ScreenShot key={row.job} screen={row.screen} caption={row.job} className="mb-8 break-inside-avoid" />
+            <ScreenShot key={row.job} screen={row.screen} caption={row.job} />
           ))}
         </div>
       </GridSection>
@@ -167,7 +167,6 @@ export default function OsPage() {
                 <strong className="font-semibold text-neutral-900">{part.name}</strong> {part.text}
               </p>
             ))}
-            <ScreenShot screen={GUARD_SCREEN} className="pt-4" />
           </div>
           <ul className="border-y border-neutral-200">
             {MODULES.map((module) => (
@@ -176,6 +175,9 @@ export default function OsPage() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="mx-auto mt-14 max-w-[820px] px-4">
+          <ScreenShot screen={TEAM_SCREEN} />
         </div>
       </GridSection>
 

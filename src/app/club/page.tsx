@@ -25,7 +25,7 @@ export default function ClubPage() {
           <p className={cn(entrance, "text-[15px] font-medium text-[var(--warm)]")} style={stagger(0, 10)}>
             {CLUB.name}
           </p>
-          <h1 className={cn(entrance, "mx-auto mt-5 max-w-[16ch] text-balance type-display text-text-primary")} style={stagger(100, 20)}>
+          <h1 className={cn(entrance, "mx-auto mt-5 max-w-[20ch] text-balance type-display text-text-primary")} style={stagger(100, 20)}>
             {CLUB.title}{" "}
             <span className="font-serif text-[1.08em] font-normal italic tracking-[-0.01em] text-neutral-500">{CLUB.accent}</span>
           </h1>
