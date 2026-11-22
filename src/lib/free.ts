@@ -24,6 +24,7 @@ import type { PluginsDemoKind } from "@/app/free/plugins/PluginsDemos";
 import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
+import type { TvDemoKind } from "@/app/free/tv/TvDemos";
 
 export type ToolIcon =
   | "palette"
@@ -184,6 +185,8 @@ export type DropChapter = {
   close?: CloseDemoKind;
   /** a live figure drawn for /free/70 (src/app/free/gta) */
   gta?: GtaDemoKind;
+  /** a live figure drawn for /free/74 (src/app/free/tv) */
+  tv?: TvDemoKind;
 };
 
 export type DropAbout = {
@@ -418,7 +421,110 @@ const PL_OBSERVER = "https://github.com/rebelytics/one-skill-to-rule-them-all";
 const MC_SOURCE =
   "https://www.cpapracticeadvisor.com/2025/09/15/why-small-businesses-using-ai-are-still-wasting-20-hours-a-week-on-manual-accounting/168927/";
 
+// free/74: CleanYourTV (README.md, PROMPT.md and tools/restore.sh read on Nov 22, 2026). The same address as src/app/free/tv/data.ts; a test keeps them equal.
+const TV_REPO = "https://github.com/Gathin23/cleanyourtv";
+const TV_POST = "https://x.com/gathint/status/2111379569030939102";
+
 const drops: FreeDrop[] = [
+  {
+    number: 74,
+    slug: "74-clean-your-tv",
+    title: "CleanYourTV: which TVs work, what to switch on, the 3 steps and the one-line restore",
+    description:
+      "A free GitHub repo that lets Claude Code switch off your TV's ads, bloatware and tracking over Wi-Fi, then install a clean Apple TV-style home screen. Android TV and Google TV only. Check your TV, see what to switch on first, follow the three steps, and copy the line that puts it all back.",
+    date: "2026-11-22",
+    keyword: "TV",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "CleanYourTV",
+        what: "Debloats an Android TV or Google TV over Wi-Fi and replaces the home screen. Free, MIT. No root, no cable, nothing uninstalled, and a one-line restore.",
+        href: TV_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "CleanYourTV is a free, MIT-licensed repo by Gathin (Gathin23 on GitHub). It began on October 17, 2026, with a post showing a before and after of the author's parents' TV, cleaned up by Claude Code over Wi-Fi. The repo now has over 60,000 stars (60,187 on November 22, 2026) and tested lists for 504 TV models. This page is the guide from the reel: which TVs work, what to switch on first, the three steps, and the one line that puts everything back. ",
+        { text: "Open the repo", href: TV_REPO },
+        ". Read from the repo on 2026-11-22.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "Check your TV first",
+          text: [
+            "It works on anything running Android TV or Google TV. It does not work on Samsung, LG, Roku, Vizio or Hisense VIDAA sets, because they have no ADB, the debug bridge the whole thing runs on. Pick what your TV runs.",
+          ],
+          bullets: [
+            [
+              "Not sure what your TV runs? The prompt checks for you. If the TV turns out not to be Android TV or Google TV, the assistant is told to stop and point you to ",
+              { text: "cleanyour.tv/not-android", href: "https://cleanyour.tv/not-android" },
+              ".",
+            ],
+            [
+              "No computer, or no coding assistant? The README links free community apps for Android phones, Mac and Windows at ",
+              { text: "cleanyour.tv/app", href: "https://cleanyour.tv/app" },
+              ". They are independent projects, not made by the repo's author.",
+            ],
+          ],
+          tv: "check",
+        },
+        {
+          title: "Switch this on, on the TV",
+          text: [
+            "Android TVs have the same debug bridge as Android phones. You switch it on once in the TV's developer options, allow your computer once, and the rest happens from the computer. Try the path in the figure, then do it on the real TV.",
+          ],
+          tv: "switch",
+        },
+        {
+          title: "The 3 steps",
+          text: [
+            [
+              "The README's quick start is three steps. The one prompt from the reel is step 2: clone the repo, open that folder in Claude Code, then paste ",
+              { code: "PROMPT.md" },
+              " with your TV model in it.",
+            ],
+          ],
+          bullets: [
+            [
+              "Clone the repo; do not only paste the prompt. In the README's words: “Cloning matters: the assistant reuses this repo's ",
+              { code: "tools/disable.sh" },
+              " and ",
+              { code: "launcher/build-and-install.sh" },
+              " instead of writing its own, and that is where the backup, the Home guard and the restore record live.”",
+            ],
+            "It is not only for Claude Code. The README also names Codex, Gemini CLI, Antigravity CLI and DeepSeek Harness.",
+            "You stay in charge. The prompt tells the assistant to ask before anything that depends on your preferences, and says to expect three or four checklist questions.",
+          ],
+          tv: "steps",
+        },
+        {
+          title: "What changes on the screen",
+          text: [
+            [
+              "Nothing is uninstalled. The manufacturer's telemetry, ad services, content rows and preloaded apps are disabled with ",
+              { code: "pm disable-user" },
+              ", and a small launcher becomes the home screen. These are the README's own before and after photos.",
+            ],
+          ],
+          tv: "home",
+        },
+        {
+          title: "Put it back with one line",
+          text: ["Changed your mind? One line puts the TV back the way it was. Pick your TV, add its IP address, and copy the line."],
+          bullets: [["On Windows, every script has a PowerShell twin next to it, so the restore is ", { code: "tools\\restore.ps1" }, "."]],
+          tv: "restore",
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md, PROMPT.md and tools/restore.sh on 2026-11-22 (commit f63a1eb). The repo changes often, so check it for the current steps.",
+        "This page is not affiliated with the repo's author, Anthropic, Google or any TV maker. The five figures are drawn for this page and none of them talks to a TV; the setting names, commands, numbers, photos and quoted lines are the repo's own (MIT).",
+        "The project's official links are cleanyour.tv and the repo. Its README warns that other domains using the name are not run by the project, and that it publishes no app in any app store.",
+        ["Source: ", { text: "github.com/Gathin23/cleanyourtv", href: TV_REPO }, " · ", { text: "the original post by @gathint, October 17, 2026", href: TV_POST }],
+      ],
+    },
+  },
   {
     number: 70,
     slug: "70-gta-channel",
