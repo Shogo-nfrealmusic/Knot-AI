@@ -25,6 +25,7 @@ import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
 import type { TvDemoKind } from "@/app/free/tv/TvDemos";
+import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
 
 export type ToolIcon =
   | "palette"
@@ -187,6 +188,8 @@ export type DropChapter = {
   gta?: GtaDemoKind;
   /** a live figure drawn for /free/74 (src/app/free/tv) */
   tv?: TvDemoKind;
+  /** a live figure drawn for /free/76 (src/app/free/trader) */
+  trader?: TraderDemoKind;
 };
 
 export type DropAbout = {
@@ -425,7 +428,90 @@ const MC_SOURCE =
 const TV_REPO = "https://github.com/Gathin23/cleanyourtv";
 const TV_POST = "https://x.com/gathint/status/2111379569030939102";
 
+// free/76: the Trader skill (README.md, the SKILL.md files and the test fixtures of the repo). The same address as src/app/free/trader/data.ts; a test keeps them equal.
+const TRADER_REPO = "https://github.com/Jakeschincariol/trader-skill";
+
 const drops: FreeDrop[] = [
+  {
+    number: 76,
+    slug: "76-trader-skill",
+    title: "The Trader skill: 11 Claude skills, the install, a $5,000 Berkshire copy and the Pelosi tracker",
+    description:
+      "A free, MIT pack of 11 Claude skills by Jake Schincariol: copy an investor from their 13F, size it to your budget, check every order against your limits, and read Congress's stock-trade disclosures. No signup, no API key, and no order without your yes. Install it, try the sizer, read one real disclosure, and the fine print.",
+    date: "2026-11-23",
+    keyword: "TRADE",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "The Trader skill",
+        what: "11 Claude skills that copy the investors you trust, watch the news and Congress, size every trade to your budget, and never place an order without your yes. Free, MIT, no signup, no API key.",
+        href: TRADER_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "The Trader skill is a free, MIT-licensed pack of 11 Claude skills made by ",
+        { text: "Jake Schincariol", href: "https://opusjake.ai" },
+        ". The tools are plain Python that read public data: SEC EDGAR, the House Clerk, news feeds. Nothing in the pack can place an order on its own, and paper trading is the default. This page is the guide from the reel: what the eleven do, how to install them, the README's $5,000 Berkshire example as a sizer you can move, one real Congress disclosure, and the fine print. ",
+        { text: "Open the repo", href: TRADER_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: eleven skills",
+          text: [
+            "Each skill is a slash command with one job, and everything lands in a trader/ folder in your project, where each skill reads what the last one wrote. Pick a way of working in the figure to see which skills it chains, and tap any skill for the README's line on it.",
+          ],
+          bullets: [
+            "Free, MIT, no signup, no API key. The data tools read public endpoints: SEC EDGAR, the House Clerk, news RSS and Yahoo Finance's chart endpoint (unofficial, and it can change).",
+            "SEC asks every script to identify itself, so you put your own name and email in trader/config.json or the SEC_USER_AGENT environment variable.",
+          ],
+          trader: "eleven",
+        },
+        {
+          title: "Install it",
+          text: [
+            "The README gives three routes. Paste the repo link into Claude with \"install skill\"; or add it as a plugin in Claude Code; or clone it and copy the folders into ~/.claude/skills/ if you want the plain command names.",
+          ],
+          bullets: [
+            "Project-local instead of global: copy the same folders into your repo's .claude/skills/.",
+            "No Claude Code at all? In the README's words: \"Paste any single SKILL.md at the top of a chat and it runs as a mode. You lose the Python tools, but the method works.\"",
+          ],
+          trader: "install",
+        },
+        {
+          title: "Copy an investor: copycat, budget, risk, broker",
+          text: [
+            "The README's example copies Berkshire Hathaway with $5,000. /trader-copycat reads Berkshire's Q2 2026 13F-HR (filed 2026-08-14) and renormalises the top five to 30.67 / 23.85 / 17.56 / 15.11 / 12.80 %. /trader-budget keeps a 10 % cash buffer and caps any one stock at 25 %. /trader-risk checks every order and says PASS or BLOCK. /trader-broker shows you each ticket and waits for your yes. Move the budget and the same rules run again.",
+          ],
+          trader: "flow",
+        },
+        {
+          title: "The Pelosi tracker",
+          text: [
+            "Members of the House file a Periodic Transaction Report (PTR) for their stock trades, and the House Clerk posts each one as a public PDF. /trader-pelosi reads the Clerk's index, alerts you once per new filing, and turns the PDF into clean rows. Below is one real report the repo keeps as a test fixture: filing 20035143, Hon. Nancy Pelosi.",
+            "Congress's trades are public, not inside information. Members must disclose trades over $1,000 within 45 days (the STOCK Act). The Pelosi skill reads those public filings the minute they post, with the amounts as the ranges they are filed in. It has no access to anything that is not public.",
+          ],
+          trader: "pelosi",
+        },
+        {
+          title: "The fine print",
+          text: [
+            "Read this before you connect a broker. Only /trader-broker can lead to an order, and only after /trader-risk passes that exact order and you say yes to it. Open the three gates in the figure to see when an order goes through, then read the README's own words.",
+          ],
+          trader: "fineprint",
+        },
+      ],
+      notes: [
+        "Not financial advice. This page explains a free tool; it does not recommend any stock, investor or trade.",
+        "Read from the repo's README.md, the SKILL.md files of trader-budget, trader-risk, trader-broker and trader-pelosi, and its test fixtures (Berkshire's Q2 2026 top five and PTR 20035143). The repo changes, so check it for the current steps.",
+        "This page is not affiliated with the repo's author, Anthropic, SEC, the House Clerk or any broker. The five figures are drawn for this page and none of them talks to a broker or to SEC; the commands, numbers, rows and quoted lines are the repo's own (MIT).",
+        ["Source: ", { text: "github.com/Jakeschincariol/trader-skill", href: TRADER_REPO }, " · made by ", { text: "Jake Schincariol", href: "https://opusjake.ai" }],
+      ],
+    },
+  },
   {
     number: 74,
     slug: "74-clean-your-tv",
