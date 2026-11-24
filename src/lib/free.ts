@@ -26,6 +26,7 @@ import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
 import type { TvDemoKind } from "@/app/free/tv/TvDemos";
 import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
+import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
 
 export type ToolIcon =
   | "palette"
@@ -190,6 +191,8 @@ export type DropChapter = {
   tv?: TvDemoKind;
   /** a live figure drawn for /free/76 (src/app/free/trader) */
   trader?: TraderDemoKind;
+  /** a live figure drawn for /free/77 (src/app/free/linkedin) */
+  linkedin?: LinkedinDemoKind;
 };
 
 export type DropAbout = {
@@ -431,7 +434,104 @@ const TV_POST = "https://x.com/gathint/status/2111379569030939102";
 // free/76: the Trader skill (README.md, the SKILL.md files and the test fixtures of the repo). The same address as src/app/free/trader/data.ts; a test keeps them equal.
 const TRADER_REPO = "https://github.com/Jakeschincariol/trader-skill";
 
+// free/77: the LinkedIn agent skill (README.md, templates/voice.md and the li-human, li-post and li-profile data files of the repo). The same address as src/app/free/linkedin/data.ts; a test keeps them equal.
+const LINKEDIN_REPO = "https://github.com/Jakeschincariol/linkedin-agent-skill";
+
 const drops: FreeDrop[] = [
+  {
+    number: 77,
+    slug: "77-linkedin-agent",
+    title: "The LinkedIn agent skill: 11 Claude skills, the install, a humanizer you can test and the 100-point profile score",
+    description:
+      "A free, MIT pack of 11 Claude skills by Jake Schincariol that writes your LinkedIn posts, comments, replies and DMs, plans the week and scores your profile out of 100. Every draft goes through a humanizer that strips em dashes, stock words and invisible characters, then scores it on five checks. It writes; you post. Install it, score a draft in your browser with the same rules as detect.py, tick the profile rubric, and read the fine print.",
+    date: "2026-11-24",
+    keyword: "NETWORK",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "The LinkedIn agent skill",
+        what: "11 Claude skills that run a LinkedIn account: posts off 21 hook formulas, comments, replies, a 100-point profile score, the week's plan and a humanizer with a five-check panel. Free, MIT, no signup, no API key. It never posts for you.",
+        href: LINKEDIN_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "The LinkedIn agent skill is a free, MIT-licensed pack of 11 Claude skills made by ",
+        { text: "Jake Schincariol", href: "https://opusjake.ai" },
+        ". No signup, no API key, nothing to connect: each skill writes, and you paste what it wrote. This page is the guide from the reel: what the eleven do, the three ways to install them and the voice file they all read, the humanizer's five checks as a panel you can paste your own text into, the 100-point profile rubric, and the fine print. ",
+        { text: "Open the repo", href: LINKEDIN_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: eleven skills",
+          text: [
+            "Each skill is a slash command with one job: posts, comments on other people's posts, the replies under yours, the profile, the week's plan, carousels, repurposing, DMs, the inbox, a post-mortem, and the humanizer that every draft goes through. All of them read one file about you, voice.md. Tap a skill in the figure for the README's line on it; under /li-post are the 21 hook formulas it writes from.",
+          ],
+          bullets: [
+            "Free, MIT, no signup, no API key, nothing to connect.",
+            "The skills only write. Nothing is sent to LinkedIn by any of them (chapter 5).",
+          ],
+          linkedin: "eleven",
+        },
+        {
+          title: "Install it, then fill in voice.md",
+          text: [
+            "The README gives three routes: paste the repo link into Claude with one line, clone it and copy the skill folders into ~/.claude/skills/, or add it as a plugin in Claude Code. Then the step it asks you not to skip: voice.md.",
+            "Then spend ten minutes on templates/voice.md. Copy it to ~/.claude/linkedin/voice.md and fill it in, or paste three of your own posts into Claude and say \"write my voice.md from these\". Every skill reads that file. Skip it and everything comes out sounding like everyone else.",
+          ],
+          bullets: [
+            "Project-local instead of global: copy the same folders into your repo's .claude/skills/.",
+            "No Claude Code at all? A single SKILL.md pasted at the top of a chat runs as a mode, without the two Python tools.",
+          ],
+          linkedin: "install",
+        },
+        {
+          title: "The humanizer: five checks",
+          text: [
+            "/li-human ships two Python scripts with no dependencies. humanize.py cleans a draft: it deletes invisible characters (zero-width spaces, joiners, soft hyphens, byte-order marks, tag characters, hard spaces), turns em dashes, curly quotes and ellipses into plain typing, and swaps 113 stock words and phrases from slop.json for plain English. detect.py then scores what is left on five checks, each 0 to 100, higher is more human.",
+            "Sentence shapes such as rule-of-three triads, one-word rhetorical questions and hashtag walls are flagged, not fixed: the README leaves those rewrites to you. Paste a draft into the figure; it runs the same five checks, with the same lexicon, in your browser.",
+          ],
+          bullets: [
+            "HUMAN SCORE = 60% the mean of the five + 40% the weakest one. PASS needs 70 or more and no check under 55; REVIEW is 50 or more; under that is FLAGGED.",
+            ["In a terminal: ", { code: "python3 humanize.py draft.txt --report" }, " to clean, ", { code: "python3 detect.py draft.txt" }, " to score, ", { code: "python3 detect.py before.txt after.txt" }, " to compare two drafts."],
+          ],
+          linkedin: "humanizer",
+        },
+        {
+          title: "The 100-point profile score",
+          text: [
+            "/li-profile scores a profile against rubric.json: twelve items, each with what full marks looks like, adding up to 100. Then it rewrites the parts that lost points, the biggest loss first, and hands each one back as a block you paste in yourself. Tick the items your profile already gets full marks on to see your total and what to fix first.",
+          ],
+          bullets: ["The rubric's own note: most first-pass profiles land in the 30s and 40s.", "The skill asks you to paste your profile, or a screenshot of the top card. It does not log in to LinkedIn for you."],
+          linkedin: "profile",
+        },
+        {
+          title: "The fine print",
+          text: [
+            "Nothing gets posted until you say yes. These skills write. You post.",
+            "That line is the README's, and it is the design rather than a setting: there is no official API for posting to a personal profile, and automating the site breaks LinkedIn's User Agreement. Say yes in the figure to see where the work stops, then read the README's four paragraphs.",
+          ],
+          linkedin: "fineprint",
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md, templates/voice.md, skills/li-human/detect.py and slop.json, skills/li-post/hooks.json and skills/li-profile/rubric.json. The repo changes, so check it for the current steps.",
+        "The humanizer figure runs a TypeScript copy of detect.py with the repo's slop.json. On the reel's draft it gives the same 15.0 FLAGGED as the Python script. Like detect.py, it is a local heuristic: it is not GPTZero, Originality or any other detector, and nothing you type leaves the page.",
+        "This page is not affiliated with the repo's author, Anthropic or LinkedIn. The five figures are drawn for this page; the commands, quoted lines, lexicon, hooks and rubric are the repo's own (MIT).",
+        [
+          "Source: ",
+          { text: "github.com/Jakeschincariol/linkedin-agent-skill", href: LINKEDIN_REPO },
+          " · made by ",
+          { text: "Jake Schincariol", href: "https://opusjake.ai" },
+          " · the author's write-up: ",
+          { text: "opusjake.ai/r/linkedin-agent", href: "https://opusjake.ai/r/linkedin-agent" },
+        ],
+      ],
+    },
+  },
   {
     number: 76,
     slug: "76-trader-skill",
