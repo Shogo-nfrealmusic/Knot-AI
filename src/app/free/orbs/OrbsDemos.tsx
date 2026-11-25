@@ -188,7 +188,9 @@ function OrbCanvas({
     let last = performance.now();
     const tick = (now: number) => {
       // the speed slider scales the clock's rate, so moving it never jumps the orb to another phase
-      clock.current += Math.min(0.1, (now - last) / 1000);
+      // rAF's timestamp can be a little earlier than the performance.now() taken before it: never let the clock run
+      // backwards, or "shaping" (morph) gets a negative t, indexes CYCLE[-1] and throws, which stops its loop for good
+      clock.current += Math.max(0, Math.min(0.1, (now - last) / 1000));
       last = now;
       draw(clock.current);
       raf = requestAnimationFrame(tick);

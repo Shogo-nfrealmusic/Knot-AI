@@ -112,7 +112,7 @@ export const REST_SECONDS = 1.5;
 
 /** The engine's time for a frame: wall seconds × the preset's baked speed × the speed prop. */
 export function orbTime(seconds: number, presetSpeed: number, speed: number): number {
-  return seconds * presetSpeed * speed;
+  return Math.max(0, seconds) * presetSpeed * speed; // the engine expects t ≥ 0 (morph indexes its shape cycle by t)
 }
 
 /** LICENSE: the one condition of the MIT licence, verbatim. */
