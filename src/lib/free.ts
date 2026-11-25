@@ -27,6 +27,7 @@ import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
 import type { TvDemoKind } from "@/app/free/tv/TvDemos";
 import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
 import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
+import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
 
 export type ToolIcon =
   | "palette"
@@ -193,6 +194,8 @@ export type DropChapter = {
   trader?: TraderDemoKind;
   /** a live figure drawn for /free/77 (src/app/free/linkedin) */
   linkedin?: LinkedinDemoKind;
+  /** a live figure drawn for /free/78 (src/app/free/orbs) */
+  orbs?: OrbsDemoKind;
 };
 
 export type DropAbout = {
@@ -437,7 +440,115 @@ const TRADER_REPO = "https://github.com/Jakeschincariol/trader-skill";
 // free/77: the LinkedIn agent skill (README.md, templates/voice.md and the li-human, li-post and li-profile data files of the repo). The same address as src/app/free/linkedin/data.ts; a test keeps them equal.
 const LINKEDIN_REPO = "https://github.com/Jakeschincariol/linkedin-agent-skill";
 
+// free/78: Thinking Orbs (README.md and LICENSE of the repo, npm thinking-orbs 0.3.2). The same address as src/app/free/orbs/data.ts; a test keeps them equal.
+const ORBS_REPO = "https://github.com/Jakubantalik/thinking-orbs";
+const ORBS_AUTHOR = "https://github.com/Jakubantalik";
+
 const drops: FreeDrop[] = [
+  {
+    number: 78,
+    slug: "78-thinking-orbs",
+    title: "Thinking Orbs: nine dotted \"the AI is working\" animations, a playground, and the prompt to add them",
+    description:
+      "A free, MIT React component by Jakub Antalik: nine animated loading orbs for AI and agent UIs (searching, solving, listening, composing and five more), each tuned at two sizes and drawn on a plain 2D canvas. Play with the real engine, install it with one line, pick the state for what your agent is doing, and paste one prompt into Claude Code to add it to your app.",
+    date: "2026-11-25",
+    keyword: "ORBS",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "Thinking Orbs",
+        what: "Dotted thought-orb loading indicators for AI and agent UIs: nine animated states, two tuned sizes, auto light or dark, plain 2D canvas with no WebGL. One React component. Free, MIT.",
+        href: ORBS_REPO,
+        icon: "brain",
+        install: ["npm install thinking-orbs"],
+      },
+    ],
+    about: {
+      intro: [
+        "Thinking Orbs is a free, MIT-licensed React component made by ",
+        { text: "Jakub Antalik", href: ORBS_AUTHOR },
+        ". It draws the small dotted orbs that show an AI is busy, with a different animation for each thing it can be busy with. This page is the guide from the reel: the nine states, a playground that runs the component's own engine, the install, which state to show when, a prompt that adds it to your app, and what the licence lets you do. ",
+        { text: "Open the repo", href: ORBS_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: nine states, two sizes",
+          text: [
+            "In the README's words: \"Dotted thought-orb loading indicators for AI & agent UIs. Nine hand-tuned animated states, each shipped at two purpose-tuned sizes, rendered on a plain 2D canvas — no WebGL, no filters, works identically in Chrome, Safari and Firefox.\"",
+            "Each state is a verb an agent can be doing. All nine are running below; tap one for the README's note on it.",
+          ],
+          bullets: [
+            "Two sizes, and they are separate designs rather than one drawing scaled: 64 for chat-avatar scale, 20 for inline-text scale. Each has its own dot count, dot size and speed.",
+            "Strictly monochrome. theme=\"auto\" (the default) picks dark dots on a light page and light dots on a dark one, from a data-theme attribute, a dark or light class, or the system setting.",
+          ],
+          orbs: "nine",
+        },
+        {
+          title: "Try it: the real engine in your browser",
+          text: [
+            "The playground draws with the component's own engine, copied unchanged from the repo (MIT): pick a state, switch between the two tuned sizes, change the speed, flip the page between light and dark, and turn on Reduce motion to see it stop on one frame. The line under it is the JSX for what you set.",
+          ],
+          bullets: [
+            "Other props: speed (a multiplier on the preset's own speed), paused (freeze on the current frame) and aria-label (it has a sensible one per state already). Any other canvas prop, such as className or style, passes through.",
+            "Built to be cheap: each orb pauses when it scrolls offscreen or the tab is hidden, all of them share one clock, and the pixel ratio is capped at 2. With prefers-reduced-motion it shows a still frame instead of the animation.",
+          ],
+          orbs: "playground",
+        },
+        {
+          title: "Install it",
+          text: ["One package, one component, one prop for the state. In a React project:"],
+          commands: ["npm install thinking-orbs"],
+          code: [
+            {
+              label: "Quick start (from the README)",
+              body: `import { ThinkingOrb } from 'thinking-orbs';
+
+function Status() {
+  return <ThinkingOrb state="searching" size={64} />;
+}`,
+            },
+          ],
+        },
+        {
+          title: "Pick a state by what your agent is doing",
+          text: [
+            "The point of nine states is that the orb tells people what is happening, not just that something is. Match the state to the work: a search shows searching, a tool call shows connecting, writing shows composing. Tap an activity to see the orb and a status line next to it, at both sizes.",
+          ],
+          bullets: ["This mapping is this page's suggestion, not a rule from the repo. working is the general-purpose one when nothing else fits."],
+          orbs: "pick",
+        },
+        {
+          title: "Ask Claude Code to add it to your app",
+          text: [
+            "Tick what your AI does, copy the prompt, and paste it into Claude Code (or any coding agent) in your project. It asks for the install, the right state in each place, both sizes, and an aria-label, then a diff for you to check.",
+          ],
+          orbs: "prompt",
+        },
+        {
+          title: "The licence: MIT",
+          text: [
+            "MIT means you can use it, change it and ship it, in a paid product too, without asking. The one thing it asks: keep the copyright notice and the permission notice in your copies. The package already carries its LICENSE file, so installing it from npm does that for you; if you copy the source into your own repo, copy the LICENSE file with it, as this site does.",
+          ],
+          bullets: ["The software comes \"as is\", without warranty, as every MIT licence says."],
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md and LICENSE, and the npm package thinking-orbs (version 0.3.2 is the latest at the time of writing). The repo changes, so check it for the current props.",
+        "The figures on this page run the repo's own engine (src/engine and src/presets.ts at commit de85557, version 0.3.1), copied unchanged with its MIT licence. The React wrapper around it is this site's, not the package's, so the still frame under Reduce motion is this page's pick, not necessarily the one the component shows.",
+        "This page is not affiliated with Jakub Antalik or Anthropic. The state-to-activity mapping and the prompt are this page's; the tagline, the state notes, the install line and the Quick start are the README's.",
+        [
+          "Source: ",
+          { text: "github.com/Jakubantalik/thinking-orbs", href: ORBS_REPO },
+          " · npm: ",
+          { text: "thinking-orbs", href: "https://www.npmjs.com/package/thinking-orbs" },
+          " · the author's live demo: ",
+          { text: "orbs.jakubantalik.com", href: "https://orbs.jakubantalik.com" },
+        ],
+      ],
+    },
+  },
   {
     number: 77,
     slug: "77-linkedin-agent",

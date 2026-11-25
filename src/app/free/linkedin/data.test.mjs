@@ -293,7 +293,9 @@ test("/free/77 opens the LinkedIn agent page with the reel's keyword", () => {
   assert.equal(drop?.slug, "77-linkedin-agent");
   assert.equal(drop?.keyword, "NETWORK");
   assert.ok(getDrops().some((d) => d.number === 77));
-  assert.equal(getDrops()[0].number, 77);
+  // newest first: 77 is listed before 76 (it was first until /free/78 went on top)
+  const order = getDrops().map((d) => d.number);
+  assert.ok(order.indexOf(77) < order.indexOf(76));
   assert.deepEqual(getDrop("77-linkedin-agent")?.tools.map((t) => t.href), [REPO]);
 });
 
