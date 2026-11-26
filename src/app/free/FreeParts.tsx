@@ -45,6 +45,11 @@ import { GeoDemo } from "@/app/free/geo/GeoDemos";
 import { CloseDemo } from "@/app/free/close/CloseDemos";
 import { GtaDemo } from "@/app/free/gta/GtaDemos";
 import { SpaceDemo } from "@/app/free/space/SpaceDemos";
+import { TvDemo } from "@/app/free/tv/TvDemos";
+import { TraderDemo } from "@/app/free/trader/TraderDemos";
+import { LinkedinDemo } from "@/app/free/linkedin/LinkedinDemos";
+import { OrbsDemo } from "@/app/free/orbs/OrbsDemos";
+import { VibeDemo } from "@/app/free/vibe/VibeDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -341,6 +346,11 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.close ? <CloseDemo kind={chapter.close} /> : null}
                   {chapter.gta ? <GtaDemo kind={chapter.gta} /> : null}
                   {chapter.space ? <SpaceDemo kind={chapter.space} /> : null}
+                  {chapter.tv ? <TvDemo kind={chapter.tv} /> : null}
+                  {chapter.trader ? <TraderDemo kind={chapter.trader} /> : null}
+                  {chapter.linkedin ? <LinkedinDemo kind={chapter.linkedin} /> : null}
+                  {chapter.orbs ? <OrbsDemo kind={chapter.orbs} /> : null}
+                  {chapter.vibe ? <VibeDemo kind={chapter.vibe} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (

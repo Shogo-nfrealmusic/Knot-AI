@@ -25,6 +25,11 @@ import type { GeoDemoKind } from "@/app/free/geo/GeoDemos";
 import type { CloseDemoKind } from "@/app/free/close/CloseDemos";
 import type { GtaDemoKind } from "@/app/free/gta/GtaDemos";
 import type { SpaceDemoKind } from "@/app/free/space/SpaceDemos";
+import type { TvDemoKind } from "@/app/free/tv/TvDemos";
+import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
+import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
+import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
+import type { VibeDemoKind } from "@/app/free/vibe/VibeDemos";
 
 export type ToolIcon =
   | "palette"
@@ -187,6 +192,16 @@ export type DropChapter = {
   gta?: GtaDemoKind;
   /** a live figure drawn for /free/73 (src/app/free/space) */
   space?: SpaceDemoKind;
+  /** a live figure drawn for /free/74 (src/app/free/tv) */
+  tv?: TvDemoKind;
+  /** a live figure drawn for /free/76 (src/app/free/trader) */
+  trader?: TraderDemoKind;
+  /** a live figure drawn for /free/77 (src/app/free/linkedin) */
+  linkedin?: LinkedinDemoKind;
+  /** a live figure drawn for /free/78 (src/app/free/orbs) */
+  orbs?: OrbsDemoKind;
+  /** a live figure drawn for /free/79 (src/app/free/vibe) */
+  vibe?: VibeDemoKind;
 };
 
 export type DropAbout = {
@@ -424,7 +439,517 @@ const MC_SOURCE =
 const SPACE_NOTES = "https://help.openai.com/en/articles/6825453-chatgpt-release-notes";
 const SPACE_POST = "https://x.com/ChatGPT/status/2123850912867471807";
 
+// free/74: CleanYourTV (README.md, PROMPT.md and tools/restore.sh read on Nov 22, 2026). The same address as src/app/free/tv/data.ts; a test keeps them equal.
+const TV_REPO = "https://github.com/Gathin23/cleanyourtv";
+const TV_POST = "https://x.com/gathint/status/2111379569030939102";
+
+// free/76: the Trader skill (README.md, the SKILL.md files and the test fixtures of the repo). The same address as src/app/free/trader/data.ts; a test keeps them equal.
+const TRADER_REPO = "https://github.com/Jakeschincariol/trader-skill";
+
+// free/77: the LinkedIn agent skill (README.md, templates/voice.md and the li-human, li-post and li-profile data files of the repo). The same address as src/app/free/linkedin/data.ts; a test keeps them equal.
+const LINKEDIN_REPO = "https://github.com/Jakeschincariol/linkedin-agent-skill";
+
+// free/78: Thinking Orbs (README.md and LICENSE of the repo, npm thinking-orbs 0.3.2). The same address as src/app/free/orbs/data.ts; a test keeps them equal.
+const ORBS_REPO = "https://github.com/Jakubantalik/thinking-orbs";
+const ORBS_AUTHOR = "https://github.com/Jakubantalik";
+
+// free/79: four plugins to install before you vibe code (READMEs read on Nov 26, 2026). The same four addresses as src/app/free/vibe/data.ts; a test keeps them equal.
+const VB_SUPABASE = "https://github.com/supabase-community/supabase-plugin";
+const VB_VERCEL = "https://github.com/vercel/vercel-plugin";
+const VB_OMC = "https://github.com/Yeachan-Heo/oh-my-claudecode";
+const VB_CDT = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
+
 const drops: FreeDrop[] = [
+  {
+    number: 79,
+    slug: "79-vibe-coding-plugins",
+    title: "4 plugins to install in Claude Code before you vibe code: Supabase, Vercel, Oh My Claude Code and Chrome DevTools",
+    description:
+      "Four add-ons that give Claude Code the jobs vibe coding skips: your Supabase database from the chat, a Vercel deploy without leaving the terminal, a team of agents on one task, and a real Chrome it can open to check what it built. Plug them into the strip, copy each install line as its README writes it, and read what to know first.",
+    date: "2026-11-26",
+    keyword: "CODING",
+    kind: "4 plugins",
+    tools: [
+      {
+        name: "Supabase",
+        what: "Supabase's official plugin: the Supabase MCP server to manage your projects, databases and Edge Functions, plus two skills for Supabase and Postgres guidance.",
+        href: VB_SUPABASE,
+        icon: "cpu",
+      },
+      {
+        name: "Vercel",
+        what: "Vercel's plugin: 40 skills, 3 specialist agents and 4 commands, including /vercel-plugin:deploy for a preview or production deploy. Apache-2.0.",
+        href: VB_VERCEL,
+        icon: "cube",
+      },
+      {
+        name: "Oh My Claude Code",
+        what: "Multi-agent orchestration for Claude Code: 19 specialized agents and a /team command that runs one task as a staged pipeline. MIT.",
+        href: VB_OMC,
+        icon: "council",
+      },
+      {
+        name: "Chrome DevTools MCP",
+        what: "Chrome DevTools for agents, from the Chrome DevTools team: it opens a live Chrome and reads the console, the network requests, screenshots and performance traces. Apache-2.0.",
+        href: VB_CDT,
+        icon: "browser",
+      },
+    ],
+    about: {
+      intro: [
+        "Vibe coding gets the code written. These four give Claude Code the jobs around it: a database it can read and change, a deploy it can run, a team to split the work, and a browser to check the result. Each section has the install line as its source writes it, a small figure of what it does, and what its README says to know first. Read from the four repos and Anthropic's plugin marketplace on 2026-11-26.",
+      ],
+      chaptersLabel: "The four",
+      chapters: [
+        {
+          title: "Plug them in",
+          text: [
+            "Tap a plug to push it into Claude Code. Its card opens under the strip with the line to paste, and the full section for each is further down, in the reel's order.",
+          ],
+          bullets: [
+            "Three of the four are listed in Anthropic's official plugin marketplace. Oh My Claude Code is not: it installs from the author's own marketplace.",
+            "Lines that start with /plugin go into Claude Code. The Vercel line goes into your terminal.",
+          ],
+          vibe: "strip",
+        },
+        {
+          title: "Supabase: your database, from the chat",
+          text: [
+            [
+              { text: "Supabase's plugin", href: VB_SUPABASE },
+              " connects Claude Code to the Supabase MCP server, so it can run SQL, apply migrations, generate your TypeScript types and ask for Supabase's advice on your project. Pick a tool in the figure to see the call travel and what comes back.",
+            ],
+          ],
+          vibe: "supabase",
+        },
+        {
+          title: "Vercel: deploy without leaving the terminal",
+          text: [
+            [
+              { text: "Vercel's plugin", href: VB_VERCEL },
+              " adds Vercel's skills and four commands. The one you will use most is /vercel-plugin:deploy, for a preview or for production. Pick one in the figure and run it.",
+            ],
+          ],
+          vibe: "vercel",
+        },
+        {
+          title: "Oh My Claude Code: a team instead of one agent",
+          text: [
+            [
+              { text: "Oh My Claude Code", href: VB_OMC },
+              ", by Yeachan Heo, turns one request into a team run. The README's example sends three executor agents at every TypeScript error, through a staged pipeline: team-plan, team-prd, team-exec, team-verify, and team-fix in a loop. Run it in the figure.",
+            ],
+          ],
+          vibe: "omc",
+        },
+        {
+          title: "Chrome DevTools: let it see the page it built",
+          text: [
+            [
+              { text: "Chrome DevTools for agents", href: VB_CDT },
+              ", from the Chrome DevTools team at Google, gives Claude Code a live Chrome to open your app in. It reads the console, the network requests, a screenshot and a performance trace, so it can check its own work instead of asking you what you see. Switch tabs in the figure.",
+            ],
+          ],
+          vibe: "chrome-devtools",
+        },
+      ],
+      notes: [
+        "Read from each repo's README through the GitHub API on 2026-11-26, plus Anthropic's claude-plugins-official README and marketplace.json, and the Supabase MCP server's tool definitions for the four tool names. Check each repo for changes before you install.",
+        "The Supabase line is the official marketplace's /plugin install pattern with the name it lists, supabase, because the plugin's own README prints no line. The other three lines are each README's own.",
+        "The figures are drawn for this page. The rows, the deploy, the team run and the page in the browser are illustrations; the tool names, commands, stages and feature lines in them are the sources' own.",
+        "This page is not affiliated with Anthropic, Supabase, Vercel, Google or Yeachan Heo.",
+        [
+          "Sources: ",
+          { text: "supabase-community/supabase-plugin", href: VB_SUPABASE },
+          " · ",
+          { text: "vercel/vercel-plugin", href: VB_VERCEL },
+          " · ",
+          { text: "Yeachan-Heo/oh-my-claudecode", href: VB_OMC },
+          " · ",
+          { text: "ChromeDevTools/chrome-devtools-mcp", href: VB_CDT },
+          " · ",
+          { text: "anthropics/claude-plugins-official", href: "https://github.com/anthropics/claude-plugins-official" },
+        ],
+      ],
+    },
+  },
+  {
+    number: 78,
+    slug: "78-thinking-orbs",
+    title: "Thinking Orbs: nine dotted \"the AI is working\" animations, a playground, and the prompt to add them",
+    description:
+      "A free, MIT React component by Jakub Antalik: nine animated loading orbs for AI and agent UIs (searching, solving, listening, composing and five more), each tuned at two sizes and drawn on a plain 2D canvas. Play with the real engine, install it with one line, pick the state for what your agent is doing, and paste one prompt into Claude Code to add it to your app.",
+    date: "2026-11-25",
+    keyword: "ORBS",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "Thinking Orbs",
+        what: "Dotted thought-orb loading indicators for AI and agent UIs: nine animated states, two tuned sizes, auto light or dark, plain 2D canvas with no WebGL. One React component. Free, MIT.",
+        href: ORBS_REPO,
+        icon: "brain",
+        install: ["npm install thinking-orbs"],
+      },
+    ],
+    about: {
+      intro: [
+        "Thinking Orbs is a free, MIT-licensed React component made by ",
+        { text: "Jakub Antalik", href: ORBS_AUTHOR },
+        ". It draws the small dotted orbs that show an AI is busy, with a different animation for each thing it can be busy with. This page is the guide from the reel: the nine states, a playground that runs the component's own engine, the install, which state to show when, a prompt that adds it to your app, and what the licence lets you do. ",
+        { text: "Open the repo", href: ORBS_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: nine states, two sizes",
+          text: [
+            "In the README's words: \"Dotted thought-orb loading indicators for AI & agent UIs. Nine hand-tuned animated states, each shipped at two purpose-tuned sizes, rendered on a plain 2D canvas — no WebGL, no filters, works identically in Chrome, Safari and Firefox.\"",
+            "Each state is a verb an agent can be doing. All nine are running below; tap one for the README's note on it.",
+          ],
+          bullets: [
+            "Two sizes, and they are separate designs rather than one drawing scaled: 64 for chat-avatar scale, 20 for inline-text scale. Each has its own dot count, dot size and speed.",
+            "Strictly monochrome. theme=\"auto\" (the default) picks dark dots on a light page and light dots on a dark one, from a data-theme attribute, a dark or light class, or the system setting.",
+          ],
+          orbs: "nine",
+        },
+        {
+          title: "Try it: the real engine in your browser",
+          text: [
+            "The playground draws with the component's own engine, copied unchanged from the repo (MIT): pick a state, switch between the two tuned sizes, change the speed, flip the page between light and dark, and turn on Reduce motion to see it stop on one frame. The line under it is the JSX for what you set.",
+          ],
+          bullets: [
+            "Other props: speed (a multiplier on the preset's own speed), paused (freeze on the current frame) and aria-label (it has a sensible one per state already). Any other canvas prop, such as className or style, passes through.",
+            "Built to be cheap: each orb pauses when it scrolls offscreen or the tab is hidden, all of them share one clock, and the pixel ratio is capped at 2. With prefers-reduced-motion it shows a still frame instead of the animation.",
+          ],
+          orbs: "playground",
+        },
+        {
+          title: "Install it",
+          text: ["One package, one component, one prop for the state. In a React project:"],
+          commands: ["npm install thinking-orbs"],
+          code: [
+            {
+              label: "Quick start (from the README)",
+              body: `import { ThinkingOrb } from 'thinking-orbs';
+
+function Status() {
+  return <ThinkingOrb state="searching" size={64} />;
+}`,
+            },
+          ],
+        },
+        {
+          title: "Pick a state by what your agent is doing",
+          text: [
+            "The point of nine states is that the orb tells people what is happening, not just that something is. Match the state to the work: a search shows searching, a tool call shows connecting, writing shows composing. Tap an activity to see the orb and a status line next to it, at both sizes.",
+          ],
+          bullets: ["This mapping is this page's suggestion, not a rule from the repo. working is the general-purpose one when nothing else fits."],
+          orbs: "pick",
+        },
+        {
+          title: "Ask Claude Code to add it to your app",
+          text: [
+            "Tick what your AI does, copy the prompt, and paste it into Claude Code (or any coding agent) in your project. It asks for the install, the right state in each place, both sizes, and an aria-label, then a diff for you to check.",
+          ],
+          orbs: "prompt",
+        },
+        {
+          title: "The licence: MIT",
+          text: [
+            "MIT means you can use it, change it and ship it, in a paid product too, without asking. The one thing it asks: keep the copyright notice and the permission notice in your copies. The package already carries its LICENSE file, so installing it from npm does that for you; if you copy the source into your own repo, copy the LICENSE file with it, as this site does.",
+          ],
+          bullets: ["The software comes \"as is\", without warranty, as every MIT licence says."],
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md and LICENSE, and the npm package thinking-orbs (version 0.3.2 is the latest at the time of writing). The repo changes, so check it for the current props.",
+        "The figures on this page run the repo's own engine (src/engine and src/presets.ts at commit de85557, version 0.3.1), copied unchanged with its MIT licence. The React wrapper around it is this site's, not the package's, so the still frame under Reduce motion is this page's pick, not necessarily the one the component shows.",
+        "This page is not affiliated with Jakub Antalik or Anthropic. The state-to-activity mapping and the prompt are this page's; the tagline, the state notes, the install line and the Quick start are the README's.",
+        [
+          "Source: ",
+          { text: "github.com/Jakubantalik/thinking-orbs", href: ORBS_REPO },
+          " · npm: ",
+          { text: "thinking-orbs", href: "https://www.npmjs.com/package/thinking-orbs" },
+          " · the author's live demo: ",
+          { text: "orbs.jakubantalik.com", href: "https://orbs.jakubantalik.com" },
+        ],
+      ],
+    },
+  },
+  {
+    number: 77,
+    slug: "77-linkedin-agent",
+    title: "The LinkedIn agent skill: 11 Claude skills, the install, a humanizer you can test and the 100-point profile score",
+    description:
+      "A free, MIT pack of 11 Claude skills by Jake Schincariol that writes your LinkedIn posts, comments, replies and DMs, plans the week and scores your profile out of 100. Every draft goes through a humanizer that strips em dashes, stock words and invisible characters, then scores it on five checks. It writes; you post. Install it, score a draft in your browser with the same rules as detect.py, tick the profile rubric, and read the fine print.",
+    date: "2026-11-24",
+    keyword: "NETWORK",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "The LinkedIn agent skill",
+        what: "11 Claude skills that run a LinkedIn account: posts off 21 hook formulas, comments, replies, a 100-point profile score, the week's plan and a humanizer with a five-check panel. Free, MIT, no signup, no API key. It never posts for you.",
+        href: LINKEDIN_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "The LinkedIn agent skill is a free, MIT-licensed pack of 11 Claude skills made by ",
+        { text: "Jake Schincariol", href: "https://opusjake.ai" },
+        ". No signup, no API key, nothing to connect: each skill writes, and you paste what it wrote. This page is the guide from the reel: what the eleven do, the three ways to install them and the voice file they all read, the humanizer's five checks as a panel you can paste your own text into, the 100-point profile rubric, and the fine print. ",
+        { text: "Open the repo", href: LINKEDIN_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: eleven skills",
+          text: [
+            "Each skill is a slash command with one job: posts, comments on other people's posts, the replies under yours, the profile, the week's plan, carousels, repurposing, DMs, the inbox, a post-mortem, and the humanizer that every draft goes through. All of them read one file about you, voice.md. Tap a skill in the figure for the README's line on it; under /li-post are the 21 hook formulas it writes from.",
+          ],
+          bullets: [
+            "Free, MIT, no signup, no API key, nothing to connect.",
+            "The skills only write. Nothing is sent to LinkedIn by any of them (chapter 5).",
+          ],
+          linkedin: "eleven",
+        },
+        {
+          title: "Install it, then fill in voice.md",
+          text: [
+            "The README gives three routes: paste the repo link into Claude with one line, clone it and copy the skill folders into ~/.claude/skills/, or add it as a plugin in Claude Code. Then the step it asks you not to skip: voice.md.",
+            "Then spend ten minutes on templates/voice.md. Copy it to ~/.claude/linkedin/voice.md and fill it in, or paste three of your own posts into Claude and say \"write my voice.md from these\". Every skill reads that file. Skip it and everything comes out sounding like everyone else.",
+          ],
+          bullets: [
+            "Project-local instead of global: copy the same folders into your repo's .claude/skills/.",
+            "No Claude Code at all? A single SKILL.md pasted at the top of a chat runs as a mode, without the two Python tools.",
+          ],
+          linkedin: "install",
+        },
+        {
+          title: "The humanizer: five checks",
+          text: [
+            "/li-human ships two Python scripts with no dependencies. humanize.py cleans a draft: it deletes invisible characters (zero-width spaces, joiners, soft hyphens, byte-order marks, tag characters, hard spaces), turns em dashes, curly quotes and ellipses into plain typing, and swaps 113 stock words and phrases from slop.json for plain English. detect.py then scores what is left on five checks, each 0 to 100, higher is more human.",
+            "Sentence shapes such as rule-of-three triads, one-word rhetorical questions and hashtag walls are flagged, not fixed: the README leaves those rewrites to you. Paste a draft into the figure; it runs the same five checks, with the same lexicon, in your browser.",
+          ],
+          bullets: [
+            "HUMAN SCORE = 60% the mean of the five + 40% the weakest one. PASS needs 70 or more and no check under 55; REVIEW is 50 or more; under that is FLAGGED.",
+            ["In a terminal: ", { code: "python3 humanize.py draft.txt --report" }, " to clean, ", { code: "python3 detect.py draft.txt" }, " to score, ", { code: "python3 detect.py before.txt after.txt" }, " to compare two drafts."],
+          ],
+          linkedin: "humanizer",
+        },
+        {
+          title: "The 100-point profile score",
+          text: [
+            "/li-profile scores a profile against rubric.json: twelve items, each with what full marks looks like, adding up to 100. Then it rewrites the parts that lost points, the biggest loss first, and hands each one back as a block you paste in yourself. Tick the items your profile already gets full marks on to see your total and what to fix first.",
+          ],
+          bullets: ["The rubric's own note: most first-pass profiles land in the 30s and 40s.", "The skill asks you to paste your profile, or a screenshot of the top card. It does not log in to LinkedIn for you."],
+          linkedin: "profile",
+        },
+        {
+          title: "The fine print",
+          text: [
+            "Nothing gets posted until you say yes. These skills write. You post.",
+            "That line is the README's, and it is the design rather than a setting: there is no official API for posting to a personal profile, and automating the site breaks LinkedIn's User Agreement. Say yes in the figure to see where the work stops, then read the README's four paragraphs.",
+          ],
+          linkedin: "fineprint",
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md, templates/voice.md, skills/li-human/detect.py and slop.json, skills/li-post/hooks.json and skills/li-profile/rubric.json. The repo changes, so check it for the current steps.",
+        "The humanizer figure runs a TypeScript copy of detect.py with the repo's slop.json. On the reel's draft it gives the same 15.0 FLAGGED as the Python script. Like detect.py, it is a local heuristic: it is not GPTZero, Originality or any other detector, and nothing you type leaves the page.",
+        "This page is not affiliated with the repo's author, Anthropic or LinkedIn. The five figures are drawn for this page; the commands, quoted lines, lexicon, hooks and rubric are the repo's own (MIT).",
+        [
+          "Source: ",
+          { text: "github.com/Jakeschincariol/linkedin-agent-skill", href: LINKEDIN_REPO },
+          " · made by ",
+          { text: "Jake Schincariol", href: "https://opusjake.ai" },
+          " · the author's write-up: ",
+          { text: "opusjake.ai/r/linkedin-agent", href: "https://opusjake.ai/r/linkedin-agent" },
+        ],
+      ],
+    },
+  },
+  {
+    number: 76,
+    slug: "76-trader-skill",
+    title: "The Trader skill: 11 Claude skills, the install, a $5,000 Berkshire copy and the Pelosi tracker",
+    description:
+      "A free, MIT pack of 11 Claude skills by Jake Schincariol: copy an investor from their 13F, size it to your budget, check every order against your limits, and read Congress's stock-trade disclosures. No signup, no API key, and no order without your yes. Install it, try the sizer, read one real disclosure, and the fine print.",
+    date: "2026-11-23",
+    keyword: "TRADE",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "The Trader skill",
+        what: "11 Claude skills that copy the investors you trust, watch the news and Congress, size every trade to your budget, and never place an order without your yes. Free, MIT, no signup, no API key.",
+        href: TRADER_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "The Trader skill is a free, MIT-licensed pack of 11 Claude skills made by ",
+        { text: "Jake Schincariol", href: "https://opusjake.ai" },
+        ". The tools are plain Python that read public data: SEC EDGAR, the House Clerk, news feeds. Nothing in the pack can place an order on its own, and paper trading is the default. This page is the guide from the reel: what the eleven do, how to install them, the README's $5,000 Berkshire example as a sizer you can move, one real Congress disclosure, and the fine print. ",
+        { text: "Open the repo", href: TRADER_REPO },
+        ".",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "What it is: eleven skills",
+          text: [
+            "Each skill is a slash command with one job, and everything lands in a trader/ folder in your project, where each skill reads what the last one wrote. Pick a way of working in the figure to see which skills it chains, and tap any skill for the README's line on it.",
+          ],
+          bullets: [
+            "Free, MIT, no signup, no API key. The data tools read public endpoints: SEC EDGAR, the House Clerk, news RSS and Yahoo Finance's chart endpoint (unofficial, and it can change).",
+            "SEC asks every script to identify itself, so you put your own name and email in trader/config.json or the SEC_USER_AGENT environment variable.",
+          ],
+          trader: "eleven",
+        },
+        {
+          title: "Install it",
+          text: [
+            "The README gives three routes. Paste the repo link into Claude with \"install skill\"; or add it as a plugin in Claude Code; or clone it and copy the folders into ~/.claude/skills/ if you want the plain command names.",
+          ],
+          bullets: [
+            "Project-local instead of global: copy the same folders into your repo's .claude/skills/.",
+            "No Claude Code at all? In the README's words: \"Paste any single SKILL.md at the top of a chat and it runs as a mode. You lose the Python tools, but the method works.\"",
+          ],
+          trader: "install",
+        },
+        {
+          title: "Copy an investor: copycat, budget, risk, broker",
+          text: [
+            "The README's example copies Berkshire Hathaway with $5,000. /trader-copycat reads Berkshire's Q2 2026 13F-HR (filed 2026-08-14) and renormalises the top five to 30.67 / 23.85 / 17.56 / 15.11 / 12.80 %. /trader-budget keeps a 10 % cash buffer and caps any one stock at 25 %. /trader-risk checks every order and says PASS or BLOCK. /trader-broker shows you each ticket and waits for your yes. Move the budget and the same rules run again.",
+          ],
+          trader: "flow",
+        },
+        {
+          title: "The Pelosi tracker",
+          text: [
+            "Members of the House file a Periodic Transaction Report (PTR) for their stock trades, and the House Clerk posts each one as a public PDF. /trader-pelosi reads the Clerk's index, alerts you once per new filing, and turns the PDF into clean rows. Below is one real report the repo keeps as a test fixture: filing 20035143, Hon. Nancy Pelosi.",
+            "Congress's trades are public, not inside information. Members must disclose trades over $1,000 within 45 days (the STOCK Act). The Pelosi skill reads those public filings the minute they post, with the amounts as the ranges they are filed in. It has no access to anything that is not public.",
+          ],
+          trader: "pelosi",
+        },
+        {
+          title: "The fine print",
+          text: [
+            "Read this before you connect a broker. Only /trader-broker can lead to an order, and only after /trader-risk passes that exact order and you say yes to it. Open the three gates in the figure to see when an order goes through, then read the README's own words.",
+          ],
+          trader: "fineprint",
+        },
+      ],
+      notes: [
+        "Not financial advice. This page explains a free tool; it does not recommend any stock, investor or trade.",
+        "Read from the repo's README.md, the SKILL.md files of trader-budget, trader-risk, trader-broker and trader-pelosi, and its test fixtures (Berkshire's Q2 2026 top five and PTR 20035143). The repo changes, so check it for the current steps.",
+        "This page is not affiliated with the repo's author, Anthropic, SEC, the House Clerk or any broker. The five figures are drawn for this page and none of them talks to a broker or to SEC; the commands, numbers, rows and quoted lines are the repo's own (MIT).",
+        ["Source: ", { text: "github.com/Jakeschincariol/trader-skill", href: TRADER_REPO }, " · made by ", { text: "Jake Schincariol", href: "https://opusjake.ai" }],
+      ],
+    },
+  },
+  {
+    number: 74,
+    slug: "74-clean-your-tv",
+    title: "CleanYourTV: which TVs work, what to switch on, the 3 steps and the one-line restore",
+    description:
+      "A free GitHub repo that lets Claude Code switch off your TV's ads, bloatware and tracking over Wi-Fi, then install a clean Apple TV-style home screen. Android TV and Google TV only. Check your TV, see what to switch on first, follow the three steps, and copy the line that puts it all back.",
+    date: "2026-11-22",
+    keyword: "TV",
+    kind: "setup guide",
+    tools: [
+      {
+        name: "CleanYourTV",
+        what: "Debloats an Android TV or Google TV over Wi-Fi and replaces the home screen. Free, MIT. No root, no cable, nothing uninstalled, and a one-line restore.",
+        href: TV_REPO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "CleanYourTV is a free, MIT-licensed repo by Gathin (Gathin23 on GitHub). It began on October 17, 2026, with a post showing a before and after of the author's parents' TV, cleaned up by Claude Code over Wi-Fi. The repo now has over 60,000 stars (60,187 on November 22, 2026) and tested lists for 504 TV models. This page is the guide from the reel: which TVs work, what to switch on first, the three steps, and the one line that puts everything back. ",
+        { text: "Open the repo", href: TV_REPO },
+        ". Read from the repo on 2026-11-22.",
+      ],
+      chaptersLabel: "The guide",
+      chapters: [
+        {
+          title: "Check your TV first",
+          text: [
+            "It works on anything running Android TV or Google TV. It does not work on Samsung, LG, Roku, Vizio or Hisense VIDAA sets, because they have no ADB, the debug bridge the whole thing runs on. Pick what your TV runs.",
+          ],
+          bullets: [
+            [
+              "Not sure what your TV runs? The prompt checks for you. If the TV turns out not to be Android TV or Google TV, the assistant is told to stop and point you to ",
+              { text: "cleanyour.tv/not-android", href: "https://cleanyour.tv/not-android" },
+              ".",
+            ],
+            [
+              "No computer, or no coding assistant? The README links free community apps for Android phones, Mac and Windows at ",
+              { text: "cleanyour.tv/app", href: "https://cleanyour.tv/app" },
+              ". They are independent projects, not made by the repo's author.",
+            ],
+          ],
+          tv: "check",
+        },
+        {
+          title: "Switch this on, on the TV",
+          text: [
+            "Android TVs have the same debug bridge as Android phones. You switch it on once in the TV's developer options, allow your computer once, and the rest happens from the computer. Try the path in the figure, then do it on the real TV.",
+          ],
+          tv: "switch",
+        },
+        {
+          title: "The 3 steps",
+          text: [
+            [
+              "The README's quick start is three steps. The one prompt from the reel is step 2: clone the repo, open that folder in Claude Code, then paste ",
+              { code: "PROMPT.md" },
+              " with your TV model in it.",
+            ],
+          ],
+          bullets: [
+            [
+              "Clone the repo; do not only paste the prompt. In the README's words: “Cloning matters: the assistant reuses this repo's ",
+              { code: "tools/disable.sh" },
+              " and ",
+              { code: "launcher/build-and-install.sh" },
+              " instead of writing its own, and that is where the backup, the Home guard and the restore record live.”",
+            ],
+            "It is not only for Claude Code. The README also names Codex, Gemini CLI, Antigravity CLI and DeepSeek Harness.",
+            "You stay in charge. The prompt tells the assistant to ask before anything that depends on your preferences, and says to expect three or four checklist questions.",
+          ],
+          tv: "steps",
+        },
+        {
+          title: "What changes on the screen",
+          text: [
+            [
+              "Nothing is uninstalled. The manufacturer's telemetry, ad services, content rows and preloaded apps are disabled with ",
+              { code: "pm disable-user" },
+              ", and a small launcher becomes the home screen. These are the README's own before and after photos.",
+            ],
+          ],
+          tv: "home",
+        },
+        {
+          title: "Put it back with one line",
+          text: ["Changed your mind? One line puts the TV back the way it was. Pick your TV, add its IP address, and copy the line."],
+          bullets: [["On Windows, every script has a PowerShell twin next to it, so the restore is ", { code: "tools\\restore.ps1" }, "."]],
+          tv: "restore",
+        },
+      ],
+      notes: [
+        "Read from the repo's README.md, PROMPT.md and tools/restore.sh on 2026-11-22 (commit f63a1eb). The repo changes often, so check it for the current steps.",
+        "This page is not affiliated with the repo's author, Anthropic, Google or any TV maker. The five figures are drawn for this page and none of them talks to a TV; the setting names, commands, numbers, photos and quoted lines are the repo's own (MIT).",
+        "The project's official links are cleanyour.tv and the repo. Its README warns that other domains using the name are not run by the project, and that it publishes no app in any app store.",
+        ["Source: ", { text: "github.com/Gathin23/cleanyourtv", href: TV_REPO }, " · ", { text: "the original post by @gathint, October 17, 2026", href: TV_POST }],
+      ],
+    },
+  },
   {
     number: 73,
     slug: "73-chatgpt-space",
