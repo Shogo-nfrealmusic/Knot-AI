@@ -172,7 +172,9 @@ test("/free/78 opens the Thinking Orbs page with the reel's keyword", () => {
   const drop = getDropByNumber("78");
   assert.equal(drop?.slug, "78-thinking-orbs");
   assert.equal(drop?.keyword, "ORBS");
-  assert.equal(getDrops()[0].number, 78);
+  // newest first: 78 is listed before 77 (it was first until /free/79 went on top)
+  const order = getDrops().map((d) => d.number);
+  assert.ok(order.indexOf(78) < order.indexOf(77));
   assert.deepEqual(getDrop("78-thinking-orbs")?.tools.map((t) => t.href), [REPO]);
 });
 
