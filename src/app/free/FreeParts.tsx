@@ -48,6 +48,7 @@ import { TvDemo } from "@/app/free/tv/TvDemos";
 import { TraderDemo } from "@/app/free/trader/TraderDemos";
 import { LinkedinDemo } from "@/app/free/linkedin/LinkedinDemos";
 import { OrbsDemo } from "@/app/free/orbs/OrbsDemos";
+import { VibeDemo } from "@/app/free/vibe/VibeDemos";
 import { CodeBlock, CommandCopy } from "@/app/free/CodeCopy";
 import { GridPattern } from "@/app/components/ui/grid-pattern-dub";
 import {
@@ -347,6 +348,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.trader ? <TraderDemo kind={chapter.trader} /> : null}
                   {chapter.linkedin ? <LinkedinDemo kind={chapter.linkedin} /> : null}
                   {chapter.orbs ? <OrbsDemo kind={chapter.orbs} /> : null}
+                  {chapter.vibe ? <VibeDemo kind={chapter.vibe} /> : null}
                   {chapter.commands?.length ? (
                     <div className="mt-3 space-y-2">
                       {chapter.commands.map((command) => (

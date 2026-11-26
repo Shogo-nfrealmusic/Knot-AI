@@ -28,6 +28,7 @@ import type { TvDemoKind } from "@/app/free/tv/TvDemos";
 import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
 import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
 import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
+import type { VibeDemoKind } from "@/app/free/vibe/VibeDemos";
 
 export type ToolIcon =
   | "palette"
@@ -196,6 +197,8 @@ export type DropChapter = {
   linkedin?: LinkedinDemoKind;
   /** a live figure drawn for /free/78 (src/app/free/orbs) */
   orbs?: OrbsDemoKind;
+  /** a live figure drawn for /free/79 (src/app/free/vibe) */
+  vibe?: VibeDemoKind;
 };
 
 export type DropAbout = {
@@ -444,7 +447,126 @@ const LINKEDIN_REPO = "https://github.com/Jakeschincariol/linkedin-agent-skill";
 const ORBS_REPO = "https://github.com/Jakubantalik/thinking-orbs";
 const ORBS_AUTHOR = "https://github.com/Jakubantalik";
 
+// free/79: four plugins to install before you vibe code (READMEs read on Nov 26, 2026). The same four addresses as src/app/free/vibe/data.ts; a test keeps them equal.
+const VB_SUPABASE = "https://github.com/supabase-community/supabase-plugin";
+const VB_VERCEL = "https://github.com/vercel/vercel-plugin";
+const VB_OMC = "https://github.com/Yeachan-Heo/oh-my-claudecode";
+const VB_CDT = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
+
 const drops: FreeDrop[] = [
+  {
+    number: 79,
+    slug: "79-vibe-coding-plugins",
+    title: "4 plugins to install in Claude Code before you vibe code: Supabase, Vercel, Oh My Claude Code and Chrome DevTools",
+    description:
+      "Four add-ons that give Claude Code the jobs vibe coding skips: your Supabase database from the chat, a Vercel deploy without leaving the terminal, a team of agents on one task, and a real Chrome it can open to check what it built. Plug them into the strip, copy each install line as its README writes it, and read what to know first.",
+    date: "2026-11-26",
+    keyword: "CODING",
+    kind: "4 plugins",
+    tools: [
+      {
+        name: "Supabase",
+        what: "Supabase's official plugin: the Supabase MCP server to manage your projects, databases and Edge Functions, plus two skills for Supabase and Postgres guidance.",
+        href: VB_SUPABASE,
+        icon: "cpu",
+      },
+      {
+        name: "Vercel",
+        what: "Vercel's plugin: 40 skills, 3 specialist agents and 4 commands, including /vercel-plugin:deploy for a preview or production deploy. Apache-2.0.",
+        href: VB_VERCEL,
+        icon: "cube",
+      },
+      {
+        name: "Oh My Claude Code",
+        what: "Multi-agent orchestration for Claude Code: 19 specialized agents and a /team command that runs one task as a staged pipeline. MIT.",
+        href: VB_OMC,
+        icon: "council",
+      },
+      {
+        name: "Chrome DevTools MCP",
+        what: "Chrome DevTools for agents, from the Chrome DevTools team: it opens a live Chrome and reads the console, the network requests, screenshots and performance traces. Apache-2.0.",
+        href: VB_CDT,
+        icon: "browser",
+      },
+    ],
+    about: {
+      intro: [
+        "Vibe coding gets the code written. These four give Claude Code the jobs around it: a database it can read and change, a deploy it can run, a team to split the work, and a browser to check the result. Each section has the install line as its source writes it, a small figure of what it does, and what its README says to know first. Read from the four repos and Anthropic's plugin marketplace on 2026-11-26.",
+      ],
+      chaptersLabel: "The four",
+      chapters: [
+        {
+          title: "Plug them in",
+          text: [
+            "Tap a plug to push it into Claude Code. Its card opens under the strip with the line to paste, and the full section for each is further down, in the reel's order.",
+          ],
+          bullets: [
+            "Three of the four are listed in Anthropic's official plugin marketplace. Oh My Claude Code is not: it installs from the author's own marketplace.",
+            "Lines that start with /plugin go into Claude Code. The Vercel line goes into your terminal.",
+          ],
+          vibe: "strip",
+        },
+        {
+          title: "Supabase: your database, from the chat",
+          text: [
+            [
+              { text: "Supabase's plugin", href: VB_SUPABASE },
+              " connects Claude Code to the Supabase MCP server, so it can run SQL, apply migrations, generate your TypeScript types and ask for Supabase's advice on your project. Pick a tool in the figure to see the call travel and what comes back.",
+            ],
+          ],
+          vibe: "supabase",
+        },
+        {
+          title: "Vercel: deploy without leaving the terminal",
+          text: [
+            [
+              { text: "Vercel's plugin", href: VB_VERCEL },
+              " adds Vercel's skills and four commands. The one you will use most is /vercel-plugin:deploy, for a preview or for production. Pick one in the figure and run it.",
+            ],
+          ],
+          vibe: "vercel",
+        },
+        {
+          title: "Oh My Claude Code: a team instead of one agent",
+          text: [
+            [
+              { text: "Oh My Claude Code", href: VB_OMC },
+              ", by Yeachan Heo, turns one request into a team run. The README's example sends three executor agents at every TypeScript error, through a staged pipeline: team-plan, team-prd, team-exec, team-verify, and team-fix in a loop. Run it in the figure.",
+            ],
+          ],
+          vibe: "omc",
+        },
+        {
+          title: "Chrome DevTools: let it see the page it built",
+          text: [
+            [
+              { text: "Chrome DevTools for agents", href: VB_CDT },
+              ", from the Chrome DevTools team at Google, gives Claude Code a live Chrome to open your app in. It reads the console, the network requests, a screenshot and a performance trace, so it can check its own work instead of asking you what you see. Switch tabs in the figure.",
+            ],
+          ],
+          vibe: "chrome-devtools",
+        },
+      ],
+      notes: [
+        "Read from each repo's README through the GitHub API on 2026-11-26, plus Anthropic's claude-plugins-official README and marketplace.json, and the Supabase MCP server's tool definitions for the four tool names. Check each repo for changes before you install.",
+        "The Supabase line is the official marketplace's /plugin install pattern with the name it lists, supabase, because the plugin's own README prints no line. The other three lines are each README's own.",
+        "The figures are drawn for this page. The rows, the deploy, the team run and the page in the browser are illustrations; the tool names, commands, stages and feature lines in them are the sources' own.",
+        "This page is not affiliated with Anthropic, Supabase, Vercel, Google or Yeachan Heo.",
+        [
+          "Sources: ",
+          { text: "supabase-community/supabase-plugin", href: VB_SUPABASE },
+          " · ",
+          { text: "vercel/vercel-plugin", href: VB_VERCEL },
+          " · ",
+          { text: "Yeachan-Heo/oh-my-claudecode", href: VB_OMC },
+          " · ",
+          { text: "ChromeDevTools/chrome-devtools-mcp", href: VB_CDT },
+          " · ",
+          { text: "anthropics/claude-plugins-official", href: "https://github.com/anthropics/claude-plugins-official" },
+        ],
+      ],
+    },
+  },
   {
     number: 78,
     slug: "78-thinking-orbs",
