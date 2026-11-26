@@ -44,6 +44,7 @@ import { PluginsDemo } from "@/app/free/plugins/PluginsDemos";
 import { GeoDemo } from "@/app/free/geo/GeoDemos";
 import { CloseDemo } from "@/app/free/close/CloseDemos";
 import { GtaDemo } from "@/app/free/gta/GtaDemos";
+import { SpaceDemo } from "@/app/free/space/SpaceDemos";
 import { TvDemo } from "@/app/free/tv/TvDemos";
 import { TraderDemo } from "@/app/free/trader/TraderDemos";
 import { LinkedinDemo } from "@/app/free/linkedin/LinkedinDemos";
@@ -344,6 +345,7 @@ export function DropAboutBlock({ about }: { about: DropAbout }) {
                   {chapter.geo ? <GeoDemo kind={chapter.geo} /> : null}
                   {chapter.close ? <CloseDemo kind={chapter.close} /> : null}
                   {chapter.gta ? <GtaDemo kind={chapter.gta} /> : null}
+                  {chapter.space ? <SpaceDemo kind={chapter.space} /> : null}
                   {chapter.tv ? <TvDemo kind={chapter.tv} /> : null}
                   {chapter.trader ? <TraderDemo kind={chapter.trader} /> : null}
                   {chapter.linkedin ? <LinkedinDemo kind={chapter.linkedin} /> : null}
