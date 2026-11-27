@@ -368,15 +368,15 @@ export function KitBrowser() {
 /* ───────────── module index ───────────── */
 
 const MODULES: [string, string, string][] = [
-  ["S", "Start here", "Zero to your first job done"],
-  ["0", "Where you are", "Twenty questions"],
-  ["1A", "A second brain", "It knows your business"],
-  ["1", "Memory that compounds", "A mistake once, not twice"],
-  ["2", "Never let AI grade its own work", "Writer and checker split"],
-  ["3", "It works while you sleep", "Scheduled and parallel runs"],
-  ["4", "Locks, not promises", "Rules, not hope"],
-  ["5", "The company", "Real numbers, real failures"],
-  ["6", "Your own OS", "Put it together"],
+  ["0", "Start here", "Zero to your first job done"],
+  ["1", "Where you are", "Twenty questions"],
+  ["2", "A second brain", "It knows your business"],
+  ["3", "Memory that compounds", "A mistake once, not twice"],
+  ["4", "Never let AI grade its own work", "Writer and checker split"],
+  ["5", "It works while you sleep", "Scheduled and parallel runs"],
+  ["6", "Locks, not promises", "Rules, not hope"],
+  ["7", "The company", "Real numbers, real failures"],
+  ["8", "Your own OS", "Put it together"],
 ];
 
 export function ModuleIndex() {
