@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-static";
 
-// Replaced with the Kit checkout links once the products exist in Kit.
-const BUY_URL = "#price";
-const OPERATOR_URL = "#price";
+// Stripe Payment Links through /os/buy (see src/lib/os-checkout.ts). Without Stripe configured they land on #price.
+const BUY_URL = "/os/buy?plan=os";
+const OPERATOR_URL = "/os/buy?plan=operator";
 
 // ---------- small parts ----------
 
