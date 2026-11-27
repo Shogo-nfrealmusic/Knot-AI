@@ -30,6 +30,7 @@ import type { TraderDemoKind } from "@/app/free/trader/TraderDemos";
 import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
 import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
 import type { VibeDemoKind } from "@/app/free/vibe/VibeDemos";
+import type { CodesDemoKind } from "@/app/free/codes/CodesDemos";
 
 export type ToolIcon =
   | "palette"
@@ -202,6 +203,8 @@ export type DropChapter = {
   orbs?: OrbsDemoKind;
   /** a live figure drawn for /free/79 (src/app/free/vibe) */
   vibe?: VibeDemoKind;
+  /** a live figure drawn for /free/80 (src/app/free/codes) */
+  codes?: CodesDemoKind;
 };
 
 export type DropAbout = {
@@ -459,7 +462,86 @@ const VB_VERCEL = "https://github.com/vercel/vercel-plugin";
 const VB_OMC = "https://github.com/Yeachan-Heo/oh-my-claudecode";
 const VB_CDT = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
 
+// free/80: five codes to put in front of a Claude prompt. The one official line is from the Claude Code docs (read on Nov 28, 2026); src/app/free/codes/data.test.mjs keeps it word for word.
+const CODES_DOC = "https://code.claude.com/docs/en/model-config";
+
 const drops: FreeDrop[] = [
+  {
+    number: 80,
+    slug: "80-secret-claude-codes",
+    title: "5 secret codes for Claude, with copy-paste prompts",
+    description:
+      "L99, OODA, /ghost, Scaffold and ultrathink: five words you put in front of a prompt to change how Claude answers. What each one does, a ready prompt to copy, and the reel's example question and answer, replayed in a chat you can drive.",
+    date: "2026-11-28",
+    keyword: "CODES",
+    kind: "5 codes",
+    tools: [],
+    icon: "brain",
+    about: {
+      intro: [
+        "Five codes from the reel. Type one at the start of your prompt and Claude answers in a different way: straight, by a framework, like a person, as a full plan, or after thinking much deeper. Each section has what the code does, a prompt to copy, and the example chat from the reel.",
+      ],
+      chaptersLabel: "The five codes",
+      chapters: [
+        {
+          title: "Try them in one chat",
+          text: ["Pick a code. The chat types the reel's prompt and streams the answer it got, so you can see what changes before you copy one."],
+          bullets: [
+            [
+              { code: "ultrathink" },
+              " is an official Claude Code keyword, written in Claude Code's docs. The other four (",
+              { code: "L99" },
+              ", ",
+              { code: "OODA" },
+              ", ",
+              { code: "/ghost" },
+              ", ",
+              { code: "Scaffold" },
+              ") are prompt prefixes you type yourself.",
+            ],
+          ],
+          codes: "chat",
+        },
+        {
+          title: "L99: a straight answer",
+          text: ["Put it before your prompt. Instead of “it depends”, Claude commits to one answer and the steps to take."],
+          codes: "l99",
+        },
+        {
+          title: "OODA: Observe, Orient, Decide, Act",
+          text: ["Claude runs your situation through the military decision framework and comes back with what to observe, what to focus on, what to decide and what to do."],
+          codes: "ooda",
+        },
+        {
+          title: "/ghost: reads like a person wrote it",
+          text: ["It strips the AI-sounding phrases out of the draft, so what is left reads like a human wrote it."],
+          codes: "ghost",
+        },
+        {
+          title: "Scaffold: the whole plan, step by step",
+          text: ["Use it before any project or task. Claude lays out a full action plan with every step mapped out."],
+          codes: "scaffold",
+        },
+        {
+          title: "ultrathink: maximum reasoning",
+          text: [
+            [
+              "Claude thinks much deeper before it answers. This one is in ",
+              { text: "Claude Code's model configuration docs", href: CODES_DOC },
+              ", which say to include it anywhere in your prompt.",
+            ],
+          ],
+          codes: "ultrathink",
+        },
+      ],
+      notes: [
+        "The example questions and answers are the ones shown in the reel, replayed on this page. Claude's real answer to your prompt will differ.",
+        "ultrathink works in Claude Code, where the docs describe it. L99, OODA, /ghost and Scaffold are words you type at the start of your prompt to tell Claude how to answer.",
+        "Claude is Anthropic's product. This page is not affiliated with Anthropic.",
+        ["Source for ultrathink: ", { text: "code.claude.com/docs/en/model-config", href: CODES_DOC }],
+      ],
+    },
+  },
   {
     number: 79,
     slug: "79-vibe-coding-plugins",
