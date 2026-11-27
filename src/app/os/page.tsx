@@ -201,7 +201,7 @@ const FAQ: [string, string][] = [
   ["How fast will something work?", "About 30 minutes to your first real job, the run shown above."],
   ["Is it a course or a set of files?", "Both. Nine modules, plus every file I run, ready to copy."],
   ["Can't I find this for free?", "The features, yes, and the guide links Anthropic's docs. Not a complete setup that runs a company."],
-  ["Refunds?", "Files arrive the moment you buy, so sales are final. Broken files or a double charge are refunded."],
+  ["What if it doesn't work for me?", "Write to me and tell me why. If you want your money back, I'll refund you."],
   ["Can you set it up for me?", "Yes. That's Copilot OS Setup, a separate service."],
 ];
 
@@ -430,6 +430,16 @@ export default function CopilotOsPage() {
                 </a>
               </div>
             </div>
+            <div className="mt-6 flex gap-3 rounded-2xl bg-white/60 p-5 ring-1 ring-[var(--rule)] sm:items-center">
+              <Check ok />
+              <p className="text-base text-[var(--body)]">
+                <strong className="font-semibold text-[var(--ink)]">Not working for you?</strong>{" "}
+                <Link href="/contact" className="underline decoration-[var(--rule-strong)] underline-offset-4 hover:text-[var(--ink)]">
+                  Tell me why
+                </Link>{" "}
+                and I&apos;ll refund you.
+              </p>
+            </div>
             <p className="mt-6 text-sm text-[var(--soft)]">
               Rather have it built for you?{" "}
               <Link href="/setup" className="underline decoration-[var(--rule-strong)] underline-offset-4 hover:text-[var(--ink)]">
@@ -497,7 +507,7 @@ export default function CopilotOsPage() {
               Your first real job, thirty minutes from now.
             </h2>
             <p className="mt-6 max-w-[36rem] text-lg text-white/70">
-              9 modules, 6 agents, the guard that stops payments without your yes, and every file I run. $29 for the first 20 buyers.
+              9 modules, 6 agents, the guard that stops payments without your yes, and every file I run. $29 for the first 20 buyers. If it doesn&apos;t work for you, tell me why and I&apos;ll refund you.
             </p>
             <a
               href={BUY_URL}
