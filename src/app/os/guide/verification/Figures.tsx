@@ -236,7 +236,7 @@ function SeverityBar() {
                 key={i}
                 className="flex aspect-square items-center justify-center rounded-lg font-mono text-[11px]"
                 initial={false}
-                animate={{ opacity: show ? 1 : 0.14, scale: show ? 1 : 0.8, backgroundColor: real ? (bar ? C.accent : "#ffffff") : "#ffffff", color: real && bar ? "#ffffff" : C.muted }}
+                animate={{ opacity: show ? 1 : 0.5, scale: show ? 1 : 0.82, backgroundColor: real && bar ? C.accent : show ? "#ffffff" : "#e6e7e3", color: real && bar ? "#ffffff" : C.muted }}
                 style={{ boxShadow: `0 0 0 1px ${real && bar ? C.accent : C.rule}` }}
                 transition={reduce ? { duration: 0 } : { ...SPRING, delay: (i % 10) * 0.015 }}
               >

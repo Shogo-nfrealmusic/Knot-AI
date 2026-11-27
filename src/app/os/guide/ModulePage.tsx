@@ -74,13 +74,14 @@ function Header({ content, figure, labs }: { content: ModuleContent; figure: Rea
       </motion.nav>
       <motion.h1 {...enter(0.06)} className="gd-h1 mt-4 max-w-[16ch] lg:col-start-1 lg:row-start-2">
         <span className="gd-serif !text-[var(--accent)]">{content.code}</span> {content.title}.{" "}
-        {m ? <span className="gd-serif">{m.line}</span> : null}
+        {/* the one-line summary only when it is short; longer ones are said again by the intro just below */}
+        {m && m.line.length <= 56 ? <span className="gd-serif">{m.line}</span> : null}
       </motion.h1>
       <motion.div {...enter(0.18)} className="mt-10 min-w-0 lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:mt-10">
         {figure}
       </motion.div>
       <motion.div {...enter(0.14)} className="gd-prose mt-8 lg:col-start-1 lg:row-start-3">
-        {content.lede.map((t, i) => (
+        {content.lede.filter((t) => !(m?.time && /^Time:/.test(t))).map((t, i) => (
           <p key={i}>
             <Inline text={t} />
           </p>

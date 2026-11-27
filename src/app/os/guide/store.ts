@@ -54,9 +54,10 @@ export function useTicks(key: string, ids: readonly string[]) {
 }
 
 /** A small JSON value for one page (the diagnostic's answers), kept in this browser. */
-export function useStored(key: string): [string | null, (value: string) => void] {
+export function useStored(key: string): [string | null, (next: (current: string | null) => string) => void] {
   const raw = useSyncExternalStore(subscribe, () => readKey(key), () => null);
-  return [raw, (value: string) => writeKey(key, value)];
+  // The update reads what is saved at the moment of the call, so two quick changes never overwrite each other.
+  return [raw, (next) => writeKey(key, next(readKey(key)))];
 }
 
 export function useOs() {

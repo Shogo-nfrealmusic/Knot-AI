@@ -39,6 +39,14 @@ export function parseAnswers(raw: string | null | undefined, count: number): Sav
   return { answers, revealed: all && v.revealed === true };
 }
 
+/** The saved state with question n answered, built on what is saved now (not on an older render). Once the score is
+ * shown, answers are locked and the saved state comes back unchanged. */
+export function withAnswer(raw: string | null | undefined, n: number, a: "A" | "B" | "C" | "D", count: number): string {
+  const s = parseAnswers(raw, count);
+  if (s.revealed) return raw as string;
+  return JSON.stringify({ answers: { ...s.answers, [n]: a }, revealed: false });
+}
+
 /** Tick an id, or untick it when already ticked. An id the module doesn't have changes nothing. */
 export function toggleTick(done: readonly string[], id: string, ids: readonly string[]): string[] {
   if (!ids.includes(id)) return [...done];

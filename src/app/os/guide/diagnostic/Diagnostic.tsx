@@ -12,7 +12,7 @@ import { MODULES } from "../data";
 import { Inline } from "../Inline";
 import { PrevNext } from "../ModulePage";
 import { C, POP, SPRING } from "../kit";
-import { parseAnswers, type Saved } from "../progress";
+import { parseAnswers, withAnswer, type Saved } from "../progress";
 import { useStored } from "../store";
 
 const KEY = "os-guide.diagnostic";
@@ -20,18 +20,15 @@ const LETTERS: Letter[] = ["A", "B", "C", "D"];
 const moduleOf = (code: string) => MODULES.find((m) => m.code === code);
 
 export function Diagnostic() {
-  const [raw, save] = useStored(KEY);
+  const [raw, update] = useStored(KEY);
   const saved = parseAnswers(raw, QUESTIONS.length);
   const { answers, revealed } = saved;
   const count = Object.keys(answers).length;
   const scores = scoreParts(answers);
-  const write = (next: Saved) => save(JSON.stringify(next));
-  const pick = (n: number, a: Letter) => {
-    if (revealed) return;
-    write({ answers: { ...answers, [n]: a }, revealed: false });
-  };
+  const write = (next: Saved) => update(() => JSON.stringify(next));
+  const pick = (n: number, a: Letter) => update((current) => withAnswer(current, n, a, QUESTIONS.length));
   const reveal = () => {
-    write({ answers, revealed: true });
+    update((current) => JSON.stringify({ answers: parseAnswers(current, QUESTIONS.length).answers, revealed: true }));
     requestAnimationFrame(() => document.getElementById("score")?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }));
   };
   const reset = () => {

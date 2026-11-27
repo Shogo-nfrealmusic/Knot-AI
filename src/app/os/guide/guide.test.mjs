@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { parseInline } from "./markup.ts";
-import { parseAnswers, parseTicks, toggleTick } from "./progress.ts";
+import { parseAnswers, parseTicks, toggleTick, withAnswer } from "./progress.ts";
 import { ANSWER_KEY, PARTS, QUESTIONS, adviceFor, scoreParts, startWith, totalScore } from "./content/diagnostic.ts";
 
 /* ───────────── inline text ───────────── */
@@ -99,6 +99,19 @@ test("saved answers: a full set marked revealed comes back revealed", () => {
 test("saved answers: the score is only shown once every question is answered", () => {
   const raw = JSON.stringify({ answers: { 1: "B" }, revealed: true });
   assert.deepEqual(parseAnswers(raw, 20), { answers: { 1: "B" }, revealed: false });
+});
+
+test("answering builds on what is saved, so quick answers in a row are all kept", () => {
+  let raw = null;
+  for (const [n, a] of [[1, "A"], [2, "B"], [3, "C"]]) raw = withAnswer(raw, n, a, 20);
+  assert.deepEqual(parseAnswers(raw, 20), { answers: { 1: "A", 2: "B", 3: "C" }, revealed: false });
+  assert.deepEqual(parseAnswers(withAnswer(raw, 2, "D", 20), 20).answers, { 1: "A", 2: "D", 3: "C" });
+});
+
+test("after the score is shown, answers are locked", () => {
+  const all = Object.fromEntries(Array.from({ length: 20 }, (_, i) => [i + 1, "A"]));
+  const shown = JSON.stringify({ answers: all, revealed: true });
+  assert.equal(withAnswer(shown, 1, "B", 20), shown);
 });
 
 /* ───────────── the diagnostic ───────────── */
