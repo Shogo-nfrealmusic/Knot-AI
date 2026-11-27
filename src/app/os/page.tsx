@@ -153,7 +153,7 @@ function RevenueCard() {
 function RevenueChip() {
   return (
     <InView>
-      <div className="w-[230px] rounded-2xl bg-white p-4 shadow-[0_24px_50px_-24px_rgba(10,37,64,.55)] ring-1 ring-[#E5EDF5] sm:w-[260px]" style={{ color: DASH.navy }}>
+      <div className="w-[230px] rounded-2xl bg-white p-4 shadow-[0_24px_50px_-24px_rgba(10,37,64,.55)] ring-1 ring-[#E5EDF5] sm:w-[220px]" style={{ color: DASH.navy }}>
         <p className="text-xs font-semibold">This year, estimated revenue</p>
         <p className="mt-1 text-2xl font-bold">
           <CountUp to={1.2} prefix="$" suffix="M" decimals={1} />
@@ -259,9 +259,9 @@ export default function CopilotOsPage() {
               </ul>
             </InView>
 
-            <div className="relative min-w-0 sm:pt-16">
+            <div className="relative min-w-0">
               <HeroRun />
-              <div className="mt-4 flex justify-end sm:absolute sm:-right-6 sm:-top-14 sm:mt-0 sm:block">
+              <div className="mt-4 flex justify-start sm:absolute sm:-left-10 sm:bottom-6 sm:z-20 sm:mt-0 sm:block">
                 <RevenueChip />
               </div>
             </div>

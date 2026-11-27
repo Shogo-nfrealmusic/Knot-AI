@@ -149,7 +149,7 @@ export function HeroRun() {
 
       {/* the file it wrote, popping out of the window */}
       <motion.div
-        className="relative z-10 -mt-6 ml-auto w-[92%] rounded-2xl bg-white p-4 shadow-[0_30px_60px_-30px_rgba(21,23,26,.55)] ring-1 ring-[var(--rule)] sm:w-[86%] sm:p-5"
+        className="relative z-10 -mt-6 ml-auto w-[92%] rounded-2xl bg-white p-4 shadow-[0_30px_60px_-30px_rgba(21,23,26,.55)] ring-1 ring-[var(--rule)] sm:w-[70%] sm:p-5"
         initial={false}
         animate={{ opacity: file ? 1 : 0, y: file ? 0 : 24, scale: file ? 1 : 0.96 }}
         transition={POP}
@@ -240,8 +240,8 @@ export function StepArt({ i }: { i: 0 | 1 | 2 }) {
       ) : null}
       {i === 2 ? (
         <svg viewBox="0 0 480 300" className="h-full w-full" aria-hidden="true">
-          <path d="M100 64 h74 l18 18 h188 v156 h-280 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
-          <text x="118" y="104" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
+          <path d="M84 64 h74 l18 18 h228 v156 h-320 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
+          <text x="102" y="104" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
           <motion.g initial={false} animate={{ opacity: on(0.25) ? 1 : 0, y: on(0.25) ? 0 : 16, scale: on(0.25) ? 1 : 0.9 }} transition={POP} style={{ transformOrigin: "200px 170px" }}>
             <path d="M150 124 h56 l16 16 v74 h-72 z" fill="#ffffff" stroke="#e0552f" strokeWidth="1.6" />
             <path d="M206 124 v16 h16" fill="none" stroke="#e0552f" strokeWidth="1.6" />
