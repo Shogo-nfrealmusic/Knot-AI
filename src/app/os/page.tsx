@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import { GUIDE_CSS } from "./guide/style";
-import { Rise, TaglineReveal } from "./Reveal";
+import { CountUp, Focus, InView, MOTION_CSS, RunFilm, type Scene } from "./Motion";
+import { TaglineReveal } from "./Reveal";
 
 // The Copilot OS sales page. Same look as the guide it sells: paper grid, ink, one orange accent.
 // Every screen on this page was captured on my Mac on Nov 28, 2026, and every file listed ships in the kit.
-// Nothing is drawn to look like an app; the revenue chart is a chart of the estimate and says so.
+// Nothing is drawn to look like an app: the film and the crops are the captured screens, moved and zoomed.
+// The revenue chart is a chart of the company's estimate and says so.
 
 export const metadata: Metadata = {
   title: "Copilot OS | Shogo Kikuchi",
@@ -20,11 +22,19 @@ export const dynamic = "force-static";
 const BUY_URL = "#price";
 const OPERATOR_URL = "#price";
 
-const SHOT = {
-  login: { src: "/os/guide/login-method.png", h: 914, alt: "Claude Code asking you to select a login method" },
-  interview: { src: "/os/guide/interview.png", h: 914, alt: "Claude Code asking the first interview question about a meal-prep business" },
-  plan: { src: "/os/guide/plan-written.png", h: 914, alt: "Claude Code reporting the plan file it wrote, with a task for each day" },
+const SRC = {
+  login: "/os/guide/login-method.png",
+  interview: "/os/guide/interview.png",
+  plan: "/os/guide/plan-written.png",
 };
+
+// x / y: the line the camera pushes in on, in percent of the 1520×914 screenshot.
+const FILM: Scene[] = [
+  { src: SRC.interview, alt: "A first time user describing a meal-prep business to Claude Code", label: "You describe the business in plain words", x: 30, y: 26, zoom: 1.7 },
+  { src: SRC.interview, alt: "Claude Code asking its first interview question", label: "It interviews you before it writes anything", x: 30, y: 49, zoom: 1.8 },
+  { src: SRC.plan, alt: "Claude Code flagging the Texas cottage food law in the plan it wrote", label: "It flags the law before you take a single order", x: 30, y: 26, zoom: 1.7 },
+  { src: SRC.plan, alt: "The first week plan, one task per day", label: "Your first week, planned and saved to your folder", x: 30, y: 54, zoom: 1.6 },
+];
 
 // ---------- small parts ----------
 
@@ -32,21 +42,15 @@ function Buy({ label = "Get Copilot OS", className = "" }: { label?: string; cla
   return (
     <a
       href={BUY_URL}
-      className={`gd-press inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-lg font-semibold text-white hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${className}`}
+      className={`gd-press group inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-lg font-semibold text-white shadow-[0_12px_30px_-14px_rgba(21,23,26,.8)] hover:-translate-y-0.5 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${className}`}
     >
       {label}
       <span className="text-white/50 line-through">$49</span>
       <span>$29</span>
+      <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+        →
+      </span>
     </a>
-  );
-}
-
-function Shot({ src, h, alt, className = "" }: { src: string; h: number; alt: string; className?: string }) {
-  return (
-    <div className={`overflow-hidden rounded-xl bg-[#1e1e1e] shadow-[0_30px_60px_-30px_rgba(21,23,26,.75)] ring-1 ring-black/10 ${className}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} width={1520} height={h} alt={alt} className="block h-auto w-full" />
-    </div>
   );
 }
 
@@ -66,101 +70,128 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">{children}</p>;
 }
 
-// ---------- revenue card (styled after a payments dashboard bar chart) ----------
+function Head({ eyebrow, children }: { eyebrow: string; children: React.ReactNode }) {
+  return (
+    <InView className="gd-stagger">
+      <div style={{ "--i": 0 } as React.CSSProperties}>
+        <Eyebrow>{eyebrow}</Eyebrow>
+      </div>
+      <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance" style={{ "--i": 1 } as React.CSSProperties}>
+        {children}
+      </h2>
+    </InView>
+  );
+}
+
+// ---------- revenue (styled after a payments dashboard bar chart) ----------
 
 const MONTHS = ["Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026", "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027", "Jul 2027", "Aug 2027"];
 const ESTIMATE_K = [15, 32, 45, 60, 75, 90, 110, 125, 140, 155, 170, 183];
 const SCALE_K = 200;
 const DASH = { navy: "#0A2540", bar: "#9966FF", grid: "#E7ECF1", axis: "#ABB5C5", link: "#635BFF" };
 
-function RevenueCard({ compact = false }: { compact?: boolean }) {
+function Bars({ height }: { height: string }) {
   return (
-    <figure
-      className="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(10,37,64,.06),0_30px_60px_-34px_rgba(10,37,64,.45)] ring-1 ring-[#E5EDF5] sm:p-7"
-      style={{ color: DASH.navy }}
-    >
-      <div className="flex flex-wrap gap-2 text-xs font-medium" aria-hidden="true">
-        <span className="inline-flex h-7 items-center gap-2 rounded-full px-3 ring-1 ring-[#E5EDF5]">
-          Date range
-          <span className="h-3 w-px bg-[#C4CCD8]" />
-          <span style={{ color: DASH.link }}>Sep 2026 – Aug 2027</span>
-        </span>
-        <span className="inline-flex h-7 items-center rounded-full px-3 ring-1 ring-[#E5EDF5]" style={{ color: DASH.link }}>
-          Monthly
-        </span>
+    <div className={`relative ${height}`}>
+      {[0, 50, 100].map((top) => (
+        <div key={top} className="absolute inset-x-0 h-px" style={{ top: `${top}%`, background: DASH.grid }} />
+      ))}
+      <div className="absolute inset-0 flex items-end gap-1 px-1 sm:gap-2 sm:px-2">
+        {ESTIMATE_K.map((k, i) => (
+          <div
+            key={MONTHS[i]}
+            className="gd-bar min-w-0 flex-1"
+            style={{ height: `${(k / SCALE_K) * 100}%`, background: DASH.bar, "--i": i } as React.CSSProperties}
+          />
+        ))}
       </div>
-      <p className="mt-5 text-sm font-semibold">This year, estimated revenue</p>
-      <p className="mt-1 text-3xl font-bold tabular-nums">$1.2M</p>
+    </div>
+  );
+}
 
-      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3" aria-hidden="true">
-        <div className={`relative ${compact ? "h-[150px]" : "h-[190px]"}`}>
-          {[0, 50, 100].map((top) => (
-            <div key={top} className="absolute inset-x-0 h-px" style={{ top: `${top}%`, background: DASH.grid }} />
-          ))}
-          <div className="absolute inset-0 flex items-end gap-1 px-1 sm:gap-2 sm:px-2">
-            {ESTIMATE_K.map((k, i) => (
-              <div key={MONTHS[i]} className="min-w-0 flex-1" style={{ height: `${(k / SCALE_K) * 100}%`, background: DASH.bar }} />
+function RevenueCard() {
+  return (
+    <InView>
+      <figure
+        className="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(10,37,64,.06),0_30px_60px_-34px_rgba(10,37,64,.45)] ring-1 ring-[#E5EDF5] sm:p-7"
+        style={{ color: DASH.navy }}
+      >
+        <div className="flex flex-wrap gap-2 text-xs font-medium" aria-hidden="true">
+          <span className="inline-flex h-7 items-center gap-2 rounded-full px-3 ring-1 ring-[#E5EDF5]">
+            Date range
+            <span className="h-3 w-px bg-[#C4CCD8]" />
+            <span style={{ color: DASH.link }}>Sep 2026 – Aug 2027</span>
+          </span>
+          <span className="inline-flex h-7 items-center rounded-full px-3 ring-1 ring-[#E5EDF5]" style={{ color: DASH.link }}>
+            Monthly
+          </span>
+        </div>
+        <p className="mt-5 text-sm font-semibold">This year, estimated revenue</p>
+        <p className="mt-1 text-3xl font-bold">
+          <CountUp to={1.2} prefix="$" suffix="M" decimals={1} />
+        </p>
+        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3" aria-hidden="true">
+          <Bars height="h-[190px]" />
+          <div className="relative w-11 text-xs tabular-nums" style={{ color: DASH.axis }}>
+            {(
+              [
+                ["$200K", 0],
+                ["$100K", 50],
+                ["$0", 100],
+              ] as const
+            ).map(([label, top]) => (
+              <span key={label} className="absolute left-0 -translate-y-1/2" style={{ top: `${top}%` }}>
+                {label}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-1 px-1 sm:gap-2 sm:px-2">
+            {MONTHS.map((m, i) => (
+              <div key={m} className="flex min-w-0 flex-1 flex-col items-center">
+                <span className="h-[3px] w-px" style={{ background: DASH.grid }} />
+                {i % 3 === 0 ? <span className="mt-2 whitespace-nowrap text-xs">{m}</span> : null}
+              </div>
             ))}
           </div>
         </div>
-        <div className="relative w-11 text-xs tabular-nums" style={{ color: DASH.axis }}>
-          {(
-            [
-              ["$200K", 0],
-              ["$100K", 50],
-              ["$0", 100],
-            ] as const
-          ).map(([label, top]) => (
-            <span key={label} className="absolute left-0 -translate-y-1/2" style={{ top: `${top}%` }}>
-              {label}
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-1 px-1 sm:gap-2 sm:px-2">
-          {MONTHS.map((m, i) => (
-            <div key={m} className="flex min-w-0 flex-1 flex-col items-center">
-              <span className="h-[3px] w-px" style={{ background: DASH.grid }} />
-              {i % 3 === 0 ? <span className="mt-2 whitespace-nowrap text-xs">{m}</span> : null}
-            </div>
-          ))}
+        <figcaption className="mt-4 text-xs" style={{ color: "#727F96" }}>
+          Our company&apos;s estimate for Sep 2026 to Aug 2027. Two people, no outside funding.
+        </figcaption>
+      </figure>
+    </InView>
+  );
+}
+
+// Small version for the hero: number and bars only.
+function RevenueChip() {
+  return (
+    <InView>
+      <div className="w-[230px] rounded-2xl bg-white p-4 shadow-[0_24px_50px_-24px_rgba(10,37,64,.55)] ring-1 ring-[#E5EDF5] sm:w-[260px]" style={{ color: DASH.navy }}>
+        <p className="text-xs font-semibold">This year, estimated revenue</p>
+        <p className="mt-1 text-2xl font-bold">
+          <CountUp to={1.2} prefix="$" suffix="M" decimals={1} />
+        </p>
+        <div className="mt-3" aria-hidden="true">
+          <Bars height="h-[56px]" />
         </div>
       </div>
-      <figcaption className="mt-4 text-xs" style={{ color: "#727F96" }}>
-        Our company&apos;s estimate for Sep 2026 to Aug 2027. Two people, no outside funding.
-      </figcaption>
-    </figure>
+    </InView>
   );
 }
 
 // ---------- content ----------
 
 const JOBS = [
-  {
-    title: "It remembers your business",
-    body: "Your goals, prices, customers and rules live in one file it reads every morning. You stop explaining yourself.",
-    file: "CLAUDE.md",
-  },
-  {
-    title: "A second agent checks the first",
-    body: "One agent writes. Another one, with no stake in the answer, tries to prove it wrong before you see it.",
-    file: "agents/verifier.md",
-  },
-  {
-    title: "Six specialists, not one chat",
-    body: "Researcher, analyst, marketer, secretary, engineer, verifier. Each knows its job and what it may not touch.",
-    file: "agents/",
-  },
-  {
-    title: "Money and deploys wait for your yes",
-    body: "A guard blocks payments, pushes and secrets until you approve them. Enforced by code, not by asking nicely.",
-    file: "hooks/security-guard.py",
-  },
+  { file: "CLAUDE.md", title: "It remembers your business", body: "Goals, prices, customers, rules. Read every morning." },
+  { file: "agents/verifier.md", title: "A second agent checks the first", body: "Nothing reaches you until another agent tried to break it." },
+  { file: "agents/ × 6", title: "Six specialists, not one chat", body: "Research, numbers, marketing, admin, code, checking." },
+  { file: "hooks/security-guard.py", title: "Money waits for your yes", body: "Payments, pushes and secrets are blocked until you approve." },
 ];
 
 const STEPS = [
-  { n: "1", title: "Install and sign in", body: "Copy one line, pick your Claude account. The guide shows every screen on Mac and Windows.", shot: SHOT.login },
-  { n: "2", title: "It interviews you", body: "Before it writes a thing, it asks about your business, one question at a time.", shot: SHOT.interview },
-  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, written into your folder. Your first real job, done.", shot: SHOT.plan },
+  { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account.", src: SRC.login, alt: "Claude Code asking you to select a login method", x: 30, y: 70, zoom: 1.5 },
+  { n: "2", title: "It interviews you", body: "One question at a time, about your business.", src: SRC.interview, alt: "Claude Code asking the first interview question", x: 30, y: 50, zoom: 1.6 },
+  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder.", src: SRC.plan, alt: "Claude Code reporting the plan file it wrote", x: 30, y: 52, zoom: 1.4 },
 ];
 
 const FILES: [string, string][] = [
@@ -175,15 +206,15 @@ const FILES: [string, string][] = [
 ];
 
 const MODULES: [string, string][] = [
-  ["Start here", "From never opening a terminal to your first job done"],
-  ["0 · Where you are", "Twenty questions that tell you where to start"],
-  ["1A · A second brain", "It knows your business without being told"],
-  ["1 · Memory that compounds", "It makes a mistake once, not twice"],
-  ["2 · Never let AI grade its own work", "The writer and the checker are different agents"],
-  ["3 · It works while you sleep", "Scheduled runs, parallel work, and what they cost"],
-  ["4 · Locks, not promises", "Payments, deploys and secrets need your yes"],
-  ["5 · The company", "Research, numbers, books and content, with real failures"],
-  ["6 · Your own OS", "Put it together and keep it running"],
+  ["Start here", "Zero to your first job done"],
+  ["0", "Where you are"],
+  ["1A", "A second brain"],
+  ["1", "Memory that compounds"],
+  ["2", "Never let AI grade its own work"],
+  ["3", "It works while you sleep"],
+  ["4", "Locks, not promises"],
+  ["5", "The company, real numbers"],
+  ["6", "Your own OS"],
 ];
 
 const FOR: [boolean, string][] = [
@@ -205,42 +236,46 @@ const FAQ: [string, string][] = [
   ["Can you set it up for me?", "Yes. That's Copilot OS Setup, a separate service."],
 ];
 
+const v = (i: number) => ({ "--i": i }) as React.CSSProperties;
+
 // ---------- page ----------
 
 export default function CopilotOsPage() {
   return (
     <SitePageLayout>
-      <style>{GUIDE_CSS}</style>
+      <style>{GUIDE_CSS + MOTION_CSS}</style>
       <div className="gd overflow-x-clip pb-20 pt-10 sm:pt-14">
         <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
-          {/* hero: the promise on the left, the result and the real run on the right */}
-          <header className="grid items-center gap-x-14 gap-y-12 pb-20 pt-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
-            <div>
-              <Eyebrow>Copilot OS</Eyebrow>
-              <h1 className="gd-h1 mt-5 max-w-[19ch] text-balance !text-[clamp(40px,4.6vw,60px)] !leading-[1.02]">
+          {/* hero: the promise on the left, the real run playing on the right */}
+          <header className="grid items-center gap-x-12 gap-y-12 pb-20 pt-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,600px)]">
+            <InView className="gd-stagger">
+              <div style={v(0)}>
+                <Eyebrow>Copilot OS</Eyebrow>
+              </div>
+              <h1 className="gd-h1 mt-5 max-w-[19ch] text-balance !text-[clamp(40px,4.6vw,60px)] !leading-[1.02]" style={v(1)}>
                 Your business, run by Claude Code. <span className="gd-serif">You just approve.</span>
               </h1>
-              <p className="mt-7 max-w-[34rem] text-pretty text-lg text-[var(--body)] sm:text-xl">
-                The exact setup behind a two person company on track for <strong className="font-semibold text-[var(--ink)]">$1.2M this year</strong>. Copy it, answer its questions,
-                and have your first real job done in 30 minutes. No coding.
+              <p className="mt-7 max-w-[32rem] text-pretty text-lg text-[var(--body)] sm:text-xl" style={v(2)}>
+                The exact setup behind a two person company on track for <strong className="font-semibold text-[var(--ink)]">$1.2M this year</strong>. First real job done in 30
+                minutes. No coding.
               </p>
-              <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3" style={v(3)}>
                 <Buy />
-                <span className="text-sm text-[var(--soft)]">Founding price for the first 20 buyers</span>
+                <span className="text-sm text-[var(--soft)]">Founding price, first 20 buyers</span>
               </div>
-              <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--soft)]">
-                <li>9 modules</li>
-                <li>6 agents</li>
-                <li>Mac and Windows</li>
-                <li>Pay once</li>
+              <ul className="mt-8 flex flex-wrap gap-2 text-sm font-medium text-[var(--body)]" style={v(4)}>
+                {["9 modules", "6 agents", "Mac + Windows", "Pay once"].map((t) => (
+                  <li key={t} className="rounded-full bg-white px-3 py-1 ring-1 ring-[var(--rule)]">
+                    {t}
+                  </li>
+                ))}
               </ul>
-            </div>
+            </InView>
 
-            <div className="relative min-w-0 sm:pb-56">
-              <RevenueCard compact />
-              <div className="ml-auto mt-4 w-[92%] sm:absolute sm:rotate-[1.5deg] sm:bottom-0 sm:right-[-8%] sm:mt-0 sm:w-[64%] lg:right-[-12%]">
-                <Shot {...SHOT.interview} />
-                <p className="mt-2 text-right text-xs text-[var(--muted)]">A real run: it interviews a first time user</p>
+            <div className="relative min-w-0">
+              <RunFilm scenes={FILM} />
+              <div className="mt-4 flex justify-end sm:absolute sm:-bottom-10 sm:-left-10 sm:mt-0 sm:block">
+                <RevenueChip />
               </div>
             </div>
           </header>
@@ -259,57 +294,55 @@ export default function CopilotOsPage() {
         <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
           {/* what it does */}
           <section className="py-20 sm:py-28">
-            <Rise>
-              <Eyebrow>What it does</Eyebrow>
-              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Four things a chat window can&apos;t do for you.</h2>
-            </Rise>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2">
-              {JOBS.map((j) => (
-                <Rise key={j.title}>
-                  <article className="flex h-full flex-col rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-36px_rgba(21,23,26,.5)]">
-                    <h3 className="text-xl font-semibold tracking-[-0.01em]">{j.title}</h3>
-                    <p className="mt-3 flex-1 text-base text-[var(--soft)]">{j.body}</p>
-                    <p className="mt-6 font-mono text-xs text-[var(--muted)]">{j.file}</p>
-                  </article>
-                </Rise>
+            <Head eyebrow="What it does">Four things a chat window can&apos;t do for you.</Head>
+            <InView className="gd-stagger mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {JOBS.map((j, i) => (
+                <article
+                  key={j.title}
+                  style={v(i)}
+                  className="group flex flex-col rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(21,23,26,.55)]"
+                >
+                  <span className="self-start rounded-md bg-[var(--panel)] px-2.5 py-1 font-mono text-xs text-[#f0b49f]">{j.file}</span>
+                  <h3 className="mt-6 text-xl font-semibold tracking-[-0.01em]">{j.title}</h3>
+                  <p className="mt-2 text-base text-[var(--soft)]">{j.body}</p>
+                </article>
               ))}
-            </div>
+            </InView>
           </section>
 
           {/* how it works */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
-            <Rise>
-              <Eyebrow>The first 30 minutes</Eyebrow>
-              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Three steps, exactly as you&apos;ll see them.</h2>
-            </Rise>
-            <ol className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-6">
-              {STEPS.map((s) => (
-                <Rise key={s.n}>
-                  <li className="flex h-full flex-col">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">{s.n}</span>
-                      <h3 className="text-xl font-semibold tracking-[-0.01em]">{s.title}</h3>
-                    </div>
-                    <p className="mt-3 text-base text-[var(--soft)] lg:min-h-[4.5rem]">{s.body}</p>
-                    <Shot {...s.shot} className="mt-6" />
-                  </li>
-                </Rise>
+            <Head eyebrow="The first 30 minutes">Three steps, exactly as you&apos;ll see them.</Head>
+            <InView as="ol" className="gd-stagger mt-12 grid gap-10 lg:grid-cols-3 lg:gap-6">
+              {STEPS.map((s, i) => (
+                <li key={s.n} style={v(i)} className="flex flex-col">
+                  <Focus src={s.src} alt={s.alt} x={s.x} y={s.y} zoom={s.zoom} />
+                  <div className="mt-5 flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">{s.n}</span>
+                    <h3 className="text-xl font-semibold tracking-[-0.01em]">{s.title}</h3>
+                  </div>
+                  <p className="mt-2 text-base text-[var(--soft)]">{s.body}</p>
+                </li>
               ))}
-            </ol>
-            <Rise>
-              <figure className="mt-14 rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)] sm:p-10">
-                <p className="text-sm font-semibold text-[var(--accent)]">From step 3, word for word</p>
-                <blockquote className="mt-4 max-w-[44rem] text-pretty text-xl font-medium leading-relaxed tracking-[-0.01em] sm:text-2xl sm:leading-snug">
-                  &ldquo;The most important point: the Texas cottage food law, which covers selling food made at home, generally doesn&apos;t cover
-                  perishable cooked meals like these. You&apos;ll probably need to rent time in a permitted commercial kitchen and get a food permit.
-                  &hellip; Until that&apos;s settled, give friends free tastings but don&apos;t take money.&rdquo;
-                </blockquote>
-                <figcaption className="mt-5 max-w-[40rem] text-base text-[var(--soft)]">
-                  It spotted the rule that could stop the business before it started, made checking it Monday&apos;s task, and said the first $500
-                  should go on permits and the kitchen, not equipment. That&apos;s the kind of judgment the setup is built for.
-                </figcaption>
+            </InView>
+
+            <InView className="gd-stagger">
+              <figure style={v(0)} className="mt-14 grid overflow-hidden rounded-2xl bg-[var(--panel)] text-white lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)]">
+                <div className="p-7 sm:p-10">
+                  <p className="text-sm font-semibold text-[#f0b49f]">From step 3, word for word</p>
+                  <blockquote className="mt-4 text-pretty text-xl font-medium leading-relaxed tracking-[-0.01em] sm:text-2xl sm:leading-snug">
+                    &ldquo;The most important point: the Texas cottage food law &hellip; generally doesn&apos;t cover perishable cooked meals like these. &hellip;
+                    Until that&apos;s settled, give friends free tastings but don&apos;t take money.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-5 text-base text-white/65">It caught the rule that could stop the business, before day one.</figcaption>
+                </div>
+                <div className="relative min-h-[220px] border-t border-white/10 lg:border-l lg:border-t-0">
+                  <div className="absolute inset-4 sm:inset-6">
+                    <Focus src={SRC.plan} alt="The plan Claude Code wrote, opening with the cottage food law" x={28} y={24} zoom={1.9} aspect="auto" />
+                  </div>
+                </div>
               </figure>
-            </Rise>
+            </InView>
             <div className="mt-14">
               <Buy />
             </div>
@@ -317,82 +350,80 @@ export default function CopilotOsPage() {
 
           {/* what you get */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
-            <Rise>
-              <Eyebrow>What you get</Eyebrow>
-              <h2 className="gd-h2 mt-4 max-w-[22ch] text-balance">The files I run, and the guide to run them.</h2>
-            </Rise>
-            <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
-              <Rise>
-                <div className="rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
-                  <p className="text-sm font-semibold text-white/60">The kit</p>
-                  <ul className="mt-5 divide-y divide-white/10">
-                    {FILES.map(([f, d]) => (
-                      <li key={f} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-4">
-                        <span className="font-mono text-sm text-[#f0b49f]">{f}</span>
-                        <span className="text-sm text-white/70">{d}</span>
-                      </li>
-                    ))}
-                  </ul>
+            <Head eyebrow="What you get">The files I run, and the guide to run them.</Head>
+            <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+              <div className="rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
+                <div className="flex items-center gap-2" aria-hidden="true">
+                  <span className="h-3 w-3 rounded-full bg-white/15" />
+                  <span className="h-3 w-3 rounded-full bg-white/15" />
+                  <span className="h-3 w-3 rounded-full bg-white/15" />
+                  <span className="ml-3 font-mono text-xs text-white/50">copilot-os/</span>
                 </div>
-              </Rise>
-              <Rise>
-                <div className="h-full rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] sm:p-8">
-                  <p className="text-sm font-semibold text-[var(--muted)]">The guide · 9 modules</p>
-                  <ul className="mt-5 divide-y divide-[var(--rule)]">
-                    {MODULES.map(([m, d]) => (
-                      <li key={m} className="py-3">
-                        <p className="text-base font-semibold">{m}</p>
-                        <p className="text-sm text-[var(--soft)]">{d}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Rise>
+                <InView as="ul" className="gd-stagger mt-5 divide-y divide-white/10">
+                  {FILES.map(([f, d], i) => (
+                    <li key={f} style={v(i)} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-4">
+                      <span className="font-mono text-sm text-[#f0b49f]">{f}</span>
+                      <span className="text-sm text-white/70">{d}</span>
+                    </li>
+                  ))}
+                </InView>
+              </div>
+              <div className="rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] sm:p-8">
+                <p className="text-sm font-semibold text-[var(--muted)]">The guide · 9 modules</p>
+                <InView as="ol" className="gd-stagger mt-5 grid gap-2">
+                  {MODULES.map(([n, d], i) => (
+                    <li key={n} style={v(i)} className="flex items-center gap-4 rounded-xl px-3 py-2 transition-colors duration-300 hover:bg-[var(--page)]">
+                      <span className="flex h-9 min-w-9 items-center justify-center rounded-lg bg-[var(--page)] px-2 font-mono text-xs font-semibold text-[var(--ink)] ring-1 ring-[var(--rule)]">
+                        {n === "Start here" ? "→" : n}
+                      </span>
+                      <span className="text-base font-medium">{n === "Start here" ? "Start here: zero to your first job done" : d}</span>
+                    </li>
+                  ))}
+                </InView>
+              </div>
             </div>
           </section>
 
           {/* who made it */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
-            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)]">
-              <Rise>
-                <Eyebrow>Why trust this</Eyebrow>
-                <h2 className="gd-h2 mt-4 max-w-[18ch] text-balance">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
+              <InView className="gd-stagger">
+                <div style={v(0)}>
+                  <Eyebrow>Why I built it</Eyebrow>
+                </div>
+                <h2 className="gd-h2 mt-4 max-w-[18ch] text-balance" style={v(1)}>
                   I&apos;m a law student. <span className="gd-serif">This runs my company.</span>
                 </h2>
-                <div className="mt-8 max-w-[34rem] space-y-4 text-lg text-[var(--body)]">
-                  <p>Two years ago I couldn&apos;t code. Today two of us run a company on track for $1.2M this year, with no engineers and no outside money.</p>
-                  <p>Claude Code closes our books, drafts our content overnight, runs our research and records every decision. I approve. Copilot OS is that setup, file by file.</p>
-                </div>
-              </Rise>
-              <Rise>
-                <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--rule)] ring-1 ring-[var(--rule)]">
+                <p className="mt-8 max-w-[32rem] text-lg text-[var(--body)]" style={v(2)}>
+                  Two years ago I couldn&apos;t code. Now Claude Code closes our books, drafts our content overnight and runs our research. I approve. Copilot OS is
+                  that setup, file by file.
+                </p>
+                <dl className="mt-8 grid max-w-[32rem] grid-cols-3 gap-4" style={v(3)}>
                   {(
                     [
-                      ["$1.2M", "revenue this year, estimated"],
-                      ["2", "people run the company"],
-                      ["0", "engineers on payroll"],
-                      ["$0", "outside funding"],
+                      [2, "", "people"],
+                      [6, "", "agents at work"],
+                      [0, "$", "outside funding"],
                     ] as const
-                  ).map(([v, l]) => (
-                    <div key={l} className="bg-white p-6 sm:p-8">
-                      <dt className="sr-only">{l}</dt>
-                      <dd className="text-5xl font-semibold tracking-[-0.04em] tabular-nums">{v}</dd>
-                      <dd className="mt-2 text-sm text-[var(--soft)]">{l}</dd>
+                  ).map(([n, p, l]) => (
+                    <div key={l} className="flex flex-col-reverse">
+                      <dt className="mt-1 text-sm text-[var(--soft)]">{l}</dt>
+                      <dd className="text-4xl font-semibold tracking-[-0.04em]">
+                        <CountUp to={n} prefix={p} />
+                      </dd>
                     </div>
                   ))}
                 </dl>
-              </Rise>
+              </InView>
+              <RevenueCard />
             </div>
           </section>
 
           {/* price */}
           <section id="price" className="scroll-mt-24 border-t border-[var(--rule)] py-20 sm:py-28">
-            <Rise>
-              <Eyebrow>Price</Eyebrow>
-              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Pay once. Keep every file.</h2>
-            </Rise>
-            <div className="mt-12 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
-              <div className="relative rounded-2xl bg-white p-7 ring-2 ring-[var(--ink)] sm:p-9">
+            <Head eyebrow="Price">Pay once. Keep every file.</Head>
+            <InView className="gd-stagger mt-12 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+              <div style={v(0)} className="relative rounded-2xl bg-white p-7 ring-2 ring-[var(--ink)] sm:p-9">
                 <span className="absolute -top-3 left-7 rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold text-white">First 20 buyers</span>
                 <h3 className="text-2xl font-semibold">Copilot OS</h3>
                 <p className="mt-4 flex items-baseline gap-3">
@@ -410,7 +441,7 @@ export default function CopilotOsPage() {
                 </ul>
                 <Buy label="Get it now" className="mt-8 w-full justify-center" />
               </div>
-              <div className="rounded-2xl bg-white/60 p-7 ring-1 ring-[var(--rule)] sm:p-9">
+              <div style={v(1)} className="rounded-2xl bg-white/60 p-7 ring-1 ring-[var(--rule)] sm:p-9">
                 <h3 className="text-2xl font-semibold">Founding Operator</h3>
                 <p className="mt-4 text-6xl font-semibold tracking-[-0.04em]">$299</p>
                 <p className="mt-1 text-sm text-[var(--soft)]">5 seats. Closes at the end of 2026.</p>
@@ -429,7 +460,7 @@ export default function CopilotOsPage() {
                   Take a seat
                 </a>
               </div>
-            </div>
+            </InView>
             <div className="mt-6 flex gap-3 rounded-2xl bg-white/60 p-5 ring-1 ring-[var(--rule)] sm:items-center">
               <Check ok />
               <p className="text-base text-[var(--body)]">
@@ -450,12 +481,9 @@ export default function CopilotOsPage() {
 
           {/* who it's for */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
-            <Rise>
-              <Eyebrow>Who it&apos;s for</Eyebrow>
-              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Built for owners, not engineers.</h2>
-            </Rise>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)]">
+            <Head eyebrow="Who it's for">Built for owners, not engineers.</Head>
+            <InView className="gd-stagger mt-12 grid gap-4 sm:grid-cols-2">
+              <div style={v(0)} className="rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)]">
                 <p className="text-sm font-semibold text-[var(--pass)]">For you if</p>
                 <ul className="mt-5 grid gap-4">
                   {FOR.filter(([ok]) => ok).map(([, t]) => (
@@ -466,7 +494,7 @@ export default function CopilotOsPage() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl bg-white/50 p-7 ring-1 ring-[var(--rule)]">
+              <div style={v(1)} className="rounded-2xl bg-white/50 p-7 ring-1 ring-[var(--rule)]">
                 <p className="text-sm font-semibold text-[var(--muted)]">Not for you if</p>
                 <ul className="mt-5 grid gap-4">
                   {FOR.filter(([ok]) => !ok).map(([, t]) => (
@@ -477,16 +505,13 @@ export default function CopilotOsPage() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </InView>
           </section>
 
           {/* FAQ */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,320px)_1fr]">
-              <Rise>
-                <Eyebrow>Questions</Eyebrow>
-                <h2 className="gd-h2 mt-4 text-balance">Before you buy.</h2>
-              </Rise>
+              <Head eyebrow="Questions">Before you buy.</Head>
               <div className="divide-y divide-[var(--rule)] rounded-2xl bg-white ring-1 ring-[var(--rule)]">
                 {FAQ.map(([q, a]) => (
                   <details key={q} className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden">
@@ -502,21 +527,25 @@ export default function CopilotOsPage() {
           </section>
 
           {/* final CTA */}
-          <section className="rounded-3xl bg-[var(--panel)] px-6 py-16 text-white sm:px-14 sm:py-20">
-            <h2 className="max-w-[18ch] text-balance text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">
-              Your first real job, thirty minutes from now.
-            </h2>
-            <p className="mt-6 max-w-[36rem] text-lg text-white/70">
-              9 modules, 6 agents, the guard that stops payments without your yes, and every file I run. $29 for the first 20 buyers. If it doesn&apos;t work for you, tell me why and I&apos;ll refund you.
-            </p>
-            <a
-              href={BUY_URL}
-              className="gd-press mt-10 inline-flex min-h-14 items-center gap-3 rounded-full bg-white px-7 text-lg font-semibold text-[var(--ink)] hover:bg-[#f3f4f1]"
-            >
-              Get Copilot OS
-              <span className="text-[var(--muted)] line-through">$49</span>
-              <span>$29</span>
-            </a>
+          <section className="grid items-center gap-10 overflow-hidden rounded-3xl bg-[var(--panel)] px-6 py-14 text-white sm:px-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
+            <div>
+              <h2 className="max-w-[16ch] text-balance text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">Your first real job, thirty minutes from now.</h2>
+              <p className="mt-6 max-w-[30rem] text-lg text-white/70">$29 for the first 20 buyers. Not working for you? Tell me why and I&apos;ll refund you.</p>
+              <a
+                href={BUY_URL}
+                className="gd-press group mt-10 inline-flex min-h-14 items-center gap-3 rounded-full bg-white px-7 text-lg font-semibold text-[var(--ink)] hover:-translate-y-0.5 hover:bg-[#f3f4f1]"
+              >
+                Get Copilot OS
+                <span className="text-[var(--muted)] line-through">$49</span>
+                <span>$29</span>
+                <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                  →
+                </span>
+              </a>
+            </div>
+            <div className="hidden lg:block">
+              <RunFilm scenes={FILM} />
+            </div>
           </section>
 
           <p className="mt-10 text-xs text-[var(--muted)]">
