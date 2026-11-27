@@ -104,13 +104,13 @@ function VerifyArt() {
           <rect x="61" y="83" width="16" height="2.5" rx="1" fill="#c4c7c2" />
         </motion.g>
         <motion.g initial={false} animate={{ opacity: t === 2 ? 1 : 0, y: t === 2 ? 0 : 6 }} transition={SPRING}>
-          <rect x="196" y="186" width="108" height="30" rx="15" fill="rgba(224,85,47,.15)" stroke={ORANGE} />
+          <rect x="184" y="186" width="132" height="30" rx="15" fill="rgba(224,85,47,.15)" stroke={ORANGE} />
           <text x="250" y="206" textAnchor="middle" fontSize="12" fontWeight="600" fill={ORANGE} className="font-mono">
             FAIL · 2 issues
           </text>
         </motion.g>
         <motion.g initial={false} animate={{ opacity: t === 3 ? 1 : 0, y: t === 3 ? 0 : 6 }} transition={SPRING}>
-          <rect x="196" y="186" width="108" height="30" rx="15" fill="rgba(46,158,106,.15)" stroke={GREEN} />
+          <rect x="184" y="186" width="132" height="30" rx="15" fill="rgba(46,158,106,.15)" stroke={GREEN} />
           <text x="250" y="206" textAnchor="middle" fontSize="12" fontWeight="600" fill="#7fd1a8" className="font-mono">
             PASS
           </text>
