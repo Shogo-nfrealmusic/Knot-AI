@@ -14,11 +14,8 @@ export function GuideIndex() {
   return (
     <div className="gd relative overflow-x-clip pb-24 pt-14">
       <header className="mx-auto max-w-[1080px] px-5 pb-6 pt-12 sm:px-8 sm:pt-20">
-        <motion.p className="gd-eyebrow" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-          Copilot OS · the guide
-        </motion.p>
-        <motion.h1 className="gd-h1 mt-4 max-w-[13ch]" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: 0.05 }}>
-          Nine modules. <span className="gd-serif">One setup that runs your work.</span>
+        <motion.h1 className="gd-h1 max-w-[14ch]" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: 0.05 }}>
+          The Copilot OS guide. <span className="gd-serif">Nine modules, one setup.</span>
         </motion.h1>
         <motion.div className="gd-prose mt-8" initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: 0.12 }}>
           <p>

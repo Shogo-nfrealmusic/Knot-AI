@@ -72,6 +72,70 @@ function Replay({ onClick, light = false }: { onClick: () => void; light?: boole
   );
 }
 
+/* ───────────── hero: where you'll be in 30 minutes ───────────── */
+
+// The end state at a glance: Claude Code running in your own folder, the first job's file in it, and the four
+// stops ticked in order. The window is schematic; the folder name and file are the module's.
+export function EndState({ os }: { os: Os }) {
+  const reduce = useReducedMotion();
+  const folder = os === "windows" ? "$HOME\\my-business" : "~/my-business";
+  const at = (i: number) => (reduce ? 0 : 0.5 + i * 0.32);
+  return (
+    <figure className="gd-plate p-3 sm:p-4" aria-label="In 30 minutes: Claude Code installed, signed in, running in your folder, and the first job done.">
+      <div className="overflow-hidden rounded-xl bg-[var(--panel)] text-white shadow-[0_24px_50px_-30px_rgba(21,23,26,.7)]">
+        <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
+          <span className="size-2.5 rounded-full bg-white/20" />
+          <span className="size-2.5 rounded-full bg-white/20" />
+          <span className="size-2.5 rounded-full bg-white/20" />
+          <span className="ml-2 min-w-0 truncate font-mono text-[13px] text-white/50">{folder} · claude</span>
+        </div>
+        <div className="px-4 py-4 font-mono text-[14px] leading-[1.7]">
+          <p className="text-white/45">Claude Code is running in this folder.</p>
+          <p className="mt-2 text-white">
+            <span className="text-white/40">&gt; </span>I run … Interview me about the work I repeat every week.
+          </p>
+          <motion.p className="mt-2 text-[#9fd8b8]" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: at(3), duration: 0.4 }}>
+            Wrote repeat-work.md
+          </motion.p>
+        </div>
+      </div>
+      <motion.div
+        className="mx-1 mt-3 flex items-center gap-3 rounded-xl bg-white px-3 py-3 ring-1 ring-[var(--accent)]"
+        initial={reduce ? false : { opacity: 0, y: 10, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: "spring", stiffness: 380, damping: 20, delay: at(3) + 0.15 }}
+      >
+        <svg viewBox="0 0 30 36" className="h-9 w-[30px] shrink-0" aria-hidden="true">
+          <path d="M1 1 h20 l8 8 v26 h-28 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.3" />
+          <rect x="6" y="15" width="16" height="2.5" rx="1.2" fill="#dcded9" />
+          <rect x="6" y="21" width="12" height="2.5" rx="1.2" fill="#dcded9" />
+        </svg>
+        <span className="min-w-0">
+          <span className="block font-mono text-[15px] text-[var(--ink)]">repeat-work.md</span>
+          <span className="block text-[14px] text-[var(--soft)]">Your first job list. You didn&apos;t write it.</span>
+        </span>
+      </motion.div>
+      <ol className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 px-1 pb-1 sm:grid-cols-4">
+        {STATIONS.map((s, i) => (
+          <li key={s.label} className="flex items-center gap-2 text-[15px] text-[var(--ink)]">
+            <motion.span
+              className="flex size-6 shrink-0 items-center justify-center rounded-full"
+              initial={reduce ? false : { backgroundColor: "#dcded9", scale: 0.8 }}
+              animate={{ backgroundColor: "#2e9e6a", scale: 1 }}
+              transition={{ type: "spring", stiffness: 420, damping: 18, delay: at(i) }}
+            >
+              <svg viewBox="0 0 20 20" className="size-3.5" aria-hidden="true">
+                <path d="M4.5 10.5 l3.5 3.5 l7.5 -8" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.span>
+            {s.label}
+          </li>
+        ))}
+      </ol>
+    </figure>
+  );
+}
+
 /* ───────────── the path: install, sign in, open a folder, first job (follows the scroll) ───────────── */
 
 export function PathFigure() {
@@ -87,8 +151,7 @@ export function PathFigure() {
     <section ref={ref} aria-label="The path through this module" className="relative h-[300vh]">
       <div className="sticky top-14 flex h-[calc(100svh-56px)] flex-col justify-center overflow-hidden px-5 sm:px-8">
         <div className="mx-auto w-full max-w-[980px]">
-          <p className="gd-eyebrow">The next 30 minutes</p>
-          <h2 className="gd-h2 mt-3">
+          <h2 className="gd-h2">
             Four stops. <span className="gd-serif">Scroll to walk them.</span>
           </h2>
           <div className="mt-6 grid items-center gap-5 sm:mt-8 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14">
@@ -252,10 +315,17 @@ export function PlanGate({ quote }: { quote: string }) {
           </motion.span>
           <span className="mt-1 block text-[13px] text-[var(--accent)]">Tap to switch</span>
         </button>
-        <svg viewBox="0 0 120 40" className="mx-auto h-10 w-[120px] max-sm:rotate-90" aria-hidden="true">
+        {/* the wire: across on wide screens, down on phones */}
+        <svg viewBox="0 0 120 40" className="mx-auto hidden h-10 w-[120px] sm:block" aria-hidden="true">
           <line x1="4" y1="20" x2="116" y2="20" stroke={paid ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" strokeDasharray={paid ? "0" : "4 5"} style={{ transition: "stroke .3s" }} />
           {paid && !reduce ? (
             <motion.circle r="4" cy="20" fill="#e0552f" initial={{ cx: 4 }} animate={{ cx: [4, 116] }} transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }} />
+          ) : null}
+        </svg>
+        <svg viewBox="0 0 40 44" className="mx-auto -my-3 h-11 w-10 sm:hidden" aria-hidden="true">
+          <line x1="20" y1="2" x2="20" y2="42" stroke={paid ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" strokeDasharray={paid ? "0" : "4 5"} style={{ transition: "stroke .3s" }} />
+          {paid && !reduce ? (
+            <motion.circle r="4" cx="20" fill="#e0552f" initial={{ cy: 2 }} animate={{ cy: [2, 42] }} transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }} />
           ) : null}
         </svg>
         <div className="flex items-center gap-4 rounded-2xl bg-[var(--panel)] px-5 py-4 text-white">
@@ -281,32 +351,38 @@ const DOORS = {
   terminal: { name: "Terminal", looks: "A black box you type into", good: "Everything in Modules 1 to 6", catch: "Looks scary for about ten minutes" },
 } as const;
 
+const DOOR_WIRE = {
+  app: "M74 72 C74 112 160 104 160 142",
+  terminal: "M246 72 C246 112 160 104 160 142",
+} as const;
+
 export function Doors() {
   const [door, setDoor] = useState<keyof typeof DOORS>("terminal");
   const d = DOORS[door];
   return (
     <Plate caption="Both doors are official. Both open onto the same Claude Code. Tap a door.">
       <div className="p-5 sm:p-8">
-        <svg viewBox="0 0 560 220" className="mx-auto block w-full max-w-[560px]" role="img" aria-label={`The ${d.name} door leads to the same Claude Code as the other door.`}>
+        {/* drawn at 320 units wide so its labels stay near their set size on a phone */}
+        <svg viewBox="0 0 320 214" className="mx-auto block w-full max-w-[440px]" role="img" aria-label={`The ${d.name} door leads to the same Claude Code as the other door.`}>
           {(["app", "terminal"] as const).map((k, i) => {
-            const x = i === 0 ? 40 : 360;
+            const x = i === 0 ? 14 : 186;
             const on = door === k;
             return (
-              <g key={k} transform={`translate(${x} 20)`}>
-                <motion.rect width="160" height="72" rx="14" initial={false} animate={{ fill: on ? (k === "terminal" ? "#14161a" : "#ffffff") : "#ffffff", stroke: on ? "#e0552f" : "#c4c7c2" }} strokeWidth="1.6" transition={{ duration: 0.3 }} />
+              <g key={k} transform={`translate(${x} 8)`}>
+                <motion.rect width="120" height="64" rx="12" initial={false} animate={{ fill: on ? (k === "terminal" ? "#14161a" : "#ffffff") : "#ffffff", stroke: on ? "#e0552f" : "#c4c7c2" }} strokeWidth="1.6" transition={{ duration: 0.3 }} />
                 {k === "terminal" ? (
-                  <text x="80" y="44" textAnchor="middle" className="font-mono" fontSize="17" fill={on ? "#ffffff" : "#15171a"} style={{ transition: "fill .3s" }}>{"> _"}</text>
+                  <text x="60" y="40" textAnchor="middle" className="font-mono" fontSize="17" fill={on ? "#ffffff" : "#15171a"} style={{ transition: "fill .3s" }}>{"> _"}</text>
                 ) : (
                   <g>
-                    <rect x="52" y="22" width="56" height="30" rx="5" fill="none" stroke="#15171a" strokeWidth="1.3" />
-                    <line x1="52" y1="30" x2="108" y2="30" stroke="#15171a" strokeWidth="1" />
+                    <rect x="36" y="18" width="48" height="28" rx="5" fill="none" stroke="#15171a" strokeWidth="1.3" />
+                    <line x1="36" y1="26" x2="84" y2="26" stroke="#15171a" strokeWidth="1" />
                   </g>
                 )}
               </g>
             );
           })}
-          <path d="M120 92 C120 140 280 120 280 150" fill="none" stroke={door === "app" ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" style={{ transition: "stroke .3s" }} />
-          <path d="M440 92 C440 140 280 120 280 150" fill="none" stroke={door === "terminal" ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" style={{ transition: "stroke .3s" }} />
+          <path d={DOOR_WIRE.app} fill="none" stroke={door === "app" ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" style={{ transition: "stroke .3s" }} />
+          <path d={DOOR_WIRE.terminal} fill="none" stroke={door === "terminal" ? "#e0552f" : "#c4c7c2"} strokeWidth="1.6" style={{ transition: "stroke .3s" }} />
           <motion.circle
             key={door}
             r="5"
@@ -314,11 +390,11 @@ export function Doors() {
             initial={{ offsetDistance: "0%" } as never}
             animate={{ offsetDistance: "100%" } as never}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            style={{ offsetPath: `path("${door === "app" ? "M120 92 C120 140 280 120 280 150" : "M440 92 C440 140 280 120 280 150"}")` } as React.CSSProperties}
+            style={{ offsetPath: `path("${DOOR_WIRE[door]}")` } as React.CSSProperties}
           />
-          <rect x="190" y="150" width="180" height="56" rx="14" fill="#15171a" />
-          <text x="280" y="176" textAnchor="middle" fontSize="15" fontWeight="600" fill="#ffffff">Claude Code</text>
-          <text x="280" y="194" textAnchor="middle" fontSize="12" fill="rgba(255,255,255,.6)">the same one</text>
+          <rect x="70" y="142" width="180" height="62" rx="14" fill="#15171a" />
+          <text x="160" y="170" textAnchor="middle" fontSize="17" fontWeight="600" fill="#ffffff">Claude Code</text>
+          <text x="160" y="190" textAnchor="middle" fontSize="14" fill="rgba(255,255,255,.65)">the same one</text>
         </svg>
         <div className="mt-2 grid grid-cols-2 gap-3">
           {(["app", "terminal"] as const).map((k) => (
@@ -586,11 +662,11 @@ export function ApprovalLanes() {
                       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                     />
                   ) : null}
-                  <span className="w-[120px] shrink-0 text-[15px] text-[var(--muted)]">{l.label}</span>
-                  <span className={`text-[16px] ${on ? "font-semibold text-[var(--ink)]" : "text-[var(--soft)]"}`}>{l.out}</span>
-                  {l.k === "asks" ? (
-                    <span className="ml-auto shrink-0 font-mono text-[13px] text-[var(--accent)]">you</span>
-                  ) : null}
+                  <span className="flex min-w-0 flex-1 flex-col py-2.5 sm:flex-row sm:items-center sm:gap-3">
+                    <span className="text-[15px] text-[var(--muted)] sm:w-[120px] sm:shrink-0">{l.label}</span>
+                    <span className={`text-[16px] leading-snug ${on ? "font-semibold text-[var(--ink)]" : "text-[var(--soft)]"}`}>{l.out}</span>
+                  </span>
+                  {l.k === "asks" ? <span className="shrink-0 font-mono text-[13px] text-[var(--accent)]">you</span> : null}
                 </button>
               </li>
             );

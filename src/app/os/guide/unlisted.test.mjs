@@ -11,6 +11,12 @@ test("both guide pages ask search engines not to index or follow them", () => {
   }
 });
 
+test("no all-caps eyebrow labels: the headings carry the structure (owner, 2026-11-27)", () => {
+  for (const file of ["./style.ts", "./GuideIndex.tsx", "./start-here/StartHere.tsx", "./start-here/Figures.tsx"]) {
+    assert.doesNotMatch(read(file), /gd-eyebrow|uppercase/, file);
+  }
+});
+
 test("the sitemap, header and footer never mention the guide", () => {
   for (const file of ["../../sitemap.ts", "../../components/Header.tsx", "../../components/Footer.tsx"]) {
     assert.doesNotMatch(read(file), /\/os\/guide/, file);

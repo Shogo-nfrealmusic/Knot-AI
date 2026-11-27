@@ -21,7 +21,7 @@ import {
   type Os,
 } from "../data";
 import { useDone, useOs } from "../store";
-import { ApprovalLanes, Doors, FirstJob, FolderReach, InstallTerminal, PathFigure, PlanGate } from "./Figures";
+import { ApprovalLanes, Doors, EndState, FirstJob, FolderReach, InstallTerminal, PathFigure, PlanGate } from "./Figures";
 
 const SPRING = { type: "spring", stiffness: 260, damping: 28 } as const;
 
@@ -228,18 +228,21 @@ function Hero({ os, setOs }: { os: Os; setOs: (o: Os) => void }) {
   const reduce = useReducedMotion();
   const enter = (d: number) => ({ initial: reduce ? false : { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { ...SPRING, delay: d } });
   return (
-    <header className="mx-auto max-w-[1180px] px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
-      <motion.nav {...enter(0)} aria-label="Breadcrumb" className="text-[15px] text-[var(--muted)]">
+    <header className="mx-auto grid max-w-[1180px] grid-cols-1 items-start gap-x-14 px-5 pb-10 pt-12 sm:px-8 sm:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)]">
+      <motion.nav {...enter(0)} aria-label="Breadcrumb" className="text-[15px] text-[var(--muted)] lg:col-start-1 lg:row-start-1">
         <Link href="/os/guide" className="inline-flex min-h-11 items-center hover:text-[var(--ink)]">
           Copilot OS guide
         </Link>
         <span className="mx-2">/</span>
         <span className="text-[var(--ink)]">Module S</span>
       </motion.nav>
-      <motion.h1 {...enter(0.06)} className="gd-h1 mt-4 max-w-[14ch]">
+      <motion.h1 {...enter(0.06)} className="gd-h1 mt-4 max-w-[14ch] lg:col-start-1 lg:row-start-2">
         Start here. <span className="gd-serif">If you&apos;ve never opened a terminal.</span>
       </motion.h1>
-      <motion.div {...enter(0.14)} className="gd-prose mt-8">
+      <motion.div {...enter(0.18)} className="mt-8 lg:col-start-2 lg:row-span-4 lg:row-start-1 lg:mt-10">
+        <EndState os={os} />
+      </motion.div>
+      <motion.div {...enter(0.14)} className="gd-prose mt-8 lg:col-start-1 lg:row-start-3">
         <p>
           Thirty minutes. At the end, Claude Code is installed, logged in, and has done one real job in a folder you own. Skip this module if
           Claude Code already runs on your computer.
@@ -249,7 +252,7 @@ function Hero({ os, setOs }: { os: Os; setOs: (o: Os) => void }) {
           that, minus the breaking.
         </p>
       </motion.div>
-      <motion.div {...enter(0.22)} className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2">
+      <motion.div {...enter(0.22)} className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 lg:col-start-1 lg:row-start-4">
         <span className="text-[16px] text-[var(--soft)]">Your computer:</span>
         <div className="flex gap-1" role="group" aria-label="Your computer">
           {OS_NAMES.map(([k, name]) => (
@@ -294,8 +297,8 @@ function Rail({ active, read, lessonDone, count }: { active: string; read: Read;
   return (
     <nav aria-label="Lessons in this module" className="hidden lg:block">
       <div className="sticky top-24">
-        <p className="gd-eyebrow">Module S</p>
-        <ol className="relative mt-5">
+        <p className="text-[16px] font-semibold tracking-[-0.01em] text-[var(--ink)]">Start here</p>
+        <ol className="relative mt-4">
           <span className="absolute bottom-3 left-[5px] top-3 w-px bg-[var(--rule)]" aria-hidden="true" />
           <motion.span style={{ scaleY: read }} className="absolute bottom-3 left-[5px] top-3 w-px origin-top bg-[var(--accent)]" aria-hidden="true" />
           {LESSONS.map((l) => {
@@ -347,9 +350,8 @@ function MobileBar({ active, read, count }: { active: string; read: Read; count:
 function Lesson({ id, code, title, accent, children }: { id: string; code: string; title: string; accent: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-32 border-t border-[var(--rule)] pb-6 pt-16 first:border-t-0 lg:scroll-mt-24">
-      <p className="gd-eyebrow">Lesson {code}</p>
-      <h2 className="gd-h2 mt-3 max-w-[20ch]">
-        {title} <span className="gd-serif">{accent}</span>
+      <h2 className="gd-h2 max-w-[20ch]">
+        <span className="tabular-nums text-[var(--accent)]">{code.replace("S.", "")}.</span> {title} <span className="gd-serif">{accent}</span>
       </h2>
       <div className="mt-7">{children}</div>
     </section>
@@ -460,10 +462,9 @@ function Lab({ done, toggle }: { done: string[]; toggle: (id: string) => void })
   return (
     <section id="lab" className="mt-10 scroll-mt-32 rounded-[22px] bg-[var(--panel)] px-5 py-10 text-white sm:px-10 lg:scroll-mt-24">
       <div className="flex items-start justify-between gap-6">
-        <div>
-          <p className="gd-eyebrow">Lab</p>
-          <h2 className="gd-h2 mt-3 max-w-[18ch] text-white">
-            Pass condition. <span className="gd-serif !text-white/60">Three ticks.</span>
+        <div className="min-w-0">
+          <h2 className="gd-h2 max-w-[18ch] text-white">
+            The lab. <span className="gd-serif !text-white/60">Three ticks to pass.</span>
           </h2>
         </div>
         <svg viewBox="0 0 64 64" className="size-16 shrink-0" role="img" aria-label={`${n} of ${LAB.length} done`}>

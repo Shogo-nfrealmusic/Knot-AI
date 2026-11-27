@@ -8,7 +8,6 @@ export const GUIDE_CSS = `
 .gd-prose{font-size:18px;line-height:1.75;color:var(--body);max-width:62ch}
 .gd-prose p+p{margin-top:1.1em}
 .gd-prose strong{color:var(--ink);font-weight:600}
-.gd-eyebrow{font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .gd-h1{font-size:clamp(40px,7vw,76px);font-weight:500;line-height:1;letter-spacing:-.045em}
 .gd-h2{font-size:clamp(28px,4vw,44px);font-weight:500;line-height:1.06;letter-spacing:-.035em}
 .gd-h3{font-size:21px;font-weight:600;line-height:1.3;letter-spacing:-.02em}
