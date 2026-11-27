@@ -88,7 +88,7 @@ export function Term({ os, lines, className = "" }: { os: Os; lines: TermLine[];
     <div className={`overflow-hidden text-left ${win ? "rounded-lg bg-[#0c0c0c] shadow-[0_0_0_1px_#2b2b2b,0_22px_50px_-24px_rgba(0,0,0,.6)]" : "rounded-[10px] bg-white shadow-[0_0_0_0.5px_rgba(0,0,0,.28),0_22px_50px_-24px_rgba(0,0,0,.45)]"} ${className}`}>
       {win ? (
         <div className="flex h-9 items-end gap-2 bg-[#202020] px-2">
-          <span className="flex h-7 items-center rounded-t-md bg-[#0c0c0c] px-3 text-[13px] text-white/85">Windows PowerShell</span>
+          <span className="flex h-7 items-center rounded-t-md bg-[#0c0c0c] px-3 text-[12px] text-white/85">Windows PowerShell</span>
         </div>
       ) : (
         <div className="relative flex h-7 items-center border-b border-[#d6d6d6] bg-[#e8e8e8] px-3">
@@ -134,15 +134,13 @@ export function Shot({ id, os = "mac", className = "", mark = false }: { id: str
   }
   if (mark) {
     return (
-      <span className={`inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-dashed border-[var(--accent)] text-[13px] text-[var(--accent)] ${className}`} title={`Slot: ${what}`}>
+      <span className={`inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-dashed border-[var(--accent)] text-[12px] text-[var(--accent)] ${className}`} title={`Slot: ${what}`}>
         logo
       </span>
     );
   }
   return (
-    // min-w-0: as a grid item, an aspect-ratio box would otherwise take its minimum width from its text's height
-    // (4:3 of a tall, wrapped block), which pushed step 3 of section 4 to 541px on a 375px phone.
-    <div className={`flex min-w-0 flex-col justify-center overflow-hidden rounded-xl border-[1.5px] border-dashed border-[var(--accent)] bg-[rgba(224,85,47,0.04)] p-4 ${className}`} role="img" aria-label={`Screenshot to come: ${what}`}>
+    <div className={`flex flex-col justify-center rounded-xl border-[1.5px] border-dashed border-[var(--accent)] bg-[rgba(224,85,47,0.04)] p-4 ${className}`} role="img" aria-label={`Screenshot to come: ${what}`}>
       <p className="text-[13px] font-medium text-[var(--accent)]">Real {os === "windows" ? "Windows" : "Mac"} screenshot goes here</p>
       <p className="mt-1 text-[15px] leading-snug text-[var(--ink)]">{what}</p>
     </div>
