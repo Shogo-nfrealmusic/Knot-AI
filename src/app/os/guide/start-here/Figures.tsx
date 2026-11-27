@@ -115,7 +115,7 @@ export function EndState({ os }: { os: Os }) {
           <span className="block text-[14px] text-[var(--soft)]">Your first job list. You didn&apos;t write it.</span>
         </span>
       </motion.div>
-      <ol className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 px-1 pb-1 sm:grid-cols-4">
+      <ol className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2.5 px-1 pb-1">
         {STATIONS.map((s, i) => (
           <li key={s.label} className="flex items-center gap-2 text-[15px] text-[var(--ink)]">
             <motion.span
@@ -406,7 +406,7 @@ export function Doors() {
               className="gd-press min-h-11 rounded-full px-4 text-[15px] font-medium text-[var(--soft)] ring-1 ring-[var(--rule)] aria-pressed:bg-[var(--ink)] aria-pressed:text-white aria-pressed:ring-[var(--ink)]"
             >
               {DOORS[k].name}
-              {k === "terminal" ? <span className="ml-1.5 font-normal opacity-70">· my advice</span> : null}
+              {k === "terminal" ? <span className="ml-1.5 hidden font-normal opacity-70 sm:inline">· my advice</span> : null}
             </button>
           ))}
         </div>
@@ -595,7 +595,7 @@ export function FirstJob() {
         </div>
         <div className="rounded-2xl bg-white p-4 ring-1 ring-[var(--rule)]">
           <p className="font-mono text-[13px] text-[var(--muted)]">my-business/</p>
-          <div className="relative mt-3 h-[150px]">
+          <div className="relative mt-3 h-[64px] sm:h-[150px]">
             <motion.p className="absolute inset-0 flex items-center justify-center text-[14px] text-[var(--muted)]" initial={false} animate={{ opacity: p > fileAt ? 0 : 1 }}>
               Nothing here yet
             </motion.p>

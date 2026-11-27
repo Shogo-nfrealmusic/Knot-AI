@@ -333,7 +333,7 @@ function MobileBar({ active, read, count }: { active: string; read: Read; count:
   return (
     <div className="sticky top-14 z-30 border-b border-[var(--rule)] bg-[rgba(243,244,241,.88)] backdrop-blur-md lg:hidden">
       <div className="flex h-11 items-center justify-between gap-3 px-5 text-[14px]">
-        <a href={`#${l.id}`} className="flex h-11 min-w-0 items-center truncate">
+        <a href={`#${l.id}`} className="flex h-11 min-w-0 items-center gap-1.5 truncate">
           <span className="font-mono text-[var(--accent)]">{l.code}</span> <span className="text-[var(--ink)]">{l.title}</span>
         </a>
         <span className="shrink-0 text-[var(--muted)]">
@@ -481,7 +481,7 @@ function Lab({ done, toggle }: { done: string[]; toggle: (id: string) => void })
         ))}
       </div>
       <p className="mt-6 max-w-[62ch] text-[18px] leading-relaxed text-white/75">
-        {n === LAB.length ? "Passed. " : ""}Then do Module 0, the 20-question diagnostic. It tells you where to go next.
+        {n === LAB.length ? "Passed. " : ""}Then do Module 0, the 20‑question diagnostic. It tells you where to go next.
       </p>
     </section>
   );
