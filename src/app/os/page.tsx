@@ -296,6 +296,20 @@ export default function CopilotOsPage() {
                 </Rise>
               ))}
             </ol>
+            <Rise>
+              <figure className="mt-14 rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)] sm:p-10">
+                <p className="text-sm font-semibold text-[var(--accent)]">From step 3, word for word</p>
+                <blockquote className="mt-4 max-w-[44rem] text-pretty text-xl font-medium leading-relaxed tracking-[-0.01em] sm:text-2xl sm:leading-snug">
+                  &ldquo;The most important point: the Texas cottage food law, which covers selling food made at home, generally doesn&apos;t cover
+                  perishable cooked meals like these. You&apos;ll probably need to rent time in a permitted commercial kitchen and get a food permit.
+                  &hellip; Until that&apos;s settled, give friends free tastings but don&apos;t take money.&rdquo;
+                </blockquote>
+                <figcaption className="mt-5 max-w-[40rem] text-base text-[var(--soft)]">
+                  It spotted the rule that could stop the business before it started, made checking it Monday&apos;s task, and said the first $500
+                  should go on permits and the kitchen, not equipment. That&apos;s the kind of judgment the setup is built for.
+                </figcaption>
+              </figure>
+            </Rise>
             <div className="mt-14">
               <Buy />
             </div>
