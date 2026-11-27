@@ -84,10 +84,10 @@ export default function CopilotOsPage() {
       <div className="gd pb-16 pt-14">
         <div className="mx-auto max-w-[1180px] px-5 sm:px-8">
           {/* hero */}
-          <header className="grid items-center gap-x-14 gap-y-10 pb-16 pt-10 sm:pt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
+          <header className="grid items-center gap-x-14 gap-y-10 pb-16 pt-6 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)]">
             <div>
               <p className="text-[16px] text-[var(--muted)]">Copilot OS</p>
-              <h1 className="gd-h1 mt-4 max-w-[15ch]">
+              <h1 className="gd-h1 mt-4 max-w-[19ch] !text-[clamp(36px,4.6vw,58px)] !leading-[1.04]">
                 Put Claude Code to work in your business. <span className="gd-serif">Even if you&apos;ve never opened a terminal.</span>
               </h1>
               <div className="gd-prose mt-8">
