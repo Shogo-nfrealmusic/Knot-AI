@@ -217,7 +217,7 @@ export default function CopilotOsPage() {
           <header className="grid items-center gap-x-14 gap-y-12 pb-20 pt-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
             <div>
               <Eyebrow>Copilot OS</Eyebrow>
-              <h1 className="gd-h1 mt-5 max-w-[16ch] text-balance !text-[clamp(40px,5vw,64px)] !leading-[1.02]">
+              <h1 className="gd-h1 mt-5 max-w-[19ch] text-balance !text-[clamp(40px,4.6vw,60px)] !leading-[1.02]">
                 Your business, run by Claude Code. <span className="gd-serif">You just approve.</span>
               </h1>
               <p className="mt-7 max-w-[34rem] text-pretty text-lg text-[var(--body)] sm:text-xl">
@@ -236,9 +236,9 @@ export default function CopilotOsPage() {
               </ul>
             </div>
 
-            <div className="relative min-w-0 pb-24 sm:pb-28">
+            <div className="relative min-w-0 pb-40 sm:pb-56">
               <RevenueCard compact />
-              <div className="absolute -bottom-2 right-[-6%] w-[78%] rotate-[1.5deg] sm:right-[-10%] lg:right-[-14%]">
+              <div className="absolute bottom-0 right-[-4%] w-[64%] rotate-[1.5deg] sm:right-[-8%] lg:right-[-12%]">
                 <Shot {...SHOT.interview} />
                 <p className="mt-2 text-right text-xs text-[var(--muted)]">A real run: it interviews a first time user</p>
               </div>
@@ -290,7 +290,7 @@ export default function CopilotOsPage() {
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">{s.n}</span>
                       <h3 className="text-xl font-semibold tracking-[-0.01em]">{s.title}</h3>
                     </div>
-                    <p className="mt-3 text-base text-[var(--soft)]">{s.body}</p>
+                    <p className="mt-3 text-base text-[var(--soft)] lg:min-h-[4.5rem]">{s.body}</p>
                     <Shot {...s.shot} className="mt-6" />
                   </li>
                 </Rise>
@@ -307,9 +307,9 @@ export default function CopilotOsPage() {
               <Eyebrow>What you get</Eyebrow>
               <h2 className="gd-h2 mt-4 max-w-[22ch] text-balance">The files I run, and the guide to run them.</h2>
             </Rise>
-            <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
               <Rise>
-                <div className="h-full rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
+                <div className="rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
                   <p className="text-sm font-semibold text-white/60">The kit</p>
                   <ul className="mt-5 divide-y divide-white/10">
                     {FILES.map(([f, d]) => (
@@ -351,7 +351,22 @@ export default function CopilotOsPage() {
                 </div>
               </Rise>
               <Rise>
-                <RevenueCard />
+                <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--rule)] ring-1 ring-[var(--rule)]">
+                  {(
+                    [
+                      ["$1.2M", "revenue this year, estimated"],
+                      ["2", "people run the company"],
+                      ["0", "engineers on payroll"],
+                      ["$0", "outside funding"],
+                    ] as const
+                  ).map(([v, l]) => (
+                    <div key={l} className="bg-white p-6 sm:p-8">
+                      <dt className="sr-only">{l}</dt>
+                      <dd className="text-5xl font-semibold tracking-[-0.04em] tabular-nums">{v}</dd>
+                      <dd className="mt-2 text-sm text-[var(--soft)]">{l}</dd>
+                    </div>
+                  ))}
+                </dl>
               </Rise>
             </div>
           </section>
