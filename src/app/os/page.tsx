@@ -129,7 +129,7 @@ export default function CopilotOsPage() {
               <div className="gd-prose">
                 <p>I study law. I don&apos;t have a CS degree. Two years ago I couldn&apos;t code.</p>
                 <p>
-                  Today two of us run a company that made <strong>$375K+ in the last 12 months</strong>, with zero outside funding. Claude Code
+                  Today two of us run a company doing <strong>$375K+ a year</strong>, with zero outside funding. Claude Code
                   closes our books every month, drafts our content overnight, runs our research, and writes down every decision we make. I approve.
                   It works.
                 </p>
