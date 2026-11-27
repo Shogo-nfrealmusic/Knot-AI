@@ -168,7 +168,7 @@ function RootCauseRouter() {
           </ul>
           <AnimatePresence mode="wait" initial={false}>
             <motion.p key={c.id} className="mt-4 text-[15px] leading-relaxed text-[var(--ink)]" initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={SPRING}>
-              {c.layer === null ? "The module's list doesn't route this one to a single layer. Write the fix as the template says: the rule, check, or permission that prevents it." : `${c.label} → ${LAYERS[c.layer].name.toLowerCase()} (${LAYERS[c.layer].module}).`}
+              {c.layer === null ? "The module's list doesn't route this one to a single layer. Write the fix as the template says: the rule, check, or permission that prevents it." : `${c.label} → ${LAYERS[c.layer].name.replace(/^[A-Z](?=[a-z])/, (ch) => ch.toLowerCase())} (${LAYERS[c.layer].module}).`}
             </motion.p>
           </AnimatePresence>
         </div>

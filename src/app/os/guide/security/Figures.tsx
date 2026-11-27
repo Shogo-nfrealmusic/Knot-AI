@@ -480,21 +480,24 @@ function FloorLanes() {
             </li>
           ))}
         </ul>
-        <div className="flex flex-col gap-2">
+        {/* phones: the result sits above the list and stays in view while you tap through it */}
+        <div className="order-first flex flex-col gap-2 max-md:sticky max-md:top-[104px] max-md:z-10 max-md:-mx-2 max-md:rounded-2xl max-md:bg-[rgba(243,244,241,.95)] max-md:p-2 max-md:backdrop-blur-md md:order-none">
+          <div className="grid grid-cols-3 gap-2 md:flex md:flex-col">
           {LANES.map((l) => {
             const on = l.id === a.lane;
             const tone = l.id === "deny" ? C.accent : l.id === "ask" ? C.ink : C.pass;
             return (
-              <div key={l.id} className="relative overflow-hidden rounded-xl bg-white px-4 py-3 ring-1 ring-[var(--rule)]">
+              <div key={l.id} className="relative overflow-hidden rounded-xl bg-white px-3 py-2.5 ring-1 ring-[var(--rule)] md:px-4 md:py-3">
                 {on ? <motion.span layoutId="floor-lane" className="absolute inset-0 rounded-xl" style={{ boxShadow: `inset 0 0 0 2px ${tone}`, background: l.id === "deny" ? "rgba(224,85,47,.07)" : l.id === "ask" ? "rgba(21,23,26,.04)" : "rgba(46,158,106,.07)" }} transition={reduce ? { duration: 0 } : SPRING} /> : null}
                 <p className="relative flex items-center gap-2 text-[15px] font-semibold text-[var(--ink)]">
                   <span className="size-2.5 rounded-full" style={{ background: tone }} />
                   {l.name}
                 </p>
-                <p className="relative mt-0.5 text-[13.5px] leading-snug text-[var(--soft)]">{l.sub}</p>
+                <p className="relative mt-0.5 hidden text-[13.5px] leading-snug text-[var(--soft)] md:block">{l.sub}</p>
               </div>
             );
           })}
+          </div>
           <AnimatePresence mode="wait" initial={false}>
             <motion.p key={i} className="mt-1 rounded-xl bg-[var(--panel)] px-4 py-3 text-[14.5px] leading-snug text-white/90" initial={reduce ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={SPRING}>
               {a.why}
