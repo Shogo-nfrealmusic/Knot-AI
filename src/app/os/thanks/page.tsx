@@ -29,22 +29,31 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
               <h1 className="gd-h2 mt-4 text-balance">
                 You&apos;re in. <span className="gd-serif">Thirty minutes to your first job.</span>
               </h1>
-              <a
-                href={`/os/download?session_id=${encodeURIComponent(sessionId)}`}
-                className="gd-press mt-10 inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-lg font-semibold text-white hover:bg-black"
-              >
-                Download Copilot OS
-                <span aria-hidden="true">↓</span>
-              </a>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <a
+                  href={`/os/access?session_id=${encodeURIComponent(sessionId)}`}
+                  className="gd-press inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-lg font-semibold text-white hover:bg-black"
+                >
+                  Open the guide
+                  <span aria-hidden="true">→</span>
+                </a>
+                <a
+                  href={`/os/download?session_id=${encodeURIComponent(sessionId)}`}
+                  className="gd-press inline-flex min-h-14 items-center gap-3 rounded-full px-7 text-lg font-semibold text-[var(--ink)] ring-1 ring-[var(--ink)] hover:bg-[var(--ink)] hover:text-white"
+                >
+                  Download the kit
+                  <span aria-hidden="true">↓</span>
+                </a>
+              </div>
               <ol className="mt-12 grid gap-4 text-lg text-[var(--body)]">
                 <li>
-                  <strong className="font-semibold text-[var(--ink)]">1.</strong> Unzip it and open <code className="gd-code">guide-html/index.html</code>.
+                  <strong className="font-semibold text-[var(--ink)]">1.</strong> Open the guide and start at <strong className="font-semibold text-[var(--ink)]">0 · Start here</strong>, even if you already use Claude Code.
                 </li>
                 <li>
-                  <strong className="font-semibold text-[var(--ink)]">2.</strong> Read <strong className="font-semibold text-[var(--ink)]">Start here</strong> first, even if you already use Claude Code.
+                  <strong className="font-semibold text-[var(--ink)]">2.</strong> Download the kit. The guide tells you which file to copy, and when.
                 </li>
                 <li>
-                  <strong className="font-semibold text-[var(--ink)]">3.</strong> Keep this page: the link works again whenever you need the files.
+                  <strong className="font-semibold text-[var(--ink)]">3.</strong> Bookmark this page. It opens the guide on any device, any time.
                 </li>
               </ol>
               {paid.plan === "operator" ? (
