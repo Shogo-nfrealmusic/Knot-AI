@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import { GUIDE_CSS } from "./guide/style";
-import { CountUp, Focus, InView, MOTION_CSS, RunFilm, type Scene } from "./Motion";
+import { CountUp, InView, MOTION_CSS } from "./Motion";
+import { HeroRun, PlanDoc, StepArt } from "./Showcase";
 import { TaglineReveal } from "./Reveal";
 
 // The Copilot OS sales page. Same look as the guide it sells: paper grid, ink, one orange accent.
 // Every screen on this page was captured on my Mac on Nov 28, 2026, and every file listed ships in the kit.
-// Nothing is drawn to look like an app: the film and the crops are the captured screens, moved and zoomed.
+// No screenshots: the figures are drawn in the guide's language, and the words in them are typeset from a real run.
 // The revenue chart is a chart of the company's estimate and says so.
 
 export const metadata: Metadata = {
@@ -21,20 +22,6 @@ export const dynamic = "force-static";
 // Replaced with the Kit checkout links once the products exist in Kit.
 const BUY_URL = "#price";
 const OPERATOR_URL = "#price";
-
-const SRC = {
-  login: "/os/guide/login-method.png",
-  interview: "/os/guide/interview.png",
-  plan: "/os/guide/plan-written.png",
-};
-
-// x / y: the line the camera pushes in on, in percent of the 1520×914 screenshot.
-const FILM: Scene[] = [
-  { src: SRC.interview, alt: "A first time user describing a meal-prep business to Claude Code", label: "You describe the business in plain words", x: 1, y: 26, zoom: 1.7 },
-  { src: SRC.interview, alt: "Claude Code asking its first interview question", label: "It interviews you before it writes anything", x: 1, y: 49, zoom: 1.8 },
-  { src: SRC.plan, alt: "Claude Code flagging the Texas cottage food law in the plan it wrote", label: "It flags the law before you take a single order", x: 1, y: 26, zoom: 1.7 },
-  { src: SRC.plan, alt: "The first week plan, one task per day", label: "Your first week, planned and saved to your folder", x: 1, y: 54, zoom: 1.6 },
-];
 
 // ---------- small parts ----------
 
@@ -189,10 +176,10 @@ const JOBS = [
 ];
 
 const STEPS = [
-  { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account.", src: SRC.login, alt: "Claude Code asking you to select a login method", x: 1, y: 70, zoom: 1.5 },
-  { n: "2", title: "It interviews you", body: "One question at a time, about your business.", src: SRC.interview, alt: "Claude Code asking the first interview question", x: 1, y: 50, zoom: 1.6 },
-  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder.", src: SRC.plan, alt: "Claude Code reporting the plan file it wrote", x: 1, y: 52, zoom: 1.4 },
-];
+  { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account." },
+  { n: "2", title: "It interviews you", body: "One question at a time, about your business." },
+  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder." },
+] as const;
 
 const FILES: [string, string][] = [
   ["project/CLAUDE.md", "the brief it reads every session"],
@@ -273,7 +260,7 @@ export default function CopilotOsPage() {
             </InView>
 
             <div className="relative min-w-0 sm:pt-16">
-              <RunFilm scenes={FILM} />
+              <HeroRun />
               <div className="mt-4 flex justify-end sm:absolute sm:-right-6 sm:-top-14 sm:mt-0 sm:block">
                 <RevenueChip />
               </div>
@@ -316,7 +303,7 @@ export default function CopilotOsPage() {
             <InView as="ol" className="gd-stagger mt-12 grid gap-10 lg:grid-cols-3 lg:gap-6">
               {STEPS.map((s, i) => (
                 <li key={s.n} style={v(i)} className="flex flex-col">
-                  <Focus src={s.src} alt={s.alt} x={s.x} y={s.y} zoom={s.zoom} />
+                  <StepArt i={i as 0 | 1 | 2} />
                   <div className="mt-5 flex items-center gap-3">
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">{s.n}</span>
                     <h3 className="text-xl font-semibold tracking-[-0.01em]">{s.title}</h3>
@@ -336,10 +323,8 @@ export default function CopilotOsPage() {
                   </blockquote>
                   <figcaption className="mt-5 text-base text-white/65">It caught the rule that could stop the business, before day one.</figcaption>
                 </div>
-                <div className="relative min-h-[220px] border-t border-white/10 lg:border-l lg:border-t-0">
-                  <div className="absolute inset-4 sm:inset-6">
-                    <Focus src={SRC.plan} alt="The plan Claude Code wrote, opening with the cottage food law" x={1} y={24} zoom={1.9} aspect="auto" />
-                  </div>
+                <div className="border-t border-white/10 p-5 sm:p-8 lg:border-l lg:border-t-0">
+                  <PlanDoc />
                 </div>
               </figure>
             </InView>
@@ -527,7 +512,7 @@ export default function CopilotOsPage() {
           </section>
 
           {/* final CTA */}
-          <section className="grid items-center gap-10 overflow-hidden rounded-3xl bg-[var(--panel)] px-6 py-14 text-white sm:px-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
+          <section className="grid items-center gap-10 overflow-hidden rounded-3xl bg-[var(--panel)] px-6 py-14 text-white sm:px-12 sm:py-16 lg:grid-cols-1">
             <div>
               <h2 className="max-w-[16ch] text-balance text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">Your first real job, thirty minutes from now.</h2>
               <p className="mt-6 max-w-[30rem] text-lg text-white/70">$29 for the first 20 buyers. Not working for you? Tell me why and I&apos;ll refund you.</p>
@@ -542,9 +527,6 @@ export default function CopilotOsPage() {
                   →
                 </span>
               </a>
-            </div>
-            <div className="hidden lg:block">
-              <RunFilm scenes={FILM} />
             </div>
           </section>
 
