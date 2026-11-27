@@ -30,10 +30,10 @@ const SRC = {
 
 // x / y: the line the camera pushes in on, in percent of the 1520×914 screenshot.
 const FILM: Scene[] = [
-  { src: SRC.interview, alt: "A first time user describing a meal-prep business to Claude Code", label: "You describe the business in plain words", x: 30, y: 26, zoom: 1.7 },
-  { src: SRC.interview, alt: "Claude Code asking its first interview question", label: "It interviews you before it writes anything", x: 30, y: 49, zoom: 1.8 },
-  { src: SRC.plan, alt: "Claude Code flagging the Texas cottage food law in the plan it wrote", label: "It flags the law before you take a single order", x: 30, y: 26, zoom: 1.7 },
-  { src: SRC.plan, alt: "The first week plan, one task per day", label: "Your first week, planned and saved to your folder", x: 30, y: 54, zoom: 1.6 },
+  { src: SRC.interview, alt: "A first time user describing a meal-prep business to Claude Code", label: "You describe the business in plain words", x: 1, y: 26, zoom: 1.7 },
+  { src: SRC.interview, alt: "Claude Code asking its first interview question", label: "It interviews you before it writes anything", x: 1, y: 49, zoom: 1.8 },
+  { src: SRC.plan, alt: "Claude Code flagging the Texas cottage food law in the plan it wrote", label: "It flags the law before you take a single order", x: 1, y: 26, zoom: 1.7 },
+  { src: SRC.plan, alt: "The first week plan, one task per day", label: "Your first week, planned and saved to your folder", x: 1, y: 54, zoom: 1.6 },
 ];
 
 // ---------- small parts ----------
@@ -189,9 +189,9 @@ const JOBS = [
 ];
 
 const STEPS = [
-  { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account.", src: SRC.login, alt: "Claude Code asking you to select a login method", x: 30, y: 70, zoom: 1.5 },
-  { n: "2", title: "It interviews you", body: "One question at a time, about your business.", src: SRC.interview, alt: "Claude Code asking the first interview question", x: 30, y: 50, zoom: 1.6 },
-  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder.", src: SRC.plan, alt: "Claude Code reporting the plan file it wrote", x: 30, y: 52, zoom: 1.4 },
+  { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account.", src: SRC.login, alt: "Claude Code asking you to select a login method", x: 1, y: 70, zoom: 1.5 },
+  { n: "2", title: "It interviews you", body: "One question at a time, about your business.", src: SRC.interview, alt: "Claude Code asking the first interview question", x: 1, y: 50, zoom: 1.6 },
+  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder.", src: SRC.plan, alt: "Claude Code reporting the plan file it wrote", x: 1, y: 52, zoom: 1.4 },
 ];
 
 const FILES: [string, string][] = [
@@ -252,8 +252,8 @@ export default function CopilotOsPage() {
               <div style={v(0)}>
                 <Eyebrow>Copilot OS</Eyebrow>
               </div>
-              <h1 className="gd-h1 mt-5 max-w-[19ch] text-balance !text-[clamp(40px,4.6vw,60px)] !leading-[1.02]" style={v(1)}>
-                Your business, run by Claude Code. <span className="gd-serif">You just approve.</span>
+              <h1 className="gd-h1 mt-5 max-w-[19ch] text-balance !text-[clamp(36px,3.9vw,54px)] !leading-[1.02]" style={v(1)}>
+                Your business, <span className="whitespace-nowrap">run by Claude Code.</span> <span className="gd-serif">You just approve.</span>
               </h1>
               <p className="mt-7 max-w-[32rem] text-pretty text-lg text-[var(--body)] sm:text-xl" style={v(2)}>
                 The exact setup behind a two person company on track for <strong className="font-semibold text-[var(--ink)]">$1.2M this year</strong>. First real job done in 30
@@ -272,9 +272,9 @@ export default function CopilotOsPage() {
               </ul>
             </InView>
 
-            <div className="relative min-w-0">
+            <div className="relative min-w-0 sm:pt-16">
               <RunFilm scenes={FILM} />
-              <div className="mt-4 flex justify-end sm:absolute sm:-bottom-10 sm:-left-10 sm:mt-0 sm:block">
+              <div className="mt-4 flex justify-end sm:absolute sm:-right-6 sm:-top-14 sm:mt-0 sm:block">
                 <RevenueChip />
               </div>
             </div>
@@ -338,7 +338,7 @@ export default function CopilotOsPage() {
                 </div>
                 <div className="relative min-h-[220px] border-t border-white/10 lg:border-l lg:border-t-0">
                   <div className="absolute inset-4 sm:inset-6">
-                    <Focus src={SRC.plan} alt="The plan Claude Code wrote, opening with the cottage food law" x={28} y={24} zoom={1.9} aspect="auto" />
+                    <Focus src={SRC.plan} alt="The plan Claude Code wrote, opening with the cottage food law" x={1} y={24} zoom={1.9} aspect="auto" />
                   </div>
                 </div>
               </figure>
