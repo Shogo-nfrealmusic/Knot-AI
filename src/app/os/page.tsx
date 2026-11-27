@@ -4,6 +4,7 @@ import SitePageLayout from "@/app/components/SitePageLayout";
 import { GUIDE_CSS } from "./guide/style";
 import { CountUp, InView, MOTION_CSS } from "./Motion";
 import { HeroRun, PlanDoc, StepArt } from "./Showcase";
+import { KitBrowser, ModuleIndex, WhatItDoes } from "./Sections";
 import { TaglineReveal } from "./Reveal";
 
 // The Copilot OS sales page. Same look as the guide it sells: paper grid, ink, one orange accent.
@@ -168,41 +169,11 @@ function RevenueChip() {
 
 // ---------- content ----------
 
-const JOBS = [
-  { file: "CLAUDE.md", title: "It remembers your business", body: "Goals, prices, customers, rules. Read every morning." },
-  { file: "agents/verifier.md", title: "A second agent checks the first", body: "Nothing reaches you until another agent tried to break it." },
-  { file: "agents/ × 6", title: "Six specialists, not one chat", body: "Research, numbers, marketing, admin, code, checking." },
-  { file: "hooks/security-guard.py", title: "Money waits for your yes", body: "Payments, pushes and secrets are blocked until you approve." },
-];
-
 const STEPS = [
   { n: "1", title: "Install and sign in", body: "One line. Pick your Claude account." },
   { n: "2", title: "It interviews you", body: "One question at a time, about your business." },
   { n: "3", title: "Your first file lands", body: "A plan with a task for each day, in your folder." },
 ] as const;
-
-const FILES: [string, string][] = [
-  ["project/CLAUDE.md", "the brief it reads every session"],
-  ["vault/CLAUDE.md", "your second brain's rules"],
-  ["agents/ × 6", "researcher, analyst, marketer, secretary, engineer, verifier"],
-  ["hooks/security-guard.py", "blocks payments, pushes and secrets"],
-  ["hooks/require-tests.py", "it can't call a job done while tests fail"],
-  ["prompts/ × 3", "interview, daily routine, weekly review"],
-  ["templates/ × 5", "decisions, changes, failures, skills"],
-  ["settings.example.json", "the permissions I actually run"],
-];
-
-const MODULES: [string, string][] = [
-  ["Start here", "Zero to your first job done"],
-  ["0", "Where you are"],
-  ["1A", "A second brain"],
-  ["1", "Memory that compounds"],
-  ["2", "Never let AI grade its own work"],
-  ["3", "It works while you sleep"],
-  ["4", "Locks, not promises"],
-  ["5", "The company, real numbers"],
-  ["6", "Your own OS"],
-];
 
 const FOR: [boolean, string][] = [
   [true, "You run a business and you're not an engineer"],
@@ -279,26 +250,25 @@ export default function CopilotOsPage() {
         </section>
 
         <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
-          {/* what it does */}
-          <section className="py-20 sm:py-28">
-            <Head eyebrow="What it does">Four things a chat window can&apos;t do for you.</Head>
-            <InView className="gd-stagger mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {JOBS.map((j, i) => (
-                <article
-                  key={j.title}
-                  style={v(i)}
-                  className="group flex flex-col rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(21,23,26,.55)]"
-                >
-                  <span className="self-start rounded-md bg-[var(--panel)] px-2.5 py-1 font-mono text-xs text-[#f0b49f]">{j.file}</span>
-                  <h3 className="mt-6 text-xl font-semibold tracking-[-0.01em]">{j.title}</h3>
-                  <p className="mt-2 text-base text-[var(--soft)]">{j.body}</p>
-                </article>
-              ))}
-            </InView>
+          {/* what it does: a dark band with a working diagram per idea */}
+          <section className="relative left-1/2 my-6 w-screen -translate-x-1/2 bg-[var(--panel)] py-20 sm:py-28">
+            <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
+              <InView className="gd-stagger">
+                <div style={v(0)}>
+                  <Eyebrow>What it does</Eyebrow>
+                </div>
+                <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance text-white" style={v(1)}>
+                  Four things a chat window <span className="gd-serif !text-white/60">can&apos;t do for you.</span>
+                </h2>
+              </InView>
+              <div className="mt-12">
+                <WhatItDoes />
+              </div>
+            </div>
           </section>
 
           {/* how it works */}
-          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+          <section className="py-20 sm:py-28">
             <Head eyebrow="The first 30 minutes">Three steps, exactly as you&apos;ll see them.</Head>
             <InView as="ol" className="gd-stagger mt-12 grid gap-10 lg:grid-cols-3 lg:gap-6">
               {STEPS.map((s, i) => (
@@ -336,36 +306,16 @@ export default function CopilotOsPage() {
           {/* what you get */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
             <Head eyebrow="What you get">The files I run, and the guide to run them.</Head>
-            <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-              <div className="rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
-                <div className="flex items-center gap-2" aria-hidden="true">
-                  <span className="h-3 w-3 rounded-full bg-white/15" />
-                  <span className="h-3 w-3 rounded-full bg-white/15" />
-                  <span className="h-3 w-3 rounded-full bg-white/15" />
-                  <span className="ml-3 font-mono text-xs text-white/50">copilot-os/</span>
-                </div>
-                <InView as="ul" className="gd-stagger mt-5 divide-y divide-white/10">
-                  {FILES.map(([f, d], i) => (
-                    <li key={f} style={v(i)} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-4">
-                      <span className="font-mono text-sm text-[#f0b49f]">{f}</span>
-                      <span className="text-sm text-white/70">{d}</span>
-                    </li>
-                  ))}
-                </InView>
-              </div>
-              <div className="rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] sm:p-8">
-                <p className="text-sm font-semibold text-[var(--muted)]">The guide · 9 modules</p>
-                <InView as="ol" className="gd-stagger mt-5 grid gap-2">
-                  {MODULES.map(([n, d], i) => (
-                    <li key={n} style={v(i)} className="flex items-center gap-4 rounded-xl px-3 py-2 transition-colors duration-300 hover:bg-[var(--page)]">
-                      <span className="flex h-9 min-w-9 items-center justify-center rounded-lg bg-[var(--page)] px-2 font-mono text-xs font-semibold text-[var(--ink)] ring-1 ring-[var(--rule)]">
-                        {n === "Start here" ? "→" : n}
-                      </span>
-                      <span className="text-base font-medium">{n === "Start here" ? "Start here: zero to your first job done" : d}</span>
-                    </li>
-                  ))}
-                </InView>
-              </div>
+            <div className="mt-12">
+              <KitBrowser />
+            </div>
+            <div className="mt-16 flex items-end justify-between gap-6">
+              <h3 className="text-3xl font-semibold tracking-[-0.02em]">
+                The guide. <span className="gd-serif">Nine modules.</span>
+              </h3>
+            </div>
+            <div className="mt-8">
+              <ModuleIndex />
             </div>
           </section>
 
