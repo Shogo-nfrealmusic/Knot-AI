@@ -37,15 +37,29 @@ const MODULES = [
 ];
 
 const FAQ = [
-  ["I can't code. Is this for me?", "I couldn't either when I started. You need a paid Claude plan and the patience to follow steps one at a time. Start here was written for people who have never opened a terminal."],
-  ["Which Claude plan do I need?", "A paid plan. Pro is enough to start. Copilot OS doesn't include access to Claude; it's the setup and the guide."],
-  ["Mac or Windows?", "Both. Every command in the guide switches between Mac and Windows."],
-  ["Is it a course or a set of files?", "Both. The guide teaches each part step by step, and the files are the ones I actually run: agents, hooks, templates and CLAUDE.md. You copy them into your own setup."],
-  ["How fast will something work?", "Your first real job is done in about 30 minutes, the same run you see in the screens above."],
-  ["Can't I find this for free?", "The features, yes. Anthropic's own docs are free and good, and the guide links them. What you won't find is one complete setup that runs a real company, with the files."],
-  ["Refunds?", "You get every file the moment you buy, so purchases are final. Broken files or a duplicate purchase are refunded."],
-  ["Can you just set it up for me?", "Yes. That's a separate service."],
+  ["I can't code. Is this for me?", "Yes. Start here is written for people who have never opened a terminal."],
+  ["Which Claude plan do I need?", "A paid plan. Pro is enough. Copilot OS doesn't include Claude itself."],
+  ["Mac or Windows?", "Both. Every command switches between the two."],
+  ["Is it a course or files?", "Both: a step-by-step guide, and the files I actually run."],
+  ["How fast will something work?", "About 30 minutes to your first real job."],
+  ["Can't I find this for free?", "The features, yes. One complete setup that runs a real company, no."],
+  ["Refunds?", "Files arrive the moment you buy, so sales are final. Broken files or double charges are refunded."],
+  ["Can you set it up for me?", "Yes, as a separate service."],
 ];
+
+const PEOPLE = [
+  { tag: "Solo founder", who: "You run everything yourself", job: "Inbox drafts, research, and the weekly numbers." },
+  { tag: "Small team owner", who: "You have 2 to 10 people", job: "Month-end books, reports, and the decisions log." },
+  { tag: "Creator", who: "You sell to an audience", job: "Content drafts overnight, and the follow-up emails." },
+];
+
+const FIT = [
+  "You're not an engineer, and you want AI doing real work.",
+  "You'd rather copy a setup that already makes money.",
+  "You're done thinking about it.",
+];
+
+const NOT_FIT = ["You want a prompt pack.", "You want to argue about what counts as real engineering."];
 
 function Buy({ label = "Get Copilot OS", className = "" }: { label?: string; className?: string }) {
   return (
@@ -129,7 +143,7 @@ export default function CopilotOsPage() {
               <div className="gd-prose">
                 <p>I study law. I don&apos;t have a CS degree. Two years ago I couldn&apos;t code.</p>
                 <p>
-                  Today two of us run a company that made <strong>$375K+ in the last 12 months</strong>, with zero outside funding. Claude Code
+                  Today two of us run a company doing <strong>$375K+ a year</strong>, with zero outside funding. Claude Code
                   closes our books every month, drafts our content overnight, runs our research, and writes down every decision we make. I approve.
                   It works.
                 </p>
@@ -147,14 +161,23 @@ export default function CopilotOsPage() {
                   <strong>The guide.</strong> Nine modules, from installing Claude Code to running your work on it.
                 </p>
               </div>
-              <ol className="mt-8 divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
-                {MODULES.map(([name, line]) => (
-                  <li key={name} className="grid gap-1 py-4 sm:grid-cols-[280px_1fr] sm:gap-6">
-                    <span className="text-[18px] font-medium text-[var(--ink)]">{name}</span>
-                    <span className="text-[17px] leading-relaxed text-[var(--soft)]">{line}</span>
-                  </li>
-                ))}
-              </ol>
+              <div className="mt-8 overflow-hidden rounded-2xl bg-white ring-2 ring-[var(--ink)]">
+                <div className="hidden grid-cols-[280px_1fr] gap-6 bg-[var(--ink)] px-6 py-3 text-[15px] font-medium text-white sm:grid">
+                  <span>Module</span>
+                  <span>What it does for you</span>
+                </div>
+                <ol>
+                  {MODULES.map(([name, line], i) => (
+                    <li key={name} className={`grid gap-1 px-6 py-5 sm:grid-cols-[280px_1fr] sm:gap-6 ${i > 0 ? "border-t-2 border-[var(--rule)]" : ""} ${i === 0 ? "bg-[#fff4ef]" : ""}`}>
+                      <span className="text-[18px] font-semibold text-[var(--ink)]">
+                        {name}
+                        {i === 0 ? <span className="ml-2 rounded-full bg-[var(--accent)] px-2 py-0.5 align-middle text-[12px] font-medium text-white">30 min</span> : null}
+                      </span>
+                      <span className="text-[17px] leading-relaxed text-[var(--body)]">{line}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </Section>
 
             <Section id="price" title="Price." accent="Pay once.">
@@ -196,31 +219,48 @@ export default function CopilotOsPage() {
             </Section>
 
             <Section title="Who it's for.">
-              <div className="grid gap-10 sm:grid-cols-2">
-                <ul className="gd-prose grid gap-3">
-                  <li>You&apos;re not an engineer, and you want AI doing real work in your business.</li>
-                  <li>You&apos;d rather copy a setup that already makes money than design one from zero.</li>
-                  <li>You&apos;re done thinking about it.</li>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {PEOPLE.map((p) => (
+                  <div key={p.who} className="rounded-2xl bg-white p-6 ring-2 ring-[var(--ink)]">
+                    <p className="text-[14px] font-medium text-[var(--accent)]">{p.tag}</p>
+                    <h3 className="gd-h3 mt-2">{p.who}</h3>
+                    <p className="mt-4 text-[14px] text-[var(--muted)]">Claude takes over</p>
+                    <p className="mt-1 text-[17px] leading-relaxed text-[var(--ink)]">{p.job}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <ul className="grid gap-3 rounded-2xl bg-white p-6 ring-2 ring-[var(--rule)]">
+                  {FIT.map((t) => (
+                    <li key={t} className="flex gap-3 text-[17px] text-[var(--ink)]">
+                      <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--pass)] text-[14px] text-white">✓</span>
+                      {t}
+                    </li>
+                  ))}
                 </ul>
-                <div>
-                  <h3 className="gd-h3">Not for you if</h3>
-                  <ul className="gd-prose mt-3 grid gap-3">
-                    <li>You want a prompt pack.</li>
-                    <li>You want to argue about whether this counts as real engineering.</li>
-                  </ul>
-                </div>
+                <ul className="grid gap-3 rounded-2xl bg-white p-6 ring-2 ring-[var(--rule)]">
+                  {NOT_FIT.map((t) => (
+                    <li key={t} className="flex gap-3 text-[17px] text-[var(--soft)]">
+                      <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-[var(--rule-strong)] text-[14px] text-white">✕</span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </Section>
 
             <Section title="Questions.">
-              <dl className="divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
-                {FAQ.map(([q, a]) => (
-                  <div key={q} className="py-6">
-                    <dt className="gd-h3">{q}</dt>
-                    <dd className="gd-prose mt-2">{a}</dd>
-                  </div>
+              <div className="overflow-hidden rounded-2xl bg-white ring-2 ring-[var(--ink)]">
+                {FAQ.map(([q, a], i) => (
+                  <details key={q} className={`group ${i > 0 ? "border-t-2 border-[var(--rule)]" : ""}`}>
+                    <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 text-[19px] font-semibold text-[var(--ink)] [&::-webkit-details-marker]:hidden">
+                      {q}
+                      <span className="text-[24px] font-normal text-[var(--accent)] transition-transform group-open:rotate-45">+</span>
+                    </summary>
+                    <p className="px-6 pb-6 text-[17px] leading-relaxed text-[var(--body)]">{a}</p>
+                  </details>
                 ))}
-              </dl>
+              </div>
             </Section>
 
             <section className="border-t border-[var(--rule)] pt-16 sm:pt-20">
