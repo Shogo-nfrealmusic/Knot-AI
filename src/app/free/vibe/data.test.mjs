@@ -170,11 +170,13 @@ test("the page's facts carry no Japanese and no emoji", () => {
   assert.ok(!/\p{Extended_Pictographic}/u.test(text));
 });
 
-test("/free/79 opens this page with the reel's keyword, first in the list", () => {
+test("/free/79 opens this page with the reel's keyword, listed before 78", () => {
   const drop = getDropByNumber("79");
   assert.equal(drop?.slug, SLUG);
   assert.equal(drop?.keyword, "CODING");
-  assert.equal(getDrops()[0].number, 79);
+  // newest first: 79 is listed before 78 (it was first until /free/80 went on top)
+  const order = getDrops().map((d) => d.number);
+  assert.ok(order.indexOf(79) < order.indexOf(78));
   assert.deepEqual(
     drop?.tools.map((t) => [t.name, t.href]),
     PLUGS.map((p) => [p.name, p.href]),
