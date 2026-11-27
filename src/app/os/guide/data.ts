@@ -1,21 +1,29 @@
-// Copilot OS guide: the facts the pages draw from. Start here is module-s-start-here.md (release/guide), checked
+// Copilot OS guide: the facts the pages draw from. Start here is module-0-start-here.md (release/guide), checked
 // against the official docs on 2026-11-27. Commands and quotes are word for word; the tests pin them.
+// Modules are numbered 0 to 8 (renumbered 2026-11-28 from S, 0, 1A, 1 to 6).
 
 export type Os = "mac" | "windows" | "linux";
 
-export type GuideModule = { code: string; title: string; line: string; time: string; href: string | null };
+export type GuideModule = { code: string; title: string; line: string; time: string; href: string };
 
 export const MODULES: GuideModule[] = [
-  { code: "S", title: "Start here", line: "Install Claude Code, sign in, and get one real job done in a folder you own.", time: "30 minutes", href: "/os/guide/start-here" },
-  { code: "0", title: "Diagnostic", line: "Twenty questions that tell you which module to open next.", time: "About 10 minutes", href: null },
-  { code: "1A", title: "Your second brain", line: "Obsidian holds what you know. Claude reads it, files new things, and answers from all of it.", time: "One evening, then a week to see it work", href: null },
-  { code: "1", title: "Memory that compounds", line: "What goes into memory, and how it stays useful after six months.", time: "Two evenings, then minutes a week", href: null },
-  { code: "2", title: "Verification design", line: "When Claude says it's done, how do you know?", time: "Two to three evenings", href: null },
-  { code: "3", title: "Autonomy without drift", line: "Letting Claude work while you're not watching.", time: "Two evenings", href: null },
-  { code: "4", title: "Security and supply chain", line: "What Claude Code can reach, and what the sandbox does and doesn't stop.", time: "Two evenings", href: null },
-  { code: "5", title: "Beyond code: running a business with Claude Code", line: "Research, numbers, bookkeeping, content and decisions, from a real two-person company.", time: "", href: null },
-  { code: "6", title: "Your operating system", line: "Putting it together, and keeping it working month after month.", time: "One evening, then 30 minutes a month", href: null },
+  { code: "0", title: "Start here", line: "Install Claude Code, sign in, and get one real job done in a folder you own.", time: "30 minutes", href: "/os/guide/start-here" },
+  { code: "1", title: "Diagnostic", line: "Twenty questions that tell you which module to open next.", time: "About 10 minutes", href: "/os/guide/diagnostic" },
+  { code: "2", title: "Your second brain", line: "Obsidian holds what you know. Claude reads it, files new things, and answers from all of it.", time: "One evening, then a week to see it work", href: "/os/guide/second-brain" },
+  { code: "3", title: "Memory that compounds", line: "What goes into memory, and how it stays useful after six months.", time: "Two evenings, then minutes a week", href: "/os/guide/memory" },
+  { code: "4", title: "Verification design", line: "When Claude says it's done, how do you know?", time: "Two to three evenings", href: "/os/guide/verification" },
+  { code: "5", title: "Autonomy without drift", line: "Letting Claude work while you're not watching.", time: "Two evenings", href: "/os/guide/autonomy" },
+  { code: "6", title: "Security and supply chain", line: "What Claude Code can reach, and what the sandbox does and doesn't stop.", time: "Two evenings", href: "/os/guide/security" },
+  { code: "7", title: "Beyond code: running a business with Claude Code", line: "Research, numbers, bookkeeping, content and decisions, from a real two-person company.", time: "", href: "/os/guide/beyond-code" },
+  { code: "8", title: "Your operating system", line: "Putting it together, and keeping it working month after month.", time: "One evening, then 30 minutes a month", href: "/os/guide/your-os" },
 ];
+
+/** The modules before and after one, for the page's prev/next links. An unknown code has neither. */
+export function neighbours(code: string): { prev: GuideModule | null; next: GuideModule | null } {
+  const i = MODULES.findIndex((m) => m.code === code);
+  if (i < 0) return { prev: null, next: null };
+  return { prev: MODULES[i - 1] ?? null, next: MODULES[i + 1] ?? null };
+}
 
 export const CHECKED_ON = "2026-11-27";
 export const QUICKSTART_URL = "https://code.claude.com/docs/en/quickstart";
@@ -70,12 +78,12 @@ export function commandsFor(os: Os) {
 export type Lesson = { id: string; code: string; title: string };
 
 export const LESSONS: Lesson[] = [
-  { id: "need", code: "S.1", title: "What you need" },
-  { id: "door", code: "S.2", title: "Pick your door" },
-  { id: "install", code: "S.3", title: "Install it" },
-  { id: "folder", code: "S.4", title: "Give it a folder" },
-  { id: "job", code: "S.5", title: "The first real job" },
-  { id: "know", code: "S.6", title: "Four things to know" },
+  { id: "need", code: "0.1", title: "What you need" },
+  { id: "door", code: "0.2", title: "Pick your door" },
+  { id: "install", code: "0.3", title: "Install it" },
+  { id: "folder", code: "0.4", title: "Give it a folder" },
+  { id: "job", code: "0.5", title: "The first real job" },
+  { id: "know", code: "0.6", title: "Four things to know" },
   { id: "lab", code: "Lab", title: "Pass the lab" },
 ];
 

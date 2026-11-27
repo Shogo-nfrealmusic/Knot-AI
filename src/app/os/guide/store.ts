@@ -5,6 +5,7 @@
 
 import { useSyncExternalStore } from "react";
 import { STORAGE_KEY, osFrom, parseDone, toggleDone, type Os } from "./data";
+import { parseTicks, toggleTick } from "./progress";
 
 const listeners = new Set<() => void>();
 const memory: Record<string, string | null> = {};
@@ -42,6 +43,20 @@ export function useDone() {
   const done = parseDone(raw);
   const toggle = (id: string) => writeKey(STORAGE_KEY, JSON.stringify(toggleDone(done, id)));
   return [done, toggle] as const;
+}
+
+/** Ticked labs for one module page, kept under its own key. */
+export function useTicks(key: string, ids: readonly string[]) {
+  const raw = useSyncExternalStore(subscribe, () => readKey(key), () => null);
+  const done = parseTicks(raw, ids);
+  const toggle = (id: string) => writeKey(key, JSON.stringify(toggleTick(done, id, ids)));
+  return [done, toggle] as const;
+}
+
+/** A small JSON value for one page (the diagnostic's answers), kept in this browser. */
+export function useStored(key: string): [string | null, (value: string) => void] {
+  const raw = useSyncExternalStore(subscribe, () => readKey(key), () => null);
+  return [raw, (value: string) => writeKey(key, value)];
 }
 
 export function useOs() {

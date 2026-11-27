@@ -14,6 +14,9 @@ export const GUIDE_CSS = `
 .gd-serif{font-family:var(--font-instrument-serif),Georgia,serif;font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--soft)}
 .gd-code{font-family:var(--font-geist-mono),ui-monospace,monospace;font-size:.86em;background:#fff;padding:.12em .4em;border-radius:6px;box-shadow:0 0 0 1px var(--rule);color:var(--ink);white-space:nowrap}
 .gd-kbd{display:inline-flex;align-items:center;min-height:30px;padding:0 9px;border-radius:7px;background:#fff;font-size:15px;font-weight:500;color:var(--ink);box-shadow:0 0 0 1px var(--rule-strong),0 2px 0 var(--rule-strong)}
+.gd-link{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px;overflow-wrap:anywhere}
+.gd-link:hover{text-decoration-thickness:2.5px}
+.gd-prose .gd-code{white-space:normal;overflow-wrap:anywhere}
 .gd-plate{border-radius:18px;background-color:rgba(255,255,255,.55);box-shadow:0 0 0 1px var(--rule),0 30px 70px -48px rgba(21,23,26,.45)}
 .gd-press{transition:transform .45s cubic-bezier(.34,1.56,.64,1),background-color .2s,color .2s,box-shadow .2s}
 .gd-press:active{transform:scale(.96)}
