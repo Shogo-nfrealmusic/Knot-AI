@@ -21,7 +21,7 @@ import {
   type Os,
 } from "../data";
 import { useDone, useOs } from "../store";
-import { ApprovalLanes, Doors, EndState, FirstJob, FolderReach, InstallTerminal, PathFigure, PlanGate } from "./Figures";
+import { ApprovalLanes, EndState, FolderReach, PathFigure, PlanGate, RealShot } from "./Figures";
 
 const SPRING = { type: "spring", stiffness: 260, damping: 28 } as const;
 
@@ -75,7 +75,6 @@ export function StartHere() {
             <Prose>
               <p>There are two ways in, and both run the same Claude Code. The docs: &ldquo;{DESKTOP_QUOTE}&rdquo;</p>
             </Prose>
-            <Doors />
             <Prose>
               <p>
                 <strong>My advice: use the terminal.</strong> It is ten minutes of discomfort, and every lesson after this assumes it. If you want the app
@@ -116,7 +115,6 @@ export function StartHere() {
                 </div>
               </Step>
             </Steps>
-            <InstallTerminal os={os} />
             <Prose>
               <p>
                 If you see an error instead, run <code className="gd-code">{DOCTOR}</code> and read what it tells you.
@@ -154,9 +152,30 @@ export function StartHere() {
             </div>
             <Prose className="mt-8">
               <p>
-                The first time, it asks you to log in. A browser window opens. Log in with your paid Claude account and come back.
+                The very first time, it asks you to pick a text style. Press <Key>Enter</Key> to keep the default. Then it asks how you want to log
+                in. Pick <strong>1, Claude account with subscription</strong>. A browser window opens: log in with your paid Claude account and come back.
               </p>
             </Prose>
+            <RealShot
+              src="/os/guide/login-method.png"
+              w={1520}
+              h={914}
+              alt="Claude Code asking you to select a login method: 1. Claude account with subscription, 2. Anthropic Console account, 3. 3rd-party platform"
+              caption="My Mac, first launch. Option 1 is already selected, so press Enter."
+            />
+            <Prose>
+              <p>
+                Then it asks whether you trust the folder. <strong>Careful: &ldquo;No, exit&rdquo; is selected first.</strong> Press <Key>↓</Key> once
+                so &ldquo;Yes, I trust this folder&rdquo; is selected, then press <Key>Enter</Key>.
+              </p>
+            </Prose>
+            <RealShot
+              src="/os/guide/trust.png"
+              w={1520}
+              h={600}
+              alt="Claude Code's safety check for the my-business folder, with No, exit selected and Yes, I trust this folder below it"
+              caption="The real question. If you press Enter right away, Claude Code closes. Press ↓ first."
+            />
             <Checkpoint id="signed-in" done={done} toggle={toggle} />
           </Lesson>
 
@@ -168,7 +187,20 @@ export function StartHere() {
             <Prose>
               <p>Answer the questions. If it asks permission to create the file, say yes.</p>
             </Prose>
-            <FirstJob />
+            <RealShot
+              src="/os/guide/interview.png"
+              w={1520}
+              h={914}
+              alt="Claude Code answering a pasted prompt with: Question 1 of about 6: What draws you to meal prep?"
+              caption="A real run on my Mac. I tried a meal-prep business idea. It asks first instead of guessing, one question at a time."
+            />
+            <RealShot
+              src="/os/guide/plan-written.png"
+              w={1520}
+              h={914}
+              alt="Claude Code reporting that it wrote the plan file, with the most important point and a task for each day of the week"
+              caption="Two answers later, the file was in the folder. It even flagged that home kitchens usually can't sell cooked meals in Texas. Yours will look different, because your business is."
+            />
             <Prose>
               <p>
                 Open the folder in {os === "windows" ? "Explorer" : os === "mac" ? "Finder" : "your file manager"}. The file is there. You did not write it.

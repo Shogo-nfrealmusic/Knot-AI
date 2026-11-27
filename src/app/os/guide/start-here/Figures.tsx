@@ -676,3 +676,18 @@ export function ApprovalLanes() {
     </Plate>
   );
 }
+
+/* ───────────── Real screens: captured on my Mac on Nov 28, 2026, title bar cropped ───────────── */
+
+export function RealShot({ src, w, h, alt, caption }: { src: string; w: number; h: number; alt: string; caption: React.ReactNode }) {
+  return (
+    <Plate caption={caption}>
+      <div className="p-3 sm:p-4">
+        <div className="overflow-hidden rounded-xl bg-[#1e1e1e] shadow-[0_24px_50px_-30px_rgba(21,23,26,.7)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} width={w} height={h} alt={alt} loading="lazy" className="block h-auto w-full" />
+        </div>
+      </div>
+    </Plate>
+  );
+}
