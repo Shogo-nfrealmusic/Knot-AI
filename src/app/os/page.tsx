@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SitePageLayout from "@/app/components/SitePageLayout";
 import { GUIDE_CSS } from "./guide/style";
+import { Rise, TaglineReveal } from "./Reveal";
 
 // The Copilot OS sales page. Same look as the guide it sells: paper grid, ink, one orange accent.
-// Every screen on this page was captured on my Mac on Nov 28, 2026. Nothing is drawn to look like an app.
+// Every screen on this page was captured on my Mac on Nov 28, 2026, and every file listed ships in the kit.
+// Nothing is drawn to look like an app; the revenue chart is a chart of the estimate and says so.
 
 export const metadata: Metadata = {
   title: "Copilot OS | Shogo Kikuchi",
-  description: "The guide and the exact Claude Code files behind a two-person company on track for $1.2M this year. Your first real job is done in 30 minutes.",
+  description:
+    "The guide and the exact Claude Code files behind a two-person company on track for $1.2M this year. Your first real job is done in 30 minutes.",
 };
 
 export const dynamic = "force-static";
@@ -17,66 +20,66 @@ export const dynamic = "force-static";
 const BUY_URL = "#price";
 const OPERATOR_URL = "#price";
 
-const SHOTS = [
-  { src: "/os/guide/login-method.png", h: 914, alt: "Claude Code asking you to select a login method", cap: "First launch: pick your Claude account." },
-  { src: "/os/guide/trust.png", h: 600, alt: "Claude Code asking whether you trust the my-business folder", cap: "Give it one folder, not your whole computer." },
-  { src: "/os/guide/interview.png", h: 914, alt: "Claude Code asking the first interview question about a meal-prep business", cap: "It interviews you before it writes anything." },
-  { src: "/os/guide/plan-written.png", h: 914, alt: "Claude Code reporting the plan file it wrote, with a task for each day", cap: "Two answers later, the file is in your folder." },
-];
+const SHOT = {
+  login: { src: "/os/guide/login-method.png", h: 914, alt: "Claude Code asking you to select a login method" },
+  interview: { src: "/os/guide/interview.png", h: 914, alt: "Claude Code asking the first interview question about a meal-prep business" },
+  plan: { src: "/os/guide/plan-written.png", h: 914, alt: "Claude Code reporting the plan file it wrote, with a task for each day" },
+};
 
-const MODULES = [
-  ["Start here", "Never opened a terminal? Thirty minutes from nothing to your first real job done."],
-  ["Module 0. Where you are", "Twenty questions that tell you where to start."],
-  ["Module 1A. A second brain", "Claude remembers your business, so you stop explaining it every morning."],
-  ["Module 1. Memory that compounds", "It makes a mistake once. Not twice."],
-  ["Module 2. Never let AI grade its own work", "One agent writes, another tries to break it. The part I trust least, so the part I built hardest."],
-  ["Module 3. It works while you sleep", "Scheduled runs, parallel work, and what it costs."],
-  ["Module 4. Locks, not promises", "Payments, deploys and secrets need your yes, enforced by rules instead of hope."],
-  ["Module 5. The company", "Research, analytics, bookkeeping and content at my company. Real numbers, real failures."],
-  ["Module 6. Your own OS", "Put it together and keep it running."],
-];
-
-const FAQ = [
-  ["I can't code. Is this for me?", "I couldn't either when I started. You need a paid Claude plan and the patience to follow steps one at a time. Start here was written for people who have never opened a terminal."],
-  ["Which Claude plan do I need?", "A paid plan. Pro is enough to start. Copilot OS doesn't include access to Claude; it's the setup and the guide."],
-  ["Mac or Windows?", "Both. Every command in the guide switches between Mac and Windows."],
-  ["Is it a course or a set of files?", "Both. The guide teaches each part step by step, and the files are the ones I actually run: agents, hooks, templates and CLAUDE.md. You copy them into your own setup."],
-  ["How fast will something work?", "Your first real job is done in about 30 minutes, the same run you see in the screens above."],
-  ["Can't I find this for free?", "The features, yes. Anthropic's own docs are free and good, and the guide links them. What you won't find is one complete setup that runs a real company, with the files."],
-  ["Refunds?", "You get every file the moment you buy, so purchases are final. Broken files or a duplicate purchase are refunded."],
-  ["Can you just set it up for me?", "Yes. That's a separate service."],
-];
+// ---------- small parts ----------
 
 function Buy({ label = "Get Copilot OS", className = "" }: { label?: string; className?: string }) {
   return (
-    <a href={BUY_URL} className={`gd-press inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-[18px] font-medium text-white hover:bg-black ${className}`}>
+    <a
+      href={BUY_URL}
+      className={`gd-press inline-flex min-h-14 items-center gap-3 rounded-full bg-[var(--ink)] px-7 text-lg font-semibold text-white hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${className}`}
+    >
       {label}
-      <span className="text-white/55 line-through">$49</span>
+      <span className="text-white/50 line-through">$49</span>
       <span>$29</span>
     </a>
   );
 }
 
-function Shot({ src, h, alt }: { src: string; h: number; alt: string }) {
+function Shot({ src, h, alt, className = "" }: { src: string; h: number; alt: string; className?: string }) {
   return (
-    <div className="overflow-hidden rounded-xl bg-[#1e1e1e] shadow-[0_24px_50px_-30px_rgba(21,23,26,.7)]">
+    <div className={`overflow-hidden rounded-xl bg-[#1e1e1e] shadow-[0_30px_60px_-30px_rgba(21,23,26,.75)] ring-1 ring-black/10 ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} width={1520} height={h} alt={alt} className="block h-auto w-full" />
     </div>
   );
 }
 
-// Estimated revenue for this fiscal year (Sep 2026 to Aug 2027), in $K per month. Adds up to $1.2M.
-// Styled after a payments dashboard bar chart: square bars, three hairlines, the scale on the right, a label every third month.
+function Check({ ok }: { ok: boolean }) {
+  return ok ? (
+    <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-[var(--pass)]" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4.5 12.5l5 5 10-11" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 shrink-0 text-[var(--muted)]" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--accent)]">{children}</p>;
+}
+
+// ---------- revenue card (styled after a payments dashboard bar chart) ----------
+
 const MONTHS = ["Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026", "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027", "Jul 2027", "Aug 2027"];
 const ESTIMATE_K = [15, 32, 45, 60, 75, 90, 110, 125, 140, 155, 170, 183];
 const SCALE_K = 200;
-const DASH = { navy: "#0A2540", bar: "#9966FF", grid: "#E7ECF1", axis: "#ABB5C5", border: "#E5EDF5", link: "#635BFF" };
+const DASH = { navy: "#0A2540", bar: "#9966FF", grid: "#E7ECF1", axis: "#ABB5C5", link: "#635BFF" };
 
-function RevenueCard() {
+function RevenueCard({ compact = false }: { compact?: boolean }) {
   return (
-    <figure className="mt-10 rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(10,37,64,.06),0_24px_48px_-32px_rgba(10,37,64,.35)] ring-1 ring-[#E5EDF5] sm:p-8" style={{ color: DASH.navy }}>
-      <div className="flex flex-wrap gap-2 text-[13px] font-medium" aria-hidden="true">
+    <figure
+      className="rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(10,37,64,.06),0_30px_60px_-34px_rgba(10,37,64,.45)] ring-1 ring-[#E5EDF5] sm:p-7"
+      style={{ color: DASH.navy }}
+    >
+      <div className="flex flex-wrap gap-2 text-xs font-medium" aria-hidden="true">
         <span className="inline-flex h-7 items-center gap-2 rounded-full px-3 ring-1 ring-[#E5EDF5]">
           Date range
           <span className="h-3 w-px bg-[#C4CCD8]" />
@@ -86,217 +89,400 @@ function RevenueCard() {
           Monthly
         </span>
       </div>
-      <p className="mt-6 text-[15px] font-semibold">This year, estimated revenue</p>
-      <p className="mt-1 text-[30px] font-bold leading-tight tracking-[-0.01em] tabular-nums">$1.2M</p>
+      <p className="mt-5 text-sm font-semibold">This year, estimated revenue</p>
+      <p className="mt-1 text-3xl font-bold tabular-nums">$1.2M</p>
 
-      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3" aria-hidden="true">
-        <div className="relative h-[200px]">
+      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3" aria-hidden="true">
+        <div className={`relative ${compact ? "h-[150px]" : "h-[190px]"}`}>
           {[0, 50, 100].map((top) => (
             <div key={top} className="absolute inset-x-0 h-px" style={{ top: `${top}%`, background: DASH.grid }} />
           ))}
-          <div className="absolute inset-0 flex items-end gap-[4px] px-1 sm:gap-2 sm:px-2">
+          <div className="absolute inset-0 flex items-end gap-1 px-1 sm:gap-2 sm:px-2">
             {ESTIMATE_K.map((k, i) => (
               <div key={MONTHS[i]} className="min-w-0 flex-1" style={{ height: `${(k / SCALE_K) * 100}%`, background: DASH.bar }} />
             ))}
           </div>
         </div>
-        <div className="relative w-[44px] text-[12px] tabular-nums" style={{ color: DASH.axis }}>
-          {[
-            ["$200K", 0],
-            ["$100K", 50],
-            ["$0", 100],
-          ].map(([label, top]) => (
+        <div className="relative w-11 text-xs tabular-nums" style={{ color: DASH.axis }}>
+          {(
+            [
+              ["$200K", 0],
+              ["$100K", 50],
+              ["$0", 100],
+            ] as const
+          ).map(([label, top]) => (
             <span key={label} className="absolute left-0 -translate-y-1/2" style={{ top: `${top}%` }}>
               {label}
             </span>
           ))}
         </div>
-        <div className="flex gap-[4px] px-1 sm:gap-2 sm:px-2">
+        <div className="flex gap-1 px-1 sm:gap-2 sm:px-2">
           {MONTHS.map((m, i) => (
             <div key={m} className="flex min-w-0 flex-1 flex-col items-center">
               <span className="h-[3px] w-px" style={{ background: DASH.grid }} />
-              {i % 3 === 0 ? <span className="mt-2 whitespace-nowrap text-[12px]">{m}</span> : null}
+              {i % 3 === 0 ? <span className="mt-2 whitespace-nowrap text-xs">{m}</span> : null}
             </div>
           ))}
         </div>
       </div>
-      <figcaption className="mt-5 text-[13px]" style={{ color: "#727F96" }}>
-        Estimated, September 2026 to August 2027.
+      <figcaption className="mt-4 text-xs" style={{ color: "#727F96" }}>
+        Our company&apos;s estimate for Sep 2026 to Aug 2027. Two people, no outside funding.
       </figcaption>
     </figure>
   );
 }
 
-function Section({ id, title, accent, children }: { id?: string; title: string; accent?: string; children: React.ReactNode }) {
-  return (
-    <section id={id} className="scroll-mt-24 border-t border-[var(--rule)] py-16 sm:py-20">
-      <h2 className="gd-h2 max-w-[22ch]">
-        {title} {accent ? <span className="gd-serif">{accent}</span> : null}
-      </h2>
-      <div className="mt-8">{children}</div>
-    </section>
-  );
-}
+// ---------- content ----------
+
+const JOBS = [
+  {
+    title: "It remembers your business",
+    body: "Your goals, prices, customers and rules live in one file it reads every morning. You stop explaining yourself.",
+    file: "CLAUDE.md",
+  },
+  {
+    title: "A second agent checks the first",
+    body: "One agent writes. Another one, with no stake in the answer, tries to prove it wrong before you see it.",
+    file: "agents/verifier.md",
+  },
+  {
+    title: "Six specialists, not one chat",
+    body: "Researcher, analyst, marketer, secretary, engineer, verifier. Each knows its job and what it may not touch.",
+    file: "agents/",
+  },
+  {
+    title: "Money and deploys wait for your yes",
+    body: "A guard blocks payments, pushes and secrets until you approve them. Enforced by code, not by asking nicely.",
+    file: "hooks/security-guard.py",
+  },
+];
+
+const STEPS = [
+  { n: "1", title: "Install and sign in", body: "Copy one line, pick your Claude account. The guide shows every screen on Mac and Windows.", shot: SHOT.login },
+  { n: "2", title: "It interviews you", body: "Before it writes a thing, it asks about your business, one question at a time.", shot: SHOT.interview },
+  { n: "3", title: "Your first file lands", body: "A plan with a task for each day, written into your folder. Your first real job, done.", shot: SHOT.plan },
+];
+
+const FILES: [string, string][] = [
+  ["project/CLAUDE.md", "the brief it reads every session"],
+  ["vault/CLAUDE.md", "your second brain's rules"],
+  ["agents/ × 6", "researcher, analyst, marketer, secretary, engineer, verifier"],
+  ["hooks/security-guard.py", "blocks payments, pushes and secrets"],
+  ["hooks/require-tests.py", "it can't call a job done while tests fail"],
+  ["prompts/ × 3", "interview, daily routine, weekly review"],
+  ["templates/ × 5", "decisions, changes, failures, skills"],
+  ["settings.example.json", "the permissions I actually run"],
+];
+
+const MODULES: [string, string][] = [
+  ["Start here", "From never opening a terminal to your first job done"],
+  ["0 · Where you are", "Twenty questions that tell you where to start"],
+  ["1A · A second brain", "It knows your business without being told"],
+  ["1 · Memory that compounds", "It makes a mistake once, not twice"],
+  ["2 · Never let AI grade its own work", "The writer and the checker are different agents"],
+  ["3 · It works while you sleep", "Scheduled runs, parallel work, and what they cost"],
+  ["4 · Locks, not promises", "Payments, deploys and secrets need your yes"],
+  ["5 · The company", "Research, numbers, books and content, with real failures"],
+  ["6 · Your own OS", "Put it together and keep it running"],
+];
+
+const FOR: [boolean, string][] = [
+  [true, "You run a business and you're not an engineer"],
+  [true, "You pay for Claude and use it as a chat window"],
+  [true, "You'd rather copy a setup that already runs a company"],
+  [false, "You want a pack of prompts"],
+  [false, "You want AI to run things without you approving"],
+];
+
+const FAQ: [string, string][] = [
+  ["I can't code. Is this for me?", "Yes. Start here was written for people who have never opened a terminal."],
+  ["Which Claude plan do I need?", "A paid one. Pro is enough to start. Claude itself isn't included."],
+  ["Mac or Windows?", "Both. Every command in the guide switches between them."],
+  ["How fast will something work?", "About 30 minutes to your first real job, the run shown above."],
+  ["Is it a course or a set of files?", "Both. Nine modules, plus every file I run, ready to copy."],
+  ["Can't I find this for free?", "The features, yes, and the guide links Anthropic's docs. Not a complete setup that runs a company."],
+  ["Refunds?", "Files arrive the moment you buy, so sales are final. Broken files or a double charge are refunded."],
+  ["Can you set it up for me?", "Yes. That's Copilot OS Setup, a separate service."],
+];
+
+// ---------- page ----------
 
 export default function CopilotOsPage() {
   return (
     <SitePageLayout>
       <style>{GUIDE_CSS}</style>
-      <div className="gd pb-16 pt-14">
-        <div className="mx-auto max-w-[1180px] px-5 sm:px-8">
-          {/* hero */}
-          <header className="grid items-center gap-x-14 gap-y-10 pb-16 pt-6 sm:pt-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)]">
+      <div className="gd overflow-x-clip pb-20 pt-10 sm:pt-14">
+        <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
+          {/* hero: the promise on the left, the result and the real run on the right */}
+          <header className="grid items-center gap-x-14 gap-y-12 pb-20 pt-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
             <div>
-              <p className="text-[16px] text-[var(--muted)]">Copilot OS</p>
-              <h1 className="gd-h1 mt-4 max-w-[19ch] !text-[clamp(36px,4.6vw,58px)] !leading-[1.04]">
-                Put Claude Code to work in your business. <span className="gd-serif">Even if you&apos;ve never opened a terminal.</span>
+              <Eyebrow>Copilot OS</Eyebrow>
+              <h1 className="gd-h1 mt-5 max-w-[16ch] text-balance !text-[clamp(40px,5vw,64px)] !leading-[1.02]">
+                Your business, run by Claude Code. <span className="gd-serif">You just approve.</span>
               </h1>
-              <div className="gd-prose mt-8">
-                <p>
-                  The guide and the exact files behind a two-person company on track for <strong>$1.2M this year</strong> with no engineers. Start from
-                  zero. Your first real job is done in 30 minutes.
-                </p>
-              </div>
+              <p className="mt-7 max-w-[34rem] text-pretty text-lg text-[var(--body)] sm:text-xl">
+                The exact setup behind a two person company on track for <strong className="font-semibold text-[var(--ink)]">$1.2M this year</strong>. Copy it, answer its questions,
+                and have your first real job done in 30 minutes. No coding.
+              </p>
               <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <Buy />
-                <span className="text-[15px] text-[var(--soft)]">Founding price for the first 20 buyers</span>
+                <span className="text-sm text-[var(--soft)]">Founding price for the first 20 buyers</span>
+              </div>
+              <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--soft)]">
+                <li>9 modules</li>
+                <li>6 agents</li>
+                <li>Mac and Windows</li>
+                <li>Pay once</li>
+              </ul>
+            </div>
+
+            <div className="relative min-w-0 pb-24 sm:pb-28">
+              <RevenueCard compact />
+              <div className="absolute -bottom-2 right-[-6%] w-[78%] rotate-[1.5deg] sm:right-[-10%] lg:right-[-14%]">
+                <Shot {...SHOT.interview} />
+                <p className="mt-2 text-right text-xs text-[var(--muted)]">A real run: it interviews a first time user</p>
               </div>
             </div>
-            <figure className="min-w-0">
-              <Shot src={SHOTS[2].src} h={SHOTS[2].h} alt={SHOTS[2].alt} />
-              <figcaption className="mt-3 text-[15px] text-[var(--muted)]">A real run on my Mac: Claude Code interviewing a first-time user about their business idea.</figcaption>
-            </figure>
           </header>
+        </div>
 
-          <div className="max-w-[880px]">
-            <Section title="The first 30 minutes," accent="exactly as you'll see them.">
-              <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
-                {SHOTS.map((s, i) => (
-                  <figure key={s.src} className="min-w-0">
-                    <Shot src={s.src} h={s.h} alt={s.alt} />
-                    <figcaption className="mt-3 flex gap-3 text-[17px] text-[var(--body)]">
-                      <span className="font-mono text-[var(--accent)]">{i + 1}</span>
-                      {s.cap}
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-              <div className="mt-12">
-                <Buy />
-              </div>
-            </Section>
-
-            <Section title="Why I built it." accent="I wanted money, not a hobby.">
-              <div className="gd-prose">
-                <p>I study law. I don&apos;t have a CS degree. Two years ago I couldn&apos;t code.</p>
-                <p>
-                  Today two of us run a company on track for <strong>$1.2M this year</strong>, with zero outside funding. Claude Code
-                  closes our books every month, drafts our content overnight, runs our research, and writes down every decision we make. I approve.
-                  It works.
-                </p>
-                <p>Copilot OS is that setup, file by file, with the guide I wish I&apos;d had on day one.</p>
-              </div>
-              <RevenueCard />
-            </Section>
-
-            <Section title="What you get." accent="A guide and the files.">
-              <div className="gd-prose">
-                <p>
-                  <strong>The files.</strong> The same agents, hooks, templates and CLAUDE.md I run, with my company&apos;s details taken out. Drop
-                  them into your own setup.
-                </p>
-                <p>
-                  <strong>The guide.</strong> Nine modules, from installing Claude Code to running your work on it.
-                </p>
-              </div>
-              <ol className="mt-8 divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
-                {MODULES.map(([name, line]) => (
-                  <li key={name} className="grid gap-1 py-4 sm:grid-cols-[280px_1fr] sm:gap-6">
-                    <span className="text-[18px] font-medium text-[var(--ink)]">{name}</span>
-                    <span className="text-[17px] leading-relaxed text-[var(--soft)]">{line}</span>
-                  </li>
-                ))}
-              </ol>
-            </Section>
-
-            <Section id="price" title="Price." accent="Pay once.">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="gd-plate p-7">
-                  <h3 className="gd-h3">Copilot OS</h3>
-                  <p className="mt-3 flex items-baseline gap-3">
-                    <span className="text-[44px] font-medium tracking-[-0.03em]">$29</span>
-                    <span className="text-[20px] text-[var(--muted)] line-through">$49</span>
-                  </p>
-                  <p className="text-[15px] text-[var(--soft)]">First 20 buyers. Then $49.</p>
-                  <ul className="mt-6 grid gap-2 text-[17px] text-[var(--body)]">
-                    <li>All nine modules</li>
-                    <li>Every file I run</li>
-                    <li>Mac and Windows</li>
-                  </ul>
-                  <Buy label="Get it" className="mt-7 w-full justify-center" />
-                </div>
-                <div className="gd-plate p-7">
-                  <h3 className="gd-h3">Founding Operator</h3>
-                  <p className="mt-3 text-[44px] font-medium tracking-[-0.03em]">$299</p>
-                  <p className="text-[15px] text-[var(--soft)]">5 seats. Closes at the end of 2026.</p>
-                  <ul className="mt-6 grid gap-2 text-[17px] text-[var(--body)]">
-                    <li>Everything in Copilot OS</li>
-                    <li>A 60-minute call to build yours together</li>
-                    <li>30 days of questions</li>
-                  </ul>
-                  <a href={OPERATOR_URL} className="gd-press mt-7 inline-flex min-h-14 w-full items-center justify-center rounded-full px-7 text-[18px] font-medium text-[var(--ink)] ring-1 ring-[var(--ink)]">
-                    Take a seat
-                  </a>
-                </div>
-              </div>
-              <p className="mt-6 text-[16px] text-[var(--soft)]">
-                Rather have it built for you?{" "}
-                <Link href="/setup" className="underline decoration-[var(--rule-strong)] underline-offset-4 hover:text-[var(--ink)]">
-                  Copilot OS Setup
-                </Link>
-              </p>
-            </Section>
-
-            <Section title="Who it's for.">
-              <div className="grid gap-10 sm:grid-cols-2">
-                <ul className="gd-prose grid gap-3">
-                  <li>You&apos;re not an engineer, and you want AI doing real work in your business.</li>
-                  <li>You&apos;d rather copy a setup that already makes money than design one from zero.</li>
-                  <li>You&apos;re done thinking about it.</li>
-                </ul>
-                <div>
-                  <h3 className="gd-h3">Not for you if</h3>
-                  <ul className="gd-prose mt-3 grid gap-3">
-                    <li>You want a prompt pack.</li>
-                    <li>You want to argue about whether this counts as real engineering.</li>
-                  </ul>
-                </div>
-              </div>
-            </Section>
-
-            <Section title="Questions.">
-              <dl className="divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
-                {FAQ.map(([q, a]) => (
-                  <div key={q} className="py-6">
-                    <dt className="gd-h3">{q}</dt>
-                    <dd className="gd-prose mt-2">{a}</dd>
-                  </div>
-                ))}
-              </dl>
-            </Section>
-
-            <section className="border-t border-[var(--rule)] pt-16 sm:pt-20">
-              <h2 className="gd-h2 max-w-[20ch]">
-                Your first real job, <span className="gd-serif">thirty minutes from now.</span>
-              </h2>
-              <div className="mt-8">
-                <Buy />
-              </div>
-              <p className="mt-10 text-[14px] text-[var(--muted)]">
-                Copilot OS is a set of configuration files and written guides. It doesn&apos;t provide access to any AI service.
-              </p>
-            </section>
+        {/* tagline */}
+        <section className="border-y border-[var(--rule)] bg-white/50 py-24 sm:py-32">
+          <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
+            <TaglineReveal
+              className="max-w-[22ch] text-balance text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-6xl sm:leading-[1.02]"
+              text="Stop explaining your business to AI every morning. Set it up once, and let it work."
+            />
           </div>
+        </section>
+
+        <div className="mx-auto max-w-[1180px] px-4 sm:px-8">
+          {/* what it does */}
+          <section className="py-20 sm:py-28">
+            <Rise>
+              <Eyebrow>What it does</Eyebrow>
+              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Four things a chat window can&apos;t do for you.</h2>
+            </Rise>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              {JOBS.map((j) => (
+                <Rise key={j.title}>
+                  <article className="flex h-full flex-col rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)] transition-shadow duration-300 hover:shadow-[0_24px_50px_-36px_rgba(21,23,26,.5)]">
+                    <h3 className="text-xl font-semibold tracking-[-0.01em]">{j.title}</h3>
+                    <p className="mt-3 flex-1 text-base text-[var(--soft)]">{j.body}</p>
+                    <p className="mt-6 font-mono text-xs text-[var(--muted)]">{j.file}</p>
+                  </article>
+                </Rise>
+              ))}
+            </div>
+          </section>
+
+          {/* how it works */}
+          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+            <Rise>
+              <Eyebrow>The first 30 minutes</Eyebrow>
+              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Three steps, exactly as you&apos;ll see them.</h2>
+            </Rise>
+            <ol className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-6">
+              {STEPS.map((s) => (
+                <Rise key={s.n}>
+                  <li className="flex h-full flex-col">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ink)] text-sm font-semibold text-white">{s.n}</span>
+                      <h3 className="text-xl font-semibold tracking-[-0.01em]">{s.title}</h3>
+                    </div>
+                    <p className="mt-3 text-base text-[var(--soft)]">{s.body}</p>
+                    <Shot {...s.shot} className="mt-6" />
+                  </li>
+                </Rise>
+              ))}
+            </ol>
+            <div className="mt-14">
+              <Buy />
+            </div>
+          </section>
+
+          {/* what you get */}
+          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+            <Rise>
+              <Eyebrow>What you get</Eyebrow>
+              <h2 className="gd-h2 mt-4 max-w-[22ch] text-balance">The files I run, and the guide to run them.</h2>
+            </Rise>
+            <div className="mt-12 grid gap-6 lg:grid-cols-2">
+              <Rise>
+                <div className="h-full rounded-2xl bg-[var(--panel)] p-6 text-white sm:p-8">
+                  <p className="text-sm font-semibold text-white/60">The kit</p>
+                  <ul className="mt-5 divide-y divide-white/10">
+                    {FILES.map(([f, d]) => (
+                      <li key={f} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-4">
+                        <span className="font-mono text-sm text-[#f0b49f]">{f}</span>
+                        <span className="text-sm text-white/70">{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Rise>
+              <Rise>
+                <div className="h-full rounded-2xl bg-white p-6 ring-1 ring-[var(--rule)] sm:p-8">
+                  <p className="text-sm font-semibold text-[var(--muted)]">The guide · 9 modules</p>
+                  <ul className="mt-5 divide-y divide-[var(--rule)]">
+                    {MODULES.map(([m, d]) => (
+                      <li key={m} className="py-3">
+                        <p className="text-base font-semibold">{m}</p>
+                        <p className="text-sm text-[var(--soft)]">{d}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Rise>
+            </div>
+          </section>
+
+          {/* who made it */}
+          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+            <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)]">
+              <Rise>
+                <Eyebrow>Why trust this</Eyebrow>
+                <h2 className="gd-h2 mt-4 max-w-[18ch] text-balance">
+                  I&apos;m a law student. <span className="gd-serif">This runs my company.</span>
+                </h2>
+                <div className="mt-8 max-w-[34rem] space-y-4 text-lg text-[var(--body)]">
+                  <p>Two years ago I couldn&apos;t code. Today two of us run a company on track for $1.2M this year, with no engineers and no outside money.</p>
+                  <p>Claude Code closes our books, drafts our content overnight, runs our research and records every decision. I approve. Copilot OS is that setup, file by file.</p>
+                </div>
+              </Rise>
+              <Rise>
+                <RevenueCard />
+              </Rise>
+            </div>
+          </section>
+
+          {/* price */}
+          <section id="price" className="scroll-mt-24 border-t border-[var(--rule)] py-20 sm:py-28">
+            <Rise>
+              <Eyebrow>Price</Eyebrow>
+              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Pay once. Keep every file.</h2>
+            </Rise>
+            <div className="mt-12 grid gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+              <div className="relative rounded-2xl bg-white p-7 ring-2 ring-[var(--ink)] sm:p-9">
+                <span className="absolute -top-3 left-7 rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold text-white">First 20 buyers</span>
+                <h3 className="text-2xl font-semibold">Copilot OS</h3>
+                <p className="mt-4 flex items-baseline gap-3">
+                  <span className="text-6xl font-semibold tracking-[-0.04em]">$29</span>
+                  <span className="text-xl text-[var(--muted)] line-through">$49</span>
+                </p>
+                <p className="mt-1 text-sm text-[var(--soft)]">Then $49. One payment, no subscription.</p>
+                <ul className="mt-7 grid gap-3 text-base">
+                  {["All 9 modules", "Every file in the kit", "Mac and Windows"].map((x) => (
+                    <li key={x} className="flex gap-3">
+                      <Check ok />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+                <Buy label="Get it now" className="mt-8 w-full justify-center" />
+              </div>
+              <div className="rounded-2xl bg-white/60 p-7 ring-1 ring-[var(--rule)] sm:p-9">
+                <h3 className="text-2xl font-semibold">Founding Operator</h3>
+                <p className="mt-4 text-6xl font-semibold tracking-[-0.04em]">$299</p>
+                <p className="mt-1 text-sm text-[var(--soft)]">5 seats. Closes at the end of 2026.</p>
+                <ul className="mt-7 grid gap-3 text-base">
+                  {["Everything in Copilot OS", "A 60 minute call to build yours together", "30 days of questions"].map((x) => (
+                    <li key={x} className="flex gap-3">
+                      <Check ok />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={OPERATOR_URL}
+                  className="gd-press mt-8 inline-flex min-h-14 w-full items-center justify-center rounded-full text-lg font-semibold text-[var(--ink)] ring-1 ring-[var(--ink)] hover:bg-[var(--ink)] hover:text-white"
+                >
+                  Take a seat
+                </a>
+              </div>
+            </div>
+            <p className="mt-6 text-sm text-[var(--soft)]">
+              Rather have it built for you?{" "}
+              <Link href="/setup" className="underline decoration-[var(--rule-strong)] underline-offset-4 hover:text-[var(--ink)]">
+                Copilot OS Setup
+              </Link>
+            </p>
+          </section>
+
+          {/* who it's for */}
+          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+            <Rise>
+              <Eyebrow>Who it&apos;s for</Eyebrow>
+              <h2 className="gd-h2 mt-4 max-w-[20ch] text-balance">Built for owners, not engineers.</h2>
+            </Rise>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)]">
+                <p className="text-sm font-semibold text-[var(--pass)]">For you if</p>
+                <ul className="mt-5 grid gap-4">
+                  {FOR.filter(([ok]) => ok).map(([, t]) => (
+                    <li key={t} className="flex gap-3 text-lg">
+                      <Check ok />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-2xl bg-white/50 p-7 ring-1 ring-[var(--rule)]">
+                <p className="text-sm font-semibold text-[var(--muted)]">Not for you if</p>
+                <ul className="mt-5 grid gap-4">
+                  {FOR.filter(([ok]) => !ok).map(([, t]) => (
+                    <li key={t} className="flex gap-3 text-lg text-[var(--soft)]">
+                      <Check ok={false} />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section className="border-t border-[var(--rule)] py-20 sm:py-28">
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,320px)_1fr]">
+              <Rise>
+                <Eyebrow>Questions</Eyebrow>
+                <h2 className="gd-h2 mt-4 text-balance">Before you buy.</h2>
+              </Rise>
+              <div className="divide-y divide-[var(--rule)] rounded-2xl bg-white ring-1 ring-[var(--rule)]">
+                {FAQ.map(([q, a]) => (
+                  <details key={q} className="group px-6 py-5 [&_summary::-webkit-details-marker]:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-semibold">
+                      {q}
+                      <span className="text-2xl font-normal text-[var(--muted)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-open:rotate-45">+</span>
+                    </summary>
+                    <p className="mt-3 max-w-[60ch] text-base text-[var(--soft)]">{a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* final CTA */}
+          <section className="rounded-3xl bg-[var(--panel)] px-6 py-16 text-white sm:px-14 sm:py-20">
+            <h2 className="max-w-[18ch] text-balance text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">
+              Your first real job, thirty minutes from now.
+            </h2>
+            <p className="mt-6 max-w-[36rem] text-lg text-white/70">
+              9 modules, 6 agents, the guard that stops payments without your yes, and every file I run. $29 for the first 20 buyers.
+            </p>
+            <a
+              href={BUY_URL}
+              className="gd-press mt-10 inline-flex min-h-14 items-center gap-3 rounded-full bg-white px-7 text-lg font-semibold text-[var(--ink)] hover:bg-[#f3f4f1]"
+            >
+              Get Copilot OS
+              <span className="text-[var(--muted)] line-through">$49</span>
+              <span>$29</span>
+            </a>
+          </section>
+
+          <p className="mt-10 text-xs text-[var(--muted)]">
+            Copilot OS is a set of configuration files and written guides. It doesn&apos;t provide access to any AI service. Revenue figures are our company&apos;s estimate.
+          </p>
         </div>
       </div>
     </SitePageLayout>
