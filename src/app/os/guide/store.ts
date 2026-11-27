@@ -4,7 +4,7 @@
 // blocked (private window), it lives in memory for the visit and the page still works.
 
 import { useSyncExternalStore } from "react";
-import { STORAGE_KEY, osFrom, parseDone, readOs, toggleDone, type Os } from "./data";
+import { STORAGE_KEY, osFrom, parseDone, toggleDone, type Os } from "./data";
 
 const listeners = new Set<() => void>();
 const memory: Record<string, string | null> = {};
@@ -47,9 +47,7 @@ export function useDone() {
 export function useOs() {
   const os = useSyncExternalStore(
     subscribe,
-    () =>
-      readOs(readKey(OS_KEY)) ??
-      osFrom(navigator.userAgent, (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform),
+    () => (readKey(OS_KEY) as Os | null) ?? osFrom(navigator.userAgent),
     () => "mac" as Os,
   );
   return [os, (next: Os) => writeKey(OS_KEY, next)] as const;

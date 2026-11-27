@@ -13,8 +13,7 @@ export function GuideIndex() {
   const [done] = useDone();
   return (
     <div className="gd relative overflow-x-clip pb-24 pt-14">
-      <header className="gd-grid px-5 pb-10 pt-12 sm:px-8 sm:pt-20">
-        <div className="mx-auto max-w-[1080px]">
+      <header className="mx-auto max-w-[1080px] px-5 pb-6 pt-12 sm:px-8 sm:pt-20">
         <motion.h1 className="gd-h1 max-w-[14ch]" initial={reduce ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: 0.05 }}>
           The Copilot OS guide. <span className="gd-serif">Nine modules, one setup.</span>
         </motion.h1>
@@ -24,10 +23,9 @@ export function GuideIndex() {
             diagnostic: it tells you which module to open next.
           </p>
         </motion.div>
-        </div>
       </header>
 
-      <ol className="relative mx-auto mt-10 max-w-[1080px] px-5 sm:px-8">
+      <ol className="relative mx-auto mt-6 max-w-[1080px] px-5 sm:px-8">
         <motion.span
           className="absolute bottom-10 left-[41px] top-10 w-px origin-top bg-[var(--rule-strong)] sm:left-[53px]"
           initial={reduce ? false : { scaleY: 0 }}
