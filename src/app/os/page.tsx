@@ -66,6 +66,42 @@ function Shot({ src, h, alt }: { src: string; h: number; alt: string }) {
   );
 }
 
+// The shape of the year, not monthly figures: only the estimated total is stated.
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const SHAPE = [0.34, 0.38, 0.5, 0.42, 0.44, 0.4, 0.3, 0.42, 0.48, 0.82, 0.9, 1];
+
+function RevenueCard() {
+  return (
+    <figure className="gd-plate mt-10 p-6 sm:p-8">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-[15px] text-[var(--muted)]">This year, estimated revenue</p>
+          <p className="mt-1 text-[clamp(44px,7vw,72px)] font-medium leading-none tracking-[-0.04em] tabular-nums text-[var(--ink)]">$375K+</p>
+        </div>
+        <p className="text-[15px] text-[var(--soft)]">2 people · no outside funding</p>
+      </div>
+      <div className="mt-8 flex h-[180px] items-end gap-[6px] border-b border-[var(--rule-strong)] sm:gap-2" aria-hidden="true">
+        {SHAPE.map((h, i) => (
+          <div key={MONTHS[i]} className="flex h-full min-w-0 flex-1 flex-col justify-end">
+            <div
+              className={`w-full rounded-t-[6px] ${i >= 9 ? "bg-[var(--accent)]" : "bg-[var(--ink)]/80"}`}
+              style={{ height: `${Math.round(h * 100)}%` }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="mt-2 flex gap-[6px] sm:gap-2" aria-hidden="true">
+        {MONTHS.map((m) => (
+          <span key={m} className="min-w-0 flex-1 text-center text-[12px] text-[var(--muted)]">
+            {m}
+          </span>
+        ))}
+      </div>
+      <figcaption className="mt-4 text-[14px] text-[var(--muted)]">Estimate for 2026. Bars show the shape of the year, not exact monthly figures.</figcaption>
+    </figure>
+  );
+}
+
 function Section({ id, title, accent, children }: { id?: string; title: string; accent?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-24 border-t border-[var(--rule)] py-16 sm:py-20">
@@ -135,6 +171,7 @@ export default function CopilotOsPage() {
                 </p>
                 <p>Copilot OS is that setup, file by file, with the guide I wish I&apos;d had on day one.</p>
               </div>
+              <RevenueCard />
             </Section>
 
             <Section title="What you get." accent="A guide and the files.">
