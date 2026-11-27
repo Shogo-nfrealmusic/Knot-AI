@@ -67,38 +67,62 @@ function Shot({ src, h, alt }: { src: string; h: number; alt: string }) {
 }
 
 // Estimated revenue for this fiscal year (Sep 2026 to Aug 2027), in $K per month. Adds up to $1.2M.
-const MONTHS = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
+// Styled after a payments dashboard bar chart: square bars, three hairlines, the scale on the right, a label every third month.
+const MONTHS = ["Sep 2026", "Oct 2026", "Nov 2026", "Dec 2026", "Jan 2027", "Feb 2027", "Mar 2027", "Apr 2027", "May 2027", "Jun 2027", "Jul 2027", "Aug 2027"];
 const ESTIMATE_K = [15, 32, 45, 60, 75, 90, 110, 125, 140, 155, 170, 183];
-const SHAPE = ESTIMATE_K.map((k) => k / Math.max(...ESTIMATE_K));
+const SCALE_K = 200;
+const DASH = { navy: "#0A2540", bar: "#9966FF", grid: "#E7ECF1", axis: "#ABB5C5", border: "#E5EDF5", link: "#635BFF" };
 
 function RevenueCard() {
   return (
-    <figure className="gd-plate mt-10 p-6 sm:p-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-[15px] text-[var(--muted)]">This year, estimated revenue</p>
-          <p className="mt-1 text-[clamp(44px,7vw,72px)] font-medium leading-none tracking-[-0.04em] tabular-nums text-[var(--ink)]">$1.2M</p>
-        </div>
-        <p className="text-[15px] text-[var(--soft)]">2 people · no outside funding</p>
+    <figure className="mt-10 rounded-2xl bg-white p-5 shadow-[0_1px_2px_rgba(10,37,64,.06),0_24px_48px_-32px_rgba(10,37,64,.35)] ring-1 ring-[#E5EDF5] sm:p-8" style={{ color: DASH.navy }}>
+      <div className="flex flex-wrap gap-2 text-[13px] font-medium" aria-hidden="true">
+        <span className="inline-flex h-7 items-center gap-2 rounded-full px-3 ring-1 ring-[#E5EDF5]">
+          Date range
+          <span className="h-3 w-px bg-[#C4CCD8]" />
+          <span style={{ color: DASH.link }}>Sep 2026 – Aug 2027</span>
+        </span>
+        <span className="inline-flex h-7 items-center rounded-full px-3 ring-1 ring-[#E5EDF5]" style={{ color: DASH.link }}>
+          Monthly
+        </span>
       </div>
-      <div className="mt-8 flex h-[180px] items-end gap-[6px] border-b border-[var(--rule-strong)] sm:gap-2" aria-hidden="true">
-        {SHAPE.map((h, i) => (
-          <div key={MONTHS[i]} className="flex h-full min-w-0 flex-1 flex-col justify-end">
-            <div
-              className={`w-full rounded-t-[6px] ${i === SHAPE.length - 1 ? "bg-[var(--accent)]" : "bg-[var(--ink)]/80"}`}
-              style={{ height: `${Math.round(h * 100)}%` }}
-            />
+      <p className="mt-6 text-[15px] font-semibold">This year, estimated revenue</p>
+      <p className="mt-1 text-[30px] font-bold leading-tight tracking-[-0.01em] tabular-nums">$1.2M</p>
+
+      <div className="mt-5 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3" aria-hidden="true">
+        <div className="relative h-[200px]">
+          {[0, 50, 100].map((top) => (
+            <div key={top} className="absolute inset-x-0 h-px" style={{ top: `${top}%`, background: DASH.grid }} />
+          ))}
+          <div className="absolute inset-0 flex items-end gap-[4px] px-1 sm:gap-2 sm:px-2">
+            {ESTIMATE_K.map((k, i) => (
+              <div key={MONTHS[i]} className="min-w-0 flex-1" style={{ height: `${(k / SCALE_K) * 100}%`, background: DASH.bar }} />
+            ))}
           </div>
-        ))}
+        </div>
+        <div className="relative w-[44px] text-[12px] tabular-nums" style={{ color: DASH.axis }}>
+          {[
+            ["$200K", 0],
+            ["$100K", 50],
+            ["$0", 100],
+          ].map(([label, top]) => (
+            <span key={label} className="absolute left-0 -translate-y-1/2" style={{ top: `${top}%` }}>
+              {label}
+            </span>
+          ))}
+        </div>
+        <div className="flex gap-[4px] px-1 sm:gap-2 sm:px-2">
+          {MONTHS.map((m, i) => (
+            <div key={m} className="flex min-w-0 flex-1 flex-col items-center">
+              <span className="h-[3px] w-px" style={{ background: DASH.grid }} />
+              {i % 3 === 0 ? <span className="mt-2 whitespace-nowrap text-[12px]">{m}</span> : null}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="mt-2 flex gap-[6px] sm:gap-2" aria-hidden="true">
-        {MONTHS.map((m) => (
-          <span key={m} className="min-w-0 flex-1 text-center text-[12px] text-[var(--muted)]">
-            {m}
-          </span>
-        ))}
-      </div>
-      <figcaption className="mt-4 text-[14px] text-[var(--muted)]">Estimated, September 2026 to August 2027.</figcaption>
+      <figcaption className="mt-5 text-[13px]" style={{ color: "#727F96" }}>
+        Estimated, September 2026 to August 2027.
+      </figcaption>
     </figure>
   );
 }
