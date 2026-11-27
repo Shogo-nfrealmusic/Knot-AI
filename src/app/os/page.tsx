@@ -238,7 +238,7 @@ export default function CopilotOsPage() {
 
             <div className="relative min-w-0 sm:pb-56">
               <RevenueCard compact />
-              <div className="ml-auto mt-4 w-[92%] rotate-[1.5deg] sm:absolute sm:bottom-0 sm:right-[-8%] sm:mt-0 sm:w-[64%] lg:right-[-12%]">
+              <div className="ml-auto mt-4 w-[92%] sm:absolute sm:rotate-[1.5deg] sm:bottom-0 sm:right-[-8%] sm:mt-0 sm:w-[64%] lg:right-[-12%]">
                 <Shot {...SHOT.interview} />
                 <p className="mt-2 text-right text-xs text-[var(--muted)]">A real run: it interviews a first time user</p>
               </div>
