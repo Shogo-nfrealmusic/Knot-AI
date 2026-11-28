@@ -48,12 +48,14 @@ export function CommandCopy({ command, className = "w-full" }: { command: string
 
 // A multi-line snippet with a label and a copy button (guides that teach with code).
 // `wrap` wraps long lines instead of scrolling sideways (prompts written as prose, read on a phone).
-export function CodeBlock({ label, code, wrap = false }: { label: string; code: string; wrap?: boolean }) {
+// `size="lg"` is for guides read by beginners: larger code and a copy button big enough to tap (44px).
+export function CodeBlock({ label, code, wrap = false, size = "sm" }: { label: string; code: string; wrap?: boolean; size?: "sm" | "lg" }) {
   const [done, setDone] = useState(false);
+  const lg = size === "lg";
   return (
-    <div className="overflow-hidden rounded-md border border-neutral-200 bg-neutral-50">
-      <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-neutral-500">{label}</span>
+    <div className={`overflow-hidden border border-neutral-200 bg-neutral-50 ${lg ? "rounded-xl bg-white" : "rounded-md"}`}>
+      <div className={`flex items-center justify-between gap-3 border-b border-neutral-200 ${lg ? "py-0 pl-4 pr-1" : "px-3 py-1.5"}`}>
+        <span className={`font-mono text-neutral-500 ${lg ? "text-[13px]" : "text-[11px]"}`}>{label}</span>
         <button
           type="button"
           onClick={() => {
@@ -62,14 +64,14 @@ export function CodeBlock({ label, code, wrap = false }: { label: string; code: 
               setTimeout(() => setDone(false), 1600);
             });
           }}
-          className="inline-flex items-center gap-1.5 font-mono text-[11px] text-neutral-500 transition-colors hover:text-neutral-900"
+          className={`inline-flex items-center gap-1.5 font-mono text-neutral-500 transition-colors hover:text-neutral-900 ${lg ? "min-h-11 px-3 text-[13px] active:scale-[0.96]" : "text-[11px]"}`}
           aria-label={`Copy ${label}`}
         >
           {done ? <IconCheck className="size-3.5 text-emerald-600" /> : <IconCopy className="size-3.5" />}
           {done ? "Copied" : "Copy"}
         </button>
       </div>
-      <pre className={`px-4 py-3 font-mono text-[12px] leading-relaxed text-neutral-800 ${wrap ? "whitespace-pre-wrap [overflow-wrap:anywhere]" : "overflow-x-auto"}`}>{code}</pre>
+      <pre className={`font-mono text-neutral-800 ${lg ? "px-4 py-3.5 text-[15px] leading-[1.7]" : "px-4 py-3 text-[12px] leading-relaxed"} ${wrap ? "whitespace-pre-wrap [overflow-wrap:anywhere]" : "overflow-x-auto"}`}>{code}</pre>
     </div>
   );
 }

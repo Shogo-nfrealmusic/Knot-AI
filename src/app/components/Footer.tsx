@@ -29,7 +29,11 @@ const columns = [
   },
   {
     title: "Legal",
-    links: [{ label: "Privacy", href: "/privacy" }],
+    links: [
+      { label: "Privacy", href: "/privacy" },
+      { label: "Terms", href: "/terms" },
+      { label: "特商法に基づく表記", href: "/legal" },
+    ],
   },
 ];
 
