@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { site } from "@/lib/site";
 
-const lastUpdated = "September 15, 2026";
+const lastUpdated = "November 28, 2026";
 
 const sections = [
   {
@@ -19,16 +19,28 @@ const sections = [
     ],
   },
   {
-    title: "2. How I Use It",
+    title: "2. When You Buy a Product",
+    body: "When you buy Copilot OS or another product, payment is handled by Stripe. I receive:",
+    bullets: [
+      "Your name and email address",
+      "Your billing country and the plan you bought",
+      "The payment status and a Stripe reference. I never see or store your full card number.",
+      "A signed cookie in your browser that remembers your purchase, so the guide opens for you",
+    ],
+  },
+  {
+    title: "3. How I Use It",
     body: "I use this information only to:",
     bullets: [
       "Reply to your inquiry",
       "Discuss and scope a potential project",
       "Follow up on an engagement you have started",
+      "Deliver what you bought, restore access, answer support questions and process refunds",
+      "Keep the records Japanese tax law requires for sales",
     ],
   },
   {
-    title: "3. Sharing with Third Parties",
+    title: "4. Sharing with Third Parties",
     body: "I do not sell your personal information, and I do not share it with third parties except:",
     bullets: [
       "When you have given explicit consent",
@@ -94,7 +106,7 @@ export default function PrivacyArticle() {
           ))}
 
           <FadeSection>
-            <h2 className={headingClassName}>4. Service Providers</h2>
+            <h2 className={headingClassName}>5. Service Providers</h2>
             <p className={textClassName}>
               To run this site and reply to you, I rely on the following
               service providers:
@@ -105,6 +117,13 @@ export default function PrivacyArticle() {
                   Hosting
                 </strong>
                 : Vercel Inc. (United States)
+              </li>
+              <li>
+                <strong className="font-semibold text-text-primary">
+                  Payments
+                </strong>
+                : Stripe, Inc. and its affiliates. Stripe processes your card
+                details under its own privacy policy.
               </li>
               <li>
                 <strong className="font-semibold text-text-primary">
@@ -121,7 +140,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>5. Data Security</h2>
+            <h2 className={headingClassName}>6. Data Security</h2>
             <p className={textClassName}>
               I take reasonable and appropriate measures to protect your
               personal information from loss, destruction, alteration, and
@@ -130,7 +149,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>6. Access Logs and Cookies</h2>
+            <h2 className={headingClassName}>7. Access Logs and Cookies</h2>
             <div className="mt-5 space-y-5 text-[15px] leading-relaxed tracking-[-0.01em] text-text-secondary">
               <p>
                 This site may record access information (such as IP addresses,
@@ -147,7 +166,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>7. Your Rights</h2>
+            <h2 className={headingClassName}>8. Your Rights</h2>
             <p className={textClassName}>
               You can ask me to access, correct, or delete the personal
               information I hold about you. Email me at{" "}
@@ -163,7 +182,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>8. International Users</h2>
+            <h2 className={headingClassName}>9. International Users</h2>
             <p className={textClassName}>
               I am based in Japan. By using this site or submitting the contact
               form, you understand that your information may be transferred to,
@@ -173,7 +192,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>9. Changes to This Policy</h2>
+            <h2 className={headingClassName}>10. Changes to This Policy</h2>
             <p className={textClassName}>
               I may update this Privacy Policy from time to time. Any changes
               will be posted on this page with an updated revision date.
@@ -181,7 +200,7 @@ export default function PrivacyArticle() {
           </FadeSection>
 
           <FadeSection>
-            <h2 className={headingClassName}>10. Contact</h2>
+            <h2 className={headingClassName}>11. Contact</h2>
             <p className={textClassName}>
               For questions about this Privacy Policy, email me at{" "}
               <a href={`mailto:${site.email}`} className={linkClassName}>
