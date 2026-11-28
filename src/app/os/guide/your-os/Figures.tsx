@@ -44,7 +44,7 @@ function StackHero() {
               transition={{ type: "spring", stiffness: 320, damping: 24 }}
             >
               <span className={`w-5 shrink-0 font-mono text-[12px] ${on ? "text-white/60" : "text-[var(--muted)]"}`}>{k + 1}</span>
-              <span className={`truncate ${on ? "text-white" : "text-[var(--muted)]"}`}>{s.what}</span>
+              <span className={`min-w-0 [overflow-wrap:anywhere] ${on ? "text-white" : "text-[var(--muted)]"}`}>{s.what}</span>
             </motion.li>
           );
         })}

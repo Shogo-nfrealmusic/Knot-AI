@@ -120,7 +120,7 @@ export function HeroRun() {
         <div className="flex items-center justify-between gap-3 border-b border-white/10 py-2 pl-4 pr-2">
           <span className="flex min-w-0 items-center gap-3">
             <Dots />
-            <span className="truncate font-mono text-xs text-white/45">~/my-business · claude</span>
+            <span className="min-w-0 [overflow-wrap:anywhere] font-mono text-xs text-white/45">~/my-business · claude</span>
           </span>
           <button type="button" onClick={replay} className="rounded-full px-3 py-1.5 text-xs text-white/55 ring-1 ring-white/15 transition-colors duration-300 hover:text-white">
             Replay
@@ -177,7 +177,7 @@ export function HeroRun() {
               >
                 <Tick on={tickAt(i)} />
                 <span className="w-8 shrink-0 font-mono text-xs text-[var(--muted)]">{d}</span>
-                <span className={`min-w-0 truncate text-sm ${first ? "font-semibold text-[var(--ink)]" : "text-[var(--body)]"}`}>{t}</span>
+                <span className={`min-w-0 [overflow-wrap:anywhere] text-sm ${first ? "font-semibold text-[var(--ink)]" : "text-[var(--body)]"}`}>{t}</span>
               </motion.li>
             );
           })}

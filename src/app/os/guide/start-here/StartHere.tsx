@@ -386,7 +386,7 @@ function MobileBar({ active, read, count }: { active: string; read: Read; count:
   return (
     <div className="sticky top-14 z-30 border-b border-[var(--rule)] bg-[rgba(243,244,241,.88)] backdrop-blur-md lg:hidden">
       <div className="flex h-11 items-center justify-between gap-3 px-5 text-[14px]">
-        <a href={`#${l.id}`} className="flex h-11 min-w-0 items-center gap-1.5 truncate">
+        <a href={`#${l.id}`} className="flex min-h-11 min-w-0 items-center gap-1.5 py-1 [overflow-wrap:anywhere]">
           <span className="font-mono text-[var(--accent)]">{l.code}</span> <span className="text-[var(--ink)]">{l.title}</span>
         </a>
         <span className="shrink-0 text-[var(--muted)]">

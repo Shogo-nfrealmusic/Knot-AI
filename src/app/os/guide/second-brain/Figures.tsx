@@ -72,7 +72,7 @@ function VaultHero() {
                 transition={SPRING}
               >
                 <FolderGlyph on={lit} className="h-[18px] w-[23px]" />
-                <span className="min-w-0 truncate font-mono text-[12.5px] text-[var(--ink)]">{f.name}</span>
+                <span className="min-w-0 [overflow-wrap:anywhere] font-mono text-[12.5px] text-[var(--ink)]">{f.name}</span>
               </motion.li>
             );
           })}
@@ -125,7 +125,7 @@ function FolderMap() {
                 className="gd-press relative flex min-h-[76px] flex-col items-start justify-between gap-2 rounded-xl bg-white px-3 py-3 text-left ring-1 ring-[var(--rule)] aria-pressed:ring-2 aria-pressed:ring-[var(--ink)]"
               >
                 <FolderGlyph on={on} className="h-[22px] w-[28px]" />
-                <span className="max-w-full truncate font-mono text-[12.5px] text-[var(--ink)]">{x.name}</span>
+                <span className="max-w-full [overflow-wrap:anywhere] font-mono text-[12.5px] text-[var(--ink)]">{x.name}</span>
                 {k === 2 && filing > 0 ? (
                   <motion.span
                     key={filing}

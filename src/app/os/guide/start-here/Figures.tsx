@@ -87,7 +87,7 @@ export function EndState({ os }: { os: Os }) {
           <span className="size-2.5 rounded-full bg-white/20" />
           <span className="size-2.5 rounded-full bg-white/20" />
           <span className="size-2.5 rounded-full bg-white/20" />
-          <span className="ml-2 min-w-0 truncate font-mono text-[13px] text-white/50">{folder} · claude</span>
+          <span className="ml-2 min-w-0 [overflow-wrap:anywhere] font-mono text-[13px] text-white/50">{folder} · claude</span>
         </div>
         <div className="px-4 py-4 font-mono text-[14px] leading-[1.7]">
           <p className="text-white/45">Claude Code is running in this folder.</p>
@@ -534,7 +534,7 @@ export function FolderReach({ os }: { os: Os }) {
                   <motion.svg viewBox="0 0 56 44" className="relative h-[38px] w-[48px]" aria-hidden="true" initial={false} animate={{ opacity: inside ? 1 : 0.35 }} transition={SPRING}>
                     <path d="M2 6 h18 l6 6 h28 v30 h-52 z" fill="#ffffff" stroke={inside ? "#e0552f" : "#15171a"} strokeWidth="1.4" style={{ transition: "stroke .3s" }} />
                   </motion.svg>
-                  <motion.span className="relative max-w-full truncate text-center font-mono text-[12.5px] text-[var(--ink)]" initial={false} animate={{ opacity: inside ? 1 : 0.45 }} transition={SPRING}>
+                  <motion.span className="relative max-w-full break-words text-center font-mono text-[12.5px] text-[var(--ink)]" initial={false} animate={{ opacity: inside ? 1 : 0.45 }} transition={SPRING}>
                     {name}
                   </motion.span>
                 </div>

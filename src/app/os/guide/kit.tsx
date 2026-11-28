@@ -100,7 +100,7 @@ export function Panel({ children, title, right, className = "" }: { children: Re
         <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/10 py-1.5 pl-4 pr-2">
           <span className="flex min-w-0 items-center gap-3">
             <Dots />
-            <span className="min-w-0 truncate font-mono text-[13px] text-white/50">{title}</span>
+            <span className="min-w-0 [overflow-wrap:anywhere] font-mono text-[13px] text-white/50">{title}</span>
           </span>
           {right}
         </div>

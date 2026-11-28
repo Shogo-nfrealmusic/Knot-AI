@@ -331,7 +331,7 @@ export function KitBrowser() {
                       >
                         {on ? <motion.span layoutId="kit-sel" className="absolute inset-0 rounded-lg bg-white/[.07] ring-1 ring-[#e0552f]/60" transition={SPRING} /> : null}
                         <span className={`relative size-1.5 rounded-full ${on ? "bg-[#e0552f]" : "bg-white/20"}`} />
-                        <span className="relative truncate">{file.name}</span>
+                        <span className="relative min-w-0 [overflow-wrap:anywhere]">{file.name}</span>
                       </button>
                     </li>
                   );
@@ -342,7 +342,7 @@ export function KitBrowser() {
         </nav>
         <div className="min-w-0">
           <div className="flex items-center justify-between gap-3 border-b border-white/[.07] px-5 py-2.5">
-            <span className="truncate font-mono text-xs text-white/70">{f.path}</span>
+            <span className="min-w-0 [overflow-wrap:anywhere] font-mono text-xs text-white/70">{f.path}</span>
             <span className="hidden shrink-0 text-xs text-[#f0b49f] sm:block">{f.note}</span>
           </div>
           <motion.pre

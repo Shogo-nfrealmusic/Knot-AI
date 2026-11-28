@@ -293,7 +293,7 @@ function ContextBudget() {
                   <motion.span
                     key={x.id}
                     layout={!reduce}
-                    className={`flex h-12 items-center justify-center truncate rounded-lg px-2 font-mono text-[11.5px] ${x.kind === "task" ? "bg-white/15 text-white/85" : x.kind === "kept" ? "bg-[var(--pass)] text-white" : "bg-[#f0b49f] text-[var(--ink)]"}`}
+                    className={`flex min-h-12 items-center justify-center rounded-lg px-2 py-1 text-center font-mono text-[11.5px] leading-tight [overflow-wrap:anywhere] ${x.kind === "task" ? "bg-white/15 text-white/85" : x.kind === "kept" ? "bg-[var(--pass)] text-white" : "bg-[#f0b49f] text-[var(--ink)]"}`}
                     style={{ width: `calc(${(x.size / CAP) * 100}% - 6px)`, minWidth: 56 }}
                     initial={reduce ? false : { opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}

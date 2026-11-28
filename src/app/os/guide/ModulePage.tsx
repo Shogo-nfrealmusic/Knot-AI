@@ -188,7 +188,7 @@ function MobileBar({ lessons, active, read, count, total }: { lessons: Lesson[];
       <div className="flex h-11 items-center justify-between gap-3 px-5 text-[14px]">
         <a href={`#${l.id}`} className="flex h-11 min-w-0 items-center gap-1.5">
           {ordinal(l.code) ? <span className="shrink-0 font-mono text-[var(--accent)]">{l.code}</span> : null}
-          <span className="truncate text-[var(--ink)]">{l.title}</span>
+          <span className="min-w-0 [overflow-wrap:anywhere] text-[var(--ink)]">{l.title}</span>
         </a>
         {total > 0 ? (
           <span className="shrink-0 text-[var(--muted)]">

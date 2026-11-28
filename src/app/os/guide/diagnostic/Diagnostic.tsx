@@ -138,7 +138,7 @@ function ScoreBoard({ answers, revealed, scores }: { answers: Saved["answers"]; 
               <li key={p.id} className="grid grid-cols-[22px_minmax(0,1fr)_auto] items-center gap-3">
                 <span className={`font-mono text-[14px] ${lit ? "text-[#ffb59c]" : "text-white/55"}`}>{p.id}</span>
                 <span className="min-w-0">
-                  <span className="block truncate text-[14px] text-white/80">{p.title}</span>
+                  <span className="block [overflow-wrap:anywhere] text-[14px] text-white/80">{p.title}</span>
                   <span className="mt-1.5 grid grid-cols-4 gap-1.5" aria-hidden="true">
                     {qs.map((q, k) => {
                       const a = answers[q.n];
@@ -387,7 +387,7 @@ function MobileBar({ count, active }: { count: number; active: PartId }) {
       <div className="flex h-11 items-center justify-between gap-3 px-5 text-[14px]">
         <a href={`#part-${p.id.toLowerCase()}`} className="flex h-11 min-w-0 items-center gap-1.5">
           <span className="shrink-0 font-mono text-[var(--accent)]">{p.id}</span>
-          <span className="truncate text-[var(--ink)]">{p.title}</span>
+          <span className="min-w-0 [overflow-wrap:anywhere] text-[var(--ink)]">{p.title}</span>
         </a>
         <span className="shrink-0 text-[var(--muted)]">
           <span className="font-mono text-[var(--ink)]">{count}</span>/20 answered
