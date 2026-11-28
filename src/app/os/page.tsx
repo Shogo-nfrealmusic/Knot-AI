@@ -176,15 +176,19 @@ const STEPS = [
 ] as const;
 
 const FOR: [boolean, string][] = [
-  [true, "You run a business and you're not an engineer"],
-  [true, "You pay for Claude and use it as a chat window"],
+  [true, "You run a business or make things on your own, and use AI every day"],
+  [true, "You pay for Claude, but it still lives in a chat window"],
   [true, "You'd rather copy a setup that already runs a company"],
   [false, "You want a pack of prompts"],
   [false, "You want AI to run things without you approving"],
+  [false, "You won't follow steps in a terminal, even with Claude doing the typing"],
 ];
 
 const FAQ: [string, string][] = [
-  ["I can't code. Is this for me?", "Yes. Start here was written for people who have never opened a terminal."],
+  [
+    "I can't code. Is this for me?",
+    "Yes, if you'll follow steps in a terminal. Claude Code writes the code; you approve it. Start here assumes you've never opened one. A few later lessons go into Git and settings files; they're marked Advanced and can wait.",
+  ],
   ["Which Claude plan do I need?", "A paid one. Pro is enough to start. Claude itself isn't included."],
   ["Mac or Windows?", "Both. Every command in the guide switches between them."],
   ["How fast will something work?", "About 30 minutes to your first real job, the run shown above."],
@@ -416,7 +420,7 @@ export default function CopilotOsPage() {
 
           {/* who it's for */}
           <section className="border-t border-[var(--rule)] py-20 sm:py-28">
-            <Head eyebrow="Who it's for">Built for owners, not engineers.</Head>
+            <Head eyebrow="Who it's for">Built for owners who already use AI.</Head>
             <InView className="gd-stagger mt-12 grid gap-4 sm:grid-cols-2">
               <div style={v(0)} className="rounded-2xl bg-white p-7 ring-1 ring-[var(--rule)]">
                 <p className="text-sm font-semibold text-[var(--pass)]">For you if</p>
