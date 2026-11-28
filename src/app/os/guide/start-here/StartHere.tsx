@@ -20,6 +20,7 @@ import {
   fillPrompt,
   type Os,
 } from "../data";
+import { PrevNext as ModuleNav } from "../ModulePage";
 import { useDone, useOs } from "../store";
 import { ApprovalLanes, EndState, FolderReach, PathFigure, PlanGate, RealShot } from "./Figures";
 
@@ -50,7 +51,7 @@ export function StartHere() {
         <Rail active={active} read={read} lessonDone={lessonDone} count={done.length} />
 
         <div className="min-w-0 max-w-[760px]">
-          <Lesson id="need" code="S.1" title="What you need" accent="and nothing else.">
+          <Lesson id="need" code="0.1" title="What you need" accent="and nothing else.">
             <Prose>
               <p>Three things. If you have the first two, you can start today.</p>
             </Prose>
@@ -71,7 +72,7 @@ export function StartHere() {
             <Checkpoint id="ready" done={done} toggle={toggle} />
           </Lesson>
 
-          <Lesson id="door" code="S.2" title="Pick your door." accent="Both are official.">
+          <Lesson id="door" code="0.2" title="Pick your door." accent="Both are official.">
             <Prose>
               <p>There are two ways in, and both run the same Claude Code. The docs: &ldquo;{DESKTOP_QUOTE}&rdquo;</p>
             </Prose>
@@ -79,12 +80,12 @@ export function StartHere() {
               <p>
                 <strong>My advice: use the terminal.</strong> It is ten minutes of discomfort, and every lesson after this assumes it. If you want the app
                 first, download it from the <a className="gd-link" href={SETUP_URL} target="_blank" rel="noreferrer">official setup page</a> and come
-                back to Lesson S.3 later.
+                back to Lesson 0.3 later.
               </p>
             </Prose>
           </Lesson>
 
-          <Lesson id="install" code="S.3" title="Install it." accent="One line.">
+          <Lesson id="install" code="0.3" title="Install it." accent="One line.">
             <Steps>
               <Step n={1} title={`Open ${c.shell === "PowerShell" ? "PowerShell" : "the terminal"}`}>
                 {os === "windows" ? (
@@ -125,12 +126,12 @@ export function StartHere() {
                 <span className="gd-serif text-[26px] text-[var(--ink)]">One rule for the rest of your life:</span> never paste a command into a
                 terminal unless you know where it came from.
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[var(--soft)]">These come from Anthropic&apos;s own page. Module 4 explains why this matters.</p>
+              <p className="mt-3 text-[16px] leading-relaxed text-[var(--soft)]">These come from Anthropic&apos;s own page. Module 6 explains why this matters.</p>
             </aside>
             <Checkpoint id="installed" done={done} toggle={toggle} />
           </Lesson>
 
-          <Lesson id="folder" code="S.4" title="Give it a folder." accent="A room, not the house.">
+          <Lesson id="folder" code="0.4" title="Give it a folder." accent="A room, not the house.">
             <Prose>
               <p>Claude Code works inside one folder at a time. It can read and change what is in that folder. So do not start it in your whole computer.</p>
             </Prose>
@@ -179,7 +180,7 @@ export function StartHere() {
             <Checkpoint id="signed-in" done={done} toggle={toggle} />
           </Lesson>
 
-          <Lesson id="job" code="S.5" title="The first real job." accent="Not a hello.">
+          <Lesson id="job" code="0.5" title="The first real job." accent="Not a hello.">
             <Prose>
               <p>Ask for something you would pay a person to do. Write what you do in one sentence, then copy the prompt.</p>
             </Prose>
@@ -210,21 +211,21 @@ export function StartHere() {
             <Checkpoint id="first-job" done={done} toggle={toggle} />
           </Lesson>
 
-          <Lesson id="know" code="S.6" title="Four things to know" accent="before you go on.">
+          <Lesson id="know" code="0.6" title="Four things to know" accent="before you go on.">
             <ol className="mt-2 grid max-w-[62ch] gap-8">
               <Known n={1} title="Know who approves what.">
                 In recent versions, new terminal sessions start in auto mode: a separate classifier model approves routine actions and blocks the ones it
                 judges risky, and some actions still come to you as a question. Read every question it asks. &ldquo;Yes&rdquo; is a decision, not a
-                reflex. Module 4 shows how to make sure the irreversible things always come to you.
+                reflex. Module 6 shows how to make the irreversible things you list come to you every time.
               </Known>
             </ol>
             <ApprovalLanes />
             <ol start={2} className="grid max-w-[62ch] gap-8">
               <Known n={2} title="It forgets when you close it.">
-                That is what Modules 1A and 1 fix.
+                That is what Modules 2 and 3 fix.
               </Known>
               <Known n={3} title={`It says "done" when it is not.`}>
-                That is what Module 2 fixes. It is the module I care about most.
+                That is what Module 4 fixes. It is the module I care about most.
               </Known>
               <Known n={4} title="Lost? Two commands.">
                 Type <code className="gd-code">/help</code> when lost. Type <code className="gd-code">/exit</code> to leave.
@@ -266,7 +267,7 @@ function Hero({ os, setOs }: { os: Os; setOs: (o: Os) => void }) {
           Copilot OS guide
         </Link>
         <span className="mx-2">/</span>
-        <span className="text-[var(--ink)]">Module S</span>
+        <span className="text-[var(--ink)]">Module 0</span>
       </motion.nav>
       <motion.h1 {...enter(0.06)} className="gd-h1 mt-4 max-w-[14ch] lg:col-start-1 lg:row-start-2">
         Start here. <span className="gd-serif">If you&apos;ve never opened a terminal.</span>
@@ -283,6 +284,26 @@ function Hero({ os, setOs }: { os: Os; setOs: (o: Os) => void }) {
           When I started, I couldn&apos;t code. I didn&apos;t read a book first. I installed the thing and broke it until it worked. This module is
           that, minus the breaking.
         </p>
+        <p>
+          <strong>Why not just a chat?</strong> A chatbot gives you an answer, and you do the work. Claude Code can create and edit the files itself,
+          in the folder you give it.
+        </p>
+        <Link
+          href="/os/guide/beyond-code"
+          className="gd-press group !mt-6 block rounded-2xl bg-white px-5 py-4 no-underline ring-1 ring-[var(--rule)] hover:ring-[var(--ink)]"
+        >
+          <span className="block text-[14px] text-[var(--muted)]">Where this goes · Module 7</span>
+          <span className="mt-1 block text-[17px] leading-relaxed text-[var(--ink)]">
+            A two person company hands research, analytics, bookkeeping prep and content to Claude Code. A human approves anything that leaves the
+            company. Module 7 shows the real setup, and what still doesn&apos;t work.
+          </span>
+          <span className="mt-2 inline-flex items-center gap-2 text-[16px] font-medium text-[var(--accent)]">
+            See Module 7
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </span>
+        </Link>
       </motion.div>
       <motion.div {...enter(0.22)} className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 lg:col-start-1 lg:row-start-4">
         <span className="text-[16px] text-[var(--soft)]">Your computer:</span>
@@ -383,7 +404,7 @@ function Lesson({ id, code, title, accent, children }: { id: string; code: strin
   return (
     <section id={id} className="scroll-mt-32 border-t border-[var(--rule)] pb-6 pt-16 first:border-t-0 lg:scroll-mt-24">
       <h2 className="gd-h2 max-w-[20ch]">
-        <span className="tabular-nums text-[var(--accent)]">{code.replace("S.", "")}.</span> {title} <span className="gd-serif">{accent}</span>
+        <span className="tabular-nums text-[var(--accent)]">{code.split(".")[1] ?? code}.</span> {title} <span className="gd-serif">{accent}</span>
       </h2>
       <div className="mt-7">{children}</div>
     </section>
@@ -461,7 +482,7 @@ function Checkpoint({ id, done, toggle }: { id: string; done: string[]; toggle: 
   );
 }
 
-/* ───────────── S.5: the prompt, with your business in it ───────────── */
+/* ───────────── 0.5: the prompt, with your business in it ───────────── */
 
 function PromptBuilder() {
   const [business, setBusiness] = useState("");
@@ -513,23 +534,13 @@ function Lab({ done, toggle }: { done: string[]; toggle: (id: string) => void })
         ))}
       </div>
       <p className="mt-6 max-w-[62ch] text-[18px] leading-relaxed text-white/75">
-        {n === LAB.length ? "Passed. " : ""}Then do Module 0, the 20‑question diagnostic. It tells you where to go next.
+        {n === LAB.length ? "Passed. " : ""}Then go to Module 2, your second brain. The diagnostic (Module 1) is optional: skip it for now, and
+        take it after Module 3 if you want to know which module to open next.
       </p>
     </section>
   );
 }
 
 function PrevNext() {
-  return (
-    <nav aria-label="Module navigation" className="mt-12 grid gap-3 sm:grid-cols-2">
-      <Link href="/os/guide" className="gd-press flex min-h-[88px] flex-col justify-center rounded-2xl bg-white px-5 py-4 ring-1 ring-[var(--rule)] hover:ring-[var(--ink)]">
-        <span className="text-[14px] text-[var(--muted)]">← Back</span>
-        <span className="mt-1 text-[18px] font-medium">Guide contents</span>
-      </Link>
-      <div className="flex min-h-[88px] flex-col justify-center rounded-2xl border border-dashed border-[var(--rule-strong)] px-5 py-4 text-right" aria-disabled="true">
-        <span className="text-[14px] text-[var(--muted)]">Next · coming next</span>
-        <span className="mt-1 text-[18px] font-medium text-[var(--soft)]">Module 0 · Diagnostic</span>
-      </div>
-    </nav>
-  );
+  return <ModuleNav code="0" />;
 }

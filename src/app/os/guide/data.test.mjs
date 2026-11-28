@@ -19,16 +19,18 @@ import {
   VERSION_CHECK,
   commandsFor,
   fillPrompt,
+  neighbours,
+  nextStep,
   osFrom,
   parseDone,
   stationAt,
   toggleDone,
 } from "./data.ts";
 
-test("the index lists the nine modules in the guide's order", () => {
+test("the index lists the nine modules in the guide's order, numbered 0 to 8", () => {
   assert.deepEqual(
     MODULES.map((m) => m.code),
-    ["S", "0", "1A", "1", "2", "3", "4", "5", "6"],
+    ["0", "1", "2", "3", "4", "5", "6", "7", "8"],
   );
   assert.deepEqual(
     MODULES.map((m) => m.title),
@@ -46,11 +48,41 @@ test("the index lists the nine modules in the guide's order", () => {
   );
 });
 
-test("only Start here has a page so far; the rest are marked as coming next", () => {
+test("every module has its own page under /os/guide", () => {
   assert.deepEqual(
-    MODULES.filter((m) => m.href).map((m) => m.href),
-    ["/os/guide/start-here"],
+    MODULES.map((m) => m.href),
+    [
+      "/os/guide/start-here",
+      "/os/guide/diagnostic",
+      "/os/guide/second-brain",
+      "/os/guide/memory",
+      "/os/guide/verification",
+      "/os/guide/autonomy",
+      "/os/guide/security",
+      "/os/guide/beyond-code",
+      "/os/guide/your-os",
+    ],
   );
+});
+
+test("neighbours: each module knows the one before and after it", () => {
+  assert.equal(neighbours("0").prev, null);
+  assert.equal(neighbours("0").next?.code, "1");
+  assert.equal(neighbours("4").prev?.code, "3");
+  assert.equal(neighbours("4").next?.code, "5");
+  assert.equal(neighbours("8").next, null);
+  assert.deepEqual(neighbours("nope"), { prev: null, next: null });
+});
+
+test("the next step: Start here sends new readers to Module 2, past the optional diagnostic; other modules go in order", () => {
+  assert.equal(nextStep("0")?.code, "2");
+  assert.equal(nextStep("1")?.code, "2");
+  assert.equal(nextStep("4")?.code, "5");
+  assert.equal(nextStep("8"), null);
+});
+
+test("the diagnostic says it is optional in its one-line summary", () => {
+  assert.match(MODULES.find((m) => m.code === "1").line, /^Optional\./);
 });
 
 test("the install lines are the docs' native installer, word for word", () => {
@@ -118,10 +150,10 @@ test("commandsFor: Mac and Linux share the shell lines, Windows gets PowerShell"
   assert.equal(commandsFor("mac").shell, "Terminal");
 });
 
-test("six lessons and a lab, each with its own id", () => {
+test("six lessons and a lab, numbered 0.1 to 0.6, each with its own id", () => {
   assert.deepEqual(
     LESSONS.map((l) => l.code),
-    ["S.1", "S.2", "S.3", "S.4", "S.5", "S.6", "Lab"],
+    ["0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "Lab"],
   );
   assert.equal(new Set(LESSONS.map((l) => l.id)).size, LESSONS.length);
 });

@@ -295,7 +295,7 @@ function Vignette({ i }: { i: number }) {
   );
 }
 
-/* ───────────── S.1: the plan is the gate ───────────── */
+/* ───────────── 0.1: the plan is the gate ───────────── */
 
 export function PlanGate({ quote }: { quote: string }) {
   const [paid, setPaid] = useState(true);
@@ -344,11 +344,11 @@ export function PlanGate({ quote }: { quote: string }) {
   );
 }
 
-/* ───────────── S.2: two doors, one room ───────────── */
+/* ───────────── 0.2: two doors, one room ───────────── */
 
 const DOORS = {
   app: { name: "Desktop app", looks: "A normal app with a window", good: "Starting today with zero setup", catch: "Some lessons here use terminal commands" },
-  terminal: { name: "Terminal", looks: "A black box you type into", good: "Everything in Modules 1 to 6", catch: "Looks scary for about ten minutes" },
+  terminal: { name: "Terminal", looks: "A black box you type into", good: "Everything in Modules 1 to 8", catch: "Looks scary for about ten minutes" },
 } as const;
 
 const DOOR_WIRE = {
@@ -427,7 +427,7 @@ export function Doors() {
   );
 }
 
-/* ───────────── S.3: the install, typed, and the real success line ───────────── */
+/* ───────────── 0.3: the install, typed, and the real success line ───────────── */
 
 // Output of `claude --version` on my machine on 2026-11-27. Readers will see a different number.
 const REAL_VERSION = "2.1.332";
@@ -497,7 +497,7 @@ export function InstallTerminal({ os }: { os: Os }) {
   );
 }
 
-/* ───────────── S.4: what Claude can touch ───────────── */
+/* ───────────── 0.4: what Claude can touch ───────────── */
 
 export function FolderReach({ os }: { os: Os }) {
   const [wide, setWide] = useState(false);
@@ -561,7 +561,7 @@ function Reach() {
   );
 }
 
-/* ───────────── S.5: the interview, then a file you didn't write ───────────── */
+/* ───────────── 0.5: the interview, then a file you didn't write ───────────── */
 
 export function FirstJob() {
   const { ref, p, replay } = usePlay<HTMLDivElement>(6200);
@@ -622,7 +622,7 @@ export function FirstJob() {
   );
 }
 
-/* ───────────── S.6: who approves what ───────────── */
+/* ───────────── 0.6: who approves what ───────────── */
 
 const LANES = [
   { k: "runs", label: "Routine action", out: "Approved by the classifier, runs" },
