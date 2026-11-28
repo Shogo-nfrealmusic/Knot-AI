@@ -115,11 +115,13 @@ test("each chat types the prompt, thinks, then streams, in that order", () => {
   assert.ok(timeline(codeFor("ultrathink")).thought - timeline(codeFor("ultrathink")).typed > timeline(codeFor("l99")).thought - timeline(codeFor("l99")).typed);
 });
 
-test("/free/80 opens this page with the reel's keyword, first in the list", () => {
+test("/free/80 opens this page with the reel's keyword, listed before 79", () => {
   const drop = getDropByNumber("80");
   assert.equal(drop?.slug, SLUG);
   assert.equal(drop?.keyword, "CODES");
-  assert.equal(getDrops()[0].number, 80);
+  // newest first: 80 is listed before 79 (it was first until /free/81 went on top)
+  const order = getDrops().map((d) => d.number);
+  assert.ok(order.indexOf(80) < order.indexOf(79));
 });
 
 test("the figures sit on their chapters, in order", () => {

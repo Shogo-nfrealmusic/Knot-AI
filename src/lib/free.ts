@@ -31,6 +31,7 @@ import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
 import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
 import type { VibeDemoKind } from "@/app/free/vibe/VibeDemos";
 import type { CodesDemoKind } from "@/app/free/codes/CodesDemos";
+import type { ConnectDemoKind } from "@/app/free/connect/ConnectDemos";
 
 export type ToolIcon =
   | "palette"
@@ -205,6 +206,8 @@ export type DropChapter = {
   vibe?: VibeDemoKind;
   /** a live figure drawn for /free/80 (src/app/free/codes) */
   codes?: CodesDemoKind;
+  /** a live figure drawn for /free/81 (src/app/free/connect) */
+  connect?: ConnectDemoKind;
 };
 
 export type DropAbout = {
@@ -465,7 +468,149 @@ const VB_CDT = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
 // free/80: five codes to put in front of a Claude prompt. The one official line is from the Claude Code docs (read on Nov 28, 2026); src/app/free/codes/data.test.mjs keeps it word for word.
 const CODES_DOC = "https://code.claude.com/docs/en/model-config";
 
+// free/81: five MCP servers to plug into Claude (official READMEs read on Nov 28, 2026). The same five addresses as src/app/free/connect/data.ts; a test keeps them equal.
+const CN_PERPLEXITY = "https://github.com/perplexityai/modelcontextprotocol";
+const CN_FIRECRAWL = "https://github.com/firecrawl/firecrawl-mcp-server";
+const CN_POSTHOG = "https://github.com/PostHog/posthog/tree/master/services/mcp";
+const CN_PLAYWRIGHT = "https://github.com/microsoft/playwright-mcp";
+const CN_COMPOSIO = "https://github.com/ComposioHQ/composio";
+
 const drops: FreeDrop[] = [
+  {
+    number: 81,
+    slug: "81-claude-connectors",
+    title: "5 connectors to plug into Claude: Perplexity, Firecrawl, PostHog, Playwright and Composio",
+    description:
+      "Five official MCP servers that give Claude new reach: a research engine, the open web as clean Markdown, your own product data, a browser it can drive, and a thousand apps behind one connection. Pick one to watch a call go out and come back, then copy each install line as its README writes it.",
+    date: "2026-11-28",
+    keyword: "CONNECT",
+    kind: "5 connectors",
+    tools: [
+      {
+        name: "Perplexity",
+        what: "The official MCP server for the Perplexity API Platform: real-time web search, reasoning and research. Needs a Perplexity API key.",
+        href: CN_PERPLEXITY,
+        icon: "brain",
+      },
+      {
+        name: "Firecrawl",
+        what: "Firecrawl's MCP server: scrape any URL into clean Markdown. Needs a Firecrawl API key.",
+        href: CN_FIRECRAWL,
+        icon: "file",
+      },
+      {
+        name: "PostHog",
+        what: "PostHog's official MCP server: analytics and SQL, dashboards, experiments, feature flags, surveys, session replay and error tracking on your own data.",
+        href: CN_POSTHOG,
+        icon: "review",
+      },
+      {
+        name: "Playwright",
+        what: "Microsoft's MCP server for browser automation with Playwright. No API key.",
+        href: CN_PLAYWRIGHT,
+        icon: "browser",
+      },
+      {
+        name: "Composio",
+        what: "1000+ pre-authenticated toolkits behind one hosted MCP endpoint per session. Needs a Composio API key.",
+        href: CN_COMPOSIO,
+        icon: "plug",
+      },
+    ],
+    about: {
+      intro: [
+        "These are official MCP servers you add yourself. Some need an API key from the tool. Each section has what the connector gives Claude, the line its README says to run, the key it needs and the source. Read from each official README on 2026-11-28.",
+      ],
+      chaptersLabel: "The five",
+      chapters: [
+        {
+          title: "Plug one in",
+          text: [
+            "Pick a connector. The figure sends one call from Claude to the tool over MCP, shows the tool at work, and brings the answer back. Its card opens under the figure with the line to copy.",
+          ],
+          bullets: [
+            [
+              "MCP (Model Context Protocol) is the open standard Claude uses to talk to outside tools. Each of these five is a server that speaks it.",
+            ],
+            [
+              "Lines that start with ",
+              { code: "claude mcp add" },
+              " go into your terminal and add the server to Claude Code. Composio has no line to paste: you turn it on in your own code.",
+            ],
+          ],
+          connect: "picker",
+        },
+        {
+          title: "Perplexity: access to the most powerful research engine",
+          text: [
+            [
+              { text: "Perplexity's official MCP server", href: CN_PERPLEXITY },
+              " gives Claude real-time web search, reasoning and research through the Perplexity API Platform. It needs a Perplexity API key, which goes in the line you paste.",
+            ],
+          ],
+          connect: "perplexity",
+        },
+        {
+          title: "Firecrawl: lets Claude see the internet",
+          text: [
+            [
+              { text: "Firecrawl's MCP server", href: CN_FIRECRAWL },
+              " scrapes any URL into clean Markdown, so Claude reads the page instead of guessing at it. It runs with your Firecrawl API key.",
+            ],
+          ],
+          connect: "firecrawl",
+        },
+        {
+          title: "PostHog: your private investigator",
+          text: [
+            [
+              { text: "PostHog's official MCP server", href: CN_POSTHOG },
+              " lets Claude dig through your own product data: analytics and SQL, dashboards, experiments, feature flags, surveys, session replay and error tracking. One wizard command sets it up.",
+            ],
+          ],
+          connect: "posthog",
+        },
+        {
+          title: "Playwright: gives Claude hands",
+          text: [
+            [
+              { text: "Microsoft's Playwright MCP server", href: CN_PLAYWRIGHT },
+              " gives Claude browser automation, so it can open a page, click and type for you. It runs on your machine and needs no API key.",
+            ],
+          ],
+          connect: "playwright",
+        },
+        {
+          title: "Composio: connect every app at once",
+          text: [
+            [
+              { text: "Composio", href: CN_COMPOSIO },
+              " gives your agent 1000+ pre-authenticated toolkits. Each session exposes a hosted MCP endpoint: pass ",
+              { code: "mcp: true" },
+              " to ",
+              { code: "composio.create()" },
+              " and point Claude at ",
+              { code: "session.mcp.url" },
+              ". It needs a Composio API key.",
+            ],
+          ],
+          connect: "composio",
+        },
+      ],
+      notes: [
+        "Every quote and install line on this page is copied from the tool's own README (and Composio's docs for the MCP endpoint), read on 2026-11-28. Check each repo for changes before you install.",
+        "Each line runs the tool's own package. Read its README first, keep your API keys out of shared files, and only connect accounts you are fine letting Claude use.",
+        "The call in each figure is an illustration of what the connector does, not a recorded run.",
+        "Claude is Anthropic's product. This page is not affiliated with Anthropic, Perplexity, Firecrawl, PostHog, Microsoft or Composio.",
+        [
+          "Docs: ",
+          { text: "posthog.com/docs/model-context-protocol", href: "https://posthog.com/docs/model-context-protocol" },
+          " · ",
+          { text: "docs.composio.dev/docs/sessions-via-mcp", href: "https://docs.composio.dev/docs/sessions-via-mcp" },
+        ],
+      ],
+    },
+  },
   {
     number: 80,
     slug: "80-secret-claude-codes",
