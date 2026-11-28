@@ -534,7 +534,7 @@ export function FolderReach({ os }: { os: Os }) {
                   <motion.svg viewBox="0 0 56 44" className="relative h-[38px] w-[48px]" aria-hidden="true" initial={false} animate={{ opacity: inside ? 1 : 0.35 }} transition={SPRING}>
                     <path d="M2 6 h18 l6 6 h28 v30 h-52 z" fill="#ffffff" stroke={inside ? "#e0552f" : "#15171a"} strokeWidth="1.4" style={{ transition: "stroke .3s" }} />
                   </motion.svg>
-                  <motion.span className="relative max-w-full break-words text-center font-mono text-[12.5px] text-[var(--ink)]" initial={false} animate={{ opacity: inside ? 1 : 0.45 }} transition={SPRING}>
+                  <motion.span className="relative max-w-full break-words text-center font-mono text-[11px] text-[var(--ink)] sm:text-[12.5px]" initial={false} animate={{ opacity: inside ? 1 : 0.45 }} transition={SPRING}>
                     {name}
                   </motion.span>
                 </div>
