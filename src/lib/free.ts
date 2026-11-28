@@ -31,6 +31,7 @@ import type { LinkedinDemoKind } from "@/app/free/linkedin/LinkedinDemos";
 import type { OrbsDemoKind } from "@/app/free/orbs/OrbsDemos";
 import type { VibeDemoKind } from "@/app/free/vibe/VibeDemos";
 import type { CodesDemoKind } from "@/app/free/codes/CodesDemos";
+import type { LearnDemoKind } from "@/app/free/learn/LearnDemos";
 
 export type ToolIcon =
   | "palette"
@@ -205,6 +206,8 @@ export type DropChapter = {
   vibe?: VibeDemoKind;
   /** a live figure drawn for /free/80 (src/app/free/codes) */
   codes?: CodesDemoKind;
+  /** a live figure drawn for /free/82 (src/app/free/learn) */
+  learn?: LearnDemoKind;
 };
 
 export type DropAbout = {
@@ -466,6 +469,46 @@ const VB_CDT = "https://github.com/ChromeDevTools/chrome-devtools-mcp";
 const CODES_DOC = "https://code.claude.com/docs/en/model-config";
 
 const drops: FreeDrop[] = [
+  {
+    number: 82,
+    slug: "82-learn-anything-codes",
+    title: "10 ChatGPT codes to learn anything, with copy-paste prompts",
+    description:
+      "ELI5, 80/20, sticky notes, Feynman, mind map, quiz me, study guide, first principles, Socrates and schematic: ten words you type with your question so ChatGPT teaches instead of just answering. What each does and a prompt to copy.",
+    date: "2026-11-28",
+    keyword: "LEARN",
+    kind: "10 codes",
+    tools: [],
+    icon: "brain",
+    about: {
+      intro: [
+        "Ten codes from the reel. Type one with your question and ChatGPT explains it simply, keeps only what matters, draws it as a picture, or teaches you by asking. Each section has what the code does, a prompt to copy and an example of the answer.",
+      ],
+      chaptersLabel: "The ten codes",
+      chapters: [
+        {
+          title: "Try them in one chat",
+          text: ["Pick a code. The chat types the example prompt and streams an example answer, so you can see what changes before you copy one. Or copy all ten at once."],
+          learn: "picker",
+        },
+        { title: "1. ELI5", text: ["Explains things in super simple terms."], learn: "eli5" },
+        { title: "2. 80/20", text: ["Only the most important 20% you need to know."], learn: "8020" },
+        { title: "3. Make sticky notes", text: ["A visual sticky-note guide of the topic."], learn: "sticky" },
+        { title: "4. Feynman technique", text: ["A popular study technique: it explains simply, then you teach it back."], learn: "feynman" },
+        { title: "5. Make a mind map", text: ["A visual mind map of the key concepts."], learn: "mindmap" },
+        { title: "6. Quiz me", text: ["One question at a time until you understand."], learn: "quiz" },
+        { title: "7. Make a visual study guide", text: ["A one-page study sheet with everything you need to learn."], learn: "studyguide" },
+        { title: "8. First principles", text: ["Explains the topic from what must be true, then builds up."], learn: "first" },
+        { title: "9. Socrates", text: ["Teaches you by asking you questions, one at a time."], learn: "socrates" },
+        { title: "10. Make a schematic", text: ["A schematic diagram that explains how something works."], learn: "schematic" },
+      ],
+      notes: [
+        "The codes are words you type with your question. They are not official ChatGPT features, so the answer you get will differ from the examples here.",
+        "The picture codes need a ChatGPT plan that can create images.",
+        "ChatGPT is OpenAI's product. This page is not affiliated with OpenAI.",
+      ],
+    },
+  },
   {
     number: 80,
     slug: "80-secret-claude-codes",
