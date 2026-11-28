@@ -281,16 +281,16 @@ function Vignette({ i }: { i: number }) {
     );
   return (
     <svg viewBox="0 0 480 300" className="h-full w-full" aria-hidden="true">
-      <path d="M120 70 h70 l18 18 h152 v150 h-240 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
-      <text x="136" y="108" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
-      <g transform="translate(176 126)">
+      <path d="M56 70 h70 l18 18 h288 v150 h-376 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
+      <text x="72" y="108" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
+      <g transform="translate(112 126)">
         <path d="M0 0 h60 l18 18 v72 h-78 z" fill="#ffffff" stroke="#e0552f" strokeWidth="1.6" />
         <rect x="12" y="34" width="50" height="5" rx="2.5" fill="#dcded9" />
         <rect x="12" y="48" width="40" height="5" rx="2.5" fill="#dcded9" />
         <rect x="12" y="62" width="46" height="5" rx="2.5" fill="#dcded9" />
       </g>
-      <text x="290" y="170" className="font-mono" fontSize="14" fill="#15171a">repeat-work.md</text>
-      <text x="290" y="192" fontSize="12.5" fill="#e0552f">written by Claude, not you</text>
+      <text x="226" y="170" className="font-mono" fontSize="14" fill="#15171a">repeat-work.md</text>
+      <text x="226" y="192" fontSize="12.5" fill="#e0552f">written by Claude, not you</text>
     </svg>
   );
 }

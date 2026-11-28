@@ -240,16 +240,16 @@ export function StepArt({ i }: { i: 0 | 1 | 2 }) {
       ) : null}
       {i === 2 ? (
         <svg viewBox="0 0 480 300" className="h-full w-full" aria-hidden="true">
-          <path d="M84 64 h74 l18 18 h228 v156 h-320 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
-          <text x="102" y="104" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
-          <motion.g initial={false} animate={{ opacity: on(0.25) ? 1 : 0, y: on(0.25) ? 0 : 16, scale: on(0.25) ? 1 : 0.9 }} transition={POP} style={{ transformOrigin: "200px 170px" }}>
-            <path d="M150 124 h56 l16 16 v74 h-72 z" fill="#ffffff" stroke="#e0552f" strokeWidth="1.6" />
-            <path d="M206 124 v16 h16" fill="none" stroke="#e0552f" strokeWidth="1.6" />
-            <rect x="162" y="156" width="46" height="5" rx="2.5" fill="#dcded9" />
-            <rect x="162" y="170" width="36" height="5" rx="2.5" fill="#dcded9" />
-            <rect x="162" y="184" width="42" height="5" rx="2.5" fill="#dcded9" />
-            <text x="244" y="164" className="font-mono" fontSize="14" fill="#15171a">first-week-plan.md</text>
-            <text x="244" y="186" fontSize="12.5" fill="#e0552f">written by Claude, not you</text>
+          <path d="M60 64 h74 l18 18 h272 v156 h-364 z" fill="#ffffff" stroke="#15171a" strokeWidth="1.4" />
+          <text x="78" y="104" className="font-mono" fontSize="13" fill="#868b92">my-business/</text>
+          <motion.g initial={false} animate={{ opacity: on(0.25) ? 1 : 0, y: on(0.25) ? 0 : 16, scale: on(0.25) ? 1 : 0.9 }} transition={POP} style={{ transformOrigin: "176px 170px" }}>
+            <path d="M126 124 h56 l16 16 v74 h-72 z" fill="#ffffff" stroke="#e0552f" strokeWidth="1.6" />
+            <path d="M182 124 v16 h16" fill="none" stroke="#e0552f" strokeWidth="1.6" />
+            <rect x="138" y="156" width="46" height="5" rx="2.5" fill="#dcded9" />
+            <rect x="138" y="170" width="36" height="5" rx="2.5" fill="#dcded9" />
+            <rect x="138" y="184" width="42" height="5" rx="2.5" fill="#dcded9" />
+            <text x="220" y="164" className="font-mono" fontSize="14" fill="#15171a">first-week-plan.md</text>
+            <text x="220" y="186" fontSize="12.5" fill="#e0552f">written by Claude, not you</text>
           </motion.g>
         </svg>
       ) : null}
