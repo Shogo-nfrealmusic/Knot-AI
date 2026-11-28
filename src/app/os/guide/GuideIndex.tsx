@@ -19,11 +19,16 @@ export function GuideIndex() {
         </motion.h1>
         <motion.div className="gd-prose mt-8" initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: 0.12 }}>
           <p>
-            Never opened a terminal? Begin with <strong>Start here</strong>. If Claude Code already runs on your computer, skip it and take the{" "}
+            Never opened a terminal? Begin with <strong>Start here</strong>. If Claude Code already runs on your computer, go straight to{" "}
+            <Link className="gd-link" href="/os/guide/second-brain">
+              Module 2
+            </Link>
+            . The{" "}
             <Link className="gd-link" href="/os/guide/diagnostic">
               diagnostic
-            </Link>
-            : it tells you which module to open next.
+            </Link>{" "}
+            is optional: take it now or after Module 3 to see which module to open next. Lessons marked Advanced go into Git and settings files,
+            and can wait.
           </p>
         </motion.div>
       </header>

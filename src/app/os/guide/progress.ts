@@ -47,6 +47,43 @@ export function withAnswer(raw: string | null | undefined, n: number, a: "A" | "
   return JSON.stringify({ answers: { ...s.answers, [n]: a }, revealed: false });
 }
 
+/** A lab's text: the task, then "Setup check:" (passable in one sitting), then an optional "Real-world check:" (days later). */
+export function splitLab(text: string): { task: string; setup: string; real: string } {
+  const [task, rest = ""] = text.split(/\s*Setup check:\s*/);
+  const [setup, real = ""] = rest.split(/\s*Real-world check:\s*/);
+  return { task: task.trim(), setup: setup.trim(), real: real.trim() };
+}
+
+type LabLesson = { id: string; advanced?: boolean; sections: { h: string; blocks: unknown[] }[] };
+
+const labText = (l: LabLesson) => {
+  const lab = l.sections.find((s) => s.h === "Lab");
+  const first = lab?.blocks[0] as { p?: string } | undefined;
+  return lab ? (first?.p ?? "") : null;
+};
+
+/** The tick ids of a module's labs. `<lesson>-lab` is the setup check (the id a whole lab used before the split, so old
+ * ticks still count) and `<lesson>-lab-real` the real-world check. `core` is what the module's progress counts:
+ * the setup checks of lessons that aren't Advanced. */
+export function labPlan(lessons: readonly LabLesson[]) {
+  const ids: string[] = [];
+  const core: string[] = [];
+  const advanced: string[] = [];
+  const real: string[] = [];
+  for (const l of lessons) {
+    const text = labText(l);
+    if (text === null) continue;
+    const setup = `${l.id}-lab`;
+    ids.push(setup);
+    (l.advanced ? advanced : core).push(setup);
+    if (splitLab(text).real) {
+      ids.push(`${setup}-real`);
+      real.push(`${setup}-real`);
+    }
+  }
+  return { ids, core, advanced, real };
+}
+
 /** Tick an id, or untick it when already ticked. An id the module doesn't have changes nothing. */
 export function toggleTick(done: readonly string[], id: string, ids: readonly string[]): string[] {
   if (!ids.includes(id)) return [...done];

@@ -95,6 +95,13 @@ function Header({ answers, revealed, scores }: { answers: Saved["answers"]; reve
         <ScoreBoard answers={answers} revealed={revealed} scores={scores} />
       </motion.div>
       <motion.div {...enter(0.14)} className="gd-prose mt-8 lg:col-start-1 lg:row-start-3">
+        <p className="rounded-2xl bg-white px-5 py-4 !text-[17px] ring-1 ring-[var(--rule)]">
+          <strong>This module is optional.</strong> Just installed Claude Code? Skip it, go to{" "}
+          <Link className="gd-link" href="/os/guide/second-brain">
+            Module 2
+          </Link>
+          , and come back after Module 3. It&apos;s most useful once you know the basics, to find the module you need next.
+        </p>
         {LEDE.map((t, i) => (
           <p key={i}>
             <Inline text={t} />

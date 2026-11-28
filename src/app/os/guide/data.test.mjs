@@ -20,6 +20,7 @@ import {
   commandsFor,
   fillPrompt,
   neighbours,
+  nextStep,
   osFrom,
   parseDone,
   stationAt,
@@ -71,6 +72,17 @@ test("neighbours: each module knows the one before and after it", () => {
   assert.equal(neighbours("4").next?.code, "5");
   assert.equal(neighbours("8").next, null);
   assert.deepEqual(neighbours("nope"), { prev: null, next: null });
+});
+
+test("the next step: Start here sends new readers to Module 2, past the optional diagnostic; other modules go in order", () => {
+  assert.equal(nextStep("0")?.code, "2");
+  assert.equal(nextStep("1")?.code, "2");
+  assert.equal(nextStep("4")?.code, "5");
+  assert.equal(nextStep("8"), null);
+});
+
+test("the diagnostic says it is optional in its one-line summary", () => {
+  assert.match(MODULES.find((m) => m.code === "1").line, /^Optional\./);
 });
 
 test("the install lines are the docs' native installer, word for word", () => {

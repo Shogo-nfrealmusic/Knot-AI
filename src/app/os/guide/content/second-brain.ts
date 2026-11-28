@@ -87,7 +87,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Create the vault and the folder map. Pass condition: ask Claude \"Where would you file a note about why we chose our payment provider?\" It answers `Decisions/` and names the file."
+              "p": "Create the vault and the folder map. Setup check: ask Claude \"Where would you file a note about why we chose our payment provider?\" It answers `Decisions/` and names the file."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/vault/CLAUDE.md`: copy it to your vault root as `CLAUDE.md`. It already holds the folder map (section 10), with empty sections for Lesson 2.2 to fill. Done when Claude answers the lab's question with `Decisions/`."
             }
           ]
         }
@@ -129,8 +137,8 @@ export const CONTENT: ModuleContent = {
               "p": "Paste this into Claude Code, run from your vault folder (the same prompt is in the kit as `prompts/interview.md`):"
             },
             {
-              "code": "Help me write the CLAUDE.md for my second brain.\nAsk me one question at a time and wait for my answer before the next one.\nCover: who I am and what I do; my one goal for this year and how I'll measure it;\nmy current projects and their priority order; how I make decisions; the biases I know I have;\nhow you should talk to me; when you should disagree with me; and what you must never do without asking.\nWhen we're done, write CLAUDE.md at the vault root with clear headings.\nKeep it under 200 lines. Mark anything I didn't answer as TBD instead of guessing.",
-              "label": "Prompt · also in the kit as prompts/interview.md"
+              "code": "Help me write the CLAUDE.md for my second brain.\nAsk me one question at a time and wait for my answer before the next one.\nCover: who I am and what I do; my one goal for this year and how I'll measure it;\nmy current projects and their priority order; how I make decisions; the biases I know I have;\nhow you should talk to me; when you should disagree with me; and what you must never do without asking.\nIf CLAUDE.md already exists in this folder, build on it: keep its headings, and keep the \"Where things go\" section exactly as it is.\nWhen we're done, write the answers into CLAUDE.md at the vault root with clear headings.\nKeep it under 200 lines. Mark anything I didn't answer as TBD instead of guessing.",
+              "label": "Prompt · the kit's version is prompts/interview.md"
             },
             {
               "p": "Two lines in that prompt do most of the work:"
@@ -166,7 +174,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Run the interview. Pass condition: start a fresh session and ask \"What's my priority this month, and what should you push back on?\" The answer matches what you'd say."
+              "p": "Run the interview. Setup check: start a fresh session and ask \"What's my priority this month, and what should you push back on?\" The answer matches what you'd say, and the folder map from Lesson 2.1 is still in CLAUDE.md."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/prompts/interview.md`: paste its prompt into Claude Code, started from your vault folder. Nothing to copy. It fills in the `CLAUDE.md` from Lesson 2.1. Done when every section is filled in or marked TBD, and the folder map is unchanged."
             }
           ]
         }
@@ -254,7 +270,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Create one project folder outside the vault (or exclude the vault's CLAUDE.md). Pass condition: from that folder, Claude answers \"what's the goal here?\" in one sentence, without mentioning your other projects."
+              "p": "Create one project folder outside the vault (or exclude the vault's CLAUDE.md). Setup check: from that folder, Claude answers \"what's the goal here?\" in one sentence, without mentioning your other projects."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/project/CLAUDE.md`: copy it into the project folder as `CLAUDE.md` and fill in the brackets. Done when Claude, started from that folder, states the goal in one sentence."
             }
           ]
         }
@@ -330,7 +354,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Make one skill from a task you did twice this week. Pass condition: in a new session, describe the situation in your own words, and Claude uses the skill without being told its name."
+              "p": "Make one skill from a task you did twice this week. Setup check: in a new session, describe the situation in your own words, and Claude uses the skill without being told its name."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/templates/SKILL.md`: copy it to `.claude/skills/<name>/SKILL.md` in your project, or let the prompt above fill it in. Done when the skill triggers from your own description of the situation."
             }
           ]
         }
@@ -340,6 +372,7 @@ export const CONTENT: ModuleContent = {
       "id": "keys-not-prompts",
       "code": "2.5",
       "title": "Keys, not prompts",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -444,7 +477,9 @@ export const CONTENT: ModuleContent = {
             {
               "list": [
                 "The sandbox covers shell commands only. Claude's file tools, MCP servers, and hooks run outside it (Module 6).",
-                "An environment variable is better than a key in a file. It still isn't a secrets manager."
+                "An environment variable is better than a key in a file. It still isn't a secrets manager.",
+                "Read-only access stops a connection from writing or deleting. It doesn't stop what it read from leaving through another tool in the same session, such as a web request (Lesson 6.1).",
+                "A guard that passes its own test suite handles the cases in that suite. It doesn't prove there is no bypass nobody has tested yet."
               ]
             }
           ]
@@ -453,7 +488,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "List every connection your Claude setup has (`claude mcp list`). For each one, write down what it can read, write, and delete. Pass condition: nothing can delete or send that doesn't need to."
+              "p": "List every connection your Claude setup has (`claude mcp list`). For each one, write down what it can read, write, and delete. Setup check: nothing can delete or send that doesn't need to."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/hooks/security-guard.py` is the guard described above. Install it in Lesson 6.4, not here. Done when you know which of your connections the guard and the sandbox cover, and which they don't."
             }
           ]
         }
@@ -512,7 +555,7 @@ export const CONTENT: ModuleContent = {
             {
               "list": [
                 "**Month-end reminder.** From the first of each month, a session-start hook reminds Claude that last month's recurring finance work isn't recorded as finished, until it is. When the work is done, Claude records the month so the reminder stops.",
-                "**Progress sync for my co-founder.** New lines in the business log are copied to the team's Notion so my co-founder sees progress without reading the vault. The log can contain text that came from outside (web pages, emails, tool output), so the sync passes those lines as data only, inside a delimiter that changes every time, and never as instructions.",
+                "**Progress sync for my co-founder.** New lines in the business log are copied to the team's Notion so my co-founder sees progress without reading the vault. The log can contain text that came from outside (web pages, emails, tool output), so the sync passes those lines as data only, inside a delimiter that changes every time, and never as instructions. That makes injected text harder to pass off as an instruction. It doesn't make it impossible (Lesson 6.1).",
                 "**Friction log.** Once a day, Claude asks what slowed us down. Repeated friction is where new tools and products come from.",
                 "**Morning brief.** A short summary of what changed and what needs a decision today."
               ]
@@ -534,7 +577,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Schedule one daily routine. Pass condition: after three days, the Inbox is empty and the summaries are correct."
+              "p": "Schedule one daily routine. Setup check: the task is listed under Scheduled with \"Only on this computer\" turned on, and you have a backup of the vault. Real-world check: after three days, every note in Inbox/ other than Inbox.md has been filed or left for you to sort, and the summaries at the top of Inbox.md are correct."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/prompts/daily-routine.md`: paste its prompt into the new scheduled task. Nothing to copy into the vault. Done when the task is saved, pointed at your vault, and set to run on this computer."
             }
           ]
         }

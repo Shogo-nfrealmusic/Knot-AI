@@ -89,13 +89,113 @@ test("each module has a hero figure and at least one figure in its lessons, and 
   }
 });
 
-test("labs have a pass condition", () => {
+test("every lab has a setup check, at most one real-world check after it, and no old single pass condition", () => {
   for (const m of ALL) {
     for (const l of m.lessons) {
       const lab = l.sections.find((s) => s.h === "Lab");
-      if (lab) assert.match(lab.blocks[0].p, /Pass condition/, `${m.slug} ${l.code}`);
+      if (!lab) continue;
+      const p = lab.blocks[0].p;
+      assert.match(p, /Setup check: \S/, `${m.slug} ${l.code}`);
+      assert.doesNotMatch(p, /Pass condition/, `${m.slug} ${l.code}`);
+      assert.ok((p.match(/Real-world check:/g) ?? []).length <= 1, `${m.slug} ${l.code}`);
+      if (p.includes("Real-world check:")) assert.ok(p.indexOf("Setup check:") < p.indexOf("Real-world check:"), `${m.slug} ${l.code}`);
     }
   }
+});
+
+test("every module has a lab a reader can pass on day one: a core lesson's setup check", () => {
+  for (const m of ALL) {
+    assert.ok(
+      m.lessons.some((l) => !l.advanced && l.sections.some((s) => s.h === "Lab")),
+      m.slug,
+    );
+  }
+});
+
+test("the technical lessons are marked Advanced, and only those", () => {
+  const advanced = ALL.flatMap((m) => m.lessons.filter((l) => l.advanced).map((l) => l.code));
+  assert.deepEqual(advanced, ["2.5", "4.4", "5.2", "5.3", "5.4", "6.2", "6.4", "6.6"]);
+});
+
+// Every file in the kit (release/kit in the product folder, checked 2026-11-28). A "From the kit" note may only name these.
+const KIT = [
+  "kit/README.md",
+  "kit/vault/CLAUDE.md",
+  "kit/project/CLAUDE.md",
+  "kit/claude/settings.example.json",
+  "kit/claude/agents/",
+  "kit/claude/agents/verifier.md",
+  "kit/claude/agents/engineer.md",
+  "kit/claude/agents/analyst.md",
+  "kit/claude/agents/researcher.md",
+  "kit/claude/agents/secretary.md",
+  "kit/claude/agents/marketer.md",
+  "kit/claude/hooks/security-guard.py",
+  "kit/claude/hooks/test_security_guard.py",
+  "kit/claude/hooks/require-tests.py",
+  "kit/templates/decision.md",
+  "kit/templates/change.md",
+  "kit/templates/failure-log.md",
+  "kit/templates/skills-ledger.md",
+  "kit/templates/SKILL.md",
+  "kit/prompts/interview.md",
+  "kit/prompts/review.md",
+  "kit/prompts/daily-routine.md",
+];
+
+test("each 'From the kit' note comes last in its lesson, names at least one kit file, and names only files the kit has", () => {
+  let notes = 0;
+  for (const m of ALL) {
+    for (const l of m.lessons) {
+      const i = l.sections.findIndex((s) => s.h === "From the kit");
+      if (i < 0) continue;
+      notes++;
+      assert.equal(i, l.sections.length - 1, `${m.slug} ${l.code}`);
+      const text = l.sections[i].blocks.map((b) => b.p ?? "").join(" ");
+      const named = [...text.matchAll(/`(kit\/[^`]+)`/g)].map((x) => x[1]);
+      assert.ok(named.length > 0, `${m.slug} ${l.code}`);
+      for (const f of named) assert.ok(KIT.includes(f), `${m.slug} ${l.code}: ${f}`);
+      assert.match(text, /Done when /, `${m.slug} ${l.code}`);
+    }
+  }
+  assert.ok(notes >= 15, `only ${notes} notes`);
+});
+
+test("lessons that tell you to use a kit file end with a 'From the kit' note", () => {
+  for (const m of ALL) {
+    for (const l of m.lessons) {
+      if (!/^\d\.\d+$/.test(l.code)) continue;
+      const body = l.sections.filter((s) => s.h !== "From the kit").flatMap((s) => s.blocks);
+      const usesKit = body.some((b) => /\bthe kit\b|\bin the kit\b|kit's/.test(JSON.stringify(b)));
+      if (usesKit) assert.ok(l.sections.some((s) => s.h === "From the kit"), `${m.slug} ${l.code}`);
+    }
+  }
+});
+
+test("nothing goes out unless a human approved it: 7.6 agrees with 7.4's scheduled posts", () => {
+  const text = JSON.stringify(beyondCode);
+  assert.doesNotMatch(text, /It never communicates as us/);
+  const l74 = JSON.stringify(beyondCode.lessons.find((l) => l.code === "7.4"));
+  const l76 = JSON.stringify(beyondCode.lessons.find((l) => l.code === "7.6"));
+  assert.match(l74, /approve/);
+  assert.match(l76, /Nothing goes out unless a human approved it/);
+});
+
+test("2.6: the routine's summary lives in Inbox.md, so passing never asks for an empty Inbox", () => {
+  const l26 = JSON.stringify(secondBrain.lessons.find((l) => l.code === "2.6"));
+  assert.doesNotMatch(l26, /Inbox is empty/);
+  assert.match(l26, /other than Inbox\.md/);
+});
+
+test("2.2: the interview keeps the folder map from 2.1 instead of writing over it", () => {
+  const prompt = secondBrain.lessons.find((l) => l.code === "2.2").sections.flatMap((s) => s.blocks).find((b) => b.code);
+  assert.match(prompt.code, /keep the "Where things go" section exactly as it is/);
+});
+
+test("4.4: the lab tells a stop on the gate from a stop on the retry limit", () => {
+  const lab = verification.lessons.find((l) => l.code === "4.4").sections.find((s) => s.h === "Lab").blocks[0].p;
+  assert.match(lab, /gate passed/);
+  assert.match(lab, /retry limit/);
 });
 
 test("the content carries no Japanese", () => {

@@ -8,7 +8,7 @@ export type GuideModule = { code: string; title: string; line: string; time: str
 
 export const MODULES: GuideModule[] = [
   { code: "0", title: "Start here", line: "Install Claude Code, sign in, and get one real job done in a folder you own.", time: "30 minutes", href: "/os/guide/start-here" },
-  { code: "1", title: "Diagnostic", line: "Twenty questions that tell you which module to open next.", time: "About 10 minutes", href: "/os/guide/diagnostic" },
+  { code: "1", title: "Diagnostic", line: "Optional. Twenty questions that tell you which module to open next.", time: "About 10 minutes", href: "/os/guide/diagnostic" },
   { code: "2", title: "Your second brain", line: "Obsidian holds what you know. Claude reads it, files new things, and answers from all of it.", time: "One evening, then a week to see it work", href: "/os/guide/second-brain" },
   { code: "3", title: "Memory that compounds", line: "What goes into memory, and how it stays useful after six months.", time: "Two evenings, then minutes a week", href: "/os/guide/memory" },
   { code: "4", title: "Verification design", line: "When Claude says it's done, how do you know?", time: "Two to three evenings", href: "/os/guide/verification" },
@@ -23,6 +23,13 @@ export function neighbours(code: string): { prev: GuideModule | null; next: Guid
   const i = MODULES.findIndex((m) => m.code === code);
   if (i < 0) return { prev: null, next: null };
   return { prev: MODULES[i - 1] ?? null, next: MODULES[i + 1] ?? null };
+}
+
+/** Where the "next" link of a module goes. Start here skips the diagnostic: it is optional, and new readers go
+ * straight to Module 2 (owner, 2026-11-28). Everything else goes in order. */
+export function nextStep(code: string): GuideModule | null {
+  if (code === "0") return MODULES.find((m) => m.code === "2") ?? null;
+  return neighbours(code).next;
 }
 
 export const CHECKED_ON = "2026-11-27";

@@ -49,7 +49,7 @@ function TriangleArt({ on, broken }: { on: boolean[]; broken: number | null }) {
       })}
       <motion.circle cx="160" cy="150" r="30" initial={false} animate={{ fill: all ? C.accent : broken !== null ? "rgba(46,158,106,.14)" : "#ffffff", stroke: all ? C.accent : broken !== null ? C.pass : C.ruleStrong }} strokeWidth="1.5" transition={{ duration: 0.4 }} />
       <text x="160" y="155" textAnchor="middle" fontSize="13" fontWeight="600" fill={all ? "#ffffff" : broken !== null ? "#1f7a50" : C.muted}>
-        {all ? "leak" : broken !== null ? "safe" : "agent"}
+        {all ? "leak" : broken !== null ? "safer" : "agent"}
       </text>
       {NODES.map((n, i) => {
         const lit = on[i] && broken !== i;
@@ -464,7 +464,7 @@ function FloorLanes() {
   const reduce = useReducedMotion();
   const a = ACTIONS[i];
   return (
-    <Plate caption="The first seven are from our guard's test suite: the first four must prompt, the next three must not. The key read is an illustration of a deny rule. Nothing irreversible is left to the classifier alone.">
+    <Plate caption="The first seven are from our guard's test suite: the first four must prompt, the next three must not. The key read is an illustration of a deny rule. Nothing irreversible on your ask list is left to the classifier alone.">
       <div className="grid gap-5 p-5 sm:p-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <ul className="grid gap-1.5">
           {ACTIONS.map((x, k) => (

@@ -90,7 +90,7 @@ export const CONTENT: ModuleContent = {
           "h": "In production",
           "blocks": [
             {
-              "p": "Our progress sync copies lines from the business log into the team's Notion. Those lines can contain text that came from outside: web pages, emails, tool output. So the sync treats the lines strictly as data. The only instructions are fixed text in the hook itself. The lines are cleaned, shortened, and wrapped in a delimiter that changes on every run, so text inside them can't pretend to be the end of the data. A line that contains something that looks like an instruction isn't copied, and it's reported instead."
+              "p": "Our progress sync copies lines from the business log into the team's Notion. Those lines can contain text that came from outside: web pages, emails, tool output. So the sync treats the lines strictly as data. The only instructions are fixed text in the hook itself. The lines are cleaned, shortened, and wrapped in a delimiter that changes on every run, so text inside them can't end the data early by copying the delimiter. A line that contains something that looks like an instruction isn't copied, and it's reported instead."
             }
           ]
         },
@@ -99,7 +99,9 @@ export const CONTENT: ModuleContent = {
           "blocks": [
             {
               "list": [
-                "Breaking a leg reduces the risk; it doesn't remove it. Treat anything an agent reads from outside as data."
+                "Breaking a leg reduces the risk; it doesn't remove it. Treat anything an agent reads from outside as data.",
+                "A read-only connector can't send anything itself. The session can still send what it read through another tool that can, such as web fetch. Count every tool in the session, not just the connector.",
+                "A changing delimiter makes injected text harder to pass off as instructions. It doesn't fully stop prompt injection: the model still reads the text."
               ]
             }
           ]
@@ -108,7 +110,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Fill in the table for your three most-used workflows. Pass condition: no row has three yes answers."
+              "p": "Fill in the table for your three most-used workflows. Setup check: no row has three yes answers."
             }
           ]
         }
@@ -118,6 +120,7 @@ export const CONTENT: ModuleContent = {
       "id": "what-the-sandbox-doesn",
       "code": "6.2",
       "title": "What the sandbox doesn't cover",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -178,6 +181,9 @@ export const CONTENT: ModuleContent = {
               ]
             },
             {
+              "p": "These settings cover shell commands only. They don't limit Claude's file tools or MCP servers: those need permission rules and a review of each server."
+            },
+            {
               "p": "Every key above was checked against the settings reference in November 2026."
             }
           ]
@@ -210,7 +216,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Open your settings and list every exclusion and every allowed domain. Pass condition: you can say why each one is there, and you've removed at least one you didn't need."
+              "p": "Open your settings and list every exclusion and every allowed domain. Setup check: you can say why each one is there, and you've removed at least one you didn't need."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/settings.example.json`: merge its `sandbox` part into your own `~/.claude/settings.json`. Don't overwrite your file with it. Done when you can say why each exclusion and allowed domain is there."
             }
           ]
         }
@@ -337,7 +351,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Audit every skill and plugin you have installed. Pass condition: a complete ledger, and at least one you removed or restricted."
+              "p": "Audit every skill and plugin you have installed. Setup check: a complete ledger, and at least one you removed or restricted."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/templates/skills-ledger.md`: copy it into your vault and add one row per skill or plugin. Done when every installed skill and plugin has a row with its source, commit, and license."
             }
           ]
         }
@@ -347,6 +369,7 @@ export const CONTENT: ModuleContent = {
       "id": "a-guard-hook-and",
       "code": "6.4",
       "title": "A guard hook, and testing the guard",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -457,7 +480,8 @@ export const CONTENT: ModuleContent = {
             {
               "list": [
                 "A hook can't see what a program does after it starts. \"Download a file now, run it later\" passes this check; the sandbox is the boundary for that.",
-                "Text rules can always be evaded by rewording. The sandbox and the permission rules remain the real boundary; the hook catches mistakes."
+                "Text rules can always be evaded by rewording. The sandbox and the permission rules remain the real boundary; the hook catches mistakes.",
+                "Passing the suite shows the guard handles the cases in it. It doesn't stop a bypass nobody has written a test for yet. Add each new one to the suite when you find it."
               ]
             }
           ]
@@ -466,7 +490,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Write five harmless commands and five dangerous ones for your setup, and run them through your guard. Pass condition: ten correct decisions."
+              "p": "Write five harmless commands and five dangerous ones for your setup, and run them through your guard. Setup check: ten correct decisions."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/hooks/security-guard.py` and `kit/claude/hooks/test_security_guard.py`: copy both to `~/.claude/hooks/`, and merge the `hooks` part of `kit/claude/settings.example.json` into `~/.claude/settings.json`. If your vault isn't `~/vault`, set `GUARD_VAULT`. Done when `python3 ~/.claude/hooks/test_security_guard.py`, run from your own terminal, passes every case."
             }
           ]
         }
@@ -540,7 +572,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Search your CLAUDE.md, `.mcp.json`, and shell history for keys. Pass condition: none in plain text, and any you found have been rotated."
+              "p": "Search your CLAUDE.md, `.mcp.json`, and shell history for keys. Setup check: none in plain text, and any you found have been rotated."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/vault/CLAUDE.md` already has this section (12). If you started from it, there's nothing to add. Done when the lab's search finds no key in plain text."
             }
           ]
         }
@@ -550,6 +590,7 @@ export const CONTENT: ModuleContent = {
       "id": "auto-mode-with-a",
       "code": "6.6",
       "title": "Auto mode, with a hard floor",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -651,6 +692,7 @@ export const CONTENT: ModuleContent = {
             {
               "list": [
                 "Anything not on your ask list is the classifier's call. When you add a new tool or connector that can deploy, pay, send, or change production, add its ask rule first.",
+                "Ask rules cover only the commands they name, in the form they name (step 3 above). The guard closes some of the other forms, not every one.",
                 "A repository's own project settings take precedence over your user settings for some keys, including the one that turns hooks off. Your user-level ask rules still apply, which is why both layers exist."
               ]
             }
@@ -660,7 +702,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Write down every irreversible action your setup can take. For each, name the rule or hook that forces a prompt, or the other way you've closed it. Pass condition: no action whose only protection is the classifier."
+              "p": "Write down every irreversible action your setup can take. For each, name the rule or hook that forces a prompt, or the other way you've closed it. Setup check: no action whose only protection is the classifier."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/settings.example.json`: merge its `permissions` part into `~/.claude/settings.json`, then add rules for your own deploy, database, and payment tools. Done when every irreversible action on your list has a rule or the guard behind it."
             }
           ]
         }

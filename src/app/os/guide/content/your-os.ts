@@ -90,6 +90,14 @@ export const CONTENT: ModuleContent = {
               "figure": "AssemblyStack"
             }
           ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/README.md` lists every kit file with the lesson it belongs to. Done when each step in the table above is done, in order."
+            }
+          ]
         }
       ]
     },
@@ -136,6 +144,22 @@ export const CONTENT: ModuleContent = {
           "blocks": [
             {
               "p": "Our CLAUDE.md has a section where Claude records its own repeated mistakes. It started when the same kind of error happened three times in one day. Each entry became a rule, and the rules are short enough to read in a minute."
+            }
+          ]
+        },
+        {
+          "h": "Lab",
+          "blocks": [
+            {
+              "p": "Write one entry for a mistake Claude made recently. Setup check: the root cause line names one layer, and the fix is in that layer."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/templates/failure-log.md`: copy it into your vault and keep one log. Done when it holds the lab's entry."
             }
           ]
         }

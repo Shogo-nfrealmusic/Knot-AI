@@ -125,7 +125,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "List every recurring job you have. For each one, write where it runs and what happens if it misses a run. Pass condition: no job whose failure you'd only discover by accident."
+              "p": "List every recurring job you have. For each one, write where it runs and what happens if it misses a run. Setup check: no job whose failure you'd only discover by accident."
             }
           ]
         }
@@ -135,6 +135,7 @@ export const CONTENT: ModuleContent = {
       "id": "parallel-sessions-the-bottleneck",
       "code": "5.2",
       "title": "Parallel sessions: the bottleneck is you",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -202,7 +203,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Run two sessions on two independent tasks in separate worktrees. Pass condition: both land, reviewed, without one breaking the other."
+              "p": "Run two sessions on two independent tasks in separate worktrees. Setup check: two worktrees exist, made with `claude --worktree <name>`, each with its own independent task. Real-world check: both land, reviewed, without one breaking the other."
             }
           ]
         }
@@ -212,6 +213,7 @@ export const CONTENT: ModuleContent = {
       "id": "headless-runs-and-ci",
       "code": "5.3",
       "title": "Headless runs and CI",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -295,7 +297,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Run one `claude -p --bare --tools \"Read\"` job on a real diff, with `--output-format stream-json --verbose` so every tool call is logged. Pass condition: the log shows no tool other than Read, and the final result is valid JSON."
+              "p": "Run one `claude -p --bare --tools \"Read\"` job on a real diff, with `--output-format stream-json --verbose` so every tool call is logged. Setup check: the log shows no tool other than Read, and the final result is valid JSON."
             }
           ]
         }
@@ -305,6 +307,7 @@ export const CONTENT: ModuleContent = {
       "id": "loops-that-run-until",
       "code": "5.4",
       "title": "Loops that run until done",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -374,7 +377,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Run one bounded loop on a small greenfield task with all three written down. Pass condition: it stops on its own condition, not on the budget."
+              "p": "Run one bounded loop on a small greenfield task with all three written down. Setup check: the stop condition, the blast radius, and the budget are written down before the loop starts. Real-world check: it stops on its own condition, not on the budget."
             }
           ]
         }
@@ -454,7 +457,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Track usage for one week. Pass condition: you can name the one habit that uses the most, and you've changed it."
+              "p": "Track usage for one week. Setup check: today, you check `/usage` at the end of the day and write down which kind of work used the most. Real-world check: after the week, you can name the one habit that uses the most, and you've changed it."
             }
           ]
         }

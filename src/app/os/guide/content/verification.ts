@@ -85,7 +85,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Write the \"How to check your work\" section for one project. Pass condition: for the next five tasks, every \"done\" comes with the check's output."
+              "p": "Write the \"How to check your work\" section for one project. Setup check: the section is in the project's CLAUDE.md, and the next \"done\" comes with the check's output. Real-world check: for the next five tasks, every \"done\" comes with the check's output."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/vault/CLAUDE.md` has this section (11) with blanks for your commands, and `kit/project/CLAUDE.md` has one for a single project. Fill in your own commands. Done when the next \"done\" comes with the check's output."
             }
           ]
         }
@@ -171,7 +179,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Add the verifier. Run it on the last thing Claude told you was \"done.\" Pass condition: you can name one thing it found, or explain why there was nothing to find."
+              "p": "Add the verifier. Run it on the last thing Claude told you was \"done.\" Setup check: you can name one thing it found, or explain why there was nothing to find."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/agents/verifier.md`: copy it to `.claude/agents/verifier.md` in your project, or to `~/.claude/agents/` to use it everywhere. Done when it has reviewed one real piece of work."
             }
           ]
         }
@@ -246,7 +262,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Run your reviewer on one diff twice: once with no instructions, once with the severity bar. Pass condition: the second run's findings are all ones you'd actually fix."
+              "p": "Run your reviewer on one diff twice: once with no instructions, once with the severity bar. Setup check: the second run's findings are all ones you'd actually fix."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/prompts/review.md`: paste it with each review request, to the verifier or in a fresh session. It also has a version for research and writing. Done when a review returns only findings that come with an input that triggers them."
             }
           ]
         }
@@ -256,6 +280,7 @@ export const CONTENT: ModuleContent = {
       "id": "choose-the-right-gate",
       "code": "4.4",
       "title": "Choose the right gate: Stop hook, /goal, or verifier",
+      "advanced": true,
       "sections": [
         {
           "h": "Problem",
@@ -380,7 +405,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "For your next long task, write the gate before you start. Pass condition: Claude stops only when the gate says so."
+              "p": "For your next long task, write the gate before you start. Setup check: the gate is written down before the task starts, picked from the table above. Real-world check: Claude stops because the gate passed. A stop at the retry limit doesn't count: with the Stop hook above, three continuations with the tests still failing means Claude gave up, not that the job is done."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/hooks/require-tests.py`: copy it to `.claude/hooks/require-tests.py` in your project, set `TEST_COMMAND`, and register it in `.claude/settings.json` as shown above. The kit's `kit/claude/settings.example.json` doesn't register it for you. Done when a failing test sends Claude back with the test output."
             }
           ]
         }
@@ -456,7 +489,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Take one check you rely on. Feed it one known-good and one known-bad case. Pass condition: it gets both right, and you add a test for anything it missed."
+              "p": "Take one check you rely on. Feed it one known-good and one known-bad case. Setup check: it gets both right, and you add a test for anything it missed."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/hooks/test_security_guard.py` is the guard's own suite, a worked example of this lesson. Install it with the guard in Lesson 6.4, then run `python3 ~/.claude/hooks/test_security_guard.py` from your own terminal. Done when every case passes."
             }
           ]
         }

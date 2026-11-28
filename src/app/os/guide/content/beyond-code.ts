@@ -97,7 +97,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "List the work you do that isn't code. For each item, write who drafts it and who checks it. Pass condition: nothing that leaves your company is drafted and checked by the same agent."
+              "p": "List the work you do that isn't code. For each item, write who drafts it and who checks it. Setup check: nothing that leaves your company is drafted and checked by the same agent."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/claude/agents/`: copy the five agent files and `kit/claude/agents/verifier.md` to `~/.claude/agents/` or a project's `.claude/agents/`, and fill in the placeholders. Done when each agent's hard limits match your table from the lab."
             }
           ]
         }
@@ -169,7 +177,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Take one metric you report as a monthly average. Split it by week. Pass condition: you either find a step and explain it, or confirm there isn't one."
+              "p": "Take one metric you report as a monthly average. Split it by week. Setup check: you either find a step and explain it, or confirm there isn't one."
             }
           ]
         }
@@ -245,7 +253,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Pick one recurring finance task. Write its procedure as a document Claude can follow, with a human approval step for every write. Pass condition: Claude completes one cycle and you only approve."
+              "p": "Pick one recurring finance task. Write its procedure as a document Claude can follow, with a human approval step for every write. Setup check: the procedure is written down, and every step that writes has a human approval step. Real-world check: Claude completes one cycle and you only approve."
             }
           ]
         }
@@ -267,7 +275,7 @@ export const CONTENT: ModuleContent = {
                 "A single Python script, with FFmpeg for all video processing.",
                 "Every night at midnight, it builds ten candidate videos from our photo and video library.",
                 "Claude scores representative frames from 0 to 10 on three criteria that match our brand, returning JSON. Ten clips go to Claude in one call.",
-                "The top three are scheduled to post on TikTok through a scheduling service, so the posting itself doesn't need the computer to be awake."
+                "A human approves the top three, and only then are they scheduled to post on TikTok through a scheduling service, so the posting itself doesn't need the computer to be awake."
               ]
             }
           ]
@@ -303,7 +311,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Find one piece of content you make repeatedly. Write down its pattern, and decide how you'd measure whether an automated version performs as well. Pass condition: a written metric, before you automate anything."
+              "p": "Find one piece of content you make repeatedly. Write down its pattern, and decide how you'd measure whether an automated version performs as well. Setup check: a written metric, before you automate anything."
             }
           ]
         }
@@ -359,7 +367,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Write your last three significant decisions as Decision notes. Pass condition: each has the reasons and at least one rejected option."
+              "p": "Write your last three significant decisions as Decision notes. Setup check: each has the reasons and at least one rejected option."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/templates/decision.md` and `kit/templates/change.md`: keep them in your vault and name them in CLAUDE.md, so Claude uses them for `Decisions/` and `Logs/Changes/`. Done when the lab's three decisions follow the template."
             }
           ]
         }
@@ -378,14 +394,14 @@ export const CONTENT: ModuleContent = {
             },
             {
               "list": [
-                "**It never communicates as us.** It drafts emails, messages, and posts; a human sends them.",
+                "**Nothing goes out unless a human approved it.** Claude drafts emails, messages, and posts. A human sends them, or approves them before they're scheduled (Lesson 7.4).",
                 "**It never spends money** without approval, however small the amount.",
                 "**It never fills an unknown with a guess.** \"Unknown\" and \"TBD\" are valid answers.",
                 "**It never deletes a note.**"
               ]
             },
             {
-              "p": "These are in CLAUDE.md and backed, where possible, by permissions and hooks (Module 6). The words state the intent; the permissions enforce it."
+              "p": "These are in CLAUDE.md and backed, where possible, by permissions and hooks (Module 6). The words state the intent; the permissions enforce it for the actions they cover."
             }
           ]
         }

@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { parseInline } from "./markup.ts";
-import { parseAnswers, parseTicks, toggleTick, withAnswer } from "./progress.ts";
+import { labPlan, parseAnswers, parseTicks, splitLab, toggleTick, withAnswer } from "./progress.ts";
 import { ANSWER_KEY, PARTS, QUESTIONS, adviceFor, scoreParts, startWith, totalScore } from "./content/diagnostic.ts";
 
 /* ───────────── inline text ───────────── */
@@ -75,6 +75,40 @@ test("ticks: toggling adds and removes; an unknown id changes nothing", () => {
   assert.deepEqual(one, ["interview-lab"]);
   assert.deepEqual(toggleTick(one, "interview-lab", IDS), []);
   assert.deepEqual(toggleTick(one, "nope", IDS), one);
+});
+
+/* ───────────── labs: a setup check for today, a real-world check for later ───────────── */
+
+test("a lab splits into its task, its setup check and its real-world check", () => {
+  assert.deepEqual(splitLab("Schedule one routine. Setup check: it is listed. Real-world check: after three days, it ran."), {
+    task: "Schedule one routine.",
+    setup: "it is listed.",
+    real: "after three days, it ran.",
+  });
+});
+
+test("a lab with only a setup check has no real-world check", () => {
+  assert.deepEqual(splitLab("Make the vault. Setup check: Claude answers `Decisions/`."), { task: "Make the vault.", setup: "Claude answers `Decisions/`.", real: "" });
+});
+
+const lesson = (id, lab, advanced = false) => ({ id, code: "9.1", title: id, advanced, sections: lab ? [{ h: "Lab", blocks: [{ p: lab }] }] : [] });
+
+test("lab ticks: one for each setup check, one more for each real-world check; advanced labs don't count toward the module", () => {
+  const plan = labPlan([
+    lesson("a", "Do it. Setup check: x."),
+    lesson("b", "Do it. Setup check: x. Real-world check: y."),
+    lesson("c", null),
+    lesson("d", "Do it. Setup check: x. Real-world check: y.", true),
+  ]);
+  assert.deepEqual(plan.ids, ["a-lab", "b-lab", "b-lab-real", "d-lab", "d-lab-real"]);
+  assert.deepEqual(plan.core, ["a-lab", "b-lab"]);
+  assert.deepEqual(plan.advanced, ["d-lab"]);
+  assert.deepEqual(plan.real, ["b-lab-real", "d-lab-real"]);
+});
+
+test("lab ticks: a tick saved before the split still counts as that lab's setup check", () => {
+  const plan = labPlan([lesson("own", "Do it. Setup check: x. Real-world check: y.")]);
+  assert.deepEqual(parseTicks('["own-lab"]', plan.ids), ["own-lab"]);
 });
 
 /* ───────────── the diagnostic's saved answers ───────────── */

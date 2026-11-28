@@ -106,7 +106,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Sort your CLAUDE.md into the two lists. Pass condition: every rule in the enforcement list exists in settings or a hook."
+              "p": "Sort your CLAUDE.md into the two lists. Setup check: every rule in the enforcement list exists in settings or a hook."
             }
           ]
         }
@@ -182,7 +182,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Find one mistake Claude made twice. Write the rule with its reason and date. Pass condition: it doesn't happen a third time in the next two weeks."
+              "p": "Find one mistake Claude made twice. Write the rule with its reason and date. Setup check: the rule is in CLAUDE.md, with its reason and date. Real-world check: it doesn't happen a third time in the next two weeks."
             }
           ]
         }
@@ -259,7 +259,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "For one week, `/clear` between every unrelated task. Pass condition: you notice fewer corrections per task."
+              "p": "For one week, `/clear` between every unrelated task. Setup check: today, every unrelated task starts after a `/clear`. Real-world check: after the week, you notice fewer corrections per task."
             }
           ]
         }
@@ -329,7 +329,15 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Add the section. Propose a plan you suspect is weak. Pass condition: Claude names the weakness without being asked."
+              "p": "Add the section. Propose a plan you suspect is weak. Setup check: Claude names the weakness without being asked."
+            }
+          ]
+        },
+        {
+          "h": "From the kit",
+          "blocks": [
+            {
+              "p": "`kit/vault/CLAUDE.md` already has these three sections (5, 6 and 7). If you started from it, fill in your biases in section 6 instead of adding the sections again. Done when Claude names the weakness in the lab without being asked."
             }
           ]
         }
@@ -426,7 +434,7 @@ export const CONTENT: ModuleContent = {
           "h": "Lab",
           "blocks": [
             {
-              "p": "Read your memory (`/memory`). Delete anything stale or re-derivable. Pass condition: everything left is something you'd otherwise have to repeat."
+              "p": "Read your memory (`/memory`). Delete anything stale or re-derivable. Setup check: everything left is something you'd otherwise have to repeat."
             }
           ]
         }

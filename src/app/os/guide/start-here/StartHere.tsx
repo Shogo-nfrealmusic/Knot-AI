@@ -216,7 +216,7 @@ export function StartHere() {
               <Known n={1} title="Know who approves what.">
                 In recent versions, new terminal sessions start in auto mode: a separate classifier model approves routine actions and blocks the ones it
                 judges risky, and some actions still come to you as a question. Read every question it asks. &ldquo;Yes&rdquo; is a decision, not a
-                reflex. Module 6 shows how to make sure the irreversible things always come to you.
+                reflex. Module 6 shows how to make the irreversible things you list come to you every time.
               </Known>
             </ol>
             <ApprovalLanes />
@@ -284,6 +284,26 @@ function Hero({ os, setOs }: { os: Os; setOs: (o: Os) => void }) {
           When I started, I couldn&apos;t code. I didn&apos;t read a book first. I installed the thing and broke it until it worked. This module is
           that, minus the breaking.
         </p>
+        <p>
+          <strong>Why not just a chat?</strong> A chatbot gives you an answer, and you do the work. Claude Code can create and edit the files itself,
+          in the folder you give it.
+        </p>
+        <Link
+          href="/os/guide/beyond-code"
+          className="gd-press group !mt-6 block rounded-2xl bg-white px-5 py-4 no-underline ring-1 ring-[var(--rule)] hover:ring-[var(--ink)]"
+        >
+          <span className="block text-[14px] text-[var(--muted)]">Where this goes · Module 7</span>
+          <span className="mt-1 block text-[17px] leading-relaxed text-[var(--ink)]">
+            A two person company hands research, analytics, bookkeeping prep and content to Claude Code. A human approves anything that leaves the
+            company. Module 7 shows the real setup, and what still doesn&apos;t work.
+          </span>
+          <span className="mt-2 inline-flex items-center gap-2 text-[16px] font-medium text-[var(--accent)]">
+            See Module 7
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </span>
+        </Link>
       </motion.div>
       <motion.div {...enter(0.22)} className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 lg:col-start-1 lg:row-start-4">
         <span className="text-[16px] text-[var(--soft)]">Your computer:</span>
@@ -514,7 +534,8 @@ function Lab({ done, toggle }: { done: string[]; toggle: (id: string) => void })
         ))}
       </div>
       <p className="mt-6 max-w-[62ch] text-[18px] leading-relaxed text-white/75">
-        {n === LAB.length ? "Passed. " : ""}Then do Module 1, the 20‑question diagnostic. It tells you where to go next.
+        {n === LAB.length ? "Passed. " : ""}Then go to Module 2, your second brain. The diagnostic (Module 1) is optional: skip it for now, and
+        take it after Module 3 if you want to know which module to open next.
       </p>
     </section>
   );

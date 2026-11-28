@@ -8,9 +8,10 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { CodeBlock } from "@/app/free/CodeCopy";
-import { MODULES, neighbours } from "./data";
+import { MODULES, neighbours, nextStep } from "./data";
 import { Inline } from "./Inline";
 import type { Block, Item, Lesson, ModuleContent, Section } from "./content/types";
+import { labPlan, splitLab } from "./progress";
 import { useTicks } from "./store";
 
 const SPRING = { type: "spring", stiffness: 260, damping: 28 } as const;
@@ -18,12 +19,16 @@ const SPRING = { type: "spring", stiffness: 260, damping: 28 } as const;
 export type Figures = Record<string, () => React.ReactNode>;
 
 const labId = (l: Lesson) => `${l.id}-lab`;
-const hasLab = (l: Lesson) => l.sections.some((s) => s.h === "Lab");
 const ordinal = (code: string) => (/^\d\.\d+$/.test(code) ? code.split(".")[1] : null);
+const ADVANCED_NOTE = "Optional on a first pass. Come back when the core lessons run.";
+
+type Ticks = { done: string[]; toggle: (id: string) => void };
 
 export function ModulePage({ content, figures }: { content: ModuleContent; figures: Figures }) {
-  const labs = content.lessons.filter(hasLab).map(labId);
-  const [done, toggle] = useTicks(`os-guide.${content.slug}`, labs);
+  const plan = labPlan(content.lessons);
+  const [done, toggle] = useTicks(`os-guide.${content.slug}`, plan.ids);
+  // The module's progress counts the core lessons' setup checks only: Advanced labs and real-world checks are extra.
+  const coreDone = done.filter((d) => plan.core.includes(d)).length;
   const active = useActiveLesson(content.lessons);
   const article = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: article, offset: ["start 120px", "end end"] });
@@ -32,14 +37,14 @@ export function ModulePage({ content, figures }: { content: ModuleContent; figur
 
   return (
     <div className="gd relative overflow-x-clip pb-10 pt-14">
-      <MobileBar lessons={content.lessons} active={active} read={read} count={done.length} total={labs.length} />
-      <Header content={content} figure={Hero ? <Hero /> : null} labs={labs.length} />
+      <MobileBar lessons={content.lessons} active={active} read={read} count={coreDone} total={plan.core.length} />
+      <Header content={content} figure={Hero ? <Hero /> : null} labs={plan.core.length} advanced={content.lessons.filter((l) => l.advanced).length} />
 
       <div ref={article} className="mx-auto grid max-w-[1180px] gap-12 px-5 sm:px-8 lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-16">
-        <Rail title={`Module ${content.code}`} lessons={content.lessons} active={active} read={read} done={done} total={labs.length} />
+        <Rail title={`Module ${content.code}`} lessons={content.lessons} active={active} read={read} done={done} count={coreDone} total={plan.core.length} />
         <div className="min-w-0 max-w-[760px]">
           {content.lessons.map((l) => (
-            <LessonView key={l.id} lesson={l} figures={figures} ticked={done.includes(labId(l))} onTick={() => toggle(labId(l))} />
+            <LessonView key={l.id} lesson={l} figures={figures} ticks={{ done, toggle }} />
           ))}
           <PrevNext code={content.code} />
           <p className="mt-16 max-w-[62ch] text-[14px] leading-relaxed text-[var(--muted)]">
@@ -58,7 +63,7 @@ export function ModulePage({ content, figures }: { content: ModuleContent; figur
 
 /* ───────────── header ───────────── */
 
-function Header({ content, figure, labs }: { content: ModuleContent; figure: React.ReactNode; labs: number }) {
+function Header({ content, figure, labs, advanced }: { content: ModuleContent; figure: React.ReactNode; labs: number; advanced: number }) {
   const reduce = useReducedMotion();
   const m = MODULES.find((x) => x.code === content.code);
   const enter = (d: number) => ({ initial: reduce ? false : { opacity: 0, y: 14 }, animate: { opacity: 1, y: 0 }, transition: { ...SPRING, delay: d } });
@@ -90,6 +95,7 @@ function Header({ content, figure, labs }: { content: ModuleContent; figure: Rea
       <motion.dl {...enter(0.22)} className="mt-8 flex flex-wrap gap-x-8 gap-y-3 lg:col-start-1 lg:row-start-4">
         <Stat k="Lessons" v={String(numbered)} />
         <Stat k="Labs" v={String(labs)} />
+        {advanced ? <Stat k="Advanced" v={`${advanced} optional`} /> : null}
         {m?.time ? <Stat k="Time" v={m.time} /> : null}
       </motion.dl>
     </header>
@@ -130,7 +136,11 @@ function useActiveLesson(lessons: Lesson[]) {
 
 type Read = ReturnType<typeof useSpring>;
 
-function Rail({ title, lessons, active, read, done, total }: { title: string; lessons: Lesson[]; active: string; read: Read; done: string[]; total: number }) {
+function AdvancedTag({ className = "" }: { className?: string }) {
+  return <span className={`inline-flex shrink-0 items-center rounded-full px-2 py-px text-[12px] font-medium leading-5 text-[var(--muted)] ring-1 ring-[var(--rule-strong)] ${className}`}>Advanced</span>;
+}
+
+function Rail({ title, lessons, active, read, done, count, total }: { title: string; lessons: Lesson[]; active: string; read: Read; done: string[]; count: number; total: number }) {
   return (
     <nav aria-label="Lessons in this module" className="hidden lg:block">
       <div className="sticky top-24">
@@ -151,7 +161,10 @@ function Rail({ title, lessons, active, read, done, total }: { title: string; le
                     transition={SPRING}
                   />
                   <span className="w-[26px] shrink-0 font-mono text-[12.5px] text-[var(--muted)]">{ordinal(l.code) ? l.code : ""}</span>
-                  <span className={on ? "font-medium text-[var(--ink)]" : "text-[var(--soft)]"}>{l.title}</span>
+                  <span className={on ? "font-medium text-[var(--ink)]" : "text-[var(--soft)]"}>
+                    {l.title}
+                    {l.advanced ? <AdvancedTag className="ml-2 align-[1px]" /> : null}
+                  </span>
                 </a>
               </li>
             );
@@ -159,7 +172,7 @@ function Rail({ title, lessons, active, read, done, total }: { title: string; le
         </ol>
         {total > 0 ? (
           <p className="mt-6 text-[14px] text-[var(--muted)]">
-            <span className="font-mono text-[var(--ink)]">{done.length}</span> of {total} labs passed
+            <span className="font-mono text-[var(--ink)]">{count}</span> of {total} core labs passed
           </p>
         ) : null}
       </div>
@@ -190,7 +203,7 @@ function MobileBar({ lessons, active, read, count, total }: { lessons: Lesson[];
 
 /* ───────────── a lesson ───────────── */
 
-function LessonView({ lesson, figures, ticked, onTick }: { lesson: Lesson; figures: Figures; ticked: boolean; onTick: () => void }) {
+function LessonView({ lesson, figures, ticks }: { lesson: Lesson; figures: Figures; ticks: Ticks }) {
   const n = ordinal(lesson.code);
   return (
     <section id={lesson.id} className="scroll-mt-32 border-t border-[var(--rule)] pb-8 pt-16 first:border-t-0 first:pt-4 lg:scroll-mt-24">
@@ -198,19 +211,38 @@ function LessonView({ lesson, figures, ticked, onTick }: { lesson: Lesson; figur
         {n ? <span className="tabular-nums text-[var(--accent)]">{n}. </span> : null}
         {lesson.title}
       </h2>
-      {n ? <p className="mt-3 font-mono text-[13px] text-[var(--muted)]">Lesson {lesson.code}</p> : null}
+      {n ? (
+        <p className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[13px] text-[var(--muted)]">
+          Lesson {lesson.code}
+          {lesson.advanced ? <AdvancedTag className="font-sans" /> : null}
+        </p>
+      ) : null}
+      {lesson.advanced ? <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-[var(--soft)]">{ADVANCED_NOTE}</p> : null}
       <div className="mt-8">
         {lesson.sections.map((s, i) => (
-          <SectionView key={i} section={s} figures={figures} ticked={ticked} onTick={onTick} first={i === 0} />
+          <SectionView key={i} section={s} figures={figures} lesson={lesson} ticks={ticks} first={i === 0} />
         ))}
       </div>
     </section>
   );
 }
 
-function SectionView({ section, figures, ticked, onTick, first }: { section: Section; figures: Figures; ticked: boolean; onTick: () => void; first: boolean }) {
+function SectionView({ section, figures, lesson, ticks, first }: { section: Section; figures: Figures; lesson: Lesson; ticks: Ticks; first: boolean }) {
   const { h, blocks } = section;
-  if (h === "Lab") return <LabCard text={(blocks[0] as { p: string }).p} ticked={ticked} onTick={onTick} />;
+  if (h === "Lab") return <LabCard text={(blocks[0] as { p: string }).p} id={labId(lesson)} advanced={!!lesson.advanced} ticks={ticks} />;
+  if (h === "From the kit") {
+    return (
+      <div className="mt-6 max-w-[62ch] rounded-2xl bg-white px-5 py-4 ring-1 ring-[var(--rule)]">
+        <h3 className="flex items-center gap-2.5 text-[15px] font-semibold tracking-[-0.01em] text-[var(--ink)]">
+          <FolderMark />
+          From the kit
+        </h3>
+        <div className="mt-2">
+          <Blocks blocks={blocks} figures={figures} tight />
+        </div>
+      </div>
+    );
+  }
   if (h === "Principle") {
     const [lead, ...rest] = blocks;
     const text = "p" in lead ? lead.p.replace(/^\*\*(.+?)\*\*/, "$1") : "";
@@ -405,45 +437,72 @@ function Table({ head, rows }: { head: string[]; rows: string[][] }) {
 
 /* ───────────── lab ───────────── */
 
-function LabCard({ text, ticked, onTick }: { text: string; ticked: boolean; onTick: () => void }) {
-  const [task, pass] = text.split(/\s*Pass condition:\s*/);
+const CHECK_TEXT = "mt-4 max-w-[62ch] border-l-2 pl-4 text-[17px] leading-[1.65] text-white [&_.gd-code]:bg-white/10 [&_.gd-code]:text-white [&_.gd-code]:shadow-none";
+
+function LabCard({ text, id, advanced, ticks }: { text: string; id: string; advanced: boolean; ticks: Ticks }) {
+  const { task, setup, real } = splitLab(text);
+  const realId = `${id}-real`;
   return (
     <div className="mt-12 rounded-[22px] bg-[var(--panel)] px-5 py-7 text-white sm:px-8">
-      <div className="flex items-baseline justify-between gap-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h3 className="text-[22px] font-semibold tracking-[-0.02em]">
           Lab <span className="gd-serif !text-white/55">do it, then tick it.</span>
         </h3>
+        {advanced ? <span className="text-[14px] text-white/55">Advanced: doesn&apos;t count toward the module</span> : null}
       </div>
       <p className="mt-3 max-w-[62ch] text-[17.5px] leading-[1.7] text-white/80 [&_.gd-code]:bg-white/10 [&_.gd-code]:text-white [&_.gd-code]:shadow-none [&_.gd-link]:text-white">
         <Inline text={task} />
       </p>
-      {pass ? (
-        <p className="mt-4 max-w-[62ch] border-l-2 border-[var(--accent)] pl-4 text-[17px] leading-[1.65] text-white [&_.gd-code]:bg-white/10 [&_.gd-code]:text-white [&_.gd-code]:shadow-none">
-          <span className="text-[#ffb59c]">Pass condition: </span>
-          <Inline text={pass} />
-        </p>
+      <p className={`${CHECK_TEXT} border-[var(--accent)]`}>
+        <span className="text-[#ffb59c]">Setup check: </span>
+        <Inline text={setup} />
+      </p>
+      <LabTick on={ticks.done.includes(id)} onClick={() => ticks.toggle(id)} text="I passed the setup check" />
+      {real ? (
+        <>
+          <p className={`${CHECK_TEXT} mt-7 border-white/30`}>
+            <span className="text-white/60">Real-world check: </span>
+            <Inline text={real} />
+          </p>
+          <LabTick on={ticks.done.includes(realId)} onClick={() => ticks.toggle(realId)} text="I passed the real-world check" />
+        </>
       ) : null}
-      <button
-        type="button"
-        onClick={onTick}
-        aria-pressed={ticked}
-        className="gd-press mt-6 flex min-h-14 w-full items-center gap-4 rounded-2xl bg-white px-4 py-3 text-left text-[var(--ink)] ring-1 ring-[var(--rule)] aria-pressed:ring-2 aria-pressed:ring-[var(--pass)] sm:w-auto sm:min-w-[320px]"
-      >
-        <span className={`flex size-7 shrink-0 items-center justify-center rounded-lg ring-1 transition-colors duration-200 ${ticked ? "bg-[var(--pass)] ring-[var(--pass)]" : "bg-white ring-[var(--rule-strong)]"}`}>
-          <svg viewBox="0 0 20 20" className="size-4" aria-hidden="true">
-            <motion.path d="M4.5 10.5 l3.5 3.5 l7.5 -8" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" initial={false} animate={{ pathLength: ticked ? 1 : 0 }} transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }} />
-          </svg>
-        </span>
-        <span className="text-[17px] font-medium">{ticked ? "Passed" : "I passed this lab"}</span>
-      </button>
     </div>
+  );
+}
+
+function LabTick({ on, onClick, text }: { on: boolean; onClick: () => void; text: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={on}
+      className="gd-press mt-4 flex min-h-14 w-full items-center gap-4 rounded-2xl bg-white px-4 py-3 text-left text-[var(--ink)] ring-1 ring-[var(--rule)] aria-pressed:ring-2 aria-pressed:ring-[var(--pass)] sm:w-auto sm:min-w-[320px]"
+    >
+      <span className={`flex size-7 shrink-0 items-center justify-center rounded-lg ring-1 transition-colors duration-200 ${on ? "bg-[var(--pass)] ring-[var(--pass)]" : "bg-white ring-[var(--rule-strong)]"}`}>
+        <svg viewBox="0 0 20 20" className="size-4" aria-hidden="true">
+          <motion.path d="M4.5 10.5 l3.5 3.5 l7.5 -8" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" initial={false} animate={{ pathLength: on ? 1 : 0 }} transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }} />
+        </svg>
+      </span>
+      <span className="text-[17px] font-medium">{on ? "Passed" : text}</span>
+    </button>
+  );
+}
+
+/** A small folder mark for the "From the kit" note. */
+function FolderMark() {
+  return (
+    <svg viewBox="0 0 20 16" className="h-4 w-5 shrink-0" aria-hidden="true">
+      <path d="M1 2.5 h6 l2 2 h10 v10 h-18 z" fill="rgba(224,85,47,.08)" stroke="var(--accent)" strokeWidth="1.3" strokeLinejoin="round" />
+    </svg>
   );
 }
 
 /* ───────────── next module ───────────── */
 
 export function PrevNext({ code }: { code: string }) {
-  const { prev, next } = neighbours(code);
+  const { prev } = neighbours(code);
+  const next = nextStep(code);
   return (
     <nav aria-label="Module navigation" className="mt-16 grid gap-3 sm:grid-cols-2">
       <Link href={prev ? prev.href : "/os/guide"} className="gd-press flex min-h-[96px] flex-col justify-center rounded-2xl bg-white px-5 py-4 ring-1 ring-[var(--rule)] hover:ring-[var(--ink)]">
