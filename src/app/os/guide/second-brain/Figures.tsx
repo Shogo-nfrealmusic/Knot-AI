@@ -50,7 +50,7 @@ function VaultHero() {
       <div className="relative mt-3 rounded-xl bg-white p-3 ring-1 ring-[var(--rule)]">
         <div className="flex items-center justify-between gap-2 px-1">
           <span className="font-mono text-[13px] text-[var(--muted)]">~/vault/</span>
-          <motion.span initial={false} animate={{ opacity: reading ? 1 : 0 }} transition={{ duration: 0.3 }}>
+          <motion.span initial={false} animate={{ opacity: reading && !filed ? 1 : 0 }} transition={{ duration: 0.3 }}>
             <Tag tone="accent">reads CLAUDE.md first</Tag>
           </motion.span>
         </div>
